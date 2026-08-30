@@ -23,7 +23,11 @@ export const metadata: Metadata = {
   keywords: ["technology agency", "digital solution", "website development", "otomasi bisnis", "solveta"],
   authors: [{ name: "SOLVETA" }],
   icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23991B1B'><rect width='24' height='24' rx='6' fill='%23991B1B'/><path d='M7 17L12 7l5 10h-3.5l-1.5-3.5-1.5 3.5H7z' fill='%23FFFFFF'/></svg>",
+    icon: [
+      { url: "./solveta-logo.png", type: "image/png" },
+      { url: "./solveta-logo.jpg", type: "image/jpeg" },
+    ],
+    apple: "./solveta-logo.png",
   },
 };
 
@@ -34,6 +38,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" className={`${poppins.variable} ${jetbrainsMono.variable} scroll-smooth`}>
+      <head>
+        <link rel="icon" href="./solveta-logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="./solveta-logo.png" />
+      </head>
       <body className="font-sans antialiased bg-white text-gray-700 min-h-screen relative overflow-x-hidden">
         <Providers>{children}</Providers>
       </body>

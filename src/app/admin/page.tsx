@@ -315,7 +315,7 @@ function AdminPortalVisual() {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="developer"
+                placeholder="Masukkan username..."
                 className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
                 autoFocus
               />
@@ -330,14 +330,14 @@ function AdminPortalVisual() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="developer123"
+                placeholder="Masukkan password..."
                 className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
               />
             </div>
 
             {loginError && (
               <p className="text-[11px] text-red-600 font-medium">
-                Username atau password salah. (Gunakan: developer / developer123)
+                Username atau password tidak sesuai. Silakan coba lagi.
               </p>
             )}
 
