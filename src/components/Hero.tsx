@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, ArrowDown, MessageCircle } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
+import { LaptopMockup3D } from "@/components/LaptopMockup3D";
 
 export const Hero: React.FC = () => {
   const { data } = useSiteData();
@@ -91,6 +92,9 @@ export const Hero: React.FC = () => {
             <ArrowDown className="w-4 h-4 text-gray-400 group-hover:text-[#7B0B1E] animate-bounce" />
           </motion.button>
         </motion.div>
+
+        {/* 3D Animated Laptop Mockup (Facing Forward with Developer Code View & Live Preview) */}
+        <LaptopMockup3D />
       </div>
     </section>
   );
