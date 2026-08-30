@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { getSupabaseClient, isSupabaseConfigured } from "@/lib/supabase";
 
 export interface PricingTierData {
   id: string;
@@ -310,7 +310,8 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (isSupabaseConfigured()) {
       (async () => {
         try {
-          const { data: sbData, error } = await supabase
+          const client = getSupabaseClient();
+          const { data: sbData, error } = await client
             .from("site_content")
             .select("data")
             .eq("id", "solveta_cms_main")
@@ -350,7 +351,8 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     if (isSupabaseConfigured()) {
       (async () => {
         try {
-          await supabase.from("site_content").upsert({
+          const client = getSupabaseClient();
+          await client.from("site_content").upsert({
             id: "solveta_cms_main",
             data: newState,
             updated_at: new Date().toISOString(),
@@ -462,7 +464,8 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const syncWithSupabase = async (): Promise<boolean> => {
     if (!isSupabaseConfigured()) return false;
     try {
-      const { error } = await supabase.from("site_content").upsert({
+      const client = getSupabaseClient();
+      const { error } = await client.from("site_content").upsert({
         id: "solveta_cms_main",
         data,
         updated_at: new Date().toISOString(),
