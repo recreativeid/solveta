@@ -16,11 +16,11 @@ import {
   Phone,
   Edit3,
   X,
-  Layers,
+  Gauge,
   Image as ImageIcon,
-  DollarSign,
-  Sparkles,
   Building2,
+  Tag,
+  Check,
 } from "lucide-react";
 import {
   SiteDataProvider,
@@ -36,10 +36,14 @@ function AdminPortalVisual() {
     updatePricing,
     updatePortfolio,
     addPortfolioItem,
+    editPortfolioItem,
     deletePortfolioItem,
     updateClientBrands,
     addClientBrand,
+    editClientBrand,
     deleteClientBrand,
+    addCategory,
+    deleteCategory,
     updateContact,
     updateSiteCopy,
     resetToDefaults,
@@ -61,6 +65,12 @@ function AdminPortalVisual() {
     tierIndex?: number;
   } | null>(null);
 
+  // Edit Modal State for Portfolio Item
+  const [editingPortfolio, setEditingPortfolio] = useState<PortfolioItemData | null>(null);
+
+  // Edit Modal State for Client Brand
+  const [editingBrand, setEditingBrand] = useState<ClientBrandItem | null>(null);
+
   // Quick edit temp values
   const [editHeadline, setEditHeadline] = useState(data.siteCopy.heroHeadline);
   const [editSubtitle, setEditSubtitle] = useState(data.siteCopy.heroSubtitle);
@@ -68,6 +78,7 @@ function AdminPortalVisual() {
   const [editConsultationTitle, setEditConsultationTitle] = useState(data.siteCopy.consultationTitle);
   const [editConsultationDesc, setEditConsultationDesc] = useState(data.siteCopy.consultationDesc);
   const [editPricingList, setEditPricingList] = useState<PricingTierData[]>(data.pricing);
+  const [editMarqueeSpeed, setEditMarqueeSpeed] = useState<number>(data.siteCopy.marqueeSpeed || 35);
 
   // WhatsApp Form
   const [editWaNumber, setEditWaNumber] = useState(data.contact.whatsappNumber);
@@ -79,13 +90,16 @@ function AdminPortalVisual() {
   const [newPortDesc, setNewPortDesc] = useState("");
   const [newPortImage, setNewPortImage] = useState("");
   const [newPortTags, setNewPortTags] = useState("");
+  const [newCategoryInput, setNewCategoryInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const editFileInputRef = useRef<HTMLInputElement>(null);
 
   // New Client Brand / Logo Form State
   const [newBrandName, setNewBrandName] = useState("");
   const [newBrandLabel, setNewBrandLabel] = useState("");
   const [newBrandLogo, setNewBrandLogo] = useState("");
   const brandLogoInputRef = useRef<HTMLInputElement>(null);
+  const editBrandLogoInputRef = useRef<HTMLInputElement>(null);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -106,7 +120,7 @@ function AdminPortalVisual() {
   };
 
   // Handle local portfolio image file upload
-  const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -118,13 +132,17 @@ function AdminPortalVisual() {
     const reader = new FileReader();
     reader.onload = (event) => {
       const result = event.target?.result as string;
-      setNewPortImage(result);
+      if (isEdit && editingPortfolio) {
+        setEditingPortfolio({ ...editingPortfolio, image: result });
+      } else {
+        setNewPortImage(result);
+      }
     };
     reader.readAsDataURL(file);
   };
 
   // Handle client logo file upload
-  const handleBrandLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleBrandLogoUpload = (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -136,9 +154,22 @@ function AdminPortalVisual() {
     const reader = new FileReader();
     reader.onload = (event) => {
       const result = event.target?.result as string;
-      setNewBrandLogo(result);
+      if (isEdit && editingBrand) {
+        setEditingBrand({ ...editingBrand, logoImage: result });
+      } else {
+        setNewBrandLogo(result);
+      }
     };
     reader.readAsDataURL(file);
+  };
+
+  const handleAddNewCategory = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCategoryInput.trim()) return;
+    addCategory(newCategoryInput.trim());
+    setNewPortCategory(newCategoryInput.trim());
+    setNewCategoryInput("");
+    showToast("Kategori baru berhasil ditambahkan!");
   };
 
   const handleCreatePortfolio = (e: React.FormEvent) => {
@@ -170,6 +201,14 @@ function AdminPortalVisual() {
     showToast("Portofolio baru berhasil ditambahkan!");
   };
 
+  const handleSaveEditedPortfolio = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingPortfolio) return;
+    editPortfolioItem(editingPortfolio.id, editingPortfolio);
+    setEditingPortfolio(null);
+    showToast("Perubahan portofolio berhasil disimpan!");
+  };
+
   const handleCreateBrand = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newBrandLogo && !newBrandName.trim()) {
@@ -190,6 +229,20 @@ function AdminPortalVisual() {
     showToast("Logo brand berhasil ditambahkan ke animasi slider!");
   };
 
+  const handleSaveEditedBrand = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingBrand) return;
+    editClientBrand(editingBrand.id, editingBrand);
+    setEditingBrand(null);
+    showToast("Perubahan brand/logo berhasil disimpan!");
+  };
+
+  const handleSaveSpeed = (newSpeed: number) => {
+    setEditMarqueeSpeed(newSpeed);
+    updateSiteCopy({ marqueeSpeed: newSpeed });
+    showToast(`Kecepatan slider diatur ke ${newSpeed} detik!`);
+  };
+
   const saveVisualChanges = () => {
     updateSiteCopy({
       heroHeadline: editHeadline,
@@ -197,6 +250,7 @@ function AdminPortalVisual() {
       portfolioTitle: editPortfolioTitle,
       consultationTitle: editConsultationTitle,
       consultationDesc: editConsultationDesc,
+      marqueeSpeed: editMarqueeSpeed,
     });
     updatePricing(editPricingList);
     showToast("Semua perubahan teks dan harga berhasil disimpan!");
@@ -309,7 +363,7 @@ function AdminPortalVisual() {
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
               <div className="text-[10px] text-gray-400">
-                Klik langsung bagian web untuk mengubah teks/harga
+                Data tersimpan aman &bull; Siap sync ke MySQL
               </div>
             </div>
           </div>
@@ -394,7 +448,7 @@ function AdminPortalVisual() {
 
             <button
               onClick={() => {
-                if (confirm("Kembalikan semua teks & harga ke setelan awal?")) {
+                if (confirm("Kembalikan semua teks & harga ke setelan awal bawaan?")) {
                   resetToDefaults();
                   showToast("Data dikembalikan ke setelan awal!");
                   setTimeout(() => window.location.reload(), 600);
@@ -450,17 +504,17 @@ function AdminPortalVisual() {
               <div className="text-center p-4 bg-white border border-gray-200 rounded-xl flex items-center justify-between">
                 <div className="text-left">
                   <div className="text-xs font-bold text-gray-800">
-                    Slider Logo Klien &amp; Partner ({data.clientBrands.length} Brand Aktif &bull; Format Oval Padat)
+                    Slider Logo Klien &amp; Partner ({data.clientBrands.length} Brand Aktif &bull; Kecepatan: {editMarqueeSpeed}s)
                   </div>
                   <div className="text-[11px] text-gray-500">
-                    Gambar logo otomatis pas di dalam bentuk oval tumpul tanpa tepi sisa berlebih.
+                    Bergerak dua arah (kanan &amp; kiri) berlawanan secara dinamis &amp; bisa diedit per item.
                   </div>
                 </div>
                 <button
                   onClick={() => setActiveMode("brands")}
                   className="text-xs font-semibold text-brand-800 bg-white border border-gray-300 hover:border-brand-600 px-3 py-1.5 rounded-lg shadow-2xs"
                 >
-                  + Kelola Logo Klien
+                  + Atur Slider &amp; Logo
                 </button>
               </div>
 
@@ -489,7 +543,7 @@ function AdminPortalVisual() {
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-800 bg-white border border-brand-200 hover:bg-brand-50 px-3.5 py-1.5 rounded-full transition-colors"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>Upload &amp; Kelola Portofolio ({data.portfolio.length} Karya)</span>
+                    <span>Upload, Edit &amp; Kelola Portofolio ({data.portfolio.length} Karya)</span>
                   </button>
                 </div>
               </div>
@@ -571,16 +625,17 @@ function AdminPortalVisual() {
           </div>
         )}
 
-        {/* MODE 2: PORTFOLIO MANAGER WITH IMAGE UPLOAD */}
+        {/* MODE 2: PORTFOLIO MANAGER WITH CATEGORY CHIPS & EDIT CAPABILITY */}
         {activeMode === "portfolio" && (
           <div className="space-y-6 bg-white">
+            {/* Form Add Portfolio */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
               <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
                 <Upload className="w-4 h-4 text-brand-800" />
-                <span>Tambah Karya Portofolio</span>
+                <span>Tambah Karya Portofolio Baru</span>
               </h2>
               <p className="text-xs text-gray-500 mb-5">
-                Upload file screenshot atau foto web dari laptop/HP Anda. Kategori opsional.
+                Pilih kategori yang sudah ada dengan 1 klik atau tambahkan kategori baru. Gambar langsung dipotong rapi.
               </p>
 
               <form onSubmit={handleCreatePortfolio} className="space-y-4">
@@ -601,15 +656,68 @@ function AdminPortalVisual() {
 
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Kategori (Opsional)
+                      Kategori Terpilih
                     </label>
                     <input
                       type="text"
                       value={newPortCategory}
                       onChange={(e) => setNewPortCategory(e.target.value)}
-                      placeholder="Contoh: E-Commerce / Kosongkan"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white"
+                      placeholder="Pilih dari tombol di bawah atau ketik"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white font-medium text-brand-900"
                     />
+                  </div>
+                </div>
+
+                {/* Clickable Category Chips */}
+                <div className="p-3 bg-gray-50/60 rounded-xl border border-gray-100">
+                  <div className="text-[11px] font-semibold text-gray-600 mb-2 flex items-center gap-1.5">
+                    <Tag className="w-3 h-3 text-brand-800" />
+                    <span>Klik Kategori untuk Memilih:</span>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    {data.categories.map((cat) => (
+                      <button
+                        type="button"
+                        key={cat}
+                        onClick={() => setNewPortCategory(cat)}
+                        className={`text-xs px-3 py-1 rounded-full font-medium transition-all flex items-center gap-1 ${
+                          newPortCategory === cat
+                            ? "bg-brand-800 text-white shadow-xs"
+                            : "bg-white text-gray-700 border border-gray-200 hover:border-brand-600"
+                        }`}
+                      >
+                        {newPortCategory === cat && <Check className="w-3 h-3" />}
+                        <span>{cat}</span>
+                      </button>
+                    ))}
+
+                    <button
+                      type="button"
+                      onClick={() => setNewPortCategory("")}
+                      className={`text-xs px-2.5 py-1 rounded-full border border-dashed text-gray-400 hover:text-gray-600 hover:border-gray-400 ${
+                        newPortCategory === "" ? "border-brand-600 text-brand-700" : "border-gray-200"
+                      }`}
+                    >
+                      Kosongkan Kategori
+                    </button>
+                  </div>
+
+                  {/* Inline Add Category */}
+                  <div className="mt-3 pt-3 border-t border-gray-200/60 flex items-center gap-2 max-w-sm">
+                    <input
+                      type="text"
+                      value={newCategoryInput}
+                      onChange={(e) => setNewCategoryInput(e.target.value)}
+                      placeholder="+ Tambah Kategori Baru"
+                      className="text-xs p-1.5 px-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white flex-grow"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleAddNewCategory}
+                      className="text-xs font-semibold px-3 py-1.5 bg-gray-900 hover:bg-black text-white rounded-lg transition-colors"
+                    >
+                      Tambah
+                    </button>
                   </div>
                 </div>
 
@@ -634,7 +742,7 @@ function AdminPortalVisual() {
                       ref={fileInputRef}
                       type="file"
                       accept="image/*"
-                      onChange={handleImageFileUpload}
+                      onChange={(e) => handleImageFileUpload(e, false)}
                       className="hidden"
                     />
                   </div>
@@ -694,17 +802,17 @@ function AdminPortalVisual() {
               </form>
             </div>
 
-            {/* List Existing Projects */}
+            {/* List Existing Projects with Edit and Delete Buttons */}
             <div>
               <h3 className="text-sm font-bold text-gray-900 mb-3">
-                Karya Portofolio Saat Ini ({data.portfolio.length} Item)
+                Daftar Karya Portofolio Saat Ini ({data.portfolio.length} Item)
               </h3>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {data.portfolio.map((p) => (
                   <div
                     key={p.id}
-                    className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-2xs flex flex-col justify-between"
+                    className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-2xs flex flex-col justify-between hover:border-brand-300 transition-colors"
                   >
                     <div className="aspect-[16/10] bg-white relative">
                       <img
@@ -713,7 +821,7 @@ function AdminPortalVisual() {
                         className="w-full h-full object-cover"
                       />
                       {p.category && (
-                        <span className="absolute top-2 left-2 bg-white/95 px-2 py-0.5 rounded text-[10px] font-bold border border-gray-200">
+                        <span className="absolute top-2 left-2 bg-white/95 px-2 py-0.5 rounded text-[10px] font-bold border border-gray-200 text-brand-900">
                           {p.category}
                         </span>
                       )}
@@ -733,18 +841,30 @@ function AdminPortalVisual() {
                         <span className="text-[10px] text-gray-400 font-mono">
                           {p.tags.join(", ")}
                         </span>
-                        <button
-                          onClick={() => {
-                            if (confirm(`Hapus portofolio "${p.title}"?`)) {
-                              deletePortfolioItem(p.id);
-                              showToast("Portofolio berhasil dihapus!");
-                            }
-                          }}
-                          className="p-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                          title="Hapus portofolio"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
+                        <div className="flex items-center gap-1">
+                          {/* EDIT BUTTON */}
+                          <button
+                            onClick={() => setEditingPortfolio({ ...p })}
+                            className="p-1.5 text-brand-800 hover:bg-brand-50 rounded-md transition-colors"
+                            title="Edit portofolio ini"
+                          >
+                            <Edit3 className="w-4 h-4" />
+                          </button>
+
+                          {/* DELETE BUTTON */}
+                          <button
+                            onClick={() => {
+                              if (confirm(`Hapus portofolio "${p.title}"?`)) {
+                                deletePortfolioItem(p.id);
+                                showToast("Portofolio berhasil dihapus!");
+                              }
+                            }}
+                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                            title="Hapus portofolio"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -754,9 +874,42 @@ function AdminPortalVisual() {
           </div>
         )}
 
-        {/* MODE 3: CLIENT LOGO & BRAND MARQUEE MANAGER */}
+        {/* MODE 3: CLIENT LOGO & BRAND MARQUEE MANAGER WITH SPEED & EDIT */}
         {activeMode === "brands" && (
           <div className="space-y-6 bg-white">
+            {/* Speed Control Section */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div>
+                <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
+                  <Gauge className="w-4 h-4 text-brand-800" />
+                  <span>Pengaturan Kecepatan Animasi Slider Logo</span>
+                </h2>
+                <p className="text-xs text-gray-500">
+                  Kedua baris (atas &amp; bawah) menampilkan semua logo secara lengkap dan bergerak berlawanan secara staggered.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4 bg-gray-50 p-3 rounded-xl border border-gray-200">
+                <span className="text-xs font-semibold text-gray-600">Kecepatan:</span>
+                <input
+                  type="range"
+                  min="10"
+                  max="70"
+                  step="5"
+                  value={editMarqueeSpeed}
+                  onChange={(e) => handleSaveSpeed(Number(e.target.value))}
+                  className="w-36 accent-brand-800 cursor-pointer"
+                />
+                <span className="text-xs font-mono font-bold text-brand-900 min-w-[50px]">
+                  {editMarqueeSpeed}s{" "}
+                  <span className="text-[10px] font-normal text-gray-500">
+                    ({editMarqueeSpeed <= 20 ? "Cepat" : editMarqueeSpeed <= 40 ? "Sedang" : "Lambat"})
+                  </span>
+                </span>
+              </div>
+            </div>
+
+            {/* Form Add Client Brand */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
               <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
                 <Building2 className="w-4 h-4 text-brand-800" />
@@ -788,14 +941,14 @@ function AdminPortalVisual() {
                       ref={brandLogoInputRef}
                       type="file"
                       accept="image/*"
-                      onChange={handleBrandLogoUpload}
+                      onChange={(e) => handleBrandLogoUpload(e, false)}
                       className="hidden"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Pratinjau Logo Kapsul Oval (Tanpa Tepi Sisa)
+                      Pratinjau Logo Kapsul Oval
                     </label>
                     <div className="h-[95px] bg-white rounded-xl border border-gray-200 flex items-center justify-center p-3 relative">
                       {newBrandLogo ? (
@@ -864,17 +1017,17 @@ function AdminPortalVisual() {
               </form>
             </div>
 
-            {/* List Existing Client Brands */}
+            {/* List Existing Client Brands with Edit and Delete */}
             <div>
               <h3 className="text-sm font-bold text-gray-900 mb-3">
-                Daftar Brand / Klien di Slider ({data.clientBrands.length} Item)
+                Daftar Brand / Klien di Slider ({data.clientBrands.length} Item &bull; Klik Icon Pensil untuk Edit)
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
                 {data.clientBrands.map((b) => (
                   <div
                     key={b.id}
-                    className="bg-white border border-gray-200 rounded-full overflow-hidden shadow-2xs flex items-center justify-between gap-2 p-1 pl-1 pr-3"
+                    className="bg-white border border-gray-200 rounded-full overflow-hidden shadow-2xs flex items-center justify-between gap-2 p-1 pl-1 pr-3 hover:border-brand-300 transition-colors"
                   >
                     <div className="flex items-center gap-2 overflow-hidden">
                       {b.logoImage ? (
@@ -900,18 +1053,30 @@ function AdminPortalVisual() {
                       </div>
                     </div>
 
-                    <button
-                      onClick={() => {
-                        if (confirm(`Hapus brand "${b.name || "item"}" dari slider?`)) {
-                          deleteClientBrand(b.id);
-                          showToast("Brand dihapus dari slider!");
-                        }
-                      }}
-                      className="p-1 text-red-600 hover:bg-red-50 rounded-full transition-colors flex-shrink-0"
-                      title="Hapus brand"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      {/* EDIT BRAND BUTTON */}
+                      <button
+                        onClick={() => setEditingBrand({ ...b })}
+                        className="p-1 text-brand-800 hover:bg-brand-50 rounded-full transition-colors"
+                        title="Edit brand ini"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                      </button>
+
+                      {/* DELETE BRAND BUTTON */}
+                      <button
+                        onClick={() => {
+                          if (confirm(`Hapus brand "${b.name || "item"}" dari slider?`)) {
+                            deleteClientBrand(b.id);
+                            showToast("Brand dihapus dari slider!");
+                          }
+                        }}
+                        className="p-1 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                        title="Hapus brand"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -967,6 +1132,259 @@ function AdminPortalVisual() {
           </div>
         )}
       </div>
+
+      {/* EDIT MODAL FOR PORTFOLIO ITEM */}
+      <AnimatePresence>
+        {editingPortfolio && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setEditingPortfolio(null)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+            />
+
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl p-6 shadow-2xl border border-gray-200 max-w-lg w-full relative z-10 space-y-4 max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex items-center justify-between border-b pb-3">
+                <span className="text-xs font-bold text-gray-900 uppercase flex items-center gap-1.5">
+                  <Edit3 className="w-3.5 h-3.5 text-brand-800" />
+                  <span>Edit Karya Portofolio</span>
+                </span>
+                <button
+                  onClick={() => setEditingPortfolio(null)}
+                  className="text-gray-400 hover:text-gray-600 p-1 rounded-md"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveEditedPortfolio} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Judul Portofolio
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editingPortfolio.title}
+                    onChange={(e) =>
+                      setEditingPortfolio({ ...editingPortfolio, title: e.target.value })
+                    }
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 font-bold bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Kategori Web (Pilih Chip di Bawah)
+                  </label>
+                  <input
+                    type="text"
+                    value={editingPortfolio.category || ""}
+                    onChange={(e) =>
+                      setEditingPortfolio({ ...editingPortfolio, category: e.target.value })
+                    }
+                    placeholder="Pilih dari tombol di bawah"
+                    className="w-full text-xs p-2 rounded-lg border border-gray-300 font-semibold text-brand-900 bg-white mb-2"
+                  />
+                  <div className="flex flex-wrap gap-1.5">
+                    {data.categories.map((c) => (
+                      <button
+                        type="button"
+                        key={c}
+                        onClick={() => setEditingPortfolio({ ...editingPortfolio, category: c })}
+                        className={`text-[11px] px-2.5 py-0.5 rounded-full ${
+                          editingPortfolio.category === c
+                            ? "bg-brand-800 text-white font-bold"
+                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                        }`}
+                      >
+                        {c}
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => setEditingPortfolio({ ...editingPortfolio, category: undefined })}
+                      className="text-[11px] px-2 py-0.5 rounded-full border border-dashed text-gray-400"
+                    >
+                      Hapus Kategori
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Ganti Gambar Pratinjau
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <div className="w-20 h-14 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
+                      <img
+                        src={editingPortfolio.image}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => editFileInputRef.current?.click()}
+                      className="text-xs font-semibold text-brand-800 bg-brand-50 hover:bg-brand-100 px-3 py-2 rounded-lg border border-brand-200 transition-colors"
+                    >
+                      Pilih Gambar Baru Dari Laptop
+                    </button>
+                    <input
+                      ref={editFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageFileUpload(e, true)}
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Deskripsi Portofolio
+                  </label>
+                  <textarea
+                    rows={3}
+                    required
+                    value={editingPortfolio.description}
+                    onChange={(e) =>
+                      setEditingPortfolio({ ...editingPortfolio, description: e.target.value })
+                    }
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-2.5 bg-brand-800 hover:bg-brand-900 text-white font-semibold text-xs rounded-lg transition-colors shadow-xs"
+                >
+                  Simpan Perubahan Portofolio
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* EDIT MODAL FOR CLIENT BRAND ITEM */}
+      <AnimatePresence>
+        {editingBrand && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setEditingBrand(null)}
+              className="fixed inset-0 bg-black/40 backdrop-blur-xs"
+            />
+
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.95, opacity: 0 }}
+              className="bg-white rounded-2xl p-6 shadow-2xl border border-gray-200 max-w-md w-full relative z-10 space-y-4"
+            >
+              <div className="flex items-center justify-between border-b pb-3">
+                <span className="text-xs font-bold text-gray-900 uppercase flex items-center gap-1.5">
+                  <Edit3 className="w-3.5 h-3.5 text-brand-800" />
+                  <span>Edit Brand / Logo Slider</span>
+                </span>
+                <button
+                  onClick={() => setEditingBrand(null)}
+                  className="text-gray-400 hover:text-gray-600 p-1 rounded-md"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleSaveEditedBrand} className="space-y-3.5">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Ganti File Logo (Otomatis Format Oval)
+                  </label>
+                  <div className="flex items-center gap-3">
+                    <div className="h-10 w-16 rounded-full overflow-hidden border border-gray-200 bg-white flex items-center justify-center flex-shrink-0">
+                      {editingBrand.logoImage ? (
+                        <img
+                          src={editingBrand.logoImage}
+                          alt="Logo"
+                          className="h-full w-full object-cover rounded-full"
+                        />
+                      ) : (
+                        <span className="text-[10px] text-gray-400">Teks</span>
+                      )}
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => editBrandLogoInputRef.current?.click()}
+                      className="text-xs font-semibold text-brand-800 bg-brand-50 hover:bg-brand-100 px-3 py-2 rounded-lg border border-brand-200 transition-colors"
+                    >
+                      Pilih Logo Baru
+                    </button>
+                    {editingBrand.logoImage && (
+                      <button
+                        type="button"
+                        onClick={() => setEditingBrand({ ...editingBrand, logoImage: undefined })}
+                        className="text-xs text-red-600 hover:underline"
+                      >
+                        Hapus Logo
+                      </button>
+                    )}
+                    <input
+                      ref={editBrandLogoInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleBrandLogoUpload(e, true)}
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Nama Brand (Opsional jika sudah ada logo)
+                  </label>
+                  <input
+                    type="text"
+                    value={editingBrand.name || ""}
+                    onChange={(e) => setEditingBrand({ ...editingBrand, name: e.target.value })}
+                    placeholder="Contoh: PT Surya Global"
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Label Industri Singkat
+                  </label>
+                  <input
+                    type="text"
+                    value={editingBrand.label || ""}
+                    onChange={(e) => setEditingBrand({ ...editingBrand, label: e.target.value })}
+                    placeholder="Contoh: Retail & POS"
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-2.5 bg-brand-800 hover:bg-brand-900 text-white font-semibold text-xs rounded-lg transition-colors shadow-xs"
+                >
+                  Simpan Perubahan Brand
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* QUICK INLINE EDIT MODAL */}
       <AnimatePresence>

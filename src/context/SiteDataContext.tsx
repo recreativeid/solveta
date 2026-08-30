@@ -41,6 +41,7 @@ export interface SiteCopyData {
   consultationTitle: string;
   consultationDesc: string;
   marqueeTitle: string;
+  marqueeSpeed?: number; // Duration in seconds (e.g. 15 = fast, 35 = normal, 60 = slow)
 }
 
 export interface ContactData {
@@ -245,6 +246,7 @@ const defaultState: SiteDataState = {
     consultationTitle: "TIDAK TAHU HARUS MULAI DARI MANA?",
     consultationDesc: "Konsultasikan masalah bisnis Anda secara gratis. Kami akan merekomendasikan langkah paling efisien untuk memulainya.",
     marqueeTitle: "DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG",
+    marqueeSpeed: 35,
   },
 };
 
@@ -253,10 +255,14 @@ interface SiteContextType {
   updatePricing: (pricing: PricingTierData[]) => void;
   updatePortfolio: (portfolio: PortfolioItemData[]) => void;
   addPortfolioItem: (item: Omit<PortfolioItemData, "id">) => void;
+  editPortfolioItem: (id: string, updated: Partial<PortfolioItemData>) => void;
   deletePortfolioItem: (id: string) => void;
   updateClientBrands: (brands: ClientBrandItem[]) => void;
   addClientBrand: (brand: Omit<ClientBrandItem, "id">) => void;
+  editClientBrand: (id: string, updated: Partial<ClientBrandItem>) => void;
   deleteClientBrand: (id: string) => void;
+  addCategory: (category: string) => void;
+  deleteCategory: (category: string) => void;
   updateCategories: (categories: string[]) => void;
   updateContact: (contact: Partial<ContactData>) => void;
   updateSiteCopy: (copy: Partial<SiteCopyData>) => void;
@@ -266,19 +272,33 @@ interface SiteContextType {
 
 const SiteContext = createContext<SiteContextType | undefined>(undefined);
 
-const STORAGE_KEY = "solveta_site_cms_data_v5";
+// Persistent Storage Key
+const STORAGE_KEY = "solveta_site_cms_data_v6";
 
 export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<SiteDataState>(defaultState);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Sync from MySQL on mount
+  // Load from LocalStorage (and check previous keys to preserve user data)
   useEffect(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY);
+      const saved =
+        localStorage.getItem(STORAGE_KEY) ||
+        localStorage.getItem("solveta_site_cms_data_v5") ||
+        localStorage.getItem("solveta_site_cms_data_v4");
+
       if (saved) {
         const parsed = JSON.parse(saved);
-        setData({ ...defaultState, ...parsed });
+        setData((prev) => ({
+          ...defaultState,
+          ...parsed,
+          siteCopy: { ...defaultState.siteCopy, ...(parsed.siteCopy || {}) },
+          contact: { ...defaultState.contact, ...(parsed.contact || {}) },
+          // Merge unique categories
+          categories: Array.from(
+            new Set([...(parsed.categories || defaultState.categories)])
+          ),
+        }));
       }
     } catch (e) {
       console.error("Failed to load CMS data from localStorage", e);
@@ -292,7 +312,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         if (resJson?.success && resJson.data) {
           const { siteCopy, contact, pricing, portfolio, clientBrands } = resJson.data;
           setData((prev) => {
-            const updated = {
+            const updated: SiteDataState = {
               ...prev,
               ...(siteCopy && { siteCopy: { ...prev.siteCopy, ...siteCopy } }),
               ...(contact && { contact: { ...prev.contact, ...contact } }),
@@ -308,7 +328,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
       })
       .catch(() => {
-        // Quietly fallback to localStorage if no MySQL server is running
+        // Offline / static mode fallback
       });
   }, []);
 
@@ -346,6 +366,13 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     saveData({ ...data, portfolio: [newItem, ...data.portfolio] });
   };
 
+  const editPortfolioItem = (id: string, updated: Partial<PortfolioItemData>) => {
+    saveData({
+      ...data,
+      portfolio: data.portfolio.map((p) => (p.id === id ? { ...p, ...updated } : p)),
+    });
+  };
+
   const deletePortfolioItem = (id: string) => {
     saveData({
       ...data,
@@ -365,10 +392,33 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     saveData({ ...data, clientBrands: [...data.clientBrands, newItem] });
   };
 
+  const editClientBrand = (id: string, updated: Partial<ClientBrandItem>) => {
+    saveData({
+      ...data,
+      clientBrands: data.clientBrands.map((b) => (b.id === id ? { ...b, ...updated } : b)),
+    });
+  };
+
   const deleteClientBrand = (id: string) => {
     saveData({
       ...data,
       clientBrands: data.clientBrands.filter((b) => b.id !== id),
+    });
+  };
+
+  const addCategory = (category: string) => {
+    const trimmed = category.trim();
+    if (!trimmed || data.categories.includes(trimmed)) return;
+    saveData({
+      ...data,
+      categories: [...data.categories, trimmed],
+    });
+  };
+
+  const deleteCategory = (category: string) => {
+    saveData({
+      ...data,
+      categories: data.categories.filter((c) => c !== category),
     });
   };
 
@@ -418,10 +468,14 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         updatePricing,
         updatePortfolio,
         addPortfolioItem,
+        editPortfolioItem,
         deletePortfolioItem,
         updateClientBrands,
         addClientBrand,
+        editClientBrand,
         deleteClientBrand,
+        addCategory,
+        deleteCategory,
         updateCategories,
         updateContact,
         updateSiteCopy,

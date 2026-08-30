@@ -10,14 +10,19 @@ export const ClientMarquee: React.FC = () => {
 
   if (allBrands.length === 0) return null;
 
-  // Split brands into 2 rows for dual-direction marquee
-  const midIndex = Math.ceil(allBrands.length / 2);
-  const row1 = allBrands.slice(0, midIndex);
-  const row2 = allBrands.slice(midIndex);
+  // Row 1 uses original brand list
+  const row1Raw = allBrands;
 
-  // If a row is small, duplicate it so scrolling is continuous & seamless
-  const row1Items = [...row1, ...row1, ...row1, ...row1];
-  const row2Items = [...row2, ...row2, ...row2, ...row2];
+  // Row 2 contains identical brands, but staggered/offset by half length so they don't align synchronously
+  const offset = Math.max(1, Math.floor(allBrands.length / 2));
+  const row2Raw = [...allBrands.slice(offset), ...allBrands.slice(0, offset)];
+
+  // Quadruple items to make the infinite loop completely seamless
+  const row1Items = [...row1Raw, ...row1Raw, ...row1Raw, ...row1Raw];
+  const row2Items = [...row2Raw, ...row2Raw, ...row2Raw, ...row2Raw];
+
+  // Dynamic speed duration (in seconds)
+  const speed = data.siteCopy.marqueeSpeed || 35;
 
   const renderBrandPill = (brand: ClientBrandItem, index: number) => {
     if (brand.logoImage) {
@@ -80,7 +85,7 @@ export const ClientMarquee: React.FC = () => {
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: 35,
+                duration: speed,
                 ease: "linear",
               },
             }}
@@ -90,7 +95,7 @@ export const ClientMarquee: React.FC = () => {
           </motion.div>
         </div>
 
-        {/* ROW 2: Geser ke Kiri (Arah Berlawanan) */}
+        {/* ROW 2: Geser ke Kiri (Staggered Offset & Arah Berlawanan) */}
         <div className="flex w-max">
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
@@ -98,13 +103,13 @@ export const ClientMarquee: React.FC = () => {
               x: {
                 repeat: Infinity,
                 repeatType: "loop",
-                duration: 35,
+                duration: speed,
                 ease: "linear",
               },
             }}
             className="flex items-center gap-4 pr-4"
           >
-            {row2Items.map((brand, i) => renderBrandPill(brand, i + 100))}
+            {row2Items.map((brand, i) => renderBrandPill(brand, i + 500))}
           </motion.div>
         </div>
       </div>
