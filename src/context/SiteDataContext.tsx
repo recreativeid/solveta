@@ -260,17 +260,19 @@ interface SiteContextType {
   updateCategories: (categories: string[]) => void;
   updateContact: (contact: Partial<ContactData>) => void;
   updateSiteCopy: (copy: Partial<SiteCopyData>) => void;
+  syncWithMySQL: () => Promise<boolean>;
   resetToDefaults: () => void;
 }
 
 const SiteContext = createContext<SiteContextType | undefined>(undefined);
 
-const STORAGE_KEY = "solveta_site_cms_data_v4";
+const STORAGE_KEY = "solveta_site_cms_data_v5";
 
 export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<SiteDataState>(defaultState);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  // Sync from MySQL on mount
   useEffect(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -282,6 +284,32 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       console.error("Failed to load CMS data from localStorage", e);
     }
     setIsLoaded(true);
+
+    // Try fetching live MySQL data if API is reachable
+    fetch("/api/site-data")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((resJson) => {
+        if (resJson?.success && resJson.data) {
+          const { siteCopy, contact, pricing, portfolio, clientBrands } = resJson.data;
+          setData((prev) => {
+            const updated = {
+              ...prev,
+              ...(siteCopy && { siteCopy: { ...prev.siteCopy, ...siteCopy } }),
+              ...(contact && { contact: { ...prev.contact, ...contact } }),
+              ...(pricing && pricing.length > 0 && { pricing }),
+              ...(portfolio && portfolio.length > 0 && { portfolio }),
+              ...(clientBrands && clientBrands.length > 0 && { clientBrands }),
+            };
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+            } catch (e) {}
+            return updated;
+          });
+        }
+      })
+      .catch(() => {
+        // Quietly fallback to localStorage if no MySQL server is running
+      });
   }, []);
 
   const saveData = (newState: SiteDataState) => {
@@ -291,6 +319,15 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     } catch (e) {
       console.error("Failed to save CMS data to localStorage", e);
     }
+
+    // Push changes to MySQL database in background
+    fetch("/api/site-data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newState),
+    }).catch(() => {
+      // Offline / static fallback
+    });
   };
 
   const updatePricing = (pricing: PricingTierData[]) => {
@@ -353,6 +390,19 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
+  const syncWithMySQL = async (): Promise<boolean> => {
+    try {
+      const res = await fetch("/api/site-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  };
+
   const resetToDefaults = () => {
     saveData(defaultState);
   };
@@ -375,6 +425,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         updateCategories,
         updateContact,
         updateSiteCopy,
+        syncWithMySQL,
         resetToDefaults,
       }}
     >
