@@ -1,6 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export interface PricingTierData {
   id: string;
@@ -39,10 +40,10 @@ export interface SiteCopyData {
   heroSubtitle: string;
   portfolioTitle: string;
   portfolioSubtitle: string;
-  consultationTitle: string;
-  consultationDesc: string;
+  consultationTitle?: string;
+  consultationDesc?: string;
   marqueeTitle: string;
-  marqueeSpeed?: number; // Duration in seconds (e.g. 15 = fast, 35 = normal, 60 = slow)
+  marqueeSpeed?: number; // Duration in seconds
 }
 
 export interface ContactData {
@@ -245,8 +246,6 @@ const defaultState: SiteDataState = {
     heroSubtitle: "Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.",
     portfolioTitle: "Portofolio Proyek Website Yang Telah Kami Bangun",
     portfolioSubtitle: "",
-    consultationTitle: "TIDAK TAHU HARUS MULAI DARI MANA?",
-    consultationDesc: "Konsultasikan masalah bisnis Anda secara gratis. Kami akan merekomendasikan langkah paling efisien untuk memulainya.",
     marqueeTitle: "DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG",
     marqueeSpeed: 35,
   },
@@ -269,26 +268,26 @@ interface SiteContextType {
   updateContact: (contact: Partial<ContactData>) => void;
   updateSiteCopy: (copy: Partial<SiteCopyData>) => void;
   updateSiteLogo: (logoBase64: string) => void;
-  syncWithMySQL: () => Promise<boolean>;
+  syncWithSupabase: () => Promise<boolean>;
   resetToDefaults: () => void;
 }
 
 const SiteContext = createContext<SiteContextType | undefined>(undefined);
 
 // Persistent Storage Key
-const STORAGE_KEY = "solveta_site_cms_data_v7";
+const STORAGE_KEY = "solveta_site_cms_data_v8";
 
 export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<SiteDataState>(defaultState);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from LocalStorage (preserving previous data)
+  // Load from LocalStorage
   useEffect(() => {
     try {
       const saved =
         localStorage.getItem(STORAGE_KEY) ||
-        localStorage.getItem("solveta_site_cms_data_v6") ||
-        localStorage.getItem("solveta_site_cms_data_v5");
+        localStorage.getItem("solveta_site_cms_data_v7") ||
+        localStorage.getItem("solveta_site_cms_data_v6");
 
       if (saved) {
         const parsed = JSON.parse(saved);
@@ -307,29 +306,36 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     }
     setIsLoaded(true);
 
-    // Try fetching live MySQL data if API is reachable
-    fetch("/api/site-data")
-      .then((res) => (res.ok ? res.json() : null))
-      .then((resJson) => {
-        if (resJson?.success && resJson.data) {
-          const { siteCopy, contact, pricing, portfolio, clientBrands } = resJson.data;
-          setData((prev) => {
-            const updated: SiteDataState = {
-              ...prev,
-              ...(siteCopy && { siteCopy: { ...prev.siteCopy, ...siteCopy } }),
-              ...(contact && { contact: { ...prev.contact, ...contact } }),
-              ...(pricing && pricing.length > 0 && { pricing }),
-              ...(portfolio && portfolio.length > 0 && { portfolio }),
-              ...(clientBrands && clientBrands.length > 0 && { clientBrands }),
-            };
-            try {
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-            } catch (e) {}
-            return updated;
-          });
+    // Sync from Supabase Cloud 24/7 (if configured)
+    if (isSupabaseConfigured()) {
+      (async () => {
+        try {
+          const { data: sbData, error } = await supabase
+            .from("site_content")
+            .select("data")
+            .eq("id", "solveta_cms_main")
+            .single();
+
+          if (!error && sbData?.data) {
+            const cloudPayload = sbData.data as Partial<SiteDataState>;
+            setData((prev) => {
+              const merged: SiteDataState = {
+                ...prev,
+                ...cloudPayload,
+                siteCopy: { ...prev.siteCopy, ...(cloudPayload.siteCopy || {}) },
+                contact: { ...prev.contact, ...(cloudPayload.contact || {}) },
+              };
+              try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+              } catch (e) {}
+              return merged;
+            });
+          }
+        } catch (err) {
+          console.warn("Supabase fetch skipped or offline", err);
         }
-      })
-      .catch(() => {});
+      })();
+    }
   }, []);
 
   const saveData = (newState: SiteDataState) => {
@@ -340,12 +346,20 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       console.error("Failed to save CMS data to localStorage", e);
     }
 
-    // Push changes to MySQL database in background
-    fetch("/api/site-data", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newState),
-    }).catch(() => {});
+    // Push changes to Supabase Cloud 24/7 in background
+    if (isSupabaseConfigured()) {
+      (async () => {
+        try {
+          await supabase.from("site_content").upsert({
+            id: "solveta_cms_main",
+            data: newState,
+            updated_at: new Date().toISOString(),
+          });
+        } catch (err) {
+          console.warn("Supabase background upsert skipped", err);
+        }
+      })();
+    }
   };
 
   const updatePricing = (pricing: PricingTierData[]) => {
@@ -445,14 +459,15 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
-  const syncWithMySQL = async (): Promise<boolean> => {
+  const syncWithSupabase = async (): Promise<boolean> => {
+    if (!isSupabaseConfigured()) return false;
     try {
-      const res = await fetch("/api/site-data", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+      const { error } = await supabase.from("site_content").upsert({
+        id: "solveta_cms_main",
+        data,
+        updated_at: new Date().toISOString(),
       });
-      return res.ok;
+      return !error;
     } catch {
       return false;
     }
@@ -485,7 +500,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         updateContact,
         updateSiteCopy,
         updateSiteLogo,
-        syncWithMySQL,
+        syncWithSupabase,
         resetToDefaults,
       }}
     >

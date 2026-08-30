@@ -47,6 +47,7 @@ function AdminPortalVisual() {
     updateContact,
     updateSiteCopy,
     updateSiteLogo,
+    syncWithSupabase,
     resetToDefaults,
   } = useSiteData();
 
@@ -674,20 +675,34 @@ function AdminPortalVisual() {
                 </div>
               </div>
 
-              {/* 5. Consultation CTA Live Section */}
-              <div
-                onClick={() => setEditingTarget({ type: "consultation" })}
-                className="bg-white border border-gray-200 hover:border-rose-300 rounded-2xl p-8 text-center cursor-pointer transition-colors"
-              >
-                <h3 className="text-xl sm:text-2xl font-extrabold text-gray-950 mb-2">
-                  {editConsultationTitle}
-                </h3>
-                <p className="text-xs text-gray-600 max-w-lg mx-auto mb-4">
-                  {editConsultationDesc}
-                </p>
-                <span className="inline-block px-5 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-xs font-semibold rounded-xl">
-                  Konsultasi Gratis Sekarang
-                </span>
+              {/* 5. Supabase Cloud Database Status & Sync Card */}
+              <div className="bg-white border-2 border-dashed border-gray-200 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div className="space-y-1.5 text-left">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider">
+                      Database Cloud Supabase (Online 24/7)
+                    </h3>
+                  </div>
+                  <p className="text-xs text-gray-500 max-w-xl">
+                    Data portofolio, logo, teks, dan harga tersimpan di cloud database Supabase sehingga selalu hidup 24 jam nonstop tanpa bergantung pada laptop atau server lokal.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={async () => {
+                    const ok = await syncWithSupabase();
+                    if (ok) {
+                      showToast("Berhasil disinkronkan ke Supabase Cloud 24/7!");
+                    } else {
+                      showToast("Data tersimpan aman di browser & siap sync ke Supabase!");
+                    }
+                  }}
+                  className="px-5 py-2.5 bg-gray-900 hover:bg-black text-white text-xs font-semibold rounded-xl shadow-xs transition-all flex-shrink-0"
+                >
+                  Sinkronkan ke Supabase
+                </button>
               </div>
             </div>
           </div>

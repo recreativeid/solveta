@@ -12,7 +12,6 @@ import { PortfolioSection } from "@/components/PortfolioSection";
 import { PricingSection } from "@/components/PricingSection";
 import { ProcessSection } from "@/components/ProcessSection";
 import { PhilosophySection } from "@/components/PhilosophySection";
-import { ConsultationCTA } from "@/components/ConsultationCTA";
 import { Footer } from "@/components/Footer";
 import { SearchModal } from "@/components/SearchModal";
 
@@ -32,7 +31,6 @@ export default function Home() {
         <PricingSection />
         <ProcessSection />
         <PhilosophySection />
-        <ConsultationCTA />
       </main>
       <Footer />
       <SearchModal
