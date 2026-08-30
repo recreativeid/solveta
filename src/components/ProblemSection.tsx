@@ -8,7 +8,6 @@ import {
   Repeat,
   FileSpreadsheet,
   Globe2,
-  Sparkles,
   CheckCircle2,
 } from "lucide-react";
 
@@ -90,23 +89,23 @@ export const ProblemSection: React.FC = () => {
           })}
         </motion.div>
 
-        {/* Deskripsi Panjang Penjelasan Pendekatan SOLVETA */}
+        {/* Deskripsi Panjang Penjelasan Pendekatan SOLVETA dengan Border Tebal & Teks Merah Maroon Gradasi */}
         <motion.div
           initial={{ opacity: 0, y: 25 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mx-auto p-8 rounded-2xl bg-white border border-gray-200/90 shadow-xs hover:border-rose-200 transition-colors text-center space-y-4"
+          className="max-w-3xl mx-auto p-8 sm:p-10 rounded-2xl bg-white border-[2.5px] border-gray-200 hover:border-[#8B0021]/80 shadow-xs hover:shadow-md transition-all duration-300 text-center space-y-4"
         >
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#8B0021] uppercase tracking-wider">
-            <CheckCircle2 className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold bg-rose-50/80 border border-rose-200 text-[#8B0021] px-4 py-1.5 rounded-full uppercase tracking-wider shadow-2xs">
+            <CheckCircle2 className="w-4 h-4 text-[#8B0021]" />
             <span>Pendekatan Terarah SOLVETA</span>
           </div>
 
-          <h3 className="text-lg sm:text-xl md:text-2xl font-extrabold text-gray-950 leading-snug">
+          <h3 className="text-xl sm:text-2xl md:text-[1.75rem] font-extrabold leading-snug tracking-tight bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] bg-clip-text text-transparent">
             SOLVETA membantu bisnis melakukan digitalisasi dengan pendekatan yang terarah.
           </h3>
 
-          <p className="text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-gray-700 leading-relaxed max-w-2xl mx-auto font-normal">
             Kami memahami kebutuhan bisnis, merancang solusi, dan membangun teknologi yang dapat membantu proses bisnis menjadi lebih terstruktur, efisien, dan siap berkembang.
           </p>
         </motion.div>
