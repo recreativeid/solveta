@@ -1,5 +1,5 @@
 -- ==============================================================================
--- SOLVETA AGENCY — SUPABASE CLOUD DATABASE SCHEMA
+-- SOLVETA AGENCY — SUPABASE CLOUD DATABASE SCHEMA (IDEMPOTENT & SAFE)
 -- Jalankan skrip ini di: Supabase Dashboard -> SQL Editor -> New Query -> Run
 -- ==============================================================================
 
@@ -13,12 +13,14 @@ CREATE TABLE IF NOT EXISTS site_content (
 -- 2. Aktifkan Row Level Security (RLS)
 ALTER TABLE site_content ENABLE ROW LEVEL SECURITY;
 
--- 3. Kebijakan Akses Baca (Siapa saja / Pengunjung Web dapat membaca data)
+-- 3. Kebijakan Akses Baca (Drop jika ada lalu buat baru)
+DROP POLICY IF EXISTS "Allow public read access" ON site_content;
 CREATE POLICY "Allow public read access" 
 ON site_content FOR SELECT 
 USING (true);
 
--- 4. Kebijakan Akses Tulis (Developer dapat memperbarui data secara langsung)
+-- 4. Kebijakan Akses Tulis (Drop jika ada lalu buat baru)
+DROP POLICY IF EXISTS "Allow public insert and update access" ON site_content;
 CREATE POLICY "Allow public insert and update access" 
 ON site_content FOR ALL 
 USING (true) 
