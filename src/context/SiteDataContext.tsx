@@ -33,6 +33,7 @@ export interface ClientBrandItem {
 }
 
 export interface SiteCopyData {
+  siteLogo?: string; // Base64 data URL or image path for top-left navbar logo
   heroEyebrow: string;
   heroHeadline: string;
   heroSubtitle: string;
@@ -238,6 +239,7 @@ const defaultState: SiteDataState = {
     email: "halo@solveta.site",
   },
   siteCopy: {
+    siteLogo: "",
     heroEyebrow: "SOLVE TECHNOLOGY AGENCY",
     heroHeadline: "Mengubah Tantangan Bisnis Menjadi Solusi Digital.",
     heroSubtitle: "Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.",
@@ -266,6 +268,7 @@ interface SiteContextType {
   updateCategories: (categories: string[]) => void;
   updateContact: (contact: Partial<ContactData>) => void;
   updateSiteCopy: (copy: Partial<SiteCopyData>) => void;
+  updateSiteLogo: (logoBase64: string) => void;
   syncWithMySQL: () => Promise<boolean>;
   resetToDefaults: () => void;
 }
@@ -273,19 +276,19 @@ interface SiteContextType {
 const SiteContext = createContext<SiteContextType | undefined>(undefined);
 
 // Persistent Storage Key
-const STORAGE_KEY = "solveta_site_cms_data_v6";
+const STORAGE_KEY = "solveta_site_cms_data_v7";
 
 export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<SiteDataState>(defaultState);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Load from LocalStorage (and check previous keys to preserve user data)
+  // Load from LocalStorage (preserving previous data)
   useEffect(() => {
     try {
       const saved =
         localStorage.getItem(STORAGE_KEY) ||
-        localStorage.getItem("solveta_site_cms_data_v5") ||
-        localStorage.getItem("solveta_site_cms_data_v4");
+        localStorage.getItem("solveta_site_cms_data_v6") ||
+        localStorage.getItem("solveta_site_cms_data_v5");
 
       if (saved) {
         const parsed = JSON.parse(saved);
@@ -294,7 +297,6 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           ...parsed,
           siteCopy: { ...defaultState.siteCopy, ...(parsed.siteCopy || {}) },
           contact: { ...defaultState.contact, ...(parsed.contact || {}) },
-          // Merge unique categories
           categories: Array.from(
             new Set([...(parsed.categories || defaultState.categories)])
           ),
@@ -327,9 +329,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           });
         }
       })
-      .catch(() => {
-        // Offline / static mode fallback
-      });
+      .catch(() => {});
   }, []);
 
   const saveData = (newState: SiteDataState) => {
@@ -345,9 +345,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newState),
-    }).catch(() => {
-      // Offline / static fallback
-    });
+    }).catch(() => {});
   };
 
   const updatePricing = (pricing: PricingTierData[]) => {
@@ -440,6 +438,13 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
+  const updateSiteLogo = (logoBase64: string) => {
+    saveData({
+      ...data,
+      siteCopy: { ...data.siteCopy, siteLogo: logoBase64 },
+    });
+  };
+
   const syncWithMySQL = async (): Promise<boolean> => {
     try {
       const res = await fetch("/api/site-data", {
@@ -479,6 +484,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         updateCategories,
         updateContact,
         updateSiteCopy,
+        updateSiteLogo,
         syncWithMySQL,
         resetToDefaults,
       }}

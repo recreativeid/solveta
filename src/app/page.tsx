@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { SiteDataProvider } from "@/context/SiteDataContext";
+import { OpeningScreen } from "@/components/OpeningScreen";
 import { Navbar } from "@/components/Navbar";
 import { Hero } from "@/components/Hero";
 import { ClientMarquee } from "@/components/ClientMarquee";
@@ -20,6 +21,7 @@ export default function Home() {
 
   return (
     <SiteDataProvider>
+      <OpeningScreen />
       <Navbar onOpenSearch={() => setIsSearchOpen(true)} />
       <main>
         <Hero />

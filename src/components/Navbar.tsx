@@ -23,6 +23,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const logoSrc = data.siteCopy.siteLogo || "./solveta-logo.png";
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
@@ -35,30 +37,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
       }`}
     >
       <div className="max-w-[1160px] mx-auto px-6 flex items-center justify-between gap-6">
-        {/* Brand Logo */}
+        {/* Brand Logo in Top-Left Navbar */}
         <Link href="#hero" className="flex items-center gap-2.5 group">
           <motion.div
-            whileHover={{ scale: 1.08, rotate: 5 }}
+            whileHover={{ scale: 1.08 }}
             whileTap={{ scale: 0.95 }}
-            className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8B0021] to-[#50000F] flex items-center justify-center text-white shadow-xs"
+            className="h-9 w-9 rounded-xl overflow-hidden flex items-center justify-center bg-white border border-gray-200 shadow-2xs group-hover:border-rose-300 transition-all"
           >
-            <svg
-              className="w-5 h-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-              <polyline points="2 17 12 22 22 17"></polyline>
-              <polyline points="2 12 12 17 22 12"></polyline>
-            </svg>
+            <img
+              src={logoSrc}
+              alt="SOLVETA Logo"
+              className="h-full w-full object-cover"
+            />
           </motion.div>
-          <span className="font-extrabold text-lg tracking-tight text-gray-900 group-hover:text-[#7B0B1E] transition-colors">
-            SOLVETA
-          </span>
+          <div className="flex flex-col">
+            <span className="font-extrabold text-base tracking-tight text-gray-950 group-hover:text-[#7B0B1E] transition-colors leading-none">
+              SOLVETA
+            </span>
+            <span className="text-[9px] font-mono text-gray-400 font-semibold tracking-wider uppercase mt-0.5">
+              SOLUTIONS
+            </span>
+          </div>
         </Link>
 
         {/* Center Search Bar with keyboard shortcut */}

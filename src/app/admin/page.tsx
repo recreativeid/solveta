@@ -21,6 +21,7 @@ import {
   Building2,
   Tag,
   Check,
+  Camera,
 } from "lucide-react";
 import {
   SiteDataProvider,
@@ -43,9 +44,9 @@ function AdminPortalVisual() {
     editClientBrand,
     deleteClientBrand,
     addCategory,
-    deleteCategory,
     updateContact,
     updateSiteCopy,
+    updateSiteLogo,
     resetToDefaults,
   } = useSiteData();
 
@@ -61,7 +62,7 @@ function AdminPortalVisual() {
 
   // Edit Modal State for Live Visual Editor
   const [editingTarget, setEditingTarget] = useState<{
-    type: "heroHeadline" | "heroSubtitle" | "portfolioTitle" | "consultation" | "pricing";
+    type: "heroHeadline" | "heroSubtitle" | "portfolioTitle" | "consultation" | "pricing" | "siteLogo";
     tierIndex?: number;
   } | null>(null);
 
@@ -79,6 +80,7 @@ function AdminPortalVisual() {
   const [editConsultationDesc, setEditConsultationDesc] = useState(data.siteCopy.consultationDesc);
   const [editPricingList, setEditPricingList] = useState<PricingTierData[]>(data.pricing);
   const [editMarqueeSpeed, setEditMarqueeSpeed] = useState<number>(data.siteCopy.marqueeSpeed || 35);
+  const [tempLogo, setTempLogo] = useState<string>(data.siteCopy.siteLogo || "");
 
   // WhatsApp Form
   const [editWaNumber, setEditWaNumber] = useState(data.contact.whatsappNumber);
@@ -100,6 +102,7 @@ function AdminPortalVisual() {
   const [newBrandLogo, setNewBrandLogo] = useState("");
   const brandLogoInputRef = useRef<HTMLInputElement>(null);
   const editBrandLogoInputRef = useRef<HTMLInputElement>(null);
+  const siteLogoInputRef = useRef<HTMLInputElement>(null);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -159,6 +162,26 @@ function AdminPortalVisual() {
       } else {
         setNewBrandLogo(result);
       }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Handle site logo file upload (kiri atas web)
+  const handleSiteLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 3 * 1024 * 1024) {
+      alert("Ukuran logo maksimal 3MB");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result as string;
+      setTempLogo(result);
+      updateSiteLogo(result);
+      showToast("Foto profil / logo kiri atas web berhasil diperbarui!");
     };
     reader.readAsDataURL(file);
   };
@@ -272,7 +295,7 @@ function AdminPortalVisual() {
           animate={{ opacity: 1, scale: 1 }}
           className="bg-white border border-gray-200 rounded-2xl p-8 max-w-sm w-full shadow-lg text-center"
         >
-          <div className="w-12 h-12 rounded-xl bg-brand-50 border border-brand-100 text-brand-800 flex items-center justify-center mx-auto mb-4">
+          <div className="w-12 h-12 rounded-xl bg-rose-50 border border-rose-100 text-[#7B0B1E] flex items-center justify-center mx-auto mb-4">
             <Lock className="w-6 h-6" />
           </div>
           <h1 className="text-lg font-bold text-gray-900 mb-1">
@@ -293,7 +316,7 @@ function AdminPortalVisual() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="developer"
-                className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white"
+                className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
                 autoFocus
               />
             </div>
@@ -308,7 +331,7 @@ function AdminPortalVisual() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="developer123"
-                className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white"
+                className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
               />
             </div>
 
@@ -320,7 +343,7 @@ function AdminPortalVisual() {
 
             <button
               type="submit"
-              className="w-full mt-2 py-2.5 bg-brand-800 hover:bg-brand-900 text-white font-semibold text-xs rounded-lg transition-colors shadow-xs"
+              className="w-full mt-2 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
             >
               Masuk Portal Developer
             </button>
@@ -340,6 +363,8 @@ function AdminPortalVisual() {
     );
   }
 
+  const currentLogoSrc = tempLogo || data.siteCopy.siteLogo || "./solveta-logo.png";
+
   return (
     <div className="min-h-screen bg-white flex flex-col">
       {/* Toast Notification */}
@@ -354,8 +379,12 @@ function AdminPortalVisual() {
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200 px-6 py-3 shadow-xs">
         <div className="max-w-[1240px] mx-auto flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-brand-800 text-white flex items-center justify-center font-bold text-xs">
-              S
+            <div className="w-8 h-8 rounded-lg overflow-hidden border border-gray-200 bg-white flex items-center justify-center shadow-2xs">
+              <img
+                src={currentLogoSrc}
+                alt="Brand Logo"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <div className="font-extrabold text-xs text-gray-900 flex items-center gap-1.5">
@@ -374,12 +403,12 @@ function AdminPortalVisual() {
               onClick={() => setActiveMode("visual")}
               className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
                 activeMode === "visual"
-                  ? "bg-white text-brand-900 border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
               <span className="flex items-center gap-1.5">
-                <Edit3 className="w-3.5 h-3.5 text-brand-800" />
+                <Edit3 className="w-3.5 h-3.5 text-[#7B0B1E]" />
                 <span>Edit Visual</span>
               </span>
             </button>
@@ -388,12 +417,12 @@ function AdminPortalVisual() {
               onClick={() => setActiveMode("portfolio")}
               className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
                 activeMode === "portfolio"
-                  ? "bg-white text-brand-900 border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
               <span className="flex items-center gap-1.5">
-                <ImageIcon className="w-3.5 h-3.5 text-brand-800" />
+                <ImageIcon className="w-3.5 h-3.5 text-[#7B0B1E]" />
                 <span>Portofolio</span>
               </span>
             </button>
@@ -402,12 +431,12 @@ function AdminPortalVisual() {
               onClick={() => setActiveMode("brands")}
               className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
                 activeMode === "brands"
-                  ? "bg-white text-brand-900 border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
               <span className="flex items-center gap-1.5">
-                <Building2 className="w-3.5 h-3.5 text-brand-800" />
+                <Building2 className="w-3.5 h-3.5 text-[#7B0B1E]" />
                 <span>Logo Klien</span>
               </span>
             </button>
@@ -416,12 +445,12 @@ function AdminPortalVisual() {
               onClick={() => setActiveMode("contact")}
               className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
                 activeMode === "contact"
-                  ? "bg-white text-brand-900 border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
               <span className="flex items-center gap-1.5">
-                <Phone className="w-3.5 h-3.5 text-brand-800" />
+                <Phone className="w-3.5 h-3.5 text-[#7B0B1E]" />
                 <span>Kontak WhatsApp</span>
               </span>
             </button>
@@ -431,7 +460,7 @@ function AdminPortalVisual() {
           <div className="flex items-center gap-2">
             <button
               onClick={saveVisualChanges}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-brand-800 hover:bg-brand-900 text-white text-xs font-semibold rounded-md shadow-xs transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-md shadow-xs transition-all"
             >
               <Save className="w-3.5 h-3.5" />
               <span>Simpan Perubahan</span>
@@ -468,10 +497,49 @@ function AdminPortalVisual() {
         {/* MODE 1: VISUAL LIVE PREVIEW WITH CLICK-TO-EDIT */}
         {activeMode === "visual" && (
           <div className="bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden">
-            <div className="p-6 sm:p-12 space-y-16">
+            <div className="p-6 sm:p-12 space-y-12">
+              {/* BRAND LOGO CHANGER (Kiri Atas Web) */}
+              <div className="p-5 bg-rose-50/40 rounded-2xl border border-rose-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden border border-rose-200 bg-white shadow-xs flex-shrink-0 flex items-center justify-center">
+                    <img
+                      src={currentLogoSrc}
+                      alt="Brand Logo"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-bold text-gray-900">
+                      Foto Profil / Logo Brand (Kiri Atas Web &amp; Opening Screen)
+                    </h3>
+                    <p className="text-[11px] text-gray-500">
+                      Ganti logo utama SOLVETA yang tampil di Navbar kiri atas dan saat animasi pembuka website.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => siteLogoInputRef.current?.click()}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-rose-50 border border-rose-200 hover:border-[#7B0B1E] text-xs font-bold text-[#7B0B1E] rounded-xl shadow-2xs transition-all cursor-pointer"
+                  >
+                    <Camera className="w-3.5 h-3.5" />
+                    <span>Upload Foto / Logo Baru</span>
+                  </button>
+                  <input
+                    ref={siteLogoInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleSiteLogoUpload}
+                    className="hidden"
+                  />
+                </div>
+              </div>
+
               {/* 1. Hero Live Section */}
-              <div className="text-center relative group p-6 rounded-2xl border border-dashed border-gray-200 hover:border-brand-300 transition-colors">
-                <span className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-brand-800 bg-brand-50 px-2 py-0.5 rounded transition-opacity">
+              <div className="text-center relative group p-6 rounded-2xl border border-dashed border-gray-200 hover:border-[#7B0B1E]/40 transition-colors">
+                <span className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-[#7B0B1E] bg-rose-50 px-2 py-0.5 rounded transition-opacity">
                   Klik untuk edit Hero
                 </span>
 
@@ -481,7 +549,7 @@ function AdminPortalVisual() {
 
                 <div
                   onClick={() => setEditingTarget({ type: "heroHeadline" })}
-                  className="cursor-pointer hover:bg-brand-50/50 p-2 rounded-lg transition-colors"
+                  className="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors"
                   title="Klik untuk ubah judul"
                 >
                   <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-950 tracking-tight leading-tight whitespace-pre-line">
@@ -491,7 +559,7 @@ function AdminPortalVisual() {
 
                 <div
                   onClick={() => setEditingTarget({ type: "heroSubtitle" })}
-                  className="cursor-pointer hover:bg-brand-50/50 p-2 rounded-lg transition-colors mt-3 max-w-2xl mx-auto"
+                  className="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors mt-3 max-w-2xl mx-auto"
                   title="Klik untuk ubah deskripsi"
                 >
                   <p className="text-xs sm:text-sm text-gray-600 leading-relaxed whitespace-pre-line">
@@ -512,25 +580,25 @@ function AdminPortalVisual() {
                 </div>
                 <button
                   onClick={() => setActiveMode("brands")}
-                  className="text-xs font-semibold text-brand-800 bg-white border border-gray-300 hover:border-brand-600 px-3 py-1.5 rounded-lg shadow-2xs"
+                  className="text-xs font-semibold text-[#7B0B1E] bg-white border border-gray-300 hover:border-[#7B0B1E] px-3 py-1.5 rounded-lg shadow-2xs"
                 >
                   + Atur Slider &amp; Logo
                 </button>
               </div>
 
               {/* 3. Portfolio Header Live */}
-              <div className="text-center relative group p-6 rounded-2xl border border-dashed border-gray-200 hover:border-brand-300 transition-colors">
-                <span className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-brand-800 bg-brand-50 px-2 py-0.5 rounded transition-opacity">
+              <div className="text-center relative group p-6 rounded-2xl border border-dashed border-gray-200 hover:border-[#7B0B1E]/40 transition-colors">
+                <span className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-[#7B0B1E] bg-rose-50 px-2 py-0.5 rounded transition-opacity">
                   Klik untuk edit Judul Portofolio
                 </span>
 
-                <span className="font-mono text-[11px] font-bold tracking-widest text-brand-700 uppercase bg-white border border-brand-100 px-3.5 py-1 rounded-full inline-block mb-3">
+                <span className="font-mono text-[11px] font-bold tracking-widest text-[#7B0B1E] uppercase bg-white border border-rose-100 px-3.5 py-1 rounded-full inline-block mb-3">
                   KARYA &amp; PORTOFOLIO
                 </span>
 
                 <div
                   onClick={() => setEditingTarget({ type: "portfolioTitle" })}
-                  className="cursor-pointer hover:bg-brand-50/50 p-2 rounded-lg transition-colors max-w-xl mx-auto"
+                  className="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors max-w-xl mx-auto"
                 >
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">
                     {editPortfolioTitle}
@@ -540,7 +608,7 @@ function AdminPortalVisual() {
                 <div className="mt-4 flex items-center justify-center gap-2">
                   <button
                     onClick={() => setActiveMode("portfolio")}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-800 bg-white border border-brand-200 hover:bg-brand-50 px-3.5 py-1.5 rounded-full transition-colors"
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7B0B1E] bg-white border border-rose-200 hover:bg-rose-50 px-3.5 py-1.5 rounded-full transition-colors"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Upload, Edit &amp; Kelola Portofolio ({data.portfolio.length} Karya)</span>
@@ -564,16 +632,16 @@ function AdminPortalVisual() {
                     <div
                       key={tier.id}
                       onClick={() => setEditingTarget({ type: "pricing", tierIndex: idx })}
-                      className={`p-5 rounded-xl border bg-white cursor-pointer hover:border-brand-600 hover:shadow-md transition-all relative group ${
-                        tier.popular ? "border-2 border-brand-600" : "border-gray-200"
+                      className={`p-5 rounded-xl border bg-white cursor-pointer hover:border-[#7B0B1E] hover:shadow-md transition-all relative group ${
+                        tier.popular ? "border-2 border-[#8B0021]" : "border-gray-200"
                       }`}
                     >
-                      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-brand-50 text-brand-800 p-1 rounded transition-opacity">
+                      <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-rose-50 text-[#7B0B1E] p-1 rounded transition-opacity">
                         <Edit3 className="w-3.5 h-3.5" />
                       </div>
 
                       {tier.popular && (
-                        <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-brand-800 text-white font-mono text-[9px] font-bold uppercase px-2 py-0.5 rounded-full">
+                        <span className="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white font-mono text-[9px] font-bold uppercase px-2.5 py-0.5 rounded-full">
                           POPULAR
                         </span>
                       )}
@@ -609,7 +677,7 @@ function AdminPortalVisual() {
               {/* 5. Consultation CTA Live Section */}
               <div
                 onClick={() => setEditingTarget({ type: "consultation" })}
-                className="bg-white border border-gray-200 hover:border-brand-300 rounded-2xl p-8 text-center cursor-pointer transition-colors"
+                className="bg-white border border-gray-200 hover:border-rose-300 rounded-2xl p-8 text-center cursor-pointer transition-colors"
               >
                 <h3 className="text-xl sm:text-2xl font-extrabold text-gray-950 mb-2">
                   {editConsultationTitle}
@@ -617,7 +685,7 @@ function AdminPortalVisual() {
                 <p className="text-xs text-gray-600 max-w-lg mx-auto mb-4">
                   {editConsultationDesc}
                 </p>
-                <span className="inline-block px-4 py-2 bg-brand-800 text-white text-xs font-semibold rounded-lg">
+                <span className="inline-block px-5 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-xs font-semibold rounded-xl">
                   Konsultasi Gratis Sekarang
                 </span>
               </div>
@@ -625,13 +693,13 @@ function AdminPortalVisual() {
           </div>
         )}
 
-        {/* MODE 2: PORTFOLIO MANAGER WITH CATEGORY CHIPS & EDIT CAPABILITY */}
+        {/* MODE 2: PORTFOLIO MANAGER */}
         {activeMode === "portfolio" && (
           <div className="space-y-6 bg-white">
             {/* Form Add Portfolio */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
               <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
-                <Upload className="w-4 h-4 text-brand-800" />
+                <Upload className="w-4 h-4 text-[#7B0B1E]" />
                 <span>Tambah Karya Portofolio Baru</span>
               </h2>
               <p className="text-xs text-gray-500 mb-5">
@@ -650,7 +718,7 @@ function AdminPortalVisual() {
                       value={newPortTitle}
                       onChange={(e) => setNewPortTitle(e.target.value)}
                       placeholder="Contoh: Apotek Sehat — POS & Rekam Medis"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
                     />
                   </div>
 
@@ -663,7 +731,7 @@ function AdminPortalVisual() {
                       value={newPortCategory}
                       onChange={(e) => setNewPortCategory(e.target.value)}
                       placeholder="Pilih dari tombol di bawah atau ketik"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white font-medium text-brand-900"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white font-medium text-[#7B0B1E]"
                     />
                   </div>
                 </div>
@@ -671,7 +739,7 @@ function AdminPortalVisual() {
                 {/* Clickable Category Chips */}
                 <div className="p-3 bg-gray-50/60 rounded-xl border border-gray-100">
                   <div className="text-[11px] font-semibold text-gray-600 mb-2 flex items-center gap-1.5">
-                    <Tag className="w-3 h-3 text-brand-800" />
+                    <Tag className="w-3 h-3 text-[#7B0B1E]" />
                     <span>Klik Kategori untuk Memilih:</span>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
@@ -682,8 +750,8 @@ function AdminPortalVisual() {
                         onClick={() => setNewPortCategory(cat)}
                         className={`text-xs px-3 py-1 rounded-full font-medium transition-all flex items-center gap-1 ${
                           newPortCategory === cat
-                            ? "bg-brand-800 text-white shadow-xs"
-                            : "bg-white text-gray-700 border border-gray-200 hover:border-brand-600"
+                            ? "bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white shadow-xs"
+                            : "bg-white text-gray-700 border border-gray-200 hover:border-[#7B0B1E]"
                         }`}
                       >
                         {newPortCategory === cat && <Check className="w-3 h-3" />}
@@ -695,7 +763,7 @@ function AdminPortalVisual() {
                       type="button"
                       onClick={() => setNewPortCategory("")}
                       className={`text-xs px-2.5 py-1 rounded-full border border-dashed text-gray-400 hover:text-gray-600 hover:border-gray-400 ${
-                        newPortCategory === "" ? "border-brand-600 text-brand-700" : "border-gray-200"
+                        newPortCategory === "" ? "border-[#7B0B1E] text-[#7B0B1E]" : "border-gray-200"
                       }`}
                     >
                       Kosongkan Kategori
@@ -709,7 +777,7 @@ function AdminPortalVisual() {
                       value={newCategoryInput}
                       onChange={(e) => setNewCategoryInput(e.target.value)}
                       placeholder="+ Tambah Kategori Baru"
-                      className="text-xs p-1.5 px-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white flex-grow"
+                      className="text-xs p-1.5 px-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white flex-grow"
                     />
                     <button
                       type="button"
@@ -728,10 +796,10 @@ function AdminPortalVisual() {
                     </label>
                     <div
                       onClick={() => fileInputRef.current?.click()}
-                      className="border-2 border-dashed border-gray-300 hover:border-brand-600 rounded-xl p-4 text-center cursor-pointer bg-white hover:bg-gray-50/50 transition-all flex flex-col items-center justify-center gap-1.5 min-h-[110px]"
+                      className="border-2 border-dashed border-gray-300 hover:border-[#7B0B1E] rounded-xl p-4 text-center cursor-pointer bg-white hover:bg-gray-50/50 transition-all flex flex-col items-center justify-center gap-1.5 min-h-[110px]"
                     >
                       <Upload className="w-5 h-5 text-gray-400" />
-                      <span className="text-xs font-semibold text-brand-800">
+                      <span className="text-xs font-semibold text-[#7B0B1E]">
                         Pilih File Gambar Web
                       </span>
                       <span className="text-[10px] text-gray-400">
@@ -789,20 +857,20 @@ function AdminPortalVisual() {
                     value={newPortDesc}
                     onChange={(e) => setNewPortDesc(e.target.value)}
                     placeholder="Contoh: Membangun sistem kasir terintegrasi WhatsApp checkout dan laporan stok real-time."
-                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white"
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-brand-800 hover:bg-brand-900 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
+                  className="px-6 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg shadow-xs transition-all"
                 >
                   + Tambah ke Portofolio
                 </button>
               </form>
             </div>
 
-            {/* List Existing Projects with Edit and Delete Buttons */}
+            {/* List Existing Projects */}
             <div>
               <h3 className="text-sm font-bold text-gray-900 mb-3">
                 Daftar Karya Portofolio Saat Ini ({data.portfolio.length} Item)
@@ -812,7 +880,7 @@ function AdminPortalVisual() {
                 {data.portfolio.map((p) => (
                   <div
                     key={p.id}
-                    className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-2xs flex flex-col justify-between hover:border-brand-300 transition-colors"
+                    className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-2xs flex flex-col justify-between hover:border-rose-300 transition-colors"
                   >
                     <div className="aspect-[16/10] bg-white relative">
                       <img
@@ -821,7 +889,7 @@ function AdminPortalVisual() {
                         className="w-full h-full object-cover"
                       />
                       {p.category && (
-                        <span className="absolute top-2 left-2 bg-white/95 px-2 py-0.5 rounded text-[10px] font-bold border border-gray-200 text-brand-900">
+                        <span className="absolute top-2 left-2 bg-white/95 px-2 py-0.5 rounded text-[10px] font-bold border border-gray-200 text-[#7B0B1E]">
                           {p.category}
                         </span>
                       )}
@@ -842,16 +910,13 @@ function AdminPortalVisual() {
                           {p.tags.join(", ")}
                         </span>
                         <div className="flex items-center gap-1">
-                          {/* EDIT BUTTON */}
                           <button
                             onClick={() => setEditingPortfolio({ ...p })}
-                            className="p-1.5 text-brand-800 hover:bg-brand-50 rounded-md transition-colors"
+                            className="p-1.5 text-[#7B0B1E] hover:bg-rose-50 rounded-md transition-colors"
                             title="Edit portofolio ini"
                           >
                             <Edit3 className="w-4 h-4" />
                           </button>
-
-                          {/* DELETE BUTTON */}
                           <button
                             onClick={() => {
                               if (confirm(`Hapus portofolio "${p.title}"?`)) {
@@ -874,14 +939,14 @@ function AdminPortalVisual() {
           </div>
         )}
 
-        {/* MODE 3: CLIENT LOGO & BRAND MARQUEE MANAGER WITH SPEED & EDIT */}
+        {/* MODE 3: CLIENT LOGO & BRAND MARQUEE */}
         {activeMode === "brands" && (
           <div className="space-y-6 bg-white">
             {/* Speed Control Section */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
                 <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
-                  <Gauge className="w-4 h-4 text-brand-800" />
+                  <Gauge className="w-4 h-4 text-[#7B0B1E]" />
                   <span>Pengaturan Kecepatan Animasi Slider Logo</span>
                 </h2>
                 <p className="text-xs text-gray-500">
@@ -898,9 +963,9 @@ function AdminPortalVisual() {
                   step="5"
                   value={editMarqueeSpeed}
                   onChange={(e) => handleSaveSpeed(Number(e.target.value))}
-                  className="w-36 accent-brand-800 cursor-pointer"
+                  className="w-36 accent-[#8B0021] cursor-pointer"
                 />
-                <span className="text-xs font-mono font-bold text-brand-900 min-w-[50px]">
+                <span className="text-xs font-mono font-bold text-[#7B0B1E] min-w-[50px]">
                   {editMarqueeSpeed}s{" "}
                   <span className="text-[10px] font-normal text-gray-500">
                     ({editMarqueeSpeed <= 20 ? "Cepat" : editMarqueeSpeed <= 40 ? "Sedang" : "Lambat"})
@@ -912,7 +977,7 @@ function AdminPortalVisual() {
             {/* Form Add Client Brand */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
               <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-brand-800" />
+                <Building2 className="w-4 h-4 text-[#7B0B1E]" />
                 <span>Tambah Logo / Brand Klien Baru</span>
               </h2>
               <p className="text-xs text-gray-500 mb-5">
@@ -927,10 +992,10 @@ function AdminPortalVisual() {
                     </label>
                     <div
                       onClick={() => brandLogoInputRef.current?.click()}
-                      className="border-2 border-dashed border-gray-300 hover:border-brand-600 rounded-xl p-4 text-center cursor-pointer bg-white hover:bg-gray-50/50 transition-all flex flex-col items-center justify-center gap-1.5 min-h-[95px]"
+                      className="border-2 border-dashed border-gray-300 hover:border-[#7B0B1E] rounded-xl p-4 text-center cursor-pointer bg-white hover:bg-gray-50/50 transition-all flex flex-col items-center justify-center gap-1.5 min-h-[95px]"
                     >
                       <Upload className="w-5 h-5 text-gray-400" />
-                      <span className="text-xs font-semibold text-brand-800">
+                      <span className="text-xs font-semibold text-[#7B0B1E]">
                         Pilih File Logo Brand
                       </span>
                       <span className="text-[10px] text-gray-400">
@@ -990,7 +1055,7 @@ function AdminPortalVisual() {
                       value={newBrandName}
                       onChange={(e) => setNewBrandName(e.target.value)}
                       placeholder="Contoh: PT Surya Global Indonesia"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
                     />
                   </div>
 
@@ -1003,31 +1068,31 @@ function AdminPortalVisual() {
                       value={newBrandLabel}
                       onChange={(e) => setNewBrandLabel(e.target.value)}
                       placeholder="Contoh: Healthcare / Retail"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-brand-600 outline-none bg-white"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
                     />
                   </div>
                 </div>
 
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-brand-800 hover:bg-brand-900 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
+                  className="px-6 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg shadow-xs transition-all"
                 >
                   + Tambah Brand ke Animasi Slider
                 </button>
               </form>
             </div>
 
-            {/* List Existing Client Brands with Edit and Delete */}
+            {/* List Existing Client Brands */}
             <div>
               <h3 className="text-sm font-bold text-gray-900 mb-3">
-                Daftar Brand / Klien di Slider ({data.clientBrands.length} Item &bull; Klik Icon Pensil untuk Edit)
+                Daftar Brand / Klien di Slider ({data.clientBrands.length} Item)
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
                 {data.clientBrands.map((b) => (
                   <div
                     key={b.id}
-                    className="bg-white border border-gray-200 rounded-full overflow-hidden shadow-2xs flex items-center justify-between gap-2 p-1 pl-1 pr-3 hover:border-brand-300 transition-colors"
+                    className="bg-white border border-gray-200 rounded-full overflow-hidden shadow-2xs flex items-center justify-between gap-2 p-1 pl-1 pr-3 hover:border-rose-300 transition-colors"
                   >
                     <div className="flex items-center gap-2 overflow-hidden">
                       {b.logoImage ? (
@@ -1039,7 +1104,7 @@ function AdminPortalVisual() {
                           />
                         </div>
                       ) : (
-                        <div className="w-2.5 h-2.5 rounded-full bg-brand-700 flex-shrink-0 ml-2" />
+                        <div className="w-2.5 h-2.5 rounded-full bg-[#8B0021] flex-shrink-0 ml-2" />
                       )}
                       <div className="truncate">
                         <div className="font-bold text-xs text-gray-900 truncate">
@@ -1054,16 +1119,13 @@ function AdminPortalVisual() {
                     </div>
 
                     <div className="flex items-center gap-1 flex-shrink-0">
-                      {/* EDIT BRAND BUTTON */}
                       <button
                         onClick={() => setEditingBrand({ ...b })}
-                        className="p-1 text-brand-800 hover:bg-brand-50 rounded-full transition-colors"
+                        className="p-1 text-[#7B0B1E] hover:bg-rose-50 rounded-full transition-colors"
                         title="Edit brand ini"
                       >
                         <Edit3 className="w-3.5 h-3.5" />
                       </button>
-
-                      {/* DELETE BRAND BUTTON */}
                       <button
                         onClick={() => {
                           if (confirm(`Hapus brand "${b.name || "item"}" dari slider?`)) {
@@ -1071,7 +1133,7 @@ function AdminPortalVisual() {
                             showToast("Brand dihapus dari slider!");
                           }
                         }}
-                        className="p-1 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                        className="p-1 text-red-600 hover:bg-red-50 rounded-full transition-colors flex-shrink-0"
                         title="Hapus brand"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -1088,11 +1150,11 @@ function AdminPortalVisual() {
         {activeMode === "contact" && (
           <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs max-w-lg mx-auto">
             <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
-              <Phone className="w-4 h-4 text-brand-800" />
+              <Phone className="w-4 h-4 text-[#7B0B1E]" />
               <span>Ganti Nomor WhatsApp Tujuan Order</span>
             </h2>
             <p className="text-xs text-gray-500 mb-5">
-              Nomor ini akan otomatis digunakan di semua tombol &quot;Hubungi Kami&quot;, &quot;Pilih Paket&quot;, dan tombol &quot;Konsultasikan Kebutuhan Anda&quot; di seluruh website.
+              Nomor ini akan otomatis digunakan di semua tombol &quot;Hubungi Kami&quot;, &quot;Pesan Sekarang&quot;, dan tombol &quot;Konsultasikan Kebutuhan Anda&quot; di seluruh website.
             </p>
 
             <div className="space-y-4">
@@ -1124,7 +1186,7 @@ function AdminPortalVisual() {
 
               <button
                 onClick={saveWhatsApp}
-                className="w-full py-2.5 bg-brand-800 hover:bg-brand-900 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
+                className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg shadow-xs transition-all"
               >
                 Simpan Nomor WhatsApp
               </button>
@@ -1153,7 +1215,7 @@ function AdminPortalVisual() {
             >
               <div className="flex items-center justify-between border-b pb-3">
                 <span className="text-xs font-bold text-gray-900 uppercase flex items-center gap-1.5">
-                  <Edit3 className="w-3.5 h-3.5 text-brand-800" />
+                  <Edit3 className="w-3.5 h-3.5 text-[#7B0B1E]" />
                   <span>Edit Karya Portofolio</span>
                 </span>
                 <button
@@ -1191,7 +1253,7 @@ function AdminPortalVisual() {
                       setEditingPortfolio({ ...editingPortfolio, category: e.target.value })
                     }
                     placeholder="Pilih dari tombol di bawah"
-                    className="w-full text-xs p-2 rounded-lg border border-gray-300 font-semibold text-brand-900 bg-white mb-2"
+                    className="w-full text-xs p-2 rounded-lg border border-gray-300 font-semibold text-[#7B0B1E] bg-white mb-2"
                   />
                   <div className="flex flex-wrap gap-1.5">
                     {data.categories.map((c) => (
@@ -1201,7 +1263,7 @@ function AdminPortalVisual() {
                         onClick={() => setEditingPortfolio({ ...editingPortfolio, category: c })}
                         className={`text-[11px] px-2.5 py-0.5 rounded-full ${
                           editingPortfolio.category === c
-                            ? "bg-brand-800 text-white font-bold"
+                            ? "bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white font-bold"
                             : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                         }`}
                       >
@@ -1233,7 +1295,7 @@ function AdminPortalVisual() {
                     <button
                       type="button"
                       onClick={() => editFileInputRef.current?.click()}
-                      className="text-xs font-semibold text-brand-800 bg-brand-50 hover:bg-brand-100 px-3 py-2 rounded-lg border border-brand-200 transition-colors"
+                      className="text-xs font-semibold text-[#7B0B1E] bg-rose-50 hover:bg-rose-100 px-3 py-2 rounded-lg border border-rose-200 transition-colors"
                     >
                       Pilih Gambar Baru Dari Laptop
                     </button>
@@ -1264,7 +1326,7 @@ function AdminPortalVisual() {
 
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-brand-800 hover:bg-brand-900 text-white font-semibold text-xs rounded-lg transition-colors shadow-xs"
+                  className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
                 >
                   Simpan Perubahan Portofolio
                 </button>
@@ -1294,7 +1356,7 @@ function AdminPortalVisual() {
             >
               <div className="flex items-center justify-between border-b pb-3">
                 <span className="text-xs font-bold text-gray-900 uppercase flex items-center gap-1.5">
-                  <Edit3 className="w-3.5 h-3.5 text-brand-800" />
+                  <Edit3 className="w-3.5 h-3.5 text-[#7B0B1E]" />
                   <span>Edit Brand / Logo Slider</span>
                 </span>
                 <button
@@ -1325,7 +1387,7 @@ function AdminPortalVisual() {
                     <button
                       type="button"
                       onClick={() => editBrandLogoInputRef.current?.click()}
-                      className="text-xs font-semibold text-brand-800 bg-brand-50 hover:bg-brand-100 px-3 py-2 rounded-lg border border-brand-200 transition-colors"
+                      className="text-xs font-semibold text-[#7B0B1E] bg-rose-50 hover:bg-rose-100 px-3 py-2 rounded-lg border border-rose-200 transition-colors"
                     >
                       Pilih Logo Baru
                     </button>
@@ -1376,7 +1438,7 @@ function AdminPortalVisual() {
 
                 <button
                   type="submit"
-                  className="w-full py-2.5 bg-brand-800 hover:bg-brand-900 text-white font-semibold text-xs rounded-lg transition-colors shadow-xs"
+                  className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
                 >
                   Simpan Perubahan Brand
                 </button>
@@ -1559,7 +1621,7 @@ function AdminPortalVisual() {
                   saveVisualChanges();
                   setEditingTarget(null);
                 }}
-                className="w-full py-2.5 bg-brand-800 hover:bg-brand-900 text-white font-semibold text-xs rounded-lg transition-colors shadow-xs"
+                className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
               >
                 Terapkan &amp; Simpan
               </button>
