@@ -43,14 +43,14 @@ export const PricingSection: React.FC = () => {
                   ease: [0.16, 1, 0.3, 1],
                 }}
                 whileHover={{ y: -5 }}
-                className={`bg-white rounded-xl p-6 flex flex-col justify-between relative shadow-xs hover:shadow-md transition-all duration-200 ${
+                className={`bg-white rounded-xl p-6 flex flex-col justify-between relative shadow-2xs hover:shadow-md transition-all duration-200 ${
                   tier.popular
-                    ? "border-2 border-brand-600 shadow-sm"
+                    ? "border-2 border-[#8B0021] shadow-xs"
                     : "border border-gray-200 hover:border-gray-300"
                 }`}
               >
                 {tier.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-800 text-white font-mono text-[10px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-xs">
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white font-mono text-[10px] font-bold uppercase tracking-widest px-3 py-0.5 rounded-full shadow-xs">
                     POPULAR
                   </span>
                 )}
@@ -76,7 +76,7 @@ export const PricingSection: React.FC = () => {
                         key={fIndex}
                         className="flex items-start gap-2 text-xs text-gray-600 leading-snug"
                       >
-                        <Check className="w-3.5 h-3.5 text-brand-600 flex-shrink-0 mt-0.5 stroke-[2.5]" />
+                        <Check className="w-3.5 h-3.5 text-[#8B0021] flex-shrink-0 mt-0.5 stroke-[2.5]" />
                         <span>{feature}</span>
                       </div>
                     ))}
@@ -101,10 +101,10 @@ export const PricingSection: React.FC = () => {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`w-full py-2 text-xs font-semibold rounded-md flex items-center justify-center transition-all ${
-                      tier.buttonVariant === "red"
-                        ? "bg-brand-800 hover:bg-brand-900 text-white shadow-xs"
-                        : "bg-white hover:bg-gray-50 text-gray-800 border border-gray-300 hover:border-gray-400"
+                    className={`w-full py-2.5 text-xs font-bold rounded-lg flex items-center justify-center transition-all ${
+                      tier.buttonVariant === "red" || tier.popular
+                        ? "bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white shadow-xs"
+                        : "bg-white hover:bg-rose-50/40 text-gray-800 border border-gray-300 hover:border-[#8B0021]/40"
                     }`}
                   >
                     {tier.buttonLabel}

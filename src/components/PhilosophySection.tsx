@@ -2,7 +2,7 @@
 
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
 
 export const PhilosophySection: React.FC = () => {
@@ -11,7 +11,7 @@ export const PhilosophySection: React.FC = () => {
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section className="py-24 bg-white border-t border-gray-100">
+    <section id="philosophy" className="py-24 bg-white border-t border-gray-100">
       <div className="max-w-[840px] mx-auto px-6 text-center">
         <motion.div
           ref={ref}
@@ -35,16 +35,18 @@ export const PhilosophySection: React.FC = () => {
             Kami memahami kebutuhan bisnis, merancang solusi, dan membangun teknologi yang dapat membantu proses bisnis menjadi lebih terstruktur, efisien, dan siap berkembang.
           </p>
 
-          {/* Slogan */}
+          {/* Slogan in Merah Maroon Premium Gradasi */}
           <div className="pt-4 pb-2">
-            <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-brand-900 tracking-tight leading-snug">
-              Bukan sekadar membangun teknologi.
+            <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-snug">
+              <span className="bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] bg-clip-text text-transparent">
+                Bukan sekadar membangun teknologi.
+              </span>
               <br />
               <span className="text-gray-950">Kami membangun solusi.</span>
             </div>
           </div>
 
-          {/* WhatsApp CTA Button */}
+          {/* WhatsApp CTA Button with Maroon Gradient */}
           <div className="pt-2">
             <motion.a
               whileHover={{ scale: 1.04, y: -2 }}
@@ -54,10 +56,10 @@ export const PhilosophySection: React.FC = () => {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-brand-800 hover:bg-brand-900 text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs hover:shadow-md transition-all duration-200"
+              className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md hover:shadow-xl transition-all duration-300"
             >
               <span>Konsultasikan Kebutuhan Anda</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 text-rose-200" />
             </motion.a>
           </div>
         </motion.div>

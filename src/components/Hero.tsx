@@ -1,27 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { MessageSquare, ChevronRight } from "lucide-react";
+import { ArrowRight, ArrowDown, MessageCircle } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
 
 export const Hero: React.FC = () => {
   const { data } = useSiteData();
-  const [query, setQuery] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const text = query.trim() || "Halo SOLVETA, saya ingin berkonsultasi mengenai solusi digital.";
-    window.open(
-      `https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(text)}`,
-      "_blank"
+  const handleOrderWhatsApp = () => {
+    const waText = encodeURIComponent(
+      "Halo SOLVETA, saya ingin memesan pembuatan website / konsultasi solusi digital untuk bisnis saya."
     );
+    window.open(`https://wa.me/${data.contact.whatsappNumber}?text=${waText}`, "_blank");
+  };
+
+  const handleScrollToDetails = () => {
+    const target = document.getElementById("problems") || document.getElementById("services") || document.getElementById("portfolio");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
-    <section id="hero" className="pt-20 pb-14 text-center relative overflow-hidden">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-red-100/40 rounded-full blur-[100px] pointer-events-none -z-10" />
+    <section id="hero" className="pt-24 pb-16 text-center relative overflow-hidden bg-white">
+      {/* Background ambient lighting in premium maroon glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[320px] bg-gradient-to-br from-red-100/50 via-rose-50/40 to-transparent rounded-full blur-[110px] pointer-events-none -z-10" />
 
       <div className="max-w-[1160px] mx-auto px-6">
         {/* Eyebrow Pill */}
@@ -31,7 +35,8 @@ export const Hero: React.FC = () => {
           transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
           className="inline-block"
         >
-          <span className="inline-flex items-center font-mono text-[11px] font-semibold uppercase tracking-wider text-gray-700 bg-gray-100 border border-gray-200 px-3.5 py-1.5 rounded-full mb-6 shadow-xs">
+          <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[#7B0B1E] bg-rose-50/80 border border-rose-100 px-4 py-1.5 rounded-full mb-6 shadow-2xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#8B0021] animate-pulse" />
             {data.siteCopy.heroEyebrow}
           </span>
         </motion.div>
@@ -41,7 +46,7 @@ export const Hero: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="text-4xl sm:text-5xl md:text-[3.25rem] font-extrabold text-gray-950 tracking-tight leading-[1.18] mb-5 whitespace-pre-line"
+          className="text-4xl sm:text-5xl md:text-[3.35rem] font-extrabold text-gray-950 tracking-tight leading-[1.18] mb-5 whitespace-pre-line"
         >
           {data.siteCopy.heroHeadline}
         </motion.h1>
@@ -56,32 +61,36 @@ export const Hero: React.FC = () => {
           {data.siteCopy.heroSubtitle}
         </motion.p>
 
-        {/* Interactive Query Input Bar */}
-        <motion.form
+        {/* Action Buttons: "Pesan Sekarang" & "Pelajari Selengkapnya" */}
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          onSubmit={handleSubmit}
-          className="flex items-center max-w-[580px] mx-auto bg-white border border-gray-300 focus-within:border-gray-500 rounded-xl p-1.5 pl-4 shadow-sm focus-within:shadow-md transition-all duration-200"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-md mx-auto"
         >
-          <MessageSquare className="w-4 h-4 text-gray-400 mr-3 flex-shrink-0" />
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder="Ceritakan tantangan bisnis Anda..."
-            className="flex-grow bg-transparent text-sm text-gray-900 placeholder-gray-400 outline-none"
-          />
+          {/* 1. Tombol Pesan Sekarang (Merah Maroon Premium Gradasi) */}
           <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            type="submit"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-white bg-brand-800 hover:bg-brand-900 px-4 py-2 rounded-lg transition-colors"
+            whileHover={{ scale: 1.04, y: -2 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={handleOrderWhatsApp}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:via-[#85001D] hover:to-[#5E0013] text-white text-sm font-bold rounded-xl shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer"
           >
-            <span>Kirim</span>
-            <ChevronRight className="w-3.5 h-3.5" />
+            <MessageCircle className="w-4 h-4 text-rose-200 group-hover:scale-110 transition-transform" />
+            <span>Pesan Sekarang</span>
+            <ArrowRight className="w-4 h-4 text-rose-200 group-hover:translate-x-1 transition-transform" />
           </motion.button>
-        </motion.form>
+
+          {/* 2. Tombol Pelajari Selengkapnya (Scroll ke Bagian Bawah) */}
+          <motion.button
+            whileHover={{ scale: 1.03, y: -1 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={handleScrollToDetails}
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white hover:bg-rose-50/40 border border-gray-300 hover:border-[#8B0021]/50 text-gray-800 hover:text-[#7B0B1E] text-sm font-bold rounded-xl shadow-2xs hover:shadow-xs transition-all duration-300 cursor-pointer"
+          >
+            <span>Pelajari Selengkapnya</span>
+            <ArrowDown className="w-4 h-4 text-gray-400 group-hover:text-[#7B0B1E] animate-bounce" />
+          </motion.button>
+        </motion.div>
       </div>
     </section>
   );

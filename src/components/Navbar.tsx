@@ -4,12 +4,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Search, User } from "lucide-react";
+import { useSiteData } from "@/context/SiteDataContext";
 
 interface NavbarProps {
   onOpenSearch?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
+  const { data } = useSiteData();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -28,8 +30,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       className={`sticky top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "py-3 bg-white/90 backdrop-blur-md shadow-sm border-b border-gray-200/80"
-          : "py-4 bg-white/70 backdrop-blur-sm border-b border-gray-200/40"
+          ? "py-3 bg-white/95 backdrop-blur-md shadow-2xs border-b border-gray-200/80"
+          : "py-4 bg-white/80 backdrop-blur-sm border-b border-gray-200/40"
       }`}
     >
       <div className="max-w-[1160px] mx-auto px-6 flex items-center justify-between gap-6">
@@ -38,7 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
           <motion.div
             whileHover={{ scale: 1.08, rotate: 5 }}
             whileTap={{ scale: 0.95 }}
-            className="w-8 h-8 rounded-lg bg-brand-800 flex items-center justify-center text-white shadow-sm"
+            className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#8B0021] to-[#50000F] flex items-center justify-center text-white shadow-xs"
           >
             <svg
               className="w-5 h-5"
@@ -54,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
               <polyline points="2 12 12 17 22 12"></polyline>
             </svg>
           </motion.div>
-          <span className="font-extrabold text-lg tracking-tight text-gray-900 group-hover:text-brand-800 transition-colors">
+          <span className="font-extrabold text-lg tracking-tight text-gray-900 group-hover:text-[#7B0B1E] transition-colors">
             SOLVETA
           </span>
         </Link>
@@ -62,7 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
         {/* Center Search Bar with keyboard shortcut */}
         <div
           onClick={onOpenSearch}
-          className="hidden md:flex items-center gap-2.5 bg-gray-50 hover:bg-gray-100/80 border border-gray-200 hover:border-gray-300 rounded-full px-3.5 py-1.5 w-full max-w-[320px] cursor-pointer transition-all duration-200"
+          className="hidden md:flex items-center gap-2.5 bg-gray-50/80 hover:bg-gray-100 border border-gray-200 hover:border-gray-300 rounded-full px-3.5 py-1.5 w-full max-w-[320px] cursor-pointer transition-all duration-200"
         >
           <Search className="w-3.5 h-3.5 text-gray-400" />
           <span className="text-xs text-gray-400 font-normal flex-grow">
@@ -74,47 +76,48 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
         </div>
 
         {/* Right Links & Actions */}
-        <div className="flex items-center gap-6">
-          <nav className="hidden lg:flex items-center gap-5 text-xs font-medium text-gray-600">
+        <div className="flex items-center gap-5">
+          <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold text-gray-600">
             <Link
               href="#services"
-              className="hover:text-gray-950 transition-colors"
+              className="hover:text-[#7B0B1E] transition-colors"
             >
               Services
             </Link>
             <Link
               href="#pricing"
-              className="hover:text-gray-950 transition-colors"
+              className="hover:text-[#7B0B1E] transition-colors"
             >
               Pricing
             </Link>
             <Link
               href="#contact"
-              className="hover:text-gray-950 transition-colors"
+              className="hover:text-[#7B0B1E] transition-colors"
             >
               Contact
             </Link>
           </nav>
 
           <motion.a
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-            href="https://wa.me/6285719663154"
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.96 }}
+            href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+              "Halo SOLVETA, saya ingin berkonsultasi mengenai solusi digital dan pembuatan website."
+            )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-4 py-2 text-xs font-semibold text-white bg-brand-800 hover:bg-brand-900 rounded-md transition-all shadow-sm flex items-center justify-center"
+            className="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] rounded-lg transition-all shadow-xs flex items-center justify-center"
           >
             Hubungi Kami
           </motion.a>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            aria-label="User Profile"
-            className="w-8 h-8 rounded-md border border-gray-200 bg-white hover:bg-gray-50 flex items-center justify-center text-gray-700 transition-colors"
+          <Link
+            href="/admin"
+            title="Portal Developer"
+            className="w-8 h-8 rounded-lg border border-gray-200 bg-white hover:bg-rose-50/50 hover:border-rose-200 flex items-center justify-center text-gray-700 hover:text-[#7B0B1E] transition-colors"
           >
             <User className="w-4 h-4" />
-          </motion.button>
+          </Link>
         </div>
       </div>
     </motion.header>
