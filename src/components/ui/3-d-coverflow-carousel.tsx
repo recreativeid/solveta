@@ -88,18 +88,18 @@ export function CoverFlowCarousel({
   const total = items.length;
 
   const nextSlide = useCallback(() => {
-    if (total <= 1) return;
+    if (total <= 0) return;
     setCurrentIndex((prev) => (prev + 1) % total);
   }, [total]);
 
   const prevSlide = useCallback(() => {
-    if (total <= 1) return;
+    if (total <= 0) return;
     setCurrentIndex((prev) => (prev - 1 + total) % total);
   }, [total]);
 
   const goToSlide = (idx: number) => {
     if (total <= 0) return;
-    setCurrentIndex(idx % total);
+    setCurrentIndex(((idx % total) + total) % total);
   };
 
   useEffect(() => {
@@ -131,9 +131,12 @@ export function CoverFlowCarousel({
 
   if (!items || items.length === 0) return null;
 
+  // 5 Guaranteed Slots: 2 on Left [-2, -1], Center [0], 2 on Right [1, 2]
+  const slots = [-2, -1, 0, 1, 2];
+
   return (
     <section
-      className={`relative w-full min-h-[480px] sm:min-h-[540px] flex items-center justify-center overflow-hidden py-4 select-none font-sans ${className}`}
+      className={`relative w-full min-h-[500px] sm:min-h-[560px] flex items-center justify-center overflow-hidden py-4 select-none font-sans ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={handleTouchStart}
@@ -142,18 +145,25 @@ export function CoverFlowCarousel({
       {/* Background Subtle Ambient Glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <img
-          src={items[currentIndex]?.img}
+          src={items[currentIndex % total]?.img}
           alt="ambience background"
-          className="w-full h-full object-cover blur-[55px] opacity-15 dark:opacity-20 scale-125 transition-all duration-1000"
+          className="w-full h-full object-cover blur-[60px] opacity-15 dark:opacity-20 scale-125 transition-all duration-1000"
         />
         <div className="absolute inset-0 bg-radial from-transparent via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-[#FDFBF9] dark:to-[#07080E]" />
       </div>
 
-      {/* LEFT SIDE EDGE FADE GRADIENT MASK (Pudar di ujung samping kiri) */}
-      <div className="absolute top-0 bottom-0 left-0 w-20 sm:w-44 md:w-60 bg-gradient-to-r from-[#FDFBF9] dark:from-[#07080E] via-[#FDFBF9]/90 dark:via-[#07080E]/90 to-transparent pointer-events-none z-35" />
+      {/* 4-WAY EDGE FADE GRADIENT MASKS (Mencegah tampilan kotak terpotong) */}
+      {/* 1. LEFT SIDE FADE MASK */}
+      <div className="absolute top-0 bottom-0 left-0 w-20 sm:w-44 md:w-64 bg-gradient-to-r from-[#FDFBF9] dark:from-[#07080E] via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35" />
 
-      {/* RIGHT SIDE EDGE FADE GRADIENT MASK (Pudar di ujung samping kanan) */}
-      <div className="absolute top-0 bottom-0 right-0 w-20 sm:w-44 md:w-60 bg-gradient-to-l from-[#FDFBF9] dark:from-[#07080E] via-[#FDFBF9]/90 dark:via-[#07080E]/90 to-transparent pointer-events-none z-35" />
+      {/* 2. RIGHT SIDE FADE MASK */}
+      <div className="absolute top-0 bottom-0 right-0 w-20 sm:w-44 md:w-64 bg-gradient-to-l from-[#FDFBF9] dark:from-[#07080E] via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35" />
+
+      {/* 3. TOP EDGE FADE MASK */}
+      <div className="absolute top-0 left-0 right-0 h-12 sm:h-20 bg-gradient-to-b from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
+
+      {/* 4. BOTTOM EDGE FADE MASK */}
+      <div className="absolute bottom-0 left-0 right-0 h-12 sm:h-20 bg-gradient-to-t from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
 
       <div className="relative w-full z-10 flex flex-col items-center">
         {/* Eyebrow Label */}
@@ -167,13 +177,15 @@ export function CoverFlowCarousel({
           </div>
         )}
 
-        {/* 3D Coverflow Stage (Full Width Widescreen Landscape Laptop Screens with 2 Layers on Left & Right) */}
+        {/* 3D Coverflow Stage (Always renders 2 layers on Left, 1 Center, 2 on Right) */}
         <div
           className="relative w-full h-[360px] sm:h-[420px] md:h-[460px] flex justify-center items-center mb-4 overflow-visible"
           style={{ perspective: "1600px" }}
         >
-          {items.map((item, idx) => {
-            const offset = (idx - currentIndex + total) % total;
+          {slots.map((slotOffset) => {
+            const itemIndex = ((currentIndex + slotOffset) % total + total) % total;
+            const item = items[itemIndex];
+            if (!item) return null;
 
             let transform = "translateX(0px) scale(0.4) rotateY(0deg)";
             let opacity = 0;
@@ -181,31 +193,31 @@ export function CoverFlowCarousel({
             let filter = isLightMode ? "brightness(0.9) blur(1.5px)" : "brightness(0.45) blur(1.5px)";
             let isCenter = false;
 
-            if (offset === 0) {
+            if (slotOffset === 0) {
               isCenter = true;
               transform = "translateX(0px) scale(1) rotateY(0deg)";
               opacity = 1;
               zIndex = 30;
               filter = "brightness(1)";
-            } else if (offset === 1) {
+            } else if (slotOffset === 1) {
               // 1st Layer Right
               transform = "translateX(min(290px, 35vw)) scale(0.85) rotateY(-18deg)";
               opacity = 0.85;
               zIndex = 20;
               filter = isLightMode ? "brightness(0.92)" : "brightness(0.72)";
-            } else if (offset === 2) {
+            } else if (slotOffset === 2) {
               // 2nd Layer Right
               transform = "translateX(min(540px, 65vw)) scale(0.70) rotateY(-30deg)";
               opacity = 0.55;
               zIndex = 10;
               filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.55) blur(1px)";
-            } else if (offset === total - 1) {
+            } else if (slotOffset === -1) {
               // 1st Layer Left
               transform = "translateX(-min(290px, 35vw)) scale(0.85) rotateY(18deg)";
               opacity = 0.85;
               zIndex = 20;
               filter = isLightMode ? "brightness(0.92)" : "brightness(0.72)";
-            } else if (offset === total - 2) {
+            } else if (slotOffset === -2) {
               // 2nd Layer Left
               transform = "translateX(-min(540px, 65vw)) scale(0.70) rotateY(30deg)";
               opacity = 0.55;
@@ -215,8 +227,8 @@ export function CoverFlowCarousel({
 
             return (
               <div
-                key={item.id || idx}
-                onClick={() => !isCenter && goToSlide(idx)}
+                key={`slot-${slotOffset}-${itemIndex}-${item.id || item.titleLine1}`}
+                onClick={() => !isCenter && goToSlide(currentIndex + slotOffset)}
                 style={{
                   position: "absolute",
                   width: "min(580px, 72vw)",
