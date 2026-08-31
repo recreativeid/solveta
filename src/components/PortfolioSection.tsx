@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { ExternalLink, ArrowUpRight, Sparkles } from "lucide-react";
+import { motion, useInView } from "framer-motion";
+import { Sparkles, Layers, ArrowRight } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
+import { CoverFlowCarousel, CarouselItem } from "@/components/ui/3-d-coverflow-carousel";
 
 export const PortfolioSection: React.FC = () => {
   const { data } = useSiteData();
@@ -11,7 +12,7 @@ export const PortfolioSection: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
-  // Extract unique, non-empty categories from active portfolio items & config
+  // Extract unique categories
   const activeCategories = Array.from(
     new Set(
       data.portfolio
@@ -28,11 +29,42 @@ export const PortfolioSection: React.FC = () => {
       ? data.portfolio
       : data.portfolio.filter((p) => p.category === selectedCategory);
 
+  // Convert to CarouselItems format
+  const carouselItems: CarouselItem[] = filteredProjects.map((p) => {
+    // Split title into Line 1 & Line 2 if it contains dash / separator
+    let titleLine1 = p.title;
+    let titleLine2: string | undefined = undefined;
+
+    if (p.title.includes("—")) {
+      const parts = p.title.split("—");
+      titleLine1 = parts[0].trim();
+      titleLine2 = `– ${parts.slice(1).join("—").trim()}`;
+    } else if (p.title.includes("-")) {
+      const parts = p.title.split("-");
+      titleLine1 = parts[0].trim();
+      titleLine2 = `– ${parts.slice(1).join("-").trim()}`;
+    }
+
+    return {
+      id: p.id,
+      tag: p.category || "Portofolio",
+      titleLine1,
+      titleLine2,
+      desc: p.description,
+      img: p.image,
+      tags: p.tags,
+      ctaText: "Konsultasi Solusi Ini",
+      ctaUrl: `https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+        `Halo SOLVETA, saya tertarik berdiskusi mengenai portofolio: ${p.title}`
+      )}`,
+    };
+  });
+
   return (
-    <section id="portfolio" className="py-20 bg-white">
-      <div className="max-w-[1160px] mx-auto px-6">
+    <section id="portfolio" className="py-20 bg-gradient-to-b from-white via-[#FDFBF9] to-white border-t border-gray-100 relative overflow-hidden">
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
         {/* Centered Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="text-center max-w-2xl mx-auto mb-6">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
@@ -40,16 +72,14 @@ export const PortfolioSection: React.FC = () => {
             className="flex flex-col items-center"
           >
             <span className="font-mono text-[11px] font-bold tracking-widest text-[#8B0021] uppercase bg-rose-50 border border-rose-100 px-4 py-1.5 rounded-full inline-block mb-3">
-              KARYA &amp; PORTOFOLIO
+              KARYA &amp; PORTOFOLIO NYATA
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight leading-tight">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 tracking-tight leading-tight uppercase">
               {data.siteCopy.portfolioTitle || "Portofolio Proyek Website Yang Telah Kami Bangun"}
             </h2>
-            {data.siteCopy.portfolioSubtitle && (
-              <p className="text-xs sm:text-sm text-gray-500 mt-2">
-                {data.siteCopy.portfolioSubtitle}
-              </p>
-            )}
+            <p className="text-xs sm:text-sm text-gray-500 mt-2.5 max-w-xl mx-auto leading-relaxed">
+              Jelajahi karya solusi digital dan website yang telah kami bangun dengan navigasi geser 3D interaktif. Klik atau geser kartu untuk melihat detail.
+            </p>
           </motion.div>
 
           {/* Centered Category Filter Pills */}
@@ -64,10 +94,10 @@ export const PortfolioSection: React.FC = () => {
                 <button
                   key={cat}
                   onClick={() => setSelectedCategory(cat)}
-                  className={`text-xs font-semibold px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer ${
+                  className={`text-xs font-semibold px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer border ${
                     selectedCategory === cat
-                      ? "bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white shadow-xs"
-                      : "bg-gray-100 text-gray-700 hover:bg-rose-50 hover:text-[#7B0B1E] border border-transparent hover:border-rose-200"
+                      ? "bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white border-[#8B0021] shadow-xs"
+                      : "bg-white text-gray-700 hover:bg-rose-50 hover:text-[#7B0B1E] border-gray-200 hover:border-rose-200"
                   }`}
                 >
                   {cat}
@@ -77,99 +107,37 @@ export const PortfolioSection: React.FC = () => {
           )}
         </div>
 
-        {/* Portfolio Cards Grid with Animated Mockup Images */}
-        <motion.div
-          ref={ref}
-          layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          <AnimatePresence>
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                layout
-                initial={{ opacity: 0, y: 35, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{
-                  duration: 0.55,
-                  delay: index * 0.08,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-                whileHover={{ y: -7 }}
-                className="bg-white border border-gray-200 hover:border-rose-300 rounded-2xl overflow-hidden shadow-2xs hover:shadow-xl transition-all duration-300 flex flex-col group relative"
-              >
-                {/* Preview Image Container with Cinematic Image Animations */}
-                <div className="relative aspect-[16/10] overflow-hidden bg-gray-100">
-                  <motion.img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-108 group-hover:rotate-[0.5deg]"
-                    loading="lazy"
-                  />
+        {/* 3D Coverflow Interactive Carousel Stage */}
+        <div ref={ref} className="w-full">
+          <CoverFlowCarousel
+            key={selectedCategory}
+            items={carouselItems}
+            sectionLabel="SOLVETA SHOWCASE"
+            isLightMode={true}
+            autoplay={true}
+            autoplayDelay={5000}
+            onCtaClick={(item) => {
+              if (item.ctaUrl) {
+                window.open(item.ctaUrl, "_blank");
+              }
+            }}
+          />
+        </div>
 
-                  {/* Shimmer Light Sweep on Hover */}
-                  <div className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-gradient-to-tr from-transparent via-white/15 to-transparent transition-opacity duration-500 pointer-events-none" />
-
-                  {/* Dark Gradient Overlay with Quick Action Button */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-between p-4">
-                    <span className="text-xs font-bold text-white inline-flex items-center gap-1.5 bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/20">
-                      <span>Lihat Detail Solusi</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-rose-200" />
-                    </span>
-                  </div>
-
-                  {project.category && project.category.trim().length > 0 && (
-                    <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] font-bold text-[#8B0021] uppercase tracking-wide border border-rose-100 shadow-2xs">
-                      {project.category}
-                    </div>
-                  )}
-                </div>
-
-                {/* Content */}
-                <div className="p-5 flex flex-col justify-between flex-grow">
-                  <div>
-                    <h3 className="text-sm font-bold text-gray-900 group-hover:text-[#7B0B1E] transition-colors leading-snug mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-xs text-gray-500 leading-relaxed mb-4">
-                      {project.description}
-                    </p>
-                  </div>
-
-                  <div>
-                    {/* Tags */}
-                    {project.tags && project.tags.length > 0 && (
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {project.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-[10px] font-medium text-gray-600 bg-gray-50 border border-gray-200 px-2 py-0.5 rounded-md"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-
-                    {/* Action CTA with WhatsApp link */}
-                    <a
-                      href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
-                        `Halo SOLVETA, saya tertarik dengan studi kasus/portofolio: ${project.title}`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full py-2.5 text-xs font-bold rounded-xl text-gray-800 bg-gray-50 hover:bg-rose-50 hover:text-[#7B0B1E] border border-gray-200 hover:border-rose-200 transition-all flex items-center justify-center gap-1.5 shadow-2xs"
-                    >
-                      <span>Konsultasikan Solusi Mirip</span>
-                      <ExternalLink className="w-3.5 h-3.5" />
-                    </a>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        {/* Bottom Consultation Link */}
+        <div className="mt-8 text-center">
+          <a
+            href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+              "Halo SOLVETA, saya ingin konsultasi mengenai pembuatan sistem atau website custom."
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-xs font-bold text-[#8B0021] bg-rose-50 hover:bg-rose-100 border border-rose-200/80 px-5 py-2.5 rounded-full transition-colors shadow-2xs"
+          >
+            <span>Punya Kebutuhan Sistem / Website Serupa? Diskusikan dengan Kami</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </a>
+        </div>
       </div>
     </section>
   );

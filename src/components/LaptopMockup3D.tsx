@@ -4,13 +4,13 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Sparkles,
-  TrendingUp,
-  Layout,
-  Compass,
-  BarChart3,
-  ArrowRight,
+  Globe,
+  Database,
+  MessageSquareCode,
   ShieldCheck,
+  ArrowRight,
   Zap,
+  CheckCircle2,
 } from "lucide-react";
 
 export const LaptopMockup3D: React.FC = () => {
@@ -62,7 +62,7 @@ export const LaptopMockup3D: React.FC = () => {
             <div className="w-1 h-1 rounded-full bg-emerald-500/90 animate-pulse" />
           </div>
 
-          {/* INNER DISPLAY: LUXURY DIGITAL AGENCY WEBSITE SHOWCASE */}
+          {/* INNER DISPLAY: SOLVETA DIGITAL AGENCY ECOSYSTEM SHOWCASE */}
           <div className="w-full aspect-[16/10] bg-[#0c0d12] rounded-[10px] sm:rounded-[14px] overflow-hidden flex flex-col text-left border border-[#232533] shadow-inner font-sans relative">
             {/* Browser Navigation Bar */}
             <div className="h-8 bg-[#14151e] border-b border-[#202230] flex items-center justify-between px-3 sm:px-4 flex-shrink-0">
@@ -76,17 +76,17 @@ export const LaptopMockup3D: React.FC = () => {
               {/* URL Address Bar */}
               <div className="hidden sm:flex items-center gap-1.5 px-3 py-0.5 bg-[#0e0f16] border border-[#232535] rounded-full text-[10px] text-gray-400 font-mono w-64 justify-center">
                 <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                <span className="text-gray-300">https://www.digitalagency.design</span>
+                <span className="text-gray-300">https://www.solveta.site</span>
               </div>
 
               {/* Status Badge */}
               <div className="flex items-center gap-1 text-[10px] text-rose-300 font-mono font-semibold">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#8B0021] animate-ping" />
-                <span>LIVE PREVIEW</span>
+                <span>SOLVETA LIVE</span>
               </div>
             </div>
 
-            {/* WEBSITE CONTENT: MODERN HIGH-CONVERTING HERO & SERVICES */}
+            {/* WEBSITE CONTENT: SOLVETA SOLUTION & AGENCY HUB */}
             <div className="flex-grow overflow-y-auto bg-gradient-to-b from-[#10121a] via-[#0c0d12] to-[#08080c] p-4 sm:p-6 text-white flex flex-col justify-between relative">
               {/* Subtle Ambient Red Flare */}
               <div className="absolute top-0 right-1/4 w-48 h-48 bg-[#8B0021]/20 rounded-full blur-[60px] pointer-events-none" />
@@ -97,21 +97,26 @@ export const LaptopMockup3D: React.FC = () => {
                   <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#8B0021] to-[#50000F] flex items-center justify-center font-black text-xs text-white shadow-xs">
                     ✦
                   </div>
-                  <span className="font-extrabold text-xs tracking-wider text-white uppercase font-mono">
-                    MEDIAURA DIGITAL
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="font-extrabold text-xs tracking-wider text-white uppercase font-mono">
+                      SOLVETA
+                    </span>
+                    <span className="text-[8px] text-rose-300/80 font-mono -mt-0.5">
+                      SOLVE TECHNOLOGY AGENCY
+                    </span>
+                  </div>
                 </div>
 
                 <div className="hidden md:flex items-center gap-4 text-[10px] text-gray-300 font-medium">
-                  <span className="text-white hover:text-rose-300 cursor-pointer">About Us</span>
-                  <span className="hover:text-rose-300 cursor-pointer">Services</span>
-                  <span className="hover:text-rose-300 cursor-pointer">Case Studies</span>
-                  <span className="hover:text-rose-300 cursor-pointer">Insights</span>
-                  <span className="hover:text-rose-300 cursor-pointer">Contact</span>
+                  <span className="text-white hover:text-rose-300 cursor-pointer">Layanan</span>
+                  <span className="hover:text-rose-300 cursor-pointer">Paket Web</span>
+                  <span className="hover:text-rose-300 cursor-pointer">Portofolio</span>
+                  <span className="hover:text-rose-300 cursor-pointer">Sistem Custom</span>
+                  <span className="hover:text-rose-300 cursor-pointer">Kontak</span>
                 </div>
 
                 <div className="px-3 py-1 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-[10px] font-bold rounded-lg shadow-xs cursor-pointer">
-                  Get in Touch
+                  Hubungi Kami
                 </div>
               </div>
 
@@ -119,80 +124,86 @@ export const LaptopMockup3D: React.FC = () => {
               <div className="text-center my-auto py-3 sm:py-5 max-w-lg mx-auto relative z-10 space-y-2.5">
                 <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 text-[10px] font-semibold tracking-wide">
                   <Sparkles className="w-3 h-3 text-rose-400" />
-                  <span>Expert Digital &amp; Technology Agency</span>
+                  <span>Solusi Website &amp; Otomasi Digital Terpadu</span>
                 </div>
 
                 <h2 className="text-base sm:text-xl md:text-2xl font-black text-white tracking-tight leading-snug">
-                  Scale Your Business with Next-Gen Digital Systems
+                  Mengubah Tantangan Bisnis Menjadi Solusi Digital &amp; Website Cepat
                 </h2>
 
                 <p className="text-[10px] sm:text-xs text-gray-400 leading-relaxed max-w-md mx-auto">
-                  We build high-performance web applications, intelligent automation, and modern brand experiences that drive measurable growth.
+                  SOLVETA hadir menyederhanakan masalah kompleks melalui pembuatan website profesional, otomasi proses bisnis WhatsApp, dan aplikasi custom berkinerja tinggi.
                 </p>
 
                 {/* Hero CTA Buttons */}
                 <div className="flex items-center justify-center gap-2.5 pt-1">
-                  <div className="px-4 py-1.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-[11px] font-bold rounded-lg shadow-sm cursor-pointer hover:scale-105 transition-transform flex items-center gap-1">
-                    <span>Explore Solutions</span>
+                  <a
+                    href="#pricing"
+                    className="px-4 py-1.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-[11px] font-bold rounded-lg shadow-sm cursor-pointer hover:scale-105 transition-transform flex items-center gap-1"
+                  >
+                    <span>Pilihan Paket Web</span>
                     <ArrowRight className="w-3 h-3" />
-                  </div>
-                  <div className="px-4 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 text-[11px] font-bold rounded-lg cursor-pointer transition-colors">
-                    View Portfolio
-                  </div>
+                  </a>
+                  <a
+                    href="#portfolio"
+                    className="px-4 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-gray-200 text-[11px] font-bold rounded-lg cursor-pointer transition-colors"
+                  >
+                    Lihat Portofolio
+                  </a>
                 </div>
               </div>
 
-              {/* 3. Services / Capabilities 4-Card Grid (Matching User Reference Image) */}
+              {/* 3. SOLVETA Core Capabilities 4-Card Grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 pt-3 border-t border-white/5 relative z-10">
                 {/* Card 1 */}
                 <div className="p-2 sm:p-2.5 rounded-xl bg-[#141622]/80 border border-[#27293a] hover:border-rose-500/40 transition-all text-left group">
                   <div className="w-6 h-6 rounded-lg bg-rose-950/60 border border-rose-800/40 flex items-center justify-center text-rose-400 mb-1.5 group-hover:scale-110 transition-transform">
-                    <TrendingUp className="w-3.5 h-3.5" />
+                    <Globe className="w-3.5 h-3.5" />
                   </div>
                   <div className="text-[10px] font-bold text-white group-hover:text-rose-300 transition-colors">
-                    Lead Generation
+                    Website &amp; Landing Page
                   </div>
                   <div className="text-[9px] text-gray-400 line-clamp-1">
-                    Automated conversion funnels
+                    Cepat, mobile-friendly &amp; SEO
                   </div>
                 </div>
 
                 {/* Card 2 */}
                 <div className="p-2 sm:p-2.5 rounded-xl bg-[#141622]/80 border border-[#27293a] hover:border-rose-500/40 transition-all text-left group">
                   <div className="w-6 h-6 rounded-lg bg-rose-950/60 border border-rose-800/40 flex items-center justify-center text-rose-400 mb-1.5 group-hover:scale-110 transition-transform">
-                    <Layout className="w-3.5 h-3.5" />
+                    <Database className="w-3.5 h-3.5" />
                   </div>
                   <div className="text-[10px] font-bold text-white group-hover:text-rose-300 transition-colors">
-                    Design &amp; Development
+                    Custom System &amp; ERP
                   </div>
                   <div className="text-[9px] text-gray-400 line-clamp-1">
-                    Modern high-speed web apps
+                    Klinik, logistik, POS &amp; database
                   </div>
                 </div>
 
                 {/* Card 3 */}
                 <div className="p-2 sm:p-2.5 rounded-xl bg-[#141622]/80 border border-[#27293a] hover:border-rose-500/40 transition-all text-left group">
                   <div className="w-6 h-6 rounded-lg bg-rose-950/60 border border-rose-800/40 flex items-center justify-center text-rose-400 mb-1.5 group-hover:scale-110 transition-transform">
-                    <Compass className="w-3.5 h-3.5" />
+                    <MessageSquareCode className="w-3.5 h-3.5" />
                   </div>
                   <div className="text-[10px] font-bold text-white group-hover:text-rose-300 transition-colors">
-                    Strategy &amp; Roadmap
+                    Otomasi WhatsApp
                   </div>
                   <div className="text-[9px] text-gray-400 line-clamp-1">
-                    Enterprise digital structure
+                    Gateway notifikasi &amp; order
                   </div>
                 </div>
 
                 {/* Card 4 */}
                 <div className="p-2 sm:p-2.5 rounded-xl bg-[#141622]/80 border border-[#27293a] hover:border-rose-500/40 transition-all text-left group">
                   <div className="w-6 h-6 rounded-lg bg-rose-950/60 border border-rose-800/40 flex items-center justify-center text-rose-400 mb-1.5 group-hover:scale-110 transition-transform">
-                    <BarChart3 className="w-3.5 h-3.5" />
+                    <CheckCircle2 className="w-3.5 h-3.5" />
                   </div>
                   <div className="text-[10px] font-bold text-white group-hover:text-rose-300 transition-colors">
-                    Tracking &amp; Analytics
+                    Full Garansi &amp; Server
                   </div>
                   <div className="text-[9px] text-gray-400 line-clamp-1">
-                    Real-time performance data
+                    Free hosting, domain &amp; SSL
                   </div>
                 </div>
               </div>
