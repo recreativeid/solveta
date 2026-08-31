@@ -3,16 +3,44 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { getSupabaseClient, isSupabaseConfigured } from "@/lib/supabase";
 
+export interface ChecklistItemData {
+  text: string;
+  included: boolean;
+}
+
+export interface DomainAddonData {
+  name: string;
+  price: string;
+}
+
+export interface EmailAddonData {
+  name: string;
+  price: string;
+}
+
+export interface RevisionRulesData {
+  light: string;
+  heavy: string;
+  extraPage?: string;
+}
+
 export interface PricingTierData {
   id: string;
   name: string;
   pricePrefix?: string;
   price: string;
+  priceBadge?: string;
   renewalPrice?: string;
   activePeriod?: string;
   deliveryTime?: string;
   popular?: boolean;
+  popularLabel?: string;
   features: string[];
+  checklist?: ChecklistItemData[];
+  domainAddons?: DomainAddonData[];
+  emailAddons?: EmailAddonData[];
+  revisionRules?: RevisionRulesData;
+  customNote?: string;
   suitability: string;
   buttonLabel: string;
   buttonVariant: "red" | "outline";
@@ -72,10 +100,14 @@ const defaultState: SiteDataState = {
       id: "basic",
       name: "BASIC",
       price: "Rp 299K",
+      priceBadge: "299K",
       renewalPrice: "249k/tahun*",
       activePeriod: "1 Tahun",
       deliveryTime: "1–2 Hari",
-      suitability: "Kebutuhan pribadi: landing page",
+      suitability: "kebutuhan pribadi: landing page",
+      buttonLabel: "Pesan Paket Basic (Rp 299K)",
+      buttonVariant: "outline",
+      waMessage: "Halo SOLVETA, saya tertarik untuk memesan Paket BASIC Rp 299K.",
       features: [
         "Maksimal 1 Halaman (tambah Rp 50k/Halaman)",
         "Revisi ringan 2x (Tidak berubah dari brief awal)",
@@ -86,19 +118,51 @@ const defaultState: SiteDataState = {
         "SSL Security",
         "Full Garansi*",
       ],
-      buttonLabel: "Pilih Basic",
-      buttonVariant: "outline",
-      waMessage: "Halo SOLVETA, saya tertarik dengan paket Basic Rp299K",
+      checklist: [
+        { text: "Maksimal 1 Halaman (tambah Rp 50k/Halaman)", included: true },
+        { text: "Revisi ringan 2x (Tidak berubah dari brief awal)", included: true },
+        { text: "Optimasi Speed (High Perform)", included: true },
+        { text: "Free Domain (.my.id, .site, .store, .xyz, .space, .fund, .shop)", included: true },
+        { text: "Free Hosting (Akses Dashboard, Tanpa login cPanel)", included: true },
+        { text: "Email Bisnis (nama@domain.com)", included: false },
+        { text: "Responsive Web (mobile friendly)", included: true },
+        { text: "SSL Security", included: true },
+        { text: "SEO Basic", included: false },
+        { text: "Google Analytics", included: false },
+        { text: "Full Garansi*", included: true },
+      ],
+      domainAddons: [
+        { name: ".web.id", price: "+Rp100.000" },
+        { name: ".blog", price: "+Rp100.000" },
+        { name: ".online", price: "+Rp100.000" },
+        { name: ".com", price: "+Rp200.000" },
+        { name: ".info", price: "+Rp100.000" },
+        { name: "dll (ekstensi lain)", price: "Menyesuaikan" },
+      ],
+      emailAddons: [
+        { name: "1 Akun Email Bisnis", price: "Rp 50.000" },
+        { name: "5 Akun Email Bisnis", price: "Rp 150.000" },
+      ],
+      revisionRules: {
+        light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
+        heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
+        extraPage: "Rp 50.000 / halaman",
+      },
     },
     {
       id: "standard",
       name: "STANDARD",
       price: "Rp 549K",
+      priceBadge: "549K",
+      popular: true,
+      popularLabel: "PALING DIMINATI",
       renewalPrice: "399k/tahun*",
       activePeriod: "1 Tahun",
       deliveryTime: "3–5 Hari",
-      popular: true,
-      suitability: "Kebutuhan bisnis kecil",
+      suitability: "kebutuhan bisnis kecil",
+      buttonLabel: "Pesan Paket Standard (Rp 549K)",
+      buttonVariant: "red",
+      waMessage: "Halo SOLVETA, saya tertarik untuk memesan Paket STANDARD Rp 549K.",
       features: [
         "Maksimal 5 Halaman (tambah Rp 50k/Halaman)",
         "Revisi ringan 3x (Tidak berubah dari brief awal)",
@@ -111,18 +175,39 @@ const defaultState: SiteDataState = {
         "SEO Basic",
         "Full Garansi*",
       ],
-      buttonLabel: "Pilih Standard",
-      buttonVariant: "red",
-      waMessage: "Halo SOLVETA, saya tertarik dengan paket Standard Rp549K",
+      checklist: [
+        { text: "Maksimal 5 Halaman (tambah Rp 50k/Halaman)", included: true },
+        { text: "Free Iklan Google Ads", included: false },
+        { text: "Revisi ringan 3x (Tidak berubah dari brief awal)", included: true },
+        { text: "Optimasi Speed (2x lebih cepat)", included: true },
+        { text: "Free Desain Mockup", included: false },
+        { text: "Free Domain (.com, .net, .org, dll)", included: true },
+        { text: "Free Hosting (Akses Dashboard, Tanpa login cPanel)", included: true },
+        { text: "1 Email Bisnis (nama@domain.com)", included: true },
+        { text: "Responsive Web (mobile friendly)", included: true },
+        { text: "SSL Security", included: true },
+        { text: "SEO Basic", included: true },
+        { text: "Google Analytics", included: false },
+        { text: "Full Garansi*", included: true },
+      ],
+      revisionRules: {
+        light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
+        heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
+        extraPage: "Rp 50.000 / halaman",
+      },
     },
     {
       id: "premium",
       name: "PREMIUM",
       price: "Rp 749K",
+      priceBadge: "749K",
       renewalPrice: "399k/tahun*",
       activePeriod: "1 Tahun",
       deliveryTime: "3–5 Hari",
-      suitability: "Company profile & bisnis produk",
+      suitability: "company profile & bisnis produk",
+      buttonLabel: "Pesan Paket Premium (Rp 749K)",
+      buttonVariant: "outline",
+      waMessage: "Halo SOLVETA, saya tertarik untuk memesan Paket PREMIUM Rp 749K.",
       features: [
         "Maksimal 7 Halaman (tambah Rp 50k/Halaman)",
         "Revisi ringan 5x (Tidak berubah dari brief awal)",
@@ -137,19 +222,40 @@ const defaultState: SiteDataState = {
         "Google Analytics",
         "Full Garansi*",
       ],
-      buttonLabel: "Pilih Premium",
-      buttonVariant: "outline",
-      waMessage: "Halo SOLVETA, saya tertarik dengan paket Premium Rp749K",
+      checklist: [
+        { text: "Maksimal 7 Halaman (tambah Rp 50k/Halaman)", included: true },
+        { text: "Free Iklan Google Ads", included: false },
+        { text: "Revisi ringan 5x (Tidak berubah dari brief awal)", included: true },
+        { text: "Optimasi Speed (3x lebih cepat)", included: true },
+        { text: "Free Desain Mockup", included: true },
+        { text: "Free Domain (.com, .net, .org, dll)", included: true },
+        { text: "Free Hosting (Akses Dashboard, Tanpa login cPanel)", included: true },
+        { text: "2 Email Bisnis (nama@domain.com)", included: true },
+        { text: "Responsive Web (mobile friendly)", included: true },
+        { text: "SSL Security", included: true },
+        { text: "SEO Friendly", included: true },
+        { text: "Google Analytics", included: true },
+        { text: "Full Garansi*", included: true },
+      ],
+      revisionRules: {
+        light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
+        heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
+        extraPage: "Rp 50.000 / halaman",
+      },
     },
     {
       id: "custom",
       name: "CUSTOM",
-      pricePrefix: "Mulai",
+      pricePrefix: "mulai dari :",
       price: "Rp 1,5 Juta",
-      renewalPrice: "Mulai 600k/tahun*",
+      priceBadge: "1,5 Jt",
+      renewalPrice: "mulai dari : 600k/tahun*",
       activePeriod: "1 Tahun",
-      deliveryTime: "Wajib Meet",
-      suitability: "Website Custom",
+      deliveryTime: "Wajib Meet (Fleksibel)",
+      suitability: "Website Custom & Sistem Aplikasi",
+      buttonLabel: "Jadwalkan Konsultasi & Meet",
+      buttonVariant: "outline",
+      waMessage: "Halo SOLVETA, saya ingin konsultasi dan menjadwalkan sesi meet untuk Paket Website Custom.",
       features: [
         "Free Iklan Google Ads",
         "Optimasi Speed (Super Cepat)",
@@ -163,9 +269,24 @@ const defaultState: SiteDataState = {
         "Google Analytics",
         "Full Garansi*",
       ],
-      buttonLabel: "Hubungi Kami",
-      buttonVariant: "outline",
-      waMessage: "Halo SOLVETA, saya ingin mendiskusikan kebutuhan Custom Website & Sistem",
+      checklist: [
+        { text: "Free Iklan Google Ads", included: true },
+        { text: "Optimasi Speed (Super Cepat)", included: true },
+        { text: "Free Desain Mockup", included: true },
+        { text: "Free Domain (.com, .net, .org, dll)", included: true },
+        { text: "Free Hosting (Akses Dashboard, Akses login cPanel)", included: true },
+        { text: "Unlimited Email Bisnis (nama@domain.com)", included: true },
+        { text: "Responsive Web (mobile friendly)", included: true },
+        { text: "SSL Security", included: true },
+        { text: "SEO Friendly", included: true },
+        { text: "Google Analytics", included: true },
+        { text: "Full Garansi*", included: true },
+      ],
+      revisionRules: {
+        light: "Sesuai kesepakatan scope of work",
+        heavy: "Penambahan fitur di luar brief awal disesuaikan dengan sesi meet",
+      },
+      customNote: "Wajib Meet Online / Offline untuk finalisasi arsitektur sistem, database, dan alur kerja aplikasi.",
     },
   ],
   portfolio: [
@@ -248,23 +369,13 @@ const defaultState: SiteDataState = {
     },
     {
       id: "brand-7",
-      name: "Sinergi Media Kreatif",
-      label: "Digital Marketing",
+      name: "Samudra Retail",
+      label: "Multi-Store Management",
     },
     {
       id: "brand-8",
-      name: "Penta Farmasi",
-      label: "Inventory Automation",
-    },
-    {
-      id: "brand-9",
-      name: "Vortex Tech Labs",
-      label: "SaaS & AI",
-    },
-    {
-      id: "brand-10",
-      name: "Prima Mandiri Distribusi",
-      label: "B2B Commerce",
+      name: "Garda Security Tech",
+      label: "Access Control & IoT",
     },
   ],
   categories: [
@@ -316,7 +427,7 @@ interface SiteContextType {
 const SiteContext = createContext<SiteContextType | undefined>(undefined);
 
 // Persistent Storage Key
-const STORAGE_KEY = "solveta_site_cms_data_v8";
+const STORAGE_KEY = "solveta_site_cms_data_v9";
 
 export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<SiteDataState>(defaultState);
@@ -327,14 +438,32 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     try {
       const saved =
         localStorage.getItem(STORAGE_KEY) ||
-        localStorage.getItem("solveta_site_cms_data_v7") ||
-        localStorage.getItem("solveta_site_cms_data_v6");
+        localStorage.getItem("solveta_site_cms_data_v8") ||
+        localStorage.getItem("solveta_site_cms_data_v7");
 
       if (saved) {
         const parsed = JSON.parse(saved);
+        
+        // Merge pricing carefully with default rich attributes
+        const mergedPricing = defaultState.pricing.map((defaultTier) => {
+          const savedTier = (parsed.pricing || []).find(
+            (p: PricingTierData) => p.id === defaultTier.id || p.name === defaultTier.name
+          );
+          if (!savedTier) return defaultTier;
+          return {
+            ...defaultTier,
+            ...savedTier,
+            checklist: savedTier.checklist || defaultTier.checklist,
+            domainAddons: savedTier.domainAddons || defaultTier.domainAddons,
+            emailAddons: savedTier.emailAddons || defaultTier.emailAddons,
+            revisionRules: savedTier.revisionRules || defaultTier.revisionRules,
+          };
+        });
+
         setData((prev) => ({
           ...defaultState,
           ...parsed,
+          pricing: mergedPricing.length > 0 ? mergedPricing : defaultState.pricing,
           siteCopy: { ...defaultState.siteCopy, ...(parsed.siteCopy || {}) },
           contact: { ...defaultState.contact, ...(parsed.contact || {}) },
           categories: Array.from(
@@ -358,37 +487,29 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             .eq("id", "solveta_cms_main")
             .single();
 
-          if (!error && sbData?.data) {
-            const cloudPayload = sbData.data as Partial<SiteDataState>;
-            setData((prev) => {
-              const merged: SiteDataState = {
-                ...prev,
-                ...cloudPayload,
-                siteCopy: { ...prev.siteCopy, ...(cloudPayload.siteCopy || {}) },
-                contact: { ...prev.contact, ...(cloudPayload.contact || {}) },
-              };
-              try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
-              } catch (e) {}
-              return merged;
-            });
+          if (sbData && sbData.data) {
+            setData((prev) => ({
+              ...defaultState,
+              ...sbData.data,
+            }));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(sbData.data));
           }
         } catch (err) {
-          console.warn("Supabase fetch skipped or offline", err);
+          console.log("Supabase fetch fallback:", err);
         }
       })();
     }
   }, []);
 
+  // Save to LocalStorage & Supabase
   const saveData = (newState: SiteDataState) => {
     setData(newState);
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
     } catch (e) {
-      console.error("Failed to save CMS data to localStorage", e);
+      console.error("Failed to save to localStorage", e);
     }
 
-    // Push changes to Supabase Cloud 24/7 in background
     if (isSupabaseConfigured()) {
       (async () => {
         try {
@@ -399,7 +520,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             updated_at: new Date().toISOString(),
           });
         } catch (err) {
-          console.warn("Supabase background upsert skipped", err);
+          console.error("Failed auto-sync with Supabase:", err);
         }
       })();
     }
@@ -416,16 +537,16 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const addPortfolioItem = (item: Omit<PortfolioItemData, "id">) => {
     const newItem: PortfolioItemData = {
       ...item,
-      id: "port-" + Date.now(),
+      id: `port-${Date.now()}`,
     };
     saveData({ ...data, portfolio: [newItem, ...data.portfolio] });
   };
 
   const editPortfolioItem = (id: string, updated: Partial<PortfolioItemData>) => {
-    saveData({
-      ...data,
-      portfolio: data.portfolio.map((p) => (p.id === id ? { ...p, ...updated } : p)),
-    });
+    const newPort = data.portfolio.map((p) =>
+      p.id === id ? { ...p, ...updated } : p
+    );
+    saveData({ ...data, portfolio: newPort });
   };
 
   const deletePortfolioItem = (id: string) => {
@@ -440,18 +561,18 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const addClientBrand = (brand: Omit<ClientBrandItem, "id">) => {
-    const newItem: ClientBrandItem = {
+    const newBrand: ClientBrandItem = {
       ...brand,
-      id: "brand-" + Date.now(),
+      id: `brand-${Date.now()}`,
     };
-    saveData({ ...data, clientBrands: [...data.clientBrands, newItem] });
+    saveData({ ...data, clientBrands: [...data.clientBrands, newBrand] });
   };
 
   const editClientBrand = (id: string, updated: Partial<ClientBrandItem>) => {
-    saveData({
-      ...data,
-      clientBrands: data.clientBrands.map((b) => (b.id === id ? { ...b, ...updated } : b)),
-    });
+    const newBrands = data.clientBrands.map((b) =>
+      b.id === id ? { ...b, ...updated } : b
+    );
+    saveData({ ...data, clientBrands: newBrands });
   };
 
   const deleteClientBrand = (id: string) => {
@@ -462,12 +583,11 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   };
 
   const addCategory = (category: string) => {
-    const trimmed = category.trim();
-    if (!trimmed || data.categories.includes(trimmed)) return;
-    saveData({
-      ...data,
-      categories: [...data.categories, trimmed],
-    });
+    if (!category.trim()) return;
+    const clean = category.trim();
+    if (!data.categories.includes(clean)) {
+      saveData({ ...data, categories: [...data.categories, clean] });
+    }
   };
 
   const deleteCategory = (category: string) => {
@@ -481,17 +601,17 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     saveData({ ...data, categories });
   };
 
-  const updateContact = (contact: Partial<ContactData>) => {
+  const updateContact = (contactUpdate: Partial<ContactData>) => {
     saveData({
       ...data,
-      contact: { ...data.contact, ...contact },
+      contact: { ...data.contact, ...contactUpdate },
     });
   };
 
-  const updateSiteCopy = (copy: Partial<SiteCopyData>) => {
+  const updateSiteCopy = (copyUpdate: Partial<SiteCopyData>) => {
     saveData({
       ...data,
-      siteCopy: { ...data.siteCopy, ...copy },
+      siteCopy: { ...data.siteCopy, ...copyUpdate },
     });
   };
 
@@ -508,22 +628,20 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       const client = getSupabaseClient();
       const { error } = await client.from("site_content").upsert({
         id: "solveta_cms_main",
-        data,
+        data: data,
         updated_at: new Date().toISOString(),
       });
       return !error;
-    } catch {
+    } catch (e) {
+      console.error("Manual Supabase sync failed:", e);
       return false;
     }
   };
 
   const resetToDefaults = () => {
-    saveData(defaultState);
+    localStorage.removeItem(STORAGE_KEY);
+    setData(defaultState);
   };
-
-  if (!isLoaded) {
-    return null;
-  }
 
   return (
     <SiteContext.Provider

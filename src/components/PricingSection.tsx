@@ -12,179 +12,9 @@ import {
   Sparkles,
   ArrowRight,
   MessageCircle,
-  HelpCircle,
-  Zap,
   Info,
 } from "lucide-react";
-import { useSiteData } from "@/context/SiteDataContext";
-
-interface ChecklistItem {
-  text: string;
-  included: boolean;
-  note?: string;
-}
-
-interface PackageDetail {
-  id: string;
-  name: string;
-  priceBadge: string;
-  pricePrefix?: string;
-  popular?: boolean;
-  popularLabel?: string;
-  activePeriod: string;
-  renewalPrice: string;
-  suitability: string;
-  deliveryTime: string;
-  buttonLabel: string;
-  waMessage: string;
-  checklist: ChecklistItem[];
-  domainAddons?: { name: string; price: string }[];
-  emailAddons?: { name: string; price: string; note?: string }[];
-  revisionRules: {
-    light: string;
-    heavy: string;
-    extraPage?: string;
-  };
-  customNote?: string;
-}
-
-const packageList: PackageDetail[] = [
-  {
-    id: "basic",
-    name: "BASIC",
-    priceBadge: "299K",
-    activePeriod: "1 Tahun",
-    renewalPrice: "249k/tahun*",
-    suitability: "kebutuhan pribadi: landing page",
-    deliveryTime: "1–2 Hari",
-    buttonLabel: "Pesan Paket Basic (Rp 299K)",
-    waMessage: "Halo SOLVETA, saya tertarik untuk memesan Paket BASIC Rp 299K.",
-    checklist: [
-      { text: "Maksimal 1 Halaman (tambah Rp 50k/Halaman)", included: true },
-      { text: "Revisi ringan 2x (Tidak berubah dari brief awal)", included: true },
-      { text: "Optimasi Speed (High Perform)", included: true },
-      { text: "Free Domain (.my.id, .site, .store, .xyz, .space, .fund, .shop)", included: true },
-      { text: "Free Hosting (Akses Dashboard, Tanpa login cPanel)", included: true },
-      { text: "Email Bisnis (nama@domain.com)", included: false },
-      { text: "Responsive Web (mobile friendly)", included: true },
-      { text: "SSL Security", included: true },
-      { text: "SEO Basic", included: false },
-      { text: "Google Analytics", included: false },
-      { text: "Full Garansi*", included: true },
-    ],
-    domainAddons: [
-      { name: ".web.id", price: "+Rp100.000" },
-      { name: ".blog", price: "+Rp100.000" },
-      { name: ".online", price: "+Rp100.000" },
-      { name: ".com", price: "+Rp200.000" },
-      { name: ".info", price: "+Rp100.000" },
-      { name: "dll (ekstensi lain)", price: "Menyesuaikan" },
-    ],
-    emailAddons: [
-      { name: "1 Akun Email Bisnis", price: "Rp 50.000" },
-      { name: "5 Akun Email Bisnis", price: "Rp 150.000" },
-    ],
-    revisionRules: {
-      light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
-      heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
-      extraPage: "Rp 50.000 / halaman",
-    },
-  },
-  {
-    id: "standard",
-    name: "STANDARD",
-    priceBadge: "549K",
-    popular: true,
-    popularLabel: "PALING DIMINATI",
-    activePeriod: "1 Tahun",
-    renewalPrice: "399k/tahun*",
-    suitability: "kebutuhan bisnis kecil",
-    deliveryTime: "3–5 Hari",
-    buttonLabel: "Pesan Paket Standard (Rp 549K)",
-    waMessage: "Halo SOLVETA, saya tertarik untuk memesan Paket STANDARD Rp 549K.",
-    checklist: [
-      { text: "Maksimal 5 Halaman (tambah Rp 50k/Halaman)", included: true },
-      { text: "Free Iklan Google Ads", included: false },
-      { text: "Revisi ringan 3x (Tidak berubah dari brief awal)", included: true },
-      { text: "Optimasi Speed (2x lebih cepat)", included: true },
-      { text: "Free Desain Mockup", included: false },
-      { text: "Free Domain (.com, .net, .org, dll)", included: true },
-      { text: "Free Hosting (Akses Dashboard, Tanpa login cPanel)", included: true },
-      { text: "1 Email Bisnis (nama@domain.com)", included: true },
-      { text: "Responsive Web (mobile friendly)", included: true },
-      { text: "SSL Security", included: true },
-      { text: "SEO Basic", included: true },
-      { text: "Google Analytics", included: false },
-      { text: "Full Garansi*", included: true },
-    ],
-    revisionRules: {
-      light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
-      heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
-      extraPage: "Rp 50.000 / halaman",
-    },
-  },
-  {
-    id: "premium",
-    name: "PREMIUM",
-    priceBadge: "749K",
-    activePeriod: "1 Tahun",
-    renewalPrice: "399k/tahun*",
-    suitability: "company profile & bisnis produk",
-    deliveryTime: "3–5 Hari",
-    buttonLabel: "Pesan Paket Premium (Rp 749K)",
-    waMessage: "Halo SOLVETA, saya tertarik untuk memesan Paket PREMIUM Rp 749K.",
-    checklist: [
-      { text: "Maksimal 7 Halaman (tambah Rp 50k/Halaman)", included: true },
-      { text: "Free Iklan Google Ads", included: false },
-      { text: "Revisi ringan 5x (Tidak berubah dari brief awal)", included: true },
-      { text: "Optimasi Speed (3x lebih cepat)", included: true },
-      { text: "Free Desain Mockup", included: true },
-      { text: "Free Domain (.com, .net, .org, dll)", included: true },
-      { text: "Free Hosting (Akses Dashboard, Tanpa login cPanel)", included: true },
-      { text: "2 Email Bisnis (nama@domain.com)", included: true },
-      { text: "Responsive Web (mobile friendly)", included: true },
-      { text: "SSL Security", included: true },
-      { text: "SEO Friendly", included: true },
-      { text: "Google Analytics", included: true },
-      { text: "Full Garansi*", included: true },
-    ],
-    revisionRules: {
-      light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
-      heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
-      extraPage: "Rp 50.000 / halaman",
-    },
-  },
-  {
-    id: "custom",
-    name: "CUSTOM",
-    pricePrefix: "mulai dari :",
-    priceBadge: "1,5 Jt",
-    activePeriod: "1 Tahun",
-    renewalPrice: "mulai dari : 600k/tahun*",
-    suitability: "Website Custom & Sistem Aplikasi",
-    deliveryTime: "Wajib Meet (Fleksibel)",
-    buttonLabel: "Jadwalkan Konsultasi & Meet",
-    waMessage: "Halo SOLVETA, saya ingin konsultasi dan menjadwalkan sesi meet untuk Paket Website Custom.",
-    checklist: [
-      { text: "Free Iklan Google Ads", included: true },
-      { text: "Optimasi Speed (Super Cepat)", included: true },
-      { text: "Free Desain Mockup", included: true },
-      { text: "Free Domain (.com, .net, .org, dll)", included: true },
-      { text: "Free Hosting (Akses Dashboard, Akses login cPanel)", included: true },
-      { text: "Unlimited Email Bisnis (nama@domain.com)", included: true },
-      { text: "Responsive Web (mobile friendly)", included: true },
-      { text: "SSL Security", included: true },
-      { text: "SEO Friendly", included: true },
-      { text: "Google Analytics", included: true },
-      { text: "Full Garansi*", included: true },
-    ],
-    revisionRules: {
-      light: "Sesuai kesepakatan scope of work",
-      heavy: "Penambahan fitur di luar brief awal disesuaikan dengan sesi meet",
-    },
-    customNote: "Wajib Meet Online / Offline untuk finalisasi arsitektur sistem, database, dan alur kerja aplikasi.",
-  },
-];
+import { useSiteData, PricingTierData, ChecklistItemData } from "@/context/SiteDataContext";
 
 export const PricingSection: React.FC = () => {
   const { data } = useSiteData();
@@ -193,10 +23,49 @@ export const PricingSection: React.FC = () => {
 
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
 
+  const packages = data.pricing.map((tier) => {
+    const checklist: ChecklistItemData[] =
+      tier.checklist && tier.checklist.length > 0
+        ? tier.checklist
+        : (tier.features || []).map((f) => ({
+            text: f.replace(/^[✔❌\s]+/, "").trim(),
+            included: !f.toLowerCase().includes("tidak termasuk") && !f.startsWith("❌"),
+          }));
+
+    const priceBadge =
+      tier.priceBadge || tier.price.replace(/Rp\s*/i, "").trim();
+
+    return {
+      id: tier.id,
+      name: tier.name,
+      priceBadge,
+      pricePrefix: tier.pricePrefix,
+      popular: tier.popular,
+      popularLabel: tier.popularLabel || (tier.popular ? "PALING DIMINATI" : undefined),
+      activePeriod: tier.activePeriod || "1 Tahun",
+      renewalPrice: tier.renewalPrice || "249k/tahun*",
+      suitability: tier.suitability,
+      deliveryTime: tier.deliveryTime || "3–5 Hari",
+      buttonLabel: tier.buttonLabel || `Pesan Paket ${tier.name}`,
+      waMessage:
+        tier.waMessage ||
+        `Halo SOLVETA, saya tertarik untuk memesan Paket ${tier.name} ${tier.price}.`,
+      checklist,
+      domainAddons: tier.domainAddons,
+      emailAddons: tier.emailAddons,
+      revisionRules: tier.revisionRules || {
+        light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
+        heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
+        extraPage: "Rp 50.000 / halaman",
+      },
+      customNote: tier.customNote,
+    };
+  });
+
   const displayedPackages =
     selectedFilter === "all"
-      ? packageList
-      : packageList.filter((pkg) => pkg.id === selectedFilter);
+      ? packages
+      : packages.filter((pkg) => pkg.id === selectedFilter);
 
   return (
     <section id="pricing" className="py-16 sm:py-24 bg-slate-50/50 border-t border-gray-100">
@@ -231,7 +100,7 @@ export const PricingSection: React.FC = () => {
           >
             Semua 4 Paket (Berurutan)
           </button>
-          {packageList.map((pkg) => (
+          {packages.map((pkg) => (
             <button
               key={pkg.id}
               onClick={() => setSelectedFilter(pkg.id)}

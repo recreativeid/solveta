@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -22,6 +22,13 @@ import {
   Tag,
   Check,
   Camera,
+  Clock,
+  Globe,
+  Mail,
+  ShieldCheck,
+  Sparkles,
+  Layers,
+  MessageCircle,
 } from "lucide-react";
 import {
   SiteDataProvider,
@@ -29,6 +36,9 @@ import {
   PricingTierData,
   PortfolioItemData,
   ClientBrandItem,
+  ChecklistItemData,
+  DomainAddonData,
+  EmailAddonData,
 } from "@/context/SiteDataContext";
 
 function AdminPortalVisual() {
@@ -57,8 +67,8 @@ function AdminPortalVisual() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
 
-  // Active View Mode: 'visual' | 'portfolio' | 'brands' | 'contact'
-  const [activeMode, setActiveMode] = useState<"visual" | "portfolio" | "brands" | "contact">("visual");
+  // Active View Mode: 'visual' | 'pricing' | 'portfolio' | 'brands' | 'contact'
+  const [activeMode, setActiveMode] = useState<"visual" | "pricing" | "portfolio" | "brands" | "contact">("visual");
   const [toastMessage, setToastMessage] = useState("");
 
   // Edit Modal State for Live Visual Editor
@@ -77,11 +87,20 @@ function AdminPortalVisual() {
   const [editHeadline, setEditHeadline] = useState(data.siteCopy.heroHeadline);
   const [editSubtitle, setEditSubtitle] = useState(data.siteCopy.heroSubtitle);
   const [editPortfolioTitle, setEditPortfolioTitle] = useState(data.siteCopy.portfolioTitle);
-  const [editConsultationTitle, setEditConsultationTitle] = useState(data.siteCopy.consultationTitle);
-  const [editConsultationDesc, setEditConsultationDesc] = useState(data.siteCopy.consultationDesc);
+  const [editConsultationTitle, setEditConsultationTitle] = useState(data.siteCopy.consultationTitle || "");
+  const [editConsultationDesc, setEditConsultationDesc] = useState(data.siteCopy.consultationDesc || "");
   const [editPricingList, setEditPricingList] = useState<PricingTierData[]>(data.pricing);
   const [editMarqueeSpeed, setEditMarqueeSpeed] = useState<number>(data.siteCopy.marqueeSpeed || 35);
   const [tempLogo, setTempLogo] = useState<string>(data.siteCopy.siteLogo || "");
+
+  // Synchronize when data loads
+  useEffect(() => {
+    setEditPricingList(data.pricing);
+    setEditHeadline(data.siteCopy.heroHeadline);
+    setEditSubtitle(data.siteCopy.heroSubtitle);
+    setEditPortfolioTitle(data.siteCopy.portfolioTitle);
+    setTempLogo(data.siteCopy.siteLogo || "");
+  }, [data]);
 
   // WhatsApp Form
   const [editWaNumber, setEditWaNumber] = useState(data.contact.whatsappNumber);
@@ -150,8 +169,8 @@ function AdminPortalVisual() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 3 * 1024 * 1024) {
-      alert("Ukuran logo maksimal 3MB");
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Ukuran logo maksimal 2MB");
       return;
     }
 
@@ -167,13 +186,13 @@ function AdminPortalVisual() {
     reader.readAsDataURL(file);
   };
 
-  // Handle site logo file upload (kiri atas web)
+  // Handle site main logo upload
   const handleSiteLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 3 * 1024 * 1024) {
-      alert("Ukuran logo maksimal 3MB");
+    if (file.size > 2 * 1024 * 1024) {
+      alert("Ukuran foto logo maksimal 2MB");
       return;
     }
 
@@ -182,89 +201,118 @@ function AdminPortalVisual() {
       const result = event.target?.result as string;
       setTempLogo(result);
       updateSiteLogo(result);
-      showToast("Foto profil / logo kiri atas web berhasil diperbarui!");
+      showToast("Foto Profil / Logo Brand berhasil diperbarui!");
     };
     reader.readAsDataURL(file);
   };
 
-  const handleAddNewCategory = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newCategoryInput.trim()) return;
-    addCategory(newCategoryInput.trim());
-    setNewPortCategory(newCategoryInput.trim());
-    setNewCategoryInput("");
-    showToast("Kategori baru berhasil ditambahkan!");
-  };
-
+  // Portfolio actions
   const handleCreatePortfolio = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newPortTitle.trim() || !newPortDesc.trim()) {
-      alert("Mohon isi judul dan deskripsi portofolio.");
-      return;
-    }
+    if (!newPortTitle.trim()) return;
+
+    const tagsArray = newPortTags
+      .split(",")
+      .map((t) => t.trim())
+      .filter((t) => t.length > 0);
 
     addPortfolioItem({
-      title: newPortTitle.trim(),
-      category: newPortCategory.trim() || undefined,
+      title: newPortTitle,
+      category: newPortCategory.trim() || "Website & Presence",
       image:
-        newPortImage ||
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&auto=format&fit=crop&q=80",
-      description: newPortDesc.trim(),
-      tags: newPortTags
-        .split(",")
-        .map((t) => t.trim())
-        .filter(Boolean),
+        newPortImage.trim() ||
+        "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80",
+      description: newPortDesc,
+      tags: tagsArray.length > 0 ? tagsArray : ["Custom", "SOLVETA"],
+      liveUrl: "https://www.solveta.site",
     });
 
+    if (newPortCategory.trim()) {
+      addCategory(newPortCategory.trim());
+    }
+
     setNewPortTitle("");
-    setNewPortCategory("");
     setNewPortDesc("");
     setNewPortImage("");
     setNewPortTags("");
+    setNewPortCategory("");
     if (fileInputRef.current) fileInputRef.current.value = "";
     showToast("Portofolio baru berhasil ditambahkan!");
   };
 
-  const handleSaveEditedPortfolio = (e: React.FormEvent) => {
+  const handleUpdatePortfolio = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingPortfolio) return;
-    editPortfolioItem(editingPortfolio.id, editingPortfolio);
-    setEditingPortfolio(null);
-    showToast("Perubahan portofolio berhasil disimpan!");
-  };
 
-  const handleCreateBrand = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newBrandLogo && !newBrandName.trim()) {
-      alert("Mohon upload logo gambar atau isi nama brand.");
-      return;
+    editPortfolioItem(editingPortfolio.id, {
+      title: editingPortfolio.title,
+      category: editingPortfolio.category,
+      description: editingPortfolio.description,
+      image: editingPortfolio.image,
+      tags: editingPortfolio.tags,
+      liveUrl: editingPortfolio.liveUrl,
+    });
+
+    if (editingPortfolio.category) {
+      addCategory(editingPortfolio.category);
     }
 
+    setEditingPortfolio(null);
+    showToast("Portofolio berhasil diperbarui!");
+  };
+
+  const handleDeletePortfolio = (id: string, title: string) => {
+    if (confirm(`Hapus portofolio "${title}"?`)) {
+      deletePortfolioItem(id);
+      showToast("Portofolio berhasil dihapus!");
+    }
+  };
+
+  // Client Brand actions
+  const handleCreateBrand = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newBrandName.trim()) return;
+
     addClientBrand({
-      name: newBrandName.trim() || undefined,
-      label: newBrandLabel.trim() || undefined,
-      logoImage: newBrandLogo || undefined,
+      name: newBrandName.trim(),
+      label: newBrandLabel.trim() || "Verified Client",
+      logoImage: newBrandLogo.trim(),
     });
 
     setNewBrandName("");
     setNewBrandLabel("");
     setNewBrandLogo("");
     if (brandLogoInputRef.current) brandLogoInputRef.current.value = "";
-    showToast("Logo brand berhasil ditambahkan ke animasi slider!");
+    showToast("Klien / Brand baru berhasil ditambahkan ke Marquee!");
   };
 
-  const handleSaveEditedBrand = (e: React.FormEvent) => {
+  const handleUpdateBrand = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingBrand) return;
-    editClientBrand(editingBrand.id, editingBrand);
+
+    editClientBrand(editingBrand.id, {
+      name: editingBrand.name,
+      label: editingBrand.label,
+      logoImage: editingBrand.logoImage,
+    });
+
     setEditingBrand(null);
-    showToast("Perubahan brand/logo berhasil disimpan!");
+    showToast("Data brand berhasil diperbarui!");
   };
 
-  const handleSaveSpeed = (newSpeed: number) => {
-    setEditMarqueeSpeed(newSpeed);
-    updateSiteCopy({ marqueeSpeed: newSpeed });
-    showToast(`Kecepatan slider diatur ke ${newSpeed} detik!`);
+  const handleDeleteBrand = (id: string, name?: string) => {
+    if (confirm(`Hapus brand "${name || "Klien"}"?`)) {
+      deleteClientBrand(id);
+      showToast("Brand berhasil dihapus dari Marquee!");
+    }
+  };
+
+  const handleAddNewCategory = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCategoryInput.trim()) return;
+    addCategory(newCategoryInput.trim());
+    setNewCategoryInput("");
+    showToast("Kategori baru berhasil ditambahkan!");
   };
 
   const saveVisualChanges = () => {
@@ -353,9 +401,9 @@ function AdminPortalVisual() {
           <div className="mt-6 pt-4 border-t border-gray-100">
             <Link
               href="/"
-              className="text-xs text-gray-400 hover:text-gray-600 inline-flex items-center gap-1"
+              className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-900 transition-colors"
             >
-              <ArrowLeft className="w-3 h-3" />
+              <ArrowLeft className="w-3.5 h-3.5" />
               <span>Kembali ke Website Utama</span>
             </Link>
           </div>
@@ -364,42 +412,60 @@ function AdminPortalVisual() {
     );
   }
 
-  const currentLogoSrc = tempLogo || data.siteCopy.siteLogo || "./solveta-logo.png";
+  const currentLogoSrc =
+    tempLogo ||
+    data.siteCopy.siteLogo ||
+    "/solveta-logo.jpg";
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
+    <div className="min-h-screen bg-[#FDFBF9] flex flex-col font-sans">
       {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed top-5 right-5 z-50 bg-gray-900 text-white text-xs px-4 py-3 rounded-xl shadow-xl flex items-center gap-2 animate-bounce">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-          <span>{toastMessage}</span>
-        </div>
-      )}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed top-4 right-4 z-50 bg-gray-900 text-white px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2 border border-gray-700"
+          >
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <span>{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Top Floating Control Bar */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200 px-6 py-3 shadow-xs">
-        <div className="max-w-[1240px] mx-auto flex items-center justify-between gap-4">
+      {/* Top Navbar */}
+      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200 px-4 sm:px-6 py-3 shadow-2xs">
+        <div className="max-w-[1240px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg overflow-hidden border border-gray-200 bg-white flex items-center justify-center shadow-2xs">
-              <img
-                src={currentLogoSrc}
-                alt="Brand Logo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div>
-              <div className="font-extrabold text-xs text-gray-900 flex items-center gap-1.5">
-                <span>Visual Developer Editor</span>
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <Link
+              href="/"
+              className="flex items-center gap-2.5 group"
+              title="Kembali ke Beranda"
+            >
+              <div className="w-8 h-8 rounded-lg overflow-hidden border border-rose-200 bg-white shadow-2xs flex items-center justify-center">
+                <img
+                  src={currentLogoSrc}
+                  alt="SOLVETA Logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div className="text-[10px] text-gray-400">
-                Data tersimpan aman &bull; Siap sync ke MySQL
+              <div className="text-left">
+                <div className="text-xs font-extrabold tracking-tight text-gray-900 flex items-center gap-1">
+                  <span>SOLVETA</span>
+                  <span className="font-mono text-[9px] px-1.5 py-0.2 bg-rose-50 text-[#8B0021] border border-rose-200 rounded font-semibold">
+                    DEV CMS
+                  </span>
+                </div>
+                <div className="text-[10px] text-gray-400">
+                  Visual Live Editor &amp; Pricing Manager
+                </div>
               </div>
-            </div>
+            </Link>
           </div>
 
-          {/* Mode Switcher with Short Concise Labels */}
-          <div className="flex items-center gap-1.5 bg-gray-50 border border-gray-200 p-1 rounded-lg">
+          {/* Mode Switcher Tabs */}
+          <div className="flex items-center gap-1 bg-gray-100/80 p-1 rounded-lg border border-gray-200/80">
             <button
               onClick={() => setActiveMode("visual")}
               className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
@@ -411,6 +477,20 @@ function AdminPortalVisual() {
               <span className="flex items-center gap-1.5">
                 <Edit3 className="w-3.5 h-3.5 text-[#7B0B1E]" />
                 <span>Edit Visual</span>
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveMode("pricing")}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+                activeMode === "pricing"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                <Tag className="w-3.5 h-3.5 text-[#7B0B1E]" />
+                <span>Paket &amp; Harga</span>
               </span>
             </button>
 
@@ -452,7 +532,7 @@ function AdminPortalVisual() {
             >
               <span className="flex items-center gap-1.5">
                 <Phone className="w-3.5 h-3.5 text-[#7B0B1E]" />
-                <span>Kontak WhatsApp</span>
+                <span>Kontak WA</span>
               </span>
             </button>
           </div>
@@ -499,7 +579,7 @@ function AdminPortalVisual() {
         {activeMode === "visual" && (
           <div className="bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden">
             <div className="p-6 sm:p-12 space-y-12">
-              {/* BRAND LOGO CHANGER (Kiri Atas Web) */}
+              {/* BRAND LOGO CHANGER */}
               <div className="p-5 bg-rose-50/40 rounded-2xl border border-rose-100 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 rounded-2xl overflow-hidden border border-rose-200 bg-white shadow-xs flex-shrink-0 flex items-center justify-center">
@@ -550,51 +630,65 @@ function AdminPortalVisual() {
 
                 <div
                   onClick={() => setEditingTarget({ type: "heroHeadline" })}
-                  className="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors"
-                  title="Klik untuk ubah judul"
+                  className="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors max-w-3xl mx-auto mb-3"
                 >
-                  <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-950 tracking-tight leading-tight whitespace-pre-line">
+                  <h1 className="text-2xl sm:text-4xl font-extrabold text-gray-950 tracking-tight leading-tight">
                     {editHeadline}
                   </h1>
                 </div>
 
                 <div
                   onClick={() => setEditingTarget({ type: "heroSubtitle" })}
-                  className="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors mt-3 max-w-2xl mx-auto"
-                  title="Klik untuk ubah deskripsi"
+                  className="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors max-w-2xl mx-auto"
                 >
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                     {editSubtitle}
                   </p>
                 </div>
               </div>
 
-              {/* 2. Client Marquee Quick Action */}
-              <div className="text-center p-4 bg-white border border-gray-200 rounded-xl flex items-center justify-between">
-                <div className="text-left">
-                  <div className="text-xs font-bold text-gray-800">
-                    Slider Logo Klien &amp; Partner ({data.clientBrands.length} Brand Aktif &bull; Kecepatan: {editMarqueeSpeed}s)
+              {/* 2. Marquee Live Section */}
+              <div className="p-6 bg-gray-50/70 rounded-2xl border border-gray-200">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
+                  <div>
+                    <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider">
+                      Kecepatan Logo Berjalan (Marquee)
+                    </h3>
+                    <p className="text-[11px] text-gray-500">
+                      Geser slider untuk mempercepat atau memperlambat logo klien.
+                    </p>
                   </div>
-                  <div className="text-[11px] text-gray-500">
-                    Bergerak dua arah (kanan &amp; kiri) berlawanan secara dinamis &amp; bisa diedit per item.
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-mono font-bold text-[#7B0B1E] bg-white border border-gray-200 px-2.5 py-1 rounded-lg">
+                      {editMarqueeSpeed} detik / putaran
+                    </span>
+                    <button
+                      onClick={() => setActiveMode("brands")}
+                      className="text-xs font-semibold text-[#7B0B1E] hover:underline"
+                    >
+                      Kelola Logo Klien ({data.clientBrands.length}) &rarr;
+                    </button>
                   </div>
                 </div>
-                <button
-                  onClick={() => setActiveMode("brands")}
-                  className="text-xs font-semibold text-[#7B0B1E] bg-white border border-gray-300 hover:border-[#7B0B1E] px-3 py-1.5 rounded-lg shadow-2xs"
-                >
-                  + Atur Slider &amp; Logo
-                </button>
+                <div className="flex items-center gap-3">
+                  <span className="text-[11px] text-gray-500 font-medium">Cepat (15s)</span>
+                  <input
+                    type="range"
+                    min={15}
+                    max={60}
+                    step={5}
+                    value={editMarqueeSpeed}
+                    onChange={(e) => setEditMarqueeSpeed(Number(e.target.value))}
+                    className="flex-grow accent-[#7B0B1E] cursor-pointer"
+                  />
+                  <span className="text-[11px] text-gray-500 font-medium">Lambat (60s)</span>
+                </div>
               </div>
 
-              {/* 3. Portfolio Header Live */}
+              {/* 3. Portfolio Live Section Header */}
               <div className="text-center relative group p-6 rounded-2xl border border-dashed border-gray-200 hover:border-[#7B0B1E]/40 transition-colors">
                 <span className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-[#7B0B1E] bg-rose-50 px-2 py-0.5 rounded transition-opacity">
                   Klik untuk edit Judul Portofolio
-                </span>
-
-                <span className="font-mono text-[11px] font-bold tracking-widest text-[#7B0B1E] uppercase bg-white border border-rose-100 px-3.5 py-1 rounded-full inline-block mb-3">
-                  KARYA &amp; PORTOFOLIO
                 </span>
 
                 <div
@@ -619,12 +713,12 @@ function AdminPortalVisual() {
 
               {/* 4. Pricing Live Section */}
               <div>
-                <div className="text-center mb-8">
+                <div className="text-center mb-6">
                   <h2 className="text-base font-bold uppercase tracking-wider text-gray-900 mb-1">
                     PILIH SOLUSI SESUAI KEBUTUHAN
                   </h2>
                   <p className="text-xs text-gray-500">
-                    Klik kartu mana saja untuk mengubah harga atau fiturnya secara instan.
+                    Klik kartu mana saja untuk mengubah harga, perpanjangan, checklist fitur, add-on, atau pesan WA secara instan.
                   </p>
                 </div>
 
@@ -650,25 +744,22 @@ function AdminPortalVisual() {
                       <div className="text-xs font-bold text-gray-800 uppercase mb-1">
                         {tier.name}
                       </div>
-                      <div className="text-xl font-extrabold text-gray-950 mb-3">
+                      <div className="text-xl font-extrabold text-gray-950 mb-2">
                         {tier.price}
                       </div>
 
-                      <div className="space-y-1.5 text-[11px] text-gray-600 mb-4">
-                        {tier.features.slice(0, 3).map((f, i) => (
-                          <div key={i} className="line-clamp-1">
-                            &bull; {f}
-                          </div>
-                        ))}
-                        {tier.features.length > 3 && (
-                          <div className="text-[10px] text-gray-400 italic">
-                            +{tier.features.length - 3} fitur lainnya
-                          </div>
-                        )}
+                      <div className="text-[11px] text-gray-600 bg-gray-50 p-2 rounded mb-3 border border-gray-100">
+                        <div>⏳ Masa aktif: <strong>{tier.activePeriod || "1 Tahun"}</strong></div>
+                        <div>Perpanjangan: <strong>{tier.renewalPrice || "249k/th"}</strong></div>
                       </div>
 
                       <div className="text-[10px] text-gray-500 border-t pt-2">
                         <strong>Cocok:</strong> {tier.suitability}
+                      </div>
+
+                      <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-[#8B0021] font-semibold">
+                        <span>Edit Rincian &amp; Fitur</span>
+                        <span>&rarr;</span>
                       </div>
                     </div>
                   ))}
@@ -703,6 +794,115 @@ function AdminPortalVisual() {
                 >
                   Sinkronkan ke Supabase
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* MODE: PRICING MANAGER (Dedicated Full Section) */}
+        {activeMode === "pricing" && (
+          <div className="space-y-6 bg-white">
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-xs">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-gray-100">
+                <div>
+                  <h2 className="text-base sm:text-lg font-bold text-gray-950 flex items-center gap-2">
+                    <Tag className="w-4 h-4 text-[#8B0021]" />
+                    <span>Kelola 4 Paket Website &amp; Spesifikasi Detail</span>
+                  </h2>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Ubah nominal harga, biaya perpanjangan, estimasi waktu, checklist fitur termasuk/tidak, domain premium, email, dan tarif revisi untuk setiap paket.
+                  </p>
+                </div>
+
+                <button
+                  onClick={saveVisualChanges}
+                  className="px-4 py-2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-xs font-bold rounded-xl shadow-xs hover:from-[#9E0026] hover:to-[#5E0013] transition-all flex items-center gap-1.5"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Simpan Semua Perubahan</span>
+                </button>
+              </div>
+
+              {/* Grid of 4 Packages */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {editPricingList.map((tier, idx) => (
+                  <div
+                    key={tier.id}
+                    className={`border rounded-2xl p-6 bg-white shadow-2xs transition-all flex flex-col justify-between relative ${
+                      tier.popular ? "border-2 border-[#8B0021]" : "border-gray-200"
+                    }`}
+                  >
+                    {tier.popular && (
+                      <span className="absolute -top-3 left-6 bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white font-mono text-[10px] font-bold uppercase tracking-wider px-3 py-0.5 rounded-full shadow-2xs">
+                        POPULAR
+                      </span>
+                    )}
+
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[11px] font-mono font-bold tracking-widest text-[#8B0021] uppercase">
+                          PAKET {tier.name}
+                        </span>
+                        <span className="text-xs font-extrabold text-gray-950">
+                          {tier.price}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-2 text-xs bg-gray-50 p-3 rounded-xl border border-gray-100 mb-4">
+                        <div>
+                          <div className="text-[10px] text-gray-400 uppercase font-semibold">Masa Aktif:</div>
+                          <div className="font-semibold text-gray-800">{tier.activePeriod || "1 Tahun"}</div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-gray-400 uppercase font-semibold">Perpanjangan:</div>
+                          <div className="font-semibold text-[#8B0021]">{tier.renewalPrice || "249k/th"}</div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-gray-400 uppercase font-semibold">Pengerjaan:</div>
+                          <div className="font-medium text-gray-700">{tier.deliveryTime || "3–5 Hari"}</div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] text-gray-400 uppercase font-semibold">Cocok Untuk:</div>
+                          <div className="font-medium text-gray-700 truncate">{tier.suitability}</div>
+                        </div>
+                      </div>
+
+                      <div className="space-y-1.5 text-xs text-gray-700 mb-4">
+                        <div className="font-bold text-[11px] text-gray-500 uppercase tracking-wider mb-1">
+                          Pratinjau Checklist Fitur ({(tier.checklist || []).length} Fitur):
+                        </div>
+                        {(tier.checklist || []).slice(0, 4).map((c, cIdx) => (
+                          <div key={cIdx} className="flex items-center gap-2 text-[11px]">
+                            {c.included ? (
+                              <Check className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5]" />
+                            ) : (
+                              <X className="w-3.5 h-3.5 text-rose-500 stroke-[2.5]" />
+                            )}
+                            <span className={c.included ? "text-gray-800" : "text-gray-400 line-through"}>
+                              {c.text}
+                            </span>
+                          </div>
+                        ))}
+                        {(tier.checklist || []).length > 4 && (
+                          <div className="text-[10px] text-gray-400 italic">
+                            + {(tier.checklist || []).length - 4} fitur checklist lainnya
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="pt-4 border-t border-gray-100">
+                      <button
+                        type="button"
+                        onClick={() => setEditingTarget({ type: "pricing", tierIndex: idx })}
+                        className="w-full py-2.5 bg-gray-900 hover:bg-black text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-2xs"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                        <span>Edit Rincian Lengkap Paket {tier.name}</span>
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -805,351 +1005,135 @@ function AdminPortalVisual() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Image Upload Box */}
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Upload Gambar Pratinjau Web
+                      Upload File Gambar Portofolio
                     </label>
-                    <div
-                      onClick={() => fileInputRef.current?.click()}
-                      className="border-2 border-dashed border-gray-300 hover:border-[#7B0B1E] rounded-xl p-4 text-center cursor-pointer bg-white hover:bg-gray-50/50 transition-all flex flex-col items-center justify-center gap-1.5 min-h-[110px]"
-                    >
-                      <Upload className="w-5 h-5 text-gray-400" />
-                      <span className="text-xs font-semibold text-[#7B0B1E]">
-                        Pilih File Gambar Web
-                      </span>
-                      <span className="text-[10px] text-gray-400">
-                        PNG, JPG, WebP (Maksimal 5MB)
-                      </span>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full py-2 px-3 border border-dashed border-gray-300 rounded-lg hover:border-[#7B0B1E] bg-gray-50/50 hover:bg-rose-50/30 text-xs font-medium text-gray-600 hover:text-[#7B0B1E] flex items-center justify-center gap-2 transition-all cursor-pointer"
+                      >
+                        <ImageIcon className="w-4 h-4" />
+                        <span>Pilih Gambar dari Laptop</span>
+                      </button>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => handleImageFileUpload(e, false)}
+                        className="hidden"
+                      />
                     </div>
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImageFileUpload(e, false)}
-                      className="hidden"
-                    />
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Pratinjau Gambar Terpilih
+                      Tags / Kata Kunci (Pisahkan dengan koma)
                     </label>
-                    <div className="aspect-[16/10] bg-white rounded-xl overflow-hidden border border-gray-200 flex items-center justify-center relative">
-                      {newPortImage ? (
-                        <>
-                          <img
-                            src={newPortImage}
-                            alt="Preview"
-                            className="w-full h-full object-cover"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setNewPortImage("");
-                              if (fileInputRef.current) fileInputRef.current.value = "";
-                            }}
-                            className="absolute top-2 right-2 bg-black/60 text-white p-1 rounded-md text-xs hover:bg-black"
-                          >
-                            <X className="w-3.5 h-3.5" />
-                          </button>
-                        </>
-                      ) : (
-                        <span className="text-xs text-gray-400 flex items-center gap-1">
-                          <ImageIcon className="w-4 h-4" /> Belum ada gambar dipilih
-                        </span>
-                      )}
-                    </div>
+                    <input
+                      type="text"
+                      value={newPortTags}
+                      onChange={(e) => setNewPortTags(e.target.value)}
+                      placeholder="Contoh: Real Estate, Search Filter, Direct WA"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                    />
                   </div>
                 </div>
 
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Deskripsi Ringkas Solusi *
+                    Deskripsi Singkat Karya
                   </label>
                   <textarea
                     rows={2}
-                    required
                     value={newPortDesc}
                     onChange={(e) => setNewPortDesc(e.target.value)}
-                    placeholder="Contoh: Membangun sistem kasir terintegrasi WhatsApp checkout dan laporan stok real-time."
+                    placeholder="Contoh: Website katalog properti premium dengan integrasi peta dan checkout WhatsApp..."
                     className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
                   />
                 </div>
 
+                {newPortImage && (
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 flex items-center gap-3">
+                    <img
+                      src={newPortImage}
+                      alt="Preview"
+                      className="w-16 h-12 object-cover rounded-lg border border-gray-300"
+                    />
+                    <div className="text-[11px] text-emerald-700 font-medium">
+                      ✓ Gambar siap diunggah
+                    </div>
+                  </div>
+                )}
+
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg shadow-xs transition-all"
+                  className="px-5 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg transition-all shadow-xs"
                 >
-                  + Tambah ke Portofolio
+                  Tambahkan ke Portofolio
                 </button>
               </form>
             </div>
 
-            {/* List Existing Projects */}
-            <div>
-              <h3 className="text-sm font-bold text-gray-900 mb-3">
-                Daftar Karya Portofolio Saat Ini ({data.portfolio.length} Item)
-              </h3>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-                {data.portfolio.map((p) => (
-                  <div
-                    key={p.id}
-                    className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-2xs flex flex-col justify-between hover:border-rose-300 transition-colors"
-                  >
-                    <div className="aspect-[16/10] bg-white relative">
-                      <img
-                        src={p.image}
-                        alt={p.title}
-                        className="w-full h-full object-cover"
-                      />
-                      {p.category && (
-                        <span className="absolute top-2 left-2 bg-white/95 px-2 py-0.5 rounded text-[10px] font-bold border border-gray-200 text-[#7B0B1E]">
-                          {p.category}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="p-4 flex-grow flex flex-col justify-between">
-                      <div>
-                        <div className="font-bold text-xs text-gray-900 mb-1">
-                          {p.title}
-                        </div>
-                        <p className="text-[11px] text-gray-500 line-clamp-2 mb-3">
-                          {p.description}
-                        </p>
-                      </div>
-
-                      <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                        <span className="text-[10px] text-gray-400 font-mono">
-                          {p.tags.join(", ")}
-                        </span>
-                        <div className="flex items-center gap-1">
-                          <button
-                            onClick={() => setEditingPortfolio({ ...p })}
-                            className="p-1.5 text-[#7B0B1E] hover:bg-rose-50 rounded-md transition-colors"
-                            title="Edit portofolio ini"
-                          >
-                            <Edit3 className="w-4 h-4" />
-                          </button>
-                          <button
-                            onClick={() => {
-                              if (confirm(`Hapus portofolio "${p.title}"?`)) {
-                                deletePortfolioItem(p.id);
-                                showToast("Portofolio berhasil dihapus!");
-                              }
-                            }}
-                            className="p-1.5 text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                            title="Hapus portofolio"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* MODE 3: CLIENT LOGO & BRAND MARQUEE */}
-        {activeMode === "brands" && (
-          <div className="space-y-6 bg-white">
-            {/* Speed Control Section */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6">
-              <div>
-                <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
-                  <Gauge className="w-4 h-4 text-[#7B0B1E]" />
-                  <span>Pengaturan Kecepatan Animasi Slider Logo</span>
-                </h2>
-                <p className="text-xs text-gray-500">
-                  Kedua baris (atas &amp; bawah) menampilkan semua logo secara lengkap dan bergerak berlawanan secara staggered.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-4 bg-gray-50 p-3 rounded-xl border border-gray-200">
-                <span className="text-xs font-semibold text-gray-600">Kecepatan:</span>
-                <input
-                  type="range"
-                  min="10"
-                  max="70"
-                  step="5"
-                  value={editMarqueeSpeed}
-                  onChange={(e) => handleSaveSpeed(Number(e.target.value))}
-                  className="w-36 accent-[#8B0021] cursor-pointer"
-                />
-                <span className="text-xs font-mono font-bold text-[#7B0B1E] min-w-[50px]">
-                  {editMarqueeSpeed}s{" "}
-                  <span className="text-[10px] font-normal text-gray-500">
-                    ({editMarqueeSpeed <= 20 ? "Cepat" : editMarqueeSpeed <= 40 ? "Sedang" : "Lambat"})
-                  </span>
-                </span>
-              </div>
-            </div>
-
-            {/* Form Add Client Brand */}
+            {/* List of Portfolios */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
-              <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
-                <Building2 className="w-4 h-4 text-[#7B0B1E]" />
-                <span>Tambah Logo / Brand Klien Baru</span>
+              <h2 className="text-sm font-bold text-gray-900 mb-4">
+                Daftar Portofolio Aktif ({data.portfolio.length} Karya)
               </h2>
-              <p className="text-xs text-gray-500 mb-5">
-                Gambar logo akan dipress pas dan ujungnya otomatis berbentuk oval halus tanpa tepi sisa.
-              </p>
 
-              <form onSubmit={handleCreateBrand} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Upload Logo Gambar (Otomatis Bentuk Oval)
-                    </label>
-                    <div
-                      onClick={() => brandLogoInputRef.current?.click()}
-                      className="border-2 border-dashed border-gray-300 hover:border-[#7B0B1E] rounded-xl p-4 text-center cursor-pointer bg-white hover:bg-gray-50/50 transition-all flex flex-col items-center justify-center gap-1.5 min-h-[95px]"
-                    >
-                      <Upload className="w-5 h-5 text-gray-400" />
-                      <span className="text-xs font-semibold text-[#7B0B1E]">
-                        Pilih File Logo Brand
-                      </span>
-                      <span className="text-[10px] text-gray-400">
-                        PNG, JPG, SVG, WebP (Maksimal 3MB)
-                      </span>
-                    </div>
-                    <input
-                      ref={brandLogoInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleBrandLogoUpload(e, false)}
-                      className="hidden"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Pratinjau Logo Kapsul Oval
-                    </label>
-                    <div className="h-[95px] bg-white rounded-xl border border-gray-200 flex items-center justify-center p-3 relative">
-                      {newBrandLogo ? (
-                        <>
-                          <div className="border border-gray-200 rounded-full overflow-hidden h-11 flex items-center justify-center bg-white shadow-2xs">
-                            <img
-                              src={newBrandLogo}
-                              alt="Brand Logo"
-                              className="h-full w-auto max-w-[150px] object-cover rounded-full"
-                            />
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setNewBrandLogo("");
-                              if (brandLogoInputRef.current) brandLogoInputRef.current.value = "";
-                            }}
-                            className="absolute top-2 right-2 bg-black/60 text-white p-1 rounded-md text-xs hover:bg-black"
-                          >
-                            <X className="w-3.5 h-3.5" />
-                          </button>
-                        </>
-                      ) : (
-                        <span className="text-xs text-gray-400 flex items-center gap-1">
-                          <Building2 className="w-4 h-4" /> (Tanpa logo gambar, dapat gunakan nama teks di bawah)
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Nama Brand / Bisnis (Opsional jika sudah upload logo)
-                    </label>
-                    <input
-                      type="text"
-                      value={newBrandName}
-                      onChange={(e) => setNewBrandName(e.target.value)}
-                      placeholder="Contoh: PT Surya Global Indonesia"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Kategori / Industri Singkat (Opsional)
-                    </label>
-                    <input
-                      type="text"
-                      value={newBrandLabel}
-                      onChange={(e) => setNewBrandLabel(e.target.value)}
-                      placeholder="Contoh: Healthcare / Retail"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
-                    />
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  className="px-6 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg shadow-xs transition-all"
-                >
-                  + Tambah Brand ke Animasi Slider
-                </button>
-              </form>
-            </div>
-
-            {/* List Existing Client Brands */}
-            <div>
-              <h3 className="text-sm font-bold text-gray-900 mb-3">
-                Daftar Brand / Klien di Slider ({data.clientBrands.length} Item)
-              </h3>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
-                {data.clientBrands.map((b) => (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {data.portfolio.map((item) => (
                   <div
-                    key={b.id}
-                    className="bg-white border border-gray-200 rounded-full overflow-hidden shadow-2xs flex items-center justify-between gap-2 p-1 pl-1 pr-3 hover:border-rose-300 transition-colors"
+                    key={item.id}
+                    className="border border-gray-200 rounded-xl overflow-hidden bg-white hover:shadow-md transition-shadow group flex flex-col justify-between"
                   >
-                    <div className="flex items-center gap-2 overflow-hidden">
-                      {b.logoImage ? (
-                        <div className="h-9 w-14 rounded-full overflow-hidden flex-shrink-0 flex items-center justify-center bg-white border border-gray-100">
-                          <img
-                            src={b.logoImage}
-                            alt={b.name || "Brand Logo"}
-                            className="h-full w-full object-cover rounded-full"
-                          />
-                        </div>
-                      ) : (
-                        <div className="w-2.5 h-2.5 rounded-full bg-[#8B0021] flex-shrink-0 ml-2" />
-                      )}
-                      <div className="truncate">
-                        <div className="font-bold text-xs text-gray-900 truncate">
-                          {b.name || "Logo Client"}
-                        </div>
-                        {b.label && (
-                          <div className="text-[10px] text-gray-400 truncate">
-                            {b.label}
-                          </div>
+                    <div>
+                      <div className="h-36 bg-gray-100 overflow-hidden relative">
+                        <img
+                          src={item.image}
+                          alt={item.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        {item.category && (
+                          <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-md text-[#7B0B1E] text-[10px] font-bold px-2 py-0.5 rounded shadow-xs">
+                            {item.category}
+                          </span>
                         )}
                       </div>
+
+                      <div className="p-3.5">
+                        <h3 className="text-xs font-bold text-gray-900 mb-1 line-clamp-1">
+                          {item.title}
+                        </h3>
+                        <p className="text-[11px] text-gray-500 line-clamp-2 mb-2">
+                          {item.description}
+                        </p>
+                        <div className="flex flex-wrap gap-1">
+                          {item.tags.map((t, idx) => (
+                            <span
+                              key={idx}
+                              className="text-[9px] bg-gray-100 text-gray-600 px-1.5 py-0.2 rounded"
+                            >
+                              #{t}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="flex items-center gap-1 flex-shrink-0">
+                    <div className="p-3 bg-gray-50/80 border-t border-gray-100 flex items-center justify-end gap-2">
                       <button
-                        onClick={() => setEditingBrand({ ...b })}
-                        className="p-1 text-[#7B0B1E] hover:bg-rose-50 rounded-full transition-colors"
-                        title="Edit brand ini"
+                        onClick={() => setEditingPortfolio(item)}
+                        className="px-2.5 py-1 text-xs font-medium text-gray-700 hover:text-gray-900 bg-white border border-gray-300 hover:border-gray-400 rounded-md transition-colors"
                       >
-                        <Edit3 className="w-3.5 h-3.5" />
+                        Edit
                       </button>
                       <button
-                        onClick={() => {
-                          if (confirm(`Hapus brand "${b.name || "item"}" dari slider?`)) {
-                            deleteClientBrand(b.id);
-                            showToast("Brand dihapus dari slider!");
-                          }
-                        }}
-                        className="p-1 text-red-600 hover:bg-red-50 rounded-full transition-colors flex-shrink-0"
-                        title="Hapus brand"
+                        onClick={() => handleDeletePortfolio(item.id, item.title)}
+                        className="p-1 text-gray-400 hover:text-red-600 rounded-md transition-colors"
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -1161,47 +1145,172 @@ function AdminPortalVisual() {
           </div>
         )}
 
-        {/* MODE 4: WHATSAPP SETTINGS */}
+        {/* MODE 3: BRANDS / LOGO MANAGER */}
+        {activeMode === "brands" && (
+          <div className="space-y-6 bg-white">
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
+              <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
+                <Building2 className="w-4 h-4 text-[#7B0B1E]" />
+                <span>Tambah Logo / Nama Klien Baru (Marquee)</span>
+              </h2>
+              <p className="text-xs text-gray-500 mb-5">
+                Tambahkan nama brand atau upload logo ikon bisnis untuk tampil di baris marquee yang berjalan.
+              </p>
+
+              <form onSubmit={handleCreateBrand} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Nama Brand / Klien *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={newBrandName}
+                      onChange={(e) => setNewBrandName(e.target.value)}
+                      placeholder="Contoh: Nusantara Logistics"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Sektor / Label Bisnis
+                    </label>
+                    <input
+                      type="text"
+                      value={newBrandLabel}
+                      onChange={(e) => setNewBrandLabel(e.target.value)}
+                      placeholder="Contoh: Supply Chain & Tracking"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Upload Logo Gambar (Opsional)
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => brandLogoInputRef.current?.click()}
+                      className="w-full py-2 px-3 border border-dashed border-gray-300 rounded-lg hover:border-[#7B0B1E] bg-gray-50/50 hover:bg-rose-50/30 text-xs font-medium text-gray-600 hover:text-[#7B0B1E] flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      <Upload className="w-4 h-4" />
+                      <span>Upload Ikon Logo Brand dari Laptop</span>
+                    </button>
+                    <input
+                      ref={brandLogoInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleBrandLogoUpload(e, false)}
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg transition-all shadow-xs"
+                >
+                  Tambahkan ke Marquee
+                </button>
+              </form>
+            </div>
+
+            {/* List Brands */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
+              <h2 className="text-sm font-bold text-gray-900 mb-4">
+                Daftar Brand di Marquee ({data.clientBrands.length} Klien)
+              </h2>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                {data.clientBrands.map((brand) => (
+                  <div
+                    key={brand.id}
+                    className="p-3 border border-gray-200 rounded-xl bg-white hover:border-gray-300 flex items-center justify-between gap-2"
+                  >
+                    <div className="flex items-center gap-2.5 min-w-0">
+                      {brand.logoImage ? (
+                        <img
+                          src={brand.logoImage}
+                          alt={brand.name || "Brand"}
+                          className="w-7 h-7 object-contain rounded flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-7 h-7 rounded bg-rose-50 text-[#7B0B1E] font-bold text-xs flex items-center justify-center flex-shrink-0">
+                          {brand.name?.charAt(0) || "B"}
+                        </div>
+                      )}
+                      <div className="min-w-0">
+                        <div className="text-xs font-bold text-gray-900 truncate">
+                          {brand.name}
+                        </div>
+                        <div className="text-[10px] text-gray-400 truncate">
+                          {brand.label}
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleDeleteBrand(brand.id, brand.name)}
+                      className="p-1 text-gray-400 hover:text-red-600 rounded flex-shrink-0"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* MODE 4: WHATSAPP & CONTACT */}
         {activeMode === "contact" && (
-          <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs max-w-lg mx-auto">
+          <div className="max-w-xl mx-auto bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-xs">
             <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
               <Phone className="w-4 h-4 text-[#7B0B1E]" />
-              <span>Ganti Nomor WhatsApp Tujuan Order</span>
+              <span>Pengaturan Kontak WhatsApp Resmi</span>
             </h2>
-            <p className="text-xs text-gray-500 mb-5">
-              Nomor ini akan otomatis digunakan di semua tombol &quot;Hubungi Kami&quot;, &quot;Pesan Sekarang&quot;, dan tombol &quot;Konsultasikan Kebutuhan Anda&quot; di seluruh website.
+            <p className="text-xs text-gray-500 mb-6">
+              Nomor ini akan otomatis digunakan di seluruh tombol &quot;Konsultasi&quot; dan &quot;Pesan Paket&quot; di website.
             </p>
 
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">
-                  Nomor WhatsApp (Angka internasional, contoh: 6285719663154)
+                  Nomor WhatsApp (Format Internasional Tanpa +)
                 </label>
                 <input
                   type="text"
                   value={editWaNumber}
-                  onChange={(e) => setEditWaNumber(e.target.value.replace(/[^0-9]/g, ""))}
-                  placeholder="6285719663154"
-                  className="w-full text-xs p-2.5 rounded-lg border border-gray-300 font-mono font-bold bg-white"
+                  onChange={(e) => setEditWaNumber(e.target.value)}
+                  placeholder="Contoh: 6285719663154"
+                  className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none font-mono bg-white"
                 />
+                <p className="text-[10px] text-gray-400 mt-1">
+                  Gunakan kode negara 62 di depan (misal: 6285719663154).
+                </p>
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-gray-700 mb-1">
-                  Tampilan Nomor di Web (Teks yang dilihat pengunjung)
+                  Teks Tampilan WhatsApp di Footer / Kontak
                 </label>
                 <input
                   type="text"
                   value={editWaDisplay}
                   onChange={(e) => setEditWaDisplay(e.target.value)}
-                  placeholder="+62 857-1966-3154"
-                  className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                  placeholder="Contoh: +62 857-1966-3154"
+                  className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
                 />
               </div>
 
               <button
+                type="button"
                 onClick={saveWhatsApp}
-                className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg shadow-xs transition-all"
+                className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
               >
                 Simpan Nomor WhatsApp
               </button>
@@ -1210,289 +1319,34 @@ function AdminPortalVisual() {
         )}
       </div>
 
-      {/* EDIT MODAL FOR PORTFOLIO ITEM */}
-      <AnimatePresence>
-        {editingPortfolio && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setEditingPortfolio(null)}
-              className="fixed inset-0 bg-black/40 backdrop-blur-xs"
-            />
-
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl p-6 shadow-2xl border border-gray-200 max-w-lg w-full relative z-10 space-y-4 max-h-[90vh] overflow-y-auto"
-            >
-              <div className="flex items-center justify-between border-b pb-3">
-                <span className="text-xs font-bold text-gray-900 uppercase flex items-center gap-1.5">
-                  <Edit3 className="w-3.5 h-3.5 text-[#7B0B1E]" />
-                  <span>Edit Karya Portofolio</span>
-                </span>
-                <button
-                  onClick={() => setEditingPortfolio(null)}
-                  className="text-gray-400 hover:text-gray-600 p-1 rounded-md"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <form onSubmit={handleSaveEditedPortfolio} className="space-y-3.5">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Judul Portofolio
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={editingPortfolio.title}
-                    onChange={(e) =>
-                      setEditingPortfolio({ ...editingPortfolio, title: e.target.value })
-                    }
-                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 font-bold bg-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Kategori Web (Pilih Chip di Bawah)
-                  </label>
-                  <input
-                    type="text"
-                    value={editingPortfolio.category || ""}
-                    onChange={(e) =>
-                      setEditingPortfolio({ ...editingPortfolio, category: e.target.value })
-                    }
-                    placeholder="Pilih dari tombol di bawah"
-                    className="w-full text-xs p-2 rounded-lg border border-gray-300 font-semibold text-[#7B0B1E] bg-white mb-2"
-                  />
-                  <div className="flex flex-wrap gap-1.5">
-                    {data.categories.map((c) => (
-                      <button
-                        type="button"
-                        key={c}
-                        onClick={() => setEditingPortfolio({ ...editingPortfolio, category: c })}
-                        className={`text-[11px] px-2.5 py-0.5 rounded-full ${
-                          editingPortfolio.category === c
-                            ? "bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white font-bold"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
-                      >
-                        {c}
-                      </button>
-                    ))}
-                    <button
-                      type="button"
-                      onClick={() => setEditingPortfolio({ ...editingPortfolio, category: undefined })}
-                      className="text-[11px] px-2 py-0.5 rounded-full border border-dashed text-gray-400"
-                    >
-                      Hapus Kategori
-                    </button>
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Ganti Gambar Pratinjau
-                  </label>
-                  <div className="flex items-center gap-3">
-                    <div className="w-20 h-14 rounded-lg overflow-hidden border border-gray-200 bg-gray-50 flex-shrink-0">
-                      <img
-                        src={editingPortfolio.image}
-                        alt="Preview"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => editFileInputRef.current?.click()}
-                      className="text-xs font-semibold text-[#7B0B1E] bg-rose-50 hover:bg-rose-100 px-3 py-2 rounded-lg border border-rose-200 transition-colors"
-                    >
-                      Pilih Gambar Baru Dari Laptop
-                    </button>
-                    <input
-                      ref={editFileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleImageFileUpload(e, true)}
-                      className="hidden"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Deskripsi Portofolio
-                  </label>
-                  <textarea
-                    rows={3}
-                    required
-                    value={editingPortfolio.description}
-                    onChange={(e) =>
-                      setEditingPortfolio({ ...editingPortfolio, description: e.target.value })
-                    }
-                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
-                >
-                  Simpan Perubahan Portofolio
-                </button>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* EDIT MODAL FOR CLIENT BRAND ITEM */}
-      <AnimatePresence>
-        {editingBrand && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setEditingBrand(null)}
-              className="fixed inset-0 bg-black/40 backdrop-blur-xs"
-            />
-
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl p-6 shadow-2xl border border-gray-200 max-w-md w-full relative z-10 space-y-4"
-            >
-              <div className="flex items-center justify-between border-b pb-3">
-                <span className="text-xs font-bold text-gray-900 uppercase flex items-center gap-1.5">
-                  <Edit3 className="w-3.5 h-3.5 text-[#7B0B1E]" />
-                  <span>Edit Brand / Logo Slider</span>
-                </span>
-                <button
-                  onClick={() => setEditingBrand(null)}
-                  className="text-gray-400 hover:text-gray-600 p-1 rounded-md"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-
-              <form onSubmit={handleSaveEditedBrand} className="space-y-3.5">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Ganti File Logo (Otomatis Format Oval)
-                  </label>
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-16 rounded-full overflow-hidden border border-gray-200 bg-white flex items-center justify-center flex-shrink-0">
-                      {editingBrand.logoImage ? (
-                        <img
-                          src={editingBrand.logoImage}
-                          alt="Logo"
-                          className="h-full w-full object-cover rounded-full"
-                        />
-                      ) : (
-                        <span className="text-[10px] text-gray-400">Teks</span>
-                      )}
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => editBrandLogoInputRef.current?.click()}
-                      className="text-xs font-semibold text-[#7B0B1E] bg-rose-50 hover:bg-rose-100 px-3 py-2 rounded-lg border border-rose-200 transition-colors"
-                    >
-                      Pilih Logo Baru
-                    </button>
-                    {editingBrand.logoImage && (
-                      <button
-                        type="button"
-                        onClick={() => setEditingBrand({ ...editingBrand, logoImage: undefined })}
-                        className="text-xs text-red-600 hover:underline"
-                      >
-                        Hapus Logo
-                      </button>
-                    )}
-                    <input
-                      ref={editBrandLogoInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => handleBrandLogoUpload(e, true)}
-                      className="hidden"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Nama Brand (Opsional jika sudah ada logo)
-                  </label>
-                  <input
-                    type="text"
-                    value={editingBrand.name || ""}
-                    onChange={(e) => setEditingBrand({ ...editingBrand, name: e.target.value })}
-                    placeholder="Contoh: PT Surya Global"
-                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Label Industri Singkat
-                  </label>
-                  <input
-                    type="text"
-                    value={editingBrand.label || ""}
-                    onChange={(e) => setEditingBrand({ ...editingBrand, label: e.target.value })}
-                    placeholder="Contoh: Retail & POS"
-                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
-                >
-                  Simpan Perubahan Brand
-                </button>
-              </form>
-            </motion.div>
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* QUICK INLINE EDIT MODAL */}
+      {/* MODAL: EDIT VISUAL & PRICING TARGET */}
       <AnimatePresence>
         {editingTarget && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setEditingTarget(null)}
-              className="fixed inset-0 bg-black/40 backdrop-blur-xs"
-            />
-
-            <motion.div
-              initial={{ scale: 0.95, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.95, opacity: 0 }}
-              className="bg-white rounded-2xl p-6 shadow-2xl border border-gray-200 max-w-lg w-full relative z-10 space-y-4"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white border border-gray-200 rounded-2xl p-6 max-w-2xl w-full shadow-2xl relative max-h-[90vh] flex flex-col"
             >
-              <div className="flex items-center justify-between border-b pb-3">
-                <span className="text-xs font-bold text-gray-900 uppercase">
-                  Edit Bagian Website
-                </span>
+              <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
+                <div className="text-xs font-extrabold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
+                  <Edit3 className="w-3.5 h-3.5 text-[#7B0B1E]" />
+                  <span>
+                    {editingTarget.type === "pricing"
+                      ? `Edit Detail Paket: ${editPricingList[editingTarget.tierIndex!]?.name}`
+                      : "Edit Konten Langsung"}
+                  </span>
+                </div>
                 <button
                   onClick={() => setEditingTarget(null)}
-                  className="text-gray-400 hover:text-gray-600 p-1 rounded-md"
+                  className="p-1 text-gray-400 hover:text-gray-700 rounded-md"
                 >
                   <X className="w-4 h-4" />
                 </button>
               </div>
 
+              {/* Modal Body for Text fields */}
               {editingTarget.type === "heroHeadline" && (
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">
@@ -1535,111 +1389,518 @@ function AdminPortalVisual() {
                 </div>
               )}
 
-              {editingTarget.type === "consultation" && (
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Judul Banner Konsultasi
-                    </label>
-                    <input
-                      type="text"
-                      value={editConsultationTitle}
-                      onChange={(e) => setEditConsultationTitle(e.target.value)}
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 font-bold bg-white"
-                    />
+              {/* Modal Body for Full Pricing Tier Management */}
+              {editingTarget.type === "pricing" && editingTarget.tierIndex !== undefined && (() => {
+                const currentTier = editPricingList[editingTarget.tierIndex];
+                if (!currentTier) return null;
+
+                const updateCurrentTier = (updater: (prev: PricingTierData) => PricingTierData) => {
+                  const list = [...editPricingList];
+                  list[editingTarget.tierIndex!] = updater({ ...list[editingTarget.tierIndex!] });
+                  setEditPricingList(list);
+                };
+
+                return (
+                  <div className="space-y-4 max-h-[65vh] overflow-y-auto pr-1">
+                    {/* 1. Informasi Dasar & Harga */}
+                    <div className="border border-gray-200 rounded-xl p-4 bg-gray-50/50 space-y-3">
+                      <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+                        <Tag className="w-3.5 h-3.5 text-[#8B0021]" />
+                        <span>Informasi Paket &amp; Harga</span>
+                      </h4>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-700 mb-1">Nama Paket</label>
+                          <input
+                            type="text"
+                            value={currentTier.name}
+                            onChange={(e) => updateCurrentTier((t) => ({ ...t, name: e.target.value }))}
+                            className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white font-bold"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-700 mb-1">Harga Display (Badge)</label>
+                          <input
+                            type="text"
+                            value={currentTier.priceBadge || currentTier.price.replace(/Rp\s*/i, "").trim()}
+                            onChange={(e) =>
+                              updateCurrentTier((t) => ({
+                                ...t,
+                                priceBadge: e.target.value,
+                                price: `Rp ${e.target.value}`,
+                              }))
+                            }
+                            placeholder="Contoh: 299K"
+                            className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white font-extrabold text-[#8B0021]"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-700 mb-1">Prefix Harga (Opsional)</label>
+                          <input
+                            type="text"
+                            value={currentTier.pricePrefix || ""}
+                            onChange={(e) => updateCurrentTier((t) => ({ ...t, pricePrefix: e.target.value }))}
+                            placeholder="Contoh: mulai dari :"
+                            className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-700 mb-1">Masa Aktif</label>
+                          <input
+                            type="text"
+                            value={currentTier.activePeriod || "1 Tahun"}
+                            onChange={(e) => updateCurrentTier((t) => ({ ...t, activePeriod: e.target.value }))}
+                            placeholder="1 Tahun"
+                            className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-700 mb-1">Biaya Perpanjangan</label>
+                          <input
+                            type="text"
+                            value={currentTier.renewalPrice || "249k/tahun*"}
+                            onChange={(e) => updateCurrentTier((t) => ({ ...t, renewalPrice: e.target.value }))}
+                            placeholder="249k/tahun*"
+                            className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white font-semibold text-gray-900"
+                          />
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-1">
+                        <input
+                          type="checkbox"
+                          id={`pop-${editingTarget.tierIndex}`}
+                          checked={!!currentTier.popular}
+                          onChange={(e) => updateCurrentTier((t) => ({ ...t, popular: e.target.checked }))}
+                          className="w-4 h-4 text-[#8B0021] rounded border-gray-300"
+                        />
+                        <label htmlFor={`pop-${editingTarget.tierIndex}`} className="text-xs font-semibold text-gray-800 cursor-pointer">
+                          Tandai sebagai Paket &quot;Popular (Paling Diminati)&quot;
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* 2. Kesesuaian Kebutuhan & Tombol WhatsApp */}
+                    <div className="border border-gray-200 rounded-xl p-4 bg-gray-50/50 space-y-3">
+                      <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-[#8B0021]" />
+                        <span>Kebutuhan, Pengerjaan &amp; Tombol</span>
+                      </h4>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-700 mb-1">Cocok Untuk</label>
+                          <input
+                            type="text"
+                            value={currentTier.suitability}
+                            onChange={(e) => updateCurrentTier((t) => ({ ...t, suitability: e.target.value }))}
+                            className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-700 mb-1">Estimasi Waktu Pengerjaan</label>
+                          <input
+                            type="text"
+                            value={currentTier.deliveryTime || "1–2 Hari"}
+                            onChange={(e) => updateCurrentTier((t) => ({ ...t, deliveryTime: e.target.value }))}
+                            className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white font-medium"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-700 mb-1">Label Tombol Pesan</label>
+                        <input
+                          type="text"
+                          value={currentTier.buttonLabel}
+                          onChange={(e) => updateCurrentTier((t) => ({ ...t, buttonLabel: e.target.value }))}
+                          className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-700 mb-1">Template Pesan WhatsApp Otomatis</label>
+                        <textarea
+                          rows={2}
+                          value={currentTier.waMessage}
+                          onChange={(e) => updateCurrentTier((t) => ({ ...t, waMessage: e.target.value }))}
+                          className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white font-mono"
+                        />
+                      </div>
+                    </div>
+
+                    {/* 3. Daftar Checklist Fitur Interaktif */}
+                    <div className="border border-gray-200 rounded-xl p-4 bg-gray-50/50 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Checklist Fitur ({(currentTier.checklist || []).length} Poin)</span>
+                        </h4>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            updateCurrentTier((t) => {
+                              const curCheck = t.checklist || [];
+                              return {
+                                ...t,
+                                checklist: [...curCheck, { text: "Fitur baru...", included: true }],
+                              };
+                            });
+                          }}
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-[#8B0021] bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1 rounded-md transition-colors"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Tambah Fitur</span>
+                        </button>
+                      </div>
+
+                      <div className="space-y-2 max-h-56 overflow-y-auto pr-1">
+                        {(currentTier.checklist || []).map((item, cIdx) => (
+                          <div
+                            key={cIdx}
+                            className="flex items-center gap-2 p-2 rounded-lg bg-white border border-gray-200 shadow-2xs"
+                          >
+                            <button
+                              type="button"
+                              onClick={() => {
+                                updateCurrentTier((t) => {
+                                  const nextCheck = [...(t.checklist || [])];
+                                  nextCheck[cIdx] = { ...nextCheck[cIdx], included: !nextCheck[cIdx].included };
+                                  return { ...t, checklist: nextCheck };
+                                });
+                              }}
+                              className={`px-2 py-1 rounded text-[10px] font-bold flex items-center gap-1 transition-colors ${
+                                item.included
+                                  ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                                  : "bg-rose-100 text-rose-800 border border-rose-300"
+                              }`}
+                              title="Klik untuk ubah status Termasuk / Tidak Termasuk"
+                            >
+                              {item.included ? <Check className="w-3 h-3" /> : <X className="w-3 h-3" />}
+                              <span>{item.included ? "Termasuk" : "Tidak"}</span>
+                            </button>
+
+                            <input
+                              type="text"
+                              value={item.text}
+                              onChange={(e) => {
+                                updateCurrentTier((t) => {
+                                  const nextCheck = [...(t.checklist || [])];
+                                  nextCheck[cIdx] = { ...nextCheck[cIdx], text: e.target.value };
+                                  return { ...t, checklist: nextCheck };
+                                });
+                              }}
+                              className="flex-1 text-xs p-1.5 rounded border border-gray-200 bg-white"
+                            />
+
+                            <button
+                              type="button"
+                              onClick={() => {
+                                updateCurrentTier((t) => ({
+                                  ...t,
+                                  checklist: (t.checklist || []).filter((_, i) => i !== cIdx),
+                                }));
+                              }}
+                              className="p-1 text-gray-400 hover:text-rose-600 hover:bg-rose-50 rounded"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* 4. Domain Add-ons */}
+                    <div className="border border-gray-200 rounded-xl p-4 bg-gray-50/50 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+                          <Globe className="w-3.5 h-3.5 text-[#8B0021]" />
+                          <span>Domain Premium Add-ons</span>
+                        </h4>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            updateCurrentTier((t) => ({
+                              ...t,
+                              domainAddons: [
+                                ...(t.domainAddons || []),
+                                { name: ".domain", price: "+Rp100.000" },
+                              ],
+                            }));
+                          }}
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-[#8B0021] bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2 py-0.5 rounded-md"
+                        >
+                          <Plus className="w-3 h-3" />
+                          <span>Tambah</span>
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {(currentTier.domainAddons || []).map((dom, dIdx) => (
+                          <div
+                            key={dIdx}
+                            className="flex items-center gap-1.5 p-1.5 rounded bg-white border border-gray-200 text-xs"
+                          >
+                            <input
+                              type="text"
+                              value={dom.name}
+                              onChange={(e) => {
+                                updateCurrentTier((t) => {
+                                  const list = [...(t.domainAddons || [])];
+                                  list[dIdx] = { ...list[dIdx], name: e.target.value };
+                                  return { ...t, domainAddons: list };
+                                });
+                              }}
+                              className="w-1/2 p-1 border rounded font-mono text-[11px]"
+                            />
+                            <input
+                              type="text"
+                              value={dom.price}
+                              onChange={(e) => {
+                                updateCurrentTier((t) => {
+                                  const list = [...(t.domainAddons || [])];
+                                  list[dIdx] = { ...list[dIdx], price: e.target.value };
+                                  return { ...t, domainAddons: list };
+                                });
+                              }}
+                              className="w-1/2 p-1 border rounded text-[11px] font-semibold"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                updateCurrentTier((t) => ({
+                                  ...t,
+                                  domainAddons: (t.domainAddons || []).filter((_, i) => i !== dIdx),
+                                }));
+                              }}
+                              className="text-gray-400 hover:text-rose-600"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* 5. Tarif Revisi & Ketentuan */}
+                    <div className="border border-gray-200 rounded-xl p-4 bg-gray-50/50 space-y-3">
+                      <h4 className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#8B0021]" />
+                        <span>Tarif &amp; Ketentuan Revisi</span>
+                      </h4>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-700 mb-1">Revisi Ringan</label>
+                          <input
+                            type="text"
+                            value={currentTier.revisionRules?.light || ""}
+                            onChange={(e) => {
+                              updateCurrentTier((t) => ({
+                                ...t,
+                                revisionRules: {
+                                  ...(t.revisionRules || { light: "", heavy: "" }),
+                                  light: e.target.value,
+                                },
+                              }));
+                            }}
+                            className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-[11px] font-semibold text-gray-700 mb-1">Revisi Berat</label>
+                          <input
+                            type="text"
+                            value={currentTier.revisionRules?.heavy || ""}
+                            onChange={(e) => {
+                              updateCurrentTier((t) => ({
+                                ...t,
+                                revisionRules: {
+                                  ...(t.revisionRules || { light: "", heavy: "" }),
+                                  heavy: e.target.value,
+                                },
+                              }));
+                            }}
+                            className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-700 mb-1">Penambahan Halaman</label>
+                        <input
+                          type="text"
+                          value={currentTier.revisionRules?.extraPage || ""}
+                          onChange={(e) => {
+                            updateCurrentTier((t) => ({
+                              ...t,
+                              revisionRules: {
+                                ...(t.revisionRules || { light: "", heavy: "" }),
+                                extraPage: e.target.value,
+                              },
+                            }));
+                          }}
+                          placeholder="Contoh: Rp 50.000 / halaman"
+                          className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[11px] font-semibold text-gray-700 mb-1">Catatan Kustom (Opsional)</label>
+                        <input
+                          type="text"
+                          value={currentTier.customNote || ""}
+                          onChange={(e) => updateCurrentTier((t) => ({ ...t, customNote: e.target.value }))}
+                          placeholder="Contoh: Wajib Meet Online / Offline..."
+                          className="w-full text-xs p-2 rounded-lg border border-gray-300 bg-white"
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Deskripsi Banner Konsultasi
-                    </label>
-                    <textarea
-                      rows={3}
-                      value={editConsultationDesc}
-                      onChange={(e) => setEditConsultationDesc(e.target.value)}
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                );
+              })()}
+
+              <div className="mt-4 pt-3 border-t border-gray-100 flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    saveVisualChanges();
+                    setEditingTarget(null);
+                  }}
+                  className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs flex items-center justify-center gap-1.5"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Terapkan &amp; Simpan Perubahan</span>
+                </button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* MODAL: EDIT PORTFOLIO */}
+      <AnimatePresence>
+        {editingPortfolio && (
+          <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="bg-white border border-gray-200 rounded-2xl p-6 max-w-lg w-full shadow-2xl relative"
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
+                <h3 className="text-xs font-extrabold uppercase tracking-wider text-gray-900">
+                  Edit Portofolio: {editingPortfolio.title}
+                </h3>
+                <button
+                  onClick={() => setEditingPortfolio(null)}
+                  className="p-1 text-gray-400 hover:text-gray-700 rounded-md"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdatePortfolio} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Nama / Judul Portofolio
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={editingPortfolio.title}
+                    onChange={(e) =>
+                      setEditingPortfolio({
+                        ...editingPortfolio,
+                        title: e.target.value,
+                      })
+                    }
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Kategori
+                  </label>
+                  <input
+                    type="text"
+                    value={editingPortfolio.category || ""}
+                    onChange={(e) =>
+                      setEditingPortfolio({
+                        ...editingPortfolio,
+                        category: e.target.value,
+                      })
+                    }
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Ganti File Gambar (Opsional)
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => editFileInputRef.current?.click()}
+                      className="w-full py-2 px-3 border border-dashed border-gray-300 rounded-lg hover:border-[#7B0B1E] bg-gray-50/50 hover:bg-rose-50/30 text-xs font-medium text-gray-600 hover:text-[#7B0B1E] flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      <ImageIcon className="w-4 h-4" />
+                      <span>Pilih Gambar Pengganti dari Laptop</span>
+                    </button>
+                    <input
+                      ref={editFileInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleImageFileUpload(e, true)}
+                      className="hidden"
                     />
                   </div>
                 </div>
-              )}
 
-              {editingTarget.type === "pricing" && editingTarget.tierIndex !== undefined && (
-                <div className="space-y-3">
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block text-[11px] font-semibold text-gray-700 mb-1">
-                        Nama Paket
-                      </label>
-                      <input
-                        type="text"
-                        value={editPricingList[editingTarget.tierIndex].name}
-                        onChange={(e) => {
-                          const list = [...editPricingList];
-                          list[editingTarget.tierIndex!].name = e.target.value;
-                          setEditPricingList(list);
-                        }}
-                        className="w-full text-xs p-2 rounded border border-gray-300 bg-white"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-[11px] font-semibold text-gray-700 mb-1">
-                        Harga Display
-                      </label>
-                      <input
-                        type="text"
-                        value={editPricingList[editingTarget.tierIndex].price}
-                        onChange={(e) => {
-                          const list = [...editPricingList];
-                          list[editingTarget.tierIndex!].price = e.target.value;
-                          setEditPricingList(list);
-                        }}
-                        className="w-full text-xs p-2 rounded border border-gray-300 font-bold bg-white"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-semibold text-gray-700 mb-1">
-                      Deskripsi &quot;Cocok Untuk&quot;
-                    </label>
-                    <input
-                      type="text"
-                      value={editPricingList[editingTarget.tierIndex].suitability}
-                      onChange={(e) => {
-                        const list = [...editPricingList];
-                        list[editingTarget.tierIndex!].suitability = e.target.value;
-                        setEditPricingList(list);
-                      }}
-                      className="w-full text-xs p-2 rounded border border-gray-300 bg-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-semibold text-gray-700 mb-1">
-                      Daftar Fitur (1 baris per fitur)
-                    </label>
-                    <textarea
-                      rows={4}
-                      value={editPricingList[editingTarget.tierIndex].features.join("\n")}
-                      onChange={(e) => {
-                        const list = [...editPricingList];
-                        list[editingTarget.tierIndex!].features = e.target.value.split("\n");
-                        setEditPricingList(list);
-                      }}
-                      className="w-full text-xs p-2 rounded border border-gray-300 font-mono bg-white"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Deskripsi Portofolio
+                  </label>
+                  <textarea
+                    rows={2}
+                    value={editingPortfolio.description}
+                    onChange={(e) =>
+                      setEditingPortfolio({
+                        ...editingPortfolio,
+                        description: e.target.value,
+                      })
+                    }
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                  />
                 </div>
-              )}
 
-              <button
-                onClick={() => {
-                  saveVisualChanges();
-                  setEditingTarget(null);
-                }}
-                className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
-              >
-                Terapkan &amp; Simpan
-              </button>
+                <div className="flex items-center gap-2 pt-2">
+                  <button
+                    type="submit"
+                    className="flex-1 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
+                  >
+                    Simpan Perubahan
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditingPortfolio(null)}
+                    className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg transition-colors"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </form>
             </motion.div>
           </div>
         )}
