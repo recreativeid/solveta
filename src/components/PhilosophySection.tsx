@@ -11,7 +11,7 @@ export const PhilosophySection: React.FC = () => {
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section id="philosophy" className="py-20 bg-white border-t border-gray-100">
+    <section id="philosophy" className="py-20 bg-white dark:bg-[#07080E] border-t border-gray-100 dark:border-gray-800 transition-colors duration-200">
       <div className="max-w-[840px] mx-auto px-6 text-center">
         <motion.div
           ref={ref}
@@ -23,11 +23,11 @@ export const PhilosophySection: React.FC = () => {
           {/* Slogan in Merah Maroon Premium Gradasi */}
           <div className="pt-2 pb-2">
             <div className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-snug">
-              <span className="bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#8B0021] via-[#c00030] dark:via-rose-400 to-[#50000F] dark:to-rose-500 bg-clip-text text-transparent">
                 Bukan sekadar membangun teknologi.
               </span>
               <br />
-              <span className="text-gray-950">Kami membangun solusi.</span>
+              <span className="text-gray-950 dark:text-white">Kami membangun solusi.</span>
             </div>
           </div>
 

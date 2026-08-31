@@ -5,7 +5,6 @@ import { motion, useInView } from "framer-motion";
 import {
   Check,
   X,
-  Clock,
   Globe,
   Mail,
   ShieldCheck,
@@ -14,7 +13,7 @@ import {
   MessageCircle,
   Info,
 } from "lucide-react";
-import { useSiteData, PricingTierData, ChecklistItemData } from "@/context/SiteDataContext";
+import { useSiteData, ChecklistItemData } from "@/context/SiteDataContext";
 
 export const PricingSection: React.FC = () => {
   const { data } = useSiteData();
@@ -68,7 +67,7 @@ export const PricingSection: React.FC = () => {
       : packages.filter((pkg) => pkg.id === selectedFilter);
 
   return (
-    <section id="pricing" className="py-16 sm:py-24 bg-slate-50/50 border-t border-gray-100">
+    <section id="pricing" className="py-16 sm:py-24 bg-slate-50/60 dark:bg-[#090A12] border-t border-gray-100 dark:border-gray-800 transition-colors duration-200">
       <div className="max-w-[1140px] mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <motion.div
@@ -77,13 +76,13 @@ export const PricingSection: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-10"
         >
-          <span className="inline-block text-[11px] font-mono font-bold tracking-widest text-[#8B0021] bg-rose-50 border border-rose-200/70 px-3.5 py-1 rounded-full uppercase mb-3">
-            PILIHAN PAKET & RINCIAN LENGKAP
+          <span className="inline-block text-[11px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 border border-rose-200/70 dark:border-rose-800/60 px-3.5 py-1 rounded-full uppercase mb-3">
+            PILIHAN PAKET &amp; RINCIAN LENGKAP
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 tracking-tight mb-3 uppercase">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight mb-3 uppercase">
             INFORMASI RINCI SETIAP PAKET
           </h2>
-          <p className="text-xs sm:text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
             Rincian lengkap masing-masing 4 paket website dengan tata letak minimalis, batas garis tepi yang tegas, dan transparansi spesifikasi tanpa biaya tersembunyi.
           </p>
         </motion.div>
@@ -95,7 +94,7 @@ export const PricingSection: React.FC = () => {
             className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all border ${
               selectedFilter === "all"
                 ? "bg-[#8B0021] text-white border-[#8B0021] shadow-xs"
-                : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                : "bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-850"
             }`}
           >
             Semua 4 Paket (Berurutan)
@@ -107,7 +106,7 @@ export const PricingSection: React.FC = () => {
               className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all border ${
                 selectedFilter === pkg.id
                   ? "bg-[#8B0021] text-white border-[#8B0021] shadow-xs"
-                  : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+                  : "bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-850"
               }`}
             >
               Paket {pkg.name} ({pkg.priceBadge})
@@ -131,13 +130,13 @@ export const PricingSection: React.FC = () => {
                   ease: [0.16, 1, 0.3, 1],
                 }}
                 id={`paket-${pkg.id}`}
-                className={`bg-white rounded-2xl transition-all duration-300 overflow-hidden shadow-2xs ${
+                className={`bg-white dark:bg-[#11121B] rounded-2xl transition-all duration-300 overflow-hidden shadow-2xs ${
                   isPopular
-                    ? "border-2 border-[#8B0021] shadow-md shadow-rose-950/5"
-                    : "border border-gray-200 hover:border-gray-300 hover:shadow-xs"
+                    ? "border-2 border-[#8B0021] dark:border-rose-600 shadow-md shadow-rose-950/5 dark:shadow-rose-950/20"
+                    : "border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-xs"
                 }`}
               >
-                {/* Popular Banner (if applicable) */}
+                {/* Popular Banner */}
                 {isPopular && (
                   <div className="bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-center font-mono text-[11px] font-bold uppercase tracking-widest py-1.5 px-4 flex items-center justify-center gap-2">
                     <Sparkles className="w-3.5 h-3.5 text-amber-300" />
@@ -146,52 +145,52 @@ export const PricingSection: React.FC = () => {
                   </div>
                 )}
 
-                {/* Main Card Body (2 Columns Layout Matching Screenshot Redesign) */}
+                {/* Main Card Body (2 Columns Layout) */}
                 <div className="p-6 sm:p-8 lg:p-10">
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
                     {/* LEFT COLUMN: Price Pill, Masa Aktif Box, Cocok Untuk Box, CTA Button */}
                     <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
-                      {/* Top Script Label + Large Redesigned Price Badge */}
-                      <div className="border border-gray-200 rounded-2xl p-5 bg-gradient-to-b from-gray-50/80 to-white text-center relative shadow-2xs">
-                        <div className="text-[11px] font-mono font-bold tracking-widest text-[#8B0021] uppercase mb-1">
+                      {/* Top Script Label + Large Price Badge */}
+                      <div className="border border-gray-200 dark:border-gray-800 rounded-2xl p-5 bg-gradient-to-b from-gray-50/80 dark:from-gray-900/60 to-white dark:to-gray-900 text-center relative shadow-2xs">
+                        <div className="text-[11px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase mb-1">
                           PAKET WEBSITE
                         </div>
 
                         {pkg.pricePrefix && (
-                          <div className="text-xs font-medium text-gray-500 mb-0.5">
+                          <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-0.5">
                             {pkg.pricePrefix}
                           </div>
                         )}
 
-                        <div className="text-xs font-extrabold uppercase tracking-widest text-gray-700 mb-1">
+                        <div className="text-xs font-extrabold uppercase tracking-widest text-gray-700 dark:text-gray-300 mb-1">
                           {pkg.name}
                         </div>
 
-                        <div className="text-4xl sm:text-5xl font-black text-gray-950 tracking-tight">
+                        <div className="text-4xl sm:text-5xl font-black text-gray-950 dark:text-white tracking-tight">
                           {pkg.priceBadge}
                         </div>
                       </div>
 
-                      {/* Box 1: Masa Aktif & Perpanjangan (Bordered Pill) */}
-                      <div className="border border-gray-200 rounded-xl p-4 bg-white shadow-2xs">
-                        <div className="flex items-center gap-2 text-xs font-semibold text-gray-700 mb-1">
+                      {/* Box 1: Masa Aktif & Perpanjangan */}
+                      <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-4 bg-white dark:bg-gray-900 shadow-2xs">
+                        <div className="flex items-center gap-2 text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">
                           <span className="text-base">⏳</span>
                           <span>Masa aktif {pkg.activePeriod},</span>
                         </div>
-                        <div className="text-xs text-gray-500">
+                        <div className="text-xs text-gray-500 dark:text-gray-400">
                           Perpanjangan :{" "}
-                          <span className="text-base sm:text-lg font-bold text-gray-900 ml-1">
+                          <span className="text-base sm:text-lg font-bold text-gray-900 dark:text-white ml-1">
                             {pkg.renewalPrice}
                           </span>
                         </div>
                       </div>
 
-                      {/* Box 2: Cocok Untuk & Waktu Pengerjaan (Bordered Pill) */}
-                      <div className="border border-gray-200 rounded-xl p-4 bg-white shadow-2xs">
-                        <div className="text-xs text-gray-600 mb-1.5 leading-snug">
-                          Cocok untuk <strong className="text-gray-900 font-semibold">{pkg.suitability}</strong>
+                      {/* Box 2: Cocok Untuk & Waktu Pengerjaan */}
+                      <div className="border border-gray-200 dark:border-gray-800 rounded-xl p-4 bg-white dark:bg-gray-900 shadow-2xs">
+                        <div className="text-xs text-gray-600 dark:text-gray-300 mb-1.5 leading-snug">
+                          Cocok untuk <strong className="text-gray-900 dark:text-white font-semibold">{pkg.suitability}</strong>
                         </div>
-                        <div className="text-xs font-bold text-[#8B0021] flex items-center gap-1.5 pt-1.5 border-t border-gray-100">
+                        <div className="text-xs font-bold text-[#8B0021] dark:text-rose-400 flex items-center gap-1.5 pt-1.5 border-t border-gray-100 dark:border-gray-800">
                           <span>⚡ Pengerjaan {pkg.deliveryTime}</span>
                         </div>
                       </div>
@@ -208,7 +207,7 @@ export const PricingSection: React.FC = () => {
                         className={`w-full py-3.5 px-5 text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-xs ${
                           isPopular
                             ? "bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white"
-                            : "bg-gray-950 hover:bg-black text-white hover:shadow-sm"
+                            : "bg-gray-950 dark:bg-white hover:bg-black dark:hover:bg-gray-100 text-white dark:text-gray-950 hover:shadow-sm"
                         }`}
                       >
                         <MessageCircle className="w-4 h-4" />
@@ -216,35 +215,35 @@ export const PricingSection: React.FC = () => {
                       </motion.a>
                     </div>
 
-                    {/* RIGHT COLUMN: Feature Checklist with [✔] and [❌] */}
+                    {/* RIGHT COLUMN: Feature Checklist */}
                     <div className="lg:col-span-7 flex flex-col justify-between">
                       <div>
-                        <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-100">
-                          <span className="text-xs font-mono font-bold tracking-wider text-gray-500 uppercase">
-                            Spesifikasi & Fitur Termasuk
+                        <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-100 dark:border-gray-800">
+                          <span className="text-xs font-mono font-bold tracking-wider text-gray-500 dark:text-gray-400 uppercase">
+                            Spesifikasi &amp; Fitur Termasuk
                           </span>
-                          <span className="text-[11px] text-gray-400 font-mono">
+                          <span className="text-[11px] text-gray-400 dark:text-gray-500 font-mono">
                             {pkg.checklist.filter((c) => c.included).length} Fitur Aktif
                           </span>
                         </div>
 
                         {/* Checklist items list */}
-                        <div className="border border-gray-200 rounded-xl divide-y divide-gray-100 bg-white overflow-hidden">
+                        <div className="border border-gray-200 dark:border-gray-800 rounded-xl divide-y divide-gray-100 dark:divide-gray-800 bg-white dark:bg-gray-900 overflow-hidden">
                           {pkg.checklist.map((item, cIndex) => (
                             <div
                               key={cIndex}
                               className={`p-3 sm:p-3.5 flex items-start gap-3 text-xs sm:text-sm transition-colors ${
                                 item.included
-                                  ? "text-gray-800 hover:bg-gray-50/50"
-                                  : "text-gray-400 bg-gray-50/30 line-through decoration-gray-300"
+                                  ? "text-gray-800 dark:text-gray-200 hover:bg-gray-50/50 dark:hover:bg-gray-850"
+                                  : "text-gray-400 dark:text-gray-600 bg-gray-50/30 dark:bg-gray-950/40 line-through decoration-gray-300 dark:decoration-gray-700"
                               }`}
                             >
                               {item.included ? (
-                                <div className="w-5 h-5 rounded flex items-center justify-center bg-emerald-100 text-emerald-700 flex-shrink-0 mt-0.5 border border-emerald-200/80">
+                                <div className="w-5 h-5 rounded flex items-center justify-center bg-emerald-100 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-400 flex-shrink-0 mt-0.5 border border-emerald-200/80 dark:border-emerald-800">
                                   <Check className="w-3.5 h-3.5 stroke-[3]" />
                                 </div>
                               ) : (
-                                <div className="w-5 h-5 rounded flex items-center justify-center bg-rose-50 text-rose-500 flex-shrink-0 mt-0.5 border border-rose-200/60">
+                                <div className="w-5 h-5 rounded flex items-center justify-center bg-rose-50 dark:bg-rose-950/80 text-rose-500 dark:text-rose-400 flex-shrink-0 mt-0.5 border border-rose-200/60 dark:border-rose-800">
                                   <X className="w-3.5 h-3.5 stroke-[3]" />
                                 </div>
                               )}
@@ -259,37 +258,37 @@ export const PricingSection: React.FC = () => {
                   </div>
                 </div>
 
-                {/* BOTTOM SUB-SECTION: Add-ons & Revisi Info (Bordered Minimalist Sub-Cards) */}
-                <div className="border-t border-gray-200 bg-gray-50/60 p-6 sm:p-8">
+                {/* BOTTOM SUB-SECTION: Add-ons & Revisi Info */}
+                <div className="border-t border-gray-200 dark:border-gray-800 bg-gray-50/60 dark:bg-gray-950/50 p-6 sm:p-8">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {/* Sub-Card 1: Domain Premium (if applicable) or General Note */}
+                    {/* Sub-Card 1: Domain Premium */}
                     {pkg.domainAddons && pkg.domainAddons.length > 0 ? (
-                      <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs">
-                        <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
-                          <Globe className="w-3.5 h-3.5 text-[#8B0021]" />
+                      <div className="border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900 p-4 text-xs">
+                        <div className="flex items-center gap-1.5 font-bold text-gray-900 dark:text-white uppercase tracking-wider text-[11px] mb-2">
+                          <Globe className="w-3.5 h-3.5 text-[#8B0021] dark:text-rose-400" />
                           <span>Domain Premium (Biaya Tambahan):</span>
                         </div>
-                        <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-gray-600">
+                        <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-gray-600 dark:text-gray-400">
                           {pkg.domainAddons.map((dom, dIdx) => (
-                            <div key={dIdx} className="flex justify-between items-center py-0.5 border-b border-gray-50">
-                              <span className="font-mono text-gray-700">{dom.name}</span>
-                              <span className="font-semibold text-gray-900">{dom.price}</span>
+                            <div key={dIdx} className="flex justify-between items-center py-0.5 border-b border-gray-50 dark:border-gray-800">
+                              <span className="font-mono text-gray-700 dark:text-gray-300">{dom.name}</span>
+                              <span className="font-semibold text-gray-900 dark:text-white">{dom.price}</span>
                             </div>
                           ))}
                         </div>
                       </div>
                     ) : (
-                      <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs flex flex-col justify-between">
+                      <div className="border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900 p-4 text-xs flex flex-col justify-between">
                         <div>
-                          <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
-                            <Globe className="w-3.5 h-3.5 text-[#8B0021]" />
-                            <span>Domain & Server Hosting:</span>
+                          <div className="flex items-center gap-1.5 font-bold text-gray-900 dark:text-white uppercase tracking-wider text-[11px] mb-2">
+                            <Globe className="w-3.5 h-3.5 text-[#8B0021] dark:text-rose-400" />
+                            <span>Domain &amp; Server Hosting:</span>
                           </div>
-                          <p className="text-[11px] text-gray-500 leading-relaxed mb-2">
-                            Sudah termasuk sewa domain standar (.com, .net, .org) & hosting server berkecepatan tinggi selama 1 tahun pertama.
+                          <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed mb-2">
+                            Sudah termasuk sewa domain standar (.com, .net, .org) &amp; hosting server berkecepatan tinggi selama 1 tahun pertama.
                           </p>
                         </div>
-                        <div className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 border border-emerald-200/60 px-2 py-1 rounded">
+                        <div className="text-[10px] text-emerald-700 dark:text-emerald-400 font-semibold bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/60 dark:border-emerald-800 px-2 py-1 rounded">
                           ✓ Siap online langsung tanpa biaya setup tambahan
                         </div>
                       </div>
@@ -297,68 +296,68 @@ export const PricingSection: React.FC = () => {
 
                     {/* Sub-Card 2: Layanan Email Profesional */}
                     {pkg.emailAddons && pkg.emailAddons.length > 0 ? (
-                      <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs">
-                        <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
-                          <Mail className="w-3.5 h-3.5 text-[#8B0021]" />
+                      <div className="border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900 p-4 text-xs">
+                        <div className="flex items-center gap-1.5 font-bold text-gray-900 dark:text-white uppercase tracking-wider text-[11px] mb-2">
+                          <Mail className="w-3.5 h-3.5 text-[#8B0021] dark:text-rose-400" />
                           <span>Layanan Email Profesional:</span>
                         </div>
                         <div className="space-y-2 text-[11px]">
                           {pkg.emailAddons.map((em, eIdx) => (
-                            <div key={eIdx} className="flex justify-between items-center p-2 rounded bg-gray-50 border border-gray-100">
-                              <span className="text-gray-700 font-medium">{em.name}</span>
-                              <span className="font-bold text-gray-900">{em.price}</span>
+                            <div key={eIdx} className="flex justify-between items-center p-2 rounded bg-gray-50 dark:bg-gray-800/60 border border-gray-100 dark:border-gray-800">
+                              <span className="text-gray-700 dark:text-gray-300 font-medium">{em.name}</span>
+                              <span className="font-bold text-gray-900 dark:text-white">{em.price}</span>
                             </div>
                           ))}
                         </div>
                       </div>
                     ) : (
-                      <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs flex flex-col justify-between">
+                      <div className="border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900 p-4 text-xs flex flex-col justify-between">
                         <div>
-                          <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
-                            <Mail className="w-3.5 h-3.5 text-[#8B0021]" />
+                          <div className="flex items-center gap-1.5 font-bold text-gray-900 dark:text-white uppercase tracking-wider text-[11px] mb-2">
+                            <Mail className="w-3.5 h-3.5 text-[#8B0021] dark:text-rose-400" />
                             <span>Alokasi Email Bisnis:</span>
                           </div>
-                          <p className="text-[11px] text-gray-500 leading-relaxed">
+                          <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-relaxed">
                             {pkg.id === "standard" && "Termasuk 1 akun email bisnis (nama@domain.com) dengan webmail & setup SMTP."}
                             {pkg.id === "premium" && "Termasuk 2 akun email bisnis (nama@domain.com) terkonfigurasi penuh."}
                             {pkg.id === "custom" && "Unlimited akun email bisnis dengan hak akses cPanel penuh."}
                           </p>
                         </div>
-                        <div className="text-[10px] text-gray-500 pt-2 border-t border-gray-100">
+                        <div className="text-[10px] text-gray-500 dark:text-gray-400 pt-2 border-t border-gray-100 dark:border-gray-800">
                           *Email tambahan dapat ditambahkan kapan saja (+Rp 50.000/email).
                         </div>
                       </div>
                     )}
 
                     {/* Sub-Card 3: Tarif Revisi & Ketentuan */}
-                    <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs md:col-span-2 lg:col-span-1">
-                      <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
-                        <ShieldCheck className="w-3.5 h-3.5 text-[#8B0021]" />
-                        <span>Tarif & Ketentuan Revisi:</span>
+                    <div className="border border-gray-200 dark:border-gray-800 rounded-xl bg-white dark:bg-gray-900 p-4 text-xs md:col-span-2 lg:col-span-1">
+                      <div className="flex items-center gap-1.5 font-bold text-gray-900 dark:text-white uppercase tracking-wider text-[11px] mb-2">
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#8B0021] dark:text-rose-400" />
+                        <span>Tarif &amp; Ketentuan Revisi:</span>
                       </div>
-                      <div className="space-y-1.5 text-[11px] text-gray-600">
+                      <div className="space-y-1.5 text-[11px] text-gray-600 dark:text-gray-400">
                         <div className="flex items-start gap-1">
                           <span className="text-gray-400">•</span>
                           <div>
-                            <strong className="text-gray-800">Revisi Ringan:</strong> {pkg.revisionRules.light}
+                            <strong className="text-gray-800 dark:text-gray-200">Revisi Ringan:</strong> {pkg.revisionRules.light}
                           </div>
                         </div>
                         <div className="flex items-start gap-1">
                           <span className="text-gray-400">•</span>
                           <div>
-                            <strong className="text-gray-800">Revisi Berat:</strong> {pkg.revisionRules.heavy}
+                            <strong className="text-gray-800 dark:text-gray-200">Revisi Berat:</strong> {pkg.revisionRules.heavy}
                           </div>
                         </div>
                         {pkg.revisionRules.extraPage && (
                           <div className="flex items-start gap-1">
                             <span className="text-gray-400">•</span>
                             <div>
-                              <strong className="text-gray-800">Tambah Halaman:</strong> {pkg.revisionRules.extraPage}
+                              <strong className="text-gray-800 dark:text-gray-200">Tambah Halaman:</strong> {pkg.revisionRules.extraPage}
                             </div>
                           </div>
                         )}
                         {pkg.customNote && (
-                          <div className="text-[10px] text-[#8B0021] font-semibold pt-1 border-t border-gray-100">
+                          <div className="text-[10px] text-[#8B0021] dark:text-rose-400 font-semibold pt-1 border-t border-gray-100 dark:border-gray-800">
                             {pkg.customNote}
                           </div>
                         )}
@@ -372,15 +371,15 @@ export const PricingSection: React.FC = () => {
         </div>
 
         {/* Global Assurance Banner */}
-        <div className="mt-12 border border-gray-200 rounded-2xl bg-white p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-gray-600 shadow-2xs">
+        <div className="mt-12 border border-gray-200 dark:border-gray-800 rounded-2xl bg-white dark:bg-gray-900 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-gray-600 dark:text-gray-400 shadow-2xs">
           <div className="flex items-start gap-3">
-            <Info className="w-5 h-5 text-[#8B0021] flex-shrink-0 mt-0.5" />
+            <Info className="w-5 h-5 text-[#8B0021] dark:text-rose-400 flex-shrink-0 mt-0.5" />
             <div>
-              <strong className="text-gray-900 font-semibold block mb-0.5">
-                Garansi Penuh & Ketentuan Transparansi SOLVETA:
+              <strong className="text-gray-900 dark:text-white font-semibold block mb-0.5">
+                Garansi Penuh &amp; Ketentuan Transparansi SOLVETA:
               </strong>
-              <p className="text-[11px] leading-relaxed text-gray-500">
-                *Biaya perpanjangan tahun berikutnya digunakan untuk sewa domain & hosting aktif. Semua paket website mendapatkan garansi pemeliharaan perbaikan error secara cuma-cuma.
+              <p className="text-[11px] leading-relaxed text-gray-500 dark:text-gray-400">
+                *Biaya perpanjangan tahun berikutnya digunakan untuk sewa domain &amp; hosting aktif. Semua paket website mendapatkan garansi pemeliharaan perbaikan error secara cuma-cuma.
               </p>
             </div>
           </div>

@@ -39,7 +39,7 @@ export const ProblemSection: React.FC = () => {
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section id="problems" className="py-20 bg-white border-b border-gray-100">
+    <section id="problems" className="py-20 bg-white dark:bg-[#07080E] border-b border-gray-100 dark:border-gray-800 transition-colors duration-200">
       <div className="max-w-[1080px] mx-auto px-6 text-center">
         {/* Section Header */}
         <motion.div
@@ -49,64 +49,55 @@ export const ProblemSection: React.FC = () => {
           transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="space-y-3 mb-10"
         >
-          <span className="font-mono text-[11px] font-bold tracking-widest text-[#8B0021] uppercase bg-rose-50 border border-rose-100 px-4 py-1.5 rounded-full inline-block">
+          <span className="font-mono text-[11px] font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 px-4 py-1.5 rounded-full inline-block">
             TANTANGAN BISNIS &bull; SOLUSI TEPAT
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-950 tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight leading-tight">
             Setiap bisnis memiliki tantangan yang berbeda.
           </h2>
-          <p className="max-w-2xl mx-auto text-xs sm:text-sm md:text-base text-gray-600 leading-relaxed font-normal">
-            Tidak semua masalah membutuhkan solusi yang kompleks. Yang dibutuhkan adalah <strong className="text-gray-900 font-bold">teknologi yang tepat untuk menyelesaikan masalah yang tepat</strong>.
+          <p className="max-w-2xl mx-auto text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
+            Tidak semua masalah membutuhkan solusi yang kompleks. Yang dibutuhkan adalah <strong className="text-gray-900 dark:text-white font-bold">teknologi yang tepat untuk menyelesaikan masalah yang tepat</strong>.
           </p>
         </motion.div>
 
-        {/* Poin-Poin Kotak Oval Panjang dengan Stroke Garis */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-wrap items-center justify-center gap-3.5 max-w-4xl mx-auto mb-12"
-        >
-          {challengePoints.map((item, idx) => {
-            const Icon = item.icon;
+        {/* 5 Challenge Point Cards in Responsive Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 mb-12">
+          {challengePoints.map((point, index) => {
+            const Icon = point.icon;
             return (
               <motion.div
-                key={item.title}
-                initial={{ opacity: 0, scale: 0.92 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.92 }}
-                transition={{ duration: 0.4, delay: 0.1 + idx * 0.07 }}
-                whileHover={{ scale: 1.04, y: -2 }}
-                className="inline-flex items-center gap-2.5 bg-white hover:bg-rose-50/40 border-2 border-gray-200 hover:border-[#8B0021] rounded-full px-5 py-2.5 shadow-2xs hover:shadow-sm transition-all duration-300 cursor-default group"
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.08,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                whileHover={{ y: -4 }}
+                className="p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group"
               >
-                <div className="w-6 h-6 rounded-full bg-rose-50 group-hover:bg-[#8B0021] text-[#8B0021] group-hover:text-white flex items-center justify-center transition-colors flex-shrink-0">
-                  <Icon className="w-3.5 h-3.5" />
+                <div className="w-10 h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-3 shadow-2xs">
+                  <Icon className="w-5 h-5 stroke-[1.8]" />
                 </div>
-                <span className="text-xs sm:text-sm font-bold text-gray-800 group-hover:text-[#7B0B1E] tracking-tight transition-colors whitespace-nowrap">
-                  {item.title}
+                <span className="text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
+                  {point.title}
                 </span>
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
-        {/* Deskripsi Panjang Penjelasan Pendekatan SOLVETA dengan Border Tebal & Teks Merah Maroon Gradasi */}
+        {/* Highlight Banner */}
         <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 25 }}
-          transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mx-auto p-8 sm:p-10 rounded-2xl bg-white border-[2.5px] border-gray-200 hover:border-[#8B0021]/80 shadow-xs hover:shadow-md transition-all duration-300 text-center space-y-4"
+          initial={{ opacity: 0, scale: 0.98 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="max-w-2xl mx-auto p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-rose-50/80 dark:from-rose-950/40 via-red-50/50 dark:via-red-950/20 to-orange-50/80 dark:to-orange-950/30 border border-rose-200/80 dark:border-rose-800/60 shadow-2xs flex items-center justify-center gap-3 text-center"
         >
-          <div className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold bg-rose-50/80 border border-rose-200 text-[#8B0021] px-4 py-1.5 rounded-full uppercase tracking-wider shadow-2xs">
-            <CheckCircle2 className="w-4 h-4 text-[#8B0021]" />
-            <span>Pendekatan Terarah SOLVETA</span>
-          </div>
-
-          <h3 className="text-xl sm:text-2xl md:text-[1.75rem] font-extrabold leading-snug tracking-tight bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] bg-clip-text text-transparent">
-            SOLVETA membantu bisnis melakukan digitalisasi dengan pendekatan yang terarah.
-          </h3>
-
-          <p className="text-sm sm:text-base text-gray-700 leading-relaxed max-w-2xl mx-auto font-normal">
-            Kami memahami kebutuhan bisnis, merancang solusi, dan membangun teknologi yang dapat membantu proses bisnis menjadi lebih terstruktur, efisien, dan siap berkembang.
+          <CheckCircle2 className="w-5 h-5 text-[#8B0021] dark:text-rose-400 flex-shrink-0" />
+          <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100 leading-snug">
+            SOLVETA hadir untuk membantu Anda mengidentifikasi akar masalah dan membangun solusi yang benar-benar Anda butuhkan.
           </p>
         </motion.div>
       </div>

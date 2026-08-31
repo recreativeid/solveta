@@ -4,13 +4,17 @@ import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Sparkles, Layers, ArrowRight } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
+import { useTheme } from "@/context/ThemeContext";
 import { CoverFlowCarousel, CarouselItem } from "@/components/ui/3-d-coverflow-carousel";
 
 export const PortfolioSection: React.FC = () => {
   const { data } = useSiteData();
+  const { theme } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+
+  const isLight = theme !== "dark";
 
   // Extract unique categories
   const activeCategories = Array.from(
@@ -31,7 +35,6 @@ export const PortfolioSection: React.FC = () => {
 
   // Convert to CarouselItems format
   const carouselItems: CarouselItem[] = filteredProjects.map((p) => {
-    // Split title into Line 1 & Line 2 if it contains dash / separator
     let titleLine1 = p.title;
     let titleLine2: string | undefined = undefined;
 
@@ -61,7 +64,7 @@ export const PortfolioSection: React.FC = () => {
   });
 
   return (
-    <section id="portfolio" className="py-20 bg-gradient-to-b from-white via-[#FDFBF9] to-white border-t border-gray-100 relative overflow-hidden">
+    <section id="portfolio" className="py-20 bg-gradient-to-b from-white dark:from-[#07080E] via-[#FDFBF9] dark:via-[#090A12] to-white dark:to-[#07080E] border-t border-gray-100 dark:border-gray-800 relative overflow-hidden transition-colors duration-200">
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
         {/* Centered Header */}
         <div className="text-center max-w-2xl mx-auto mb-6">
@@ -71,13 +74,13 @@ export const PortfolioSection: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="flex flex-col items-center"
           >
-            <span className="font-mono text-[11px] font-bold tracking-widest text-[#8B0021] uppercase bg-rose-50 border border-rose-100 px-4 py-1.5 rounded-full inline-block mb-3">
+            <span className="font-mono text-[11px] font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 px-4 py-1.5 rounded-full inline-block mb-3">
               KARYA &amp; PORTOFOLIO NYATA
             </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 tracking-tight leading-tight uppercase">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight leading-tight uppercase">
               {data.siteCopy.portfolioTitle || "Portofolio Proyek Website Yang Telah Kami Bangun"}
             </h2>
-            <p className="text-xs sm:text-sm text-gray-500 mt-2.5 max-w-xl mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-2.5 max-w-xl mx-auto leading-relaxed">
               Jelajahi karya solusi digital dan website yang telah kami bangun dengan navigasi geser 3D interaktif. Klik atau geser kartu untuk melihat detail.
             </p>
           </motion.div>
@@ -97,7 +100,7 @@ export const PortfolioSection: React.FC = () => {
                   className={`text-xs font-semibold px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer border ${
                     selectedCategory === cat
                       ? "bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white border-[#8B0021] shadow-xs"
-                      : "bg-white text-gray-700 hover:bg-rose-50 hover:text-[#7B0B1E] border-gray-200 hover:border-rose-200"
+                      : "bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-rose-50 dark:hover:bg-gray-800 hover:text-[#7B0B1E] dark:hover:text-rose-300 border-gray-200 dark:border-gray-800 hover:border-rose-200 dark:hover:border-rose-700"
                   }`}
                 >
                   {cat}
@@ -110,10 +113,10 @@ export const PortfolioSection: React.FC = () => {
         {/* 3D Coverflow Interactive Carousel Stage */}
         <div ref={ref} className="w-full">
           <CoverFlowCarousel
-            key={selectedCategory}
+            key={`${selectedCategory}-${theme}`}
             items={carouselItems}
             sectionLabel="SOLVETA SHOWCASE"
-            isLightMode={true}
+            isLightMode={isLight}
             autoplay={true}
             autoplayDelay={5000}
             onCtaClick={(item) => {
@@ -132,7 +135,7 @@ export const PortfolioSection: React.FC = () => {
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs font-bold text-[#8B0021] bg-rose-50 hover:bg-rose-100 border border-rose-200/80 px-5 py-2.5 rounded-full transition-colors shadow-2xs"
+            className="inline-flex items-center gap-2 text-xs font-bold text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200/80 dark:border-rose-800/80 px-5 py-2.5 rounded-full transition-colors shadow-2xs"
           >
             <span>Punya Kebutuhan Sistem / Website Serupa? Diskusikan dengan Kami</span>
             <ArrowRight className="w-3.5 h-3.5" />

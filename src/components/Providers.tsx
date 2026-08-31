@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { SiteDataProvider, useSiteData } from "@/context/SiteDataContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 function FaviconManager() {
   const { data } = useSiteData();
@@ -33,9 +34,11 @@ function FaviconManager() {
 
 export const Providers: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <SiteDataProvider>
-      <FaviconManager />
-      {children}
-    </SiteDataProvider>
+    <ThemeProvider>
+      <SiteDataProvider>
+        <FaviconManager />
+        {children}
+      </SiteDataProvider>
+    </ThemeProvider>
   );
 };

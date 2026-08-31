@@ -23,7 +23,7 @@ export const ProcessSection: React.FC = () => {
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <section id="process" className="py-16 bg-white">
+    <section id="process" className="py-16 bg-white dark:bg-[#07080E] border-t border-gray-100 dark:border-gray-800 transition-colors duration-200">
       <div className="max-w-[1160px] mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 15 }}
@@ -31,7 +31,7 @@ export const ProcessSection: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-gray-900">
+          <h2 className="text-base sm:text-lg font-bold uppercase tracking-wider text-gray-900 dark:text-white">
             BAGAIMANA SOLVETA BEKERJA?
           </h2>
         </motion.div>
@@ -55,14 +55,14 @@ export const ProcessSection: React.FC = () => {
               >
                 <motion.div
                   whileHover={{ scale: 1.08, y: -2 }}
-                  className="w-12 h-12 rounded-xl bg-brand-50 border border-brand-100 text-brand-800 flex items-center justify-center font-extrabold text-base mb-3.5 shadow-xs group-hover:bg-brand-800 group-hover:text-white transition-colors duration-200"
+                  className="w-12 h-12 rounded-xl bg-brand-50 dark:bg-rose-950/60 border border-brand-100 dark:border-rose-800/60 text-brand-800 dark:text-rose-300 flex items-center justify-center font-extrabold text-base mb-3.5 shadow-xs group-hover:bg-brand-800 group-hover:text-white dark:group-hover:bg-[#8B0021] transition-colors duration-200"
                 >
                   {step.number}
                 </motion.div>
-                <h3 className="text-xs font-bold text-gray-900 mb-1">
+                <h3 className="text-xs font-bold text-gray-900 dark:text-gray-100 mb-1">
                   {step.title}
                 </h3>
-                <p className="text-[11px] text-gray-500 leading-tight">
+                <p className="text-[11px] text-gray-500 dark:text-gray-400 leading-tight">
                   {step.sub}
                 </p>
               </motion.div>
