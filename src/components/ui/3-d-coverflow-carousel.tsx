@@ -152,18 +152,18 @@ export function CoverFlowCarousel({
         <div className="absolute inset-0 bg-radial from-transparent via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-[#FDFBF9] dark:to-[#07080E]" />
       </div>
 
-      {/* 4-WAY EDGE FADE GRADIENT MASKS (Mencegah tampilan kotak terpotong) */}
+      {/* 4-WAY EDGE FADE GRADIENT MASKS (Soft edge fade) */}
       {/* 1. LEFT SIDE FADE MASK */}
-      <div className="absolute top-0 bottom-0 left-0 w-20 sm:w-44 md:w-64 bg-gradient-to-r from-[#FDFBF9] dark:from-[#07080E] via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35" />
+      <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-20 md:w-28 bg-gradient-to-r from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
 
       {/* 2. RIGHT SIDE FADE MASK */}
-      <div className="absolute top-0 bottom-0 right-0 w-20 sm:w-44 md:w-64 bg-gradient-to-l from-[#FDFBF9] dark:from-[#07080E] via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35" />
+      <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-20 md:w-28 bg-gradient-to-l from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
 
       {/* 3. TOP EDGE FADE MASK */}
-      <div className="absolute top-0 left-0 right-0 h-12 sm:h-20 bg-gradient-to-b from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
+      <div className="absolute top-0 left-0 right-0 h-10 sm:h-16 bg-gradient-to-b from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
 
       {/* 4. BOTTOM EDGE FADE MASK */}
-      <div className="absolute bottom-0 left-0 right-0 h-12 sm:h-20 bg-gradient-to-t from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
+      <div className="absolute bottom-0 left-0 right-0 h-10 sm:h-16 bg-gradient-to-t from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
 
       <div className="relative w-full z-10 flex flex-col items-center">
         {/* Eyebrow Label */}
@@ -201,28 +201,28 @@ export function CoverFlowCarousel({
               filter = "brightness(1)";
             } else if (slotOffset === 1) {
               // 1st Layer Right
-              transform = "translateX(min(290px, 35vw)) scale(0.85) rotateY(-18deg)";
-              opacity = 0.85;
+              transform = "translateX(min(310px, 34vw)) scale(0.86) rotateY(-20deg)";
+              opacity = 0.90;
               zIndex = 20;
-              filter = isLightMode ? "brightness(0.92)" : "brightness(0.72)";
+              filter = isLightMode ? "brightness(0.94)" : "brightness(0.78)";
             } else if (slotOffset === 2) {
               // 2nd Layer Right
-              transform = "translateX(min(540px, 65vw)) scale(0.70) rotateY(-30deg)";
-              opacity = 0.55;
+              transform = "translateX(min(550px, 62vw)) scale(0.72) rotateY(-30deg)";
+              opacity = 0.70;
               zIndex = 10;
-              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.55) blur(1px)";
+              filter = isLightMode ? "brightness(0.88)" : "brightness(0.60)";
             } else if (slotOffset === -1) {
               // 1st Layer Left
-              transform = "translateX(-min(290px, 35vw)) scale(0.85) rotateY(18deg)";
-              opacity = 0.85;
+              transform = "translateX(calc(-1 * min(310px, 34vw))) scale(0.86) rotateY(20deg)";
+              opacity = 0.90;
               zIndex = 20;
-              filter = isLightMode ? "brightness(0.92)" : "brightness(0.72)";
+              filter = isLightMode ? "brightness(0.94)" : "brightness(0.78)";
             } else if (slotOffset === -2) {
               // 2nd Layer Left
-              transform = "translateX(-min(540px, 65vw)) scale(0.70) rotateY(30deg)";
-              opacity = 0.55;
+              transform = "translateX(calc(-1 * min(550px, 62vw))) scale(0.72) rotateY(30deg)";
+              opacity = 0.70;
               zIndex = 10;
-              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.55) blur(1px)";
+              filter = isLightMode ? "brightness(0.88)" : "brightness(0.60)";
             }
 
             return (
@@ -231,8 +231,8 @@ export function CoverFlowCarousel({
                 onClick={() => !isCenter && goToSlide(currentIndex + slotOffset)}
                 style={{
                   position: "absolute",
-                  width: "min(580px, 72vw)",
-                  height: "min(350px, 44vw)",
+                  width: "min(560px, 70vw)",
+                  height: "min(340px, 42vw)",
                   minHeight: "240px",
                   borderRadius: "16px",
                   overflow: "hidden",
