@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   Check,
@@ -10,169 +10,179 @@ import {
   Mail,
   ShieldCheck,
   Sparkles,
-  Layers,
-  FileText,
+  ArrowRight,
+  MessageCircle,
+  HelpCircle,
+  Zap,
   Info,
 } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
 
-interface SpecRow {
+interface ChecklistItem {
+  text: string;
+  included: boolean;
+  note?: string;
+}
+
+interface PackageDetail {
+  id: string;
   name: string;
-  basic: { text: string; status?: "check" | "cross" | "neutral" };
-  standard: { text: string; status?: "check" | "cross" | "neutral" };
-  premium: { text: string; status?: "check" | "cross" | "neutral" };
-  custom: { text: string; status?: "check" | "cross" | "neutral" };
+  priceBadge: string;
+  pricePrefix?: string;
+  popular?: boolean;
+  popularLabel?: string;
+  activePeriod: string;
+  renewalPrice: string;
+  suitability: string;
+  deliveryTime: string;
+  buttonLabel: string;
+  waMessage: string;
+  checklist: ChecklistItem[];
+  domainAddons?: { name: string; price: string }[];
+  emailAddons?: { name: string; price: string; note?: string }[];
+  revisionRules: {
+    light: string;
+    heavy: string;
+    extraPage?: string;
+  };
+  customNote?: string;
 }
 
-interface SpecCategory {
-  title: string;
-  icon: React.ElementType;
-  rows: SpecRow[];
-}
-
-const detailedSpecs: SpecCategory[] = [
+const packageList: PackageDetail[] = [
   {
-    title: "Ringkasan & Ketentuan Utama",
-    icon: Clock,
-    rows: [
-      {
-        name: "Masa Aktif Layanan",
-        basic: { text: "1 Tahun (Full Garansi*)", status: "check" },
-        standard: { text: "1 Tahun (Full Garansi*)", status: "check" },
-        premium: { text: "1 Tahun (Full Garansi*)", status: "check" },
-        custom: { text: "1 Tahun (Full Garansi*)", status: "check" },
-      },
-      {
-        name: "Biaya Perpanjangan / Tahun",
-        basic: { text: "249k/tahun*", status: "neutral" },
-        standard: { text: "399k/tahun*", status: "neutral" },
-        premium: { text: "399k/tahun*", status: "neutral" },
-        custom: { text: "Mulai 600k/tahun*", status: "neutral" },
-      },
-      {
-        name: "Estimasi Waktu Pengerjaan",
-        basic: { text: "1–2 Hari Kerja", status: "neutral" },
-        standard: { text: "3–5 Hari Kerja", status: "neutral" },
-        premium: { text: "3–5 Hari Kerja", status: "neutral" },
-        custom: { text: "Wajib Meet (Fleksibel)", status: "neutral" },
-      },
-      {
-        name: "Cocok Untuk Kebutuhan",
-        basic: { text: "Kebutuhan pribadi: landing page", status: "neutral" },
-        standard: { text: "Kebutuhan bisnis kecil", status: "neutral" },
-        premium: { text: "Company profile & bisnis produk", status: "neutral" },
-        custom: { text: "Website Custom (Wajib Meet)", status: "neutral" },
-      },
+    id: "basic",
+    name: "BASIC",
+    priceBadge: "299K",
+    activePeriod: "1 Tahun",
+    renewalPrice: "249k/tahun*",
+    suitability: "kebutuhan pribadi: landing page",
+    deliveryTime: "1–2 Hari",
+    buttonLabel: "Pesan Paket Basic (Rp 299K)",
+    waMessage: "Halo SOLVETA, saya tertarik untuk memesan Paket BASIC Rp 299K.",
+    checklist: [
+      { text: "Maksimal 1 Halaman (tambah Rp 50k/Halaman)", included: true },
+      { text: "Revisi ringan 2x (Tidak berubah dari brief awal)", included: true },
+      { text: "Optimasi Speed (High Perform)", included: true },
+      { text: "Free Domain (.my.id, .site, .store, .xyz, .space, .fund, .shop)", included: true },
+      { text: "Free Hosting (Akses Dashboard, Tanpa login cPanel)", included: true },
+      { text: "Email Bisnis (nama@domain.com)", included: false },
+      { text: "Responsive Web (mobile friendly)", included: true },
+      { text: "SSL Security", included: true },
+      { text: "SEO Basic", included: false },
+      { text: "Google Analytics", included: false },
+      { text: "Full Garansi*", included: true },
     ],
+    domainAddons: [
+      { name: ".web.id", price: "+Rp100.000" },
+      { name: ".blog", price: "+Rp100.000" },
+      { name: ".online", price: "+Rp100.000" },
+      { name: ".com", price: "+Rp200.000" },
+      { name: ".info", price: "+Rp100.000" },
+      { name: "dll (ekstensi lain)", price: "Menyesuaikan" },
+    ],
+    emailAddons: [
+      { name: "1 Akun Email Bisnis", price: "Rp 50.000" },
+      { name: "5 Akun Email Bisnis", price: "Rp 150.000" },
+    ],
+    revisionRules: {
+      light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
+      heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
+      extraPage: "Rp 50.000 / halaman",
+    },
   },
   {
-    title: "Halaman, Desain & Revisi",
-    icon: Layers,
-    rows: [
-      {
-        name: "Jumlah Maksimal Halaman",
-        basic: { text: "Maks. 1 Halaman (+50k/hal)", status: "check" },
-        standard: { text: "Maks. 5 Halaman (+50k/hal)", status: "check" },
-        premium: { text: "Maks. 7 Halaman (+50k/hal)", status: "check" },
-        custom: { text: "Custom / Sesuai Kesepakatan", status: "check" },
-      },
-      {
-        name: "Kuota Revisi Ringan",
-        basic: { text: "2x Revisi (Sesuai brief)", status: "check" },
-        standard: { text: "3x Revisi (Sesuai brief)", status: "check" },
-        premium: { text: "5x Revisi (Sesuai brief)", status: "check" },
-        custom: { text: "Fleksibel / Sesuai Kesepakatan", status: "check" },
-      },
-      {
-        name: "Optimasi Kecepatan (Speed)",
-        basic: { text: "High Perform", status: "check" },
-        standard: { text: "2x Lebih Cepat", status: "check" },
-        premium: { text: "3x Lebih Cepat", status: "check" },
-        custom: { text: "Super Cepat", status: "check" },
-      },
-      {
-        name: "Free Desain Mockup",
-        basic: { text: "Tidak Termasuk", status: "cross" },
-        standard: { text: "Tidak Termasuk", status: "cross" },
-        premium: { text: "Free Desain Mockup", status: "check" },
-        custom: { text: "Free Desain Mockup", status: "check" },
-      },
+    id: "standard",
+    name: "STANDARD",
+    priceBadge: "549K",
+    popular: true,
+    popularLabel: "PALING DIMINATI",
+    activePeriod: "1 Tahun",
+    renewalPrice: "399k/tahun*",
+    suitability: "kebutuhan bisnis kecil",
+    deliveryTime: "3–5 Hari",
+    buttonLabel: "Pesan Paket Standard (Rp 549K)",
+    waMessage: "Halo SOLVETA, saya tertarik untuk memesan Paket STANDARD Rp 549K.",
+    checklist: [
+      { text: "Maksimal 5 Halaman (tambah Rp 50k/Halaman)", included: true },
+      { text: "Free Iklan Google Ads", included: false },
+      { text: "Revisi ringan 3x (Tidak berubah dari brief awal)", included: true },
+      { text: "Optimasi Speed (2x lebih cepat)", included: true },
+      { text: "Free Desain Mockup", included: false },
+      { text: "Free Domain (.com, .net, .org, dll)", included: true },
+      { text: "Free Hosting (Akses Dashboard, Tanpa login cPanel)", included: true },
+      { text: "1 Email Bisnis (nama@domain.com)", included: true },
+      { text: "Responsive Web (mobile friendly)", included: true },
+      { text: "SSL Security", included: true },
+      { text: "SEO Basic", included: true },
+      { text: "Google Analytics", included: false },
+      { text: "Full Garansi*", included: true },
     ],
+    revisionRules: {
+      light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
+      heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
+      extraPage: "Rp 50.000 / halaman",
+    },
   },
   {
-    title: "Domain, Server Hosting & Email",
-    icon: Globe,
-    rows: [
-      {
-        name: "Free Domain (1 Tahun)",
-        basic: { text: ".my.id, .site, .store, .xyz, .space, .fund, .shop", status: "check" },
-        standard: { text: ".com, .net, .org, dll", status: "check" },
-        premium: { text: ".com, .net, .org, dll", status: "check" },
-        custom: { text: ".com, .net, .org, dll", status: "check" },
-      },
-      {
-        name: "Free Cloud Hosting",
-        basic: { text: "Akses Dashboard (Tanpa cPanel)", status: "check" },
-        standard: { text: "Akses Dashboard (Tanpa cPanel)", status: "check" },
-        premium: { text: "Akses Dashboard (Tanpa cPanel)", status: "check" },
-        custom: { text: "Akses Dashboard + Akses cPanel", status: "check" },
-      },
-      {
-        name: "Email Bisnis (nama@domain.com)",
-        basic: { text: "Tidak Termasuk (Opsi Add-on)", status: "cross" },
-        standard: { text: "1 Email Bisnis", status: "check" },
-        premium: { text: "2 Email Bisnis", status: "check" },
-        custom: { text: "Unlimited Email Bisnis", status: "check" },
-      },
+    id: "premium",
+    name: "PREMIUM",
+    priceBadge: "749K",
+    activePeriod: "1 Tahun",
+    renewalPrice: "399k/tahun*",
+    suitability: "company profile & bisnis produk",
+    deliveryTime: "3–5 Hari",
+    buttonLabel: "Pesan Paket Premium (Rp 749K)",
+    waMessage: "Halo SOLVETA, saya tertarik untuk memesan Paket PREMIUM Rp 749K.",
+    checklist: [
+      { text: "Maksimal 7 Halaman (tambah Rp 50k/Halaman)", included: true },
+      { text: "Free Iklan Google Ads", included: false },
+      { text: "Revisi ringan 5x (Tidak berubah dari brief awal)", included: true },
+      { text: "Optimasi Speed (3x lebih cepat)", included: true },
+      { text: "Free Desain Mockup", included: true },
+      { text: "Free Domain (.com, .net, .org, dll)", included: true },
+      { text: "Free Hosting (Akses Dashboard, Tanpa login cPanel)", included: true },
+      { text: "2 Email Bisnis (nama@domain.com)", included: true },
+      { text: "Responsive Web (mobile friendly)", included: true },
+      { text: "SSL Security", included: true },
+      { text: "SEO Friendly", included: true },
+      { text: "Google Analytics", included: true },
+      { text: "Full Garansi*", included: true },
     ],
+    revisionRules: {
+      light: "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)",
+      heavy: "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)",
+      extraPage: "Rp 50.000 / halaman",
+    },
   },
   {
-    title: "Keamanan, SEO & Pemasaran",
-    icon: Sparkles,
-    rows: [
-      {
-        name: "Responsive Web (Mobile Friendly)",
-        basic: { text: "Responsive (Mobile Friendly)", status: "check" },
-        standard: { text: "Responsive (Mobile Friendly)", status: "check" },
-        premium: { text: "Responsive (Mobile Friendly)", status: "check" },
-        custom: { text: "Responsive (Mobile Friendly)", status: "check" },
-      },
-      {
-        name: "Sertifikat Keamanan SSL",
-        basic: { text: "SSL Security Aktif", status: "check" },
-        standard: { text: "SSL Security Aktif", status: "check" },
-        premium: { text: "SSL Security Aktif", status: "check" },
-        custom: { text: "SSL Security Aktif", status: "check" },
-      },
-      {
-        name: "Optimasi SEO",
-        basic: { text: "Tidak Termasuk", status: "cross" },
-        standard: { text: "SEO Basic", status: "check" },
-        premium: { text: "SEO Friendly", status: "check" },
-        custom: { text: "SEO Friendly", status: "check" },
-      },
-      {
-        name: "Google Analytics",
-        basic: { text: "Tidak Termasuk", status: "cross" },
-        standard: { text: "Tidak Termasuk", status: "cross" },
-        premium: { text: "Google Analytics Terpasang", status: "check" },
-        custom: { text: "Google Analytics Terpasang", status: "check" },
-      },
-      {
-        name: "Free Iklan Google Ads",
-        basic: { text: "Tidak Termasuk", status: "cross" },
-        standard: { text: "Tidak Termasuk", status: "cross" },
-        premium: { text: "Tidak Termasuk", status: "cross" },
-        custom: { text: "Free Iklan Google Ads", status: "check" },
-      },
-      {
-        name: "Garansi Pemeliharaan",
-        basic: { text: "Full Garansi*", status: "check" },
-        standard: { text: "Full Garansi*", status: "check" },
-        premium: { text: "Full Garansi*", status: "check" },
-        custom: { text: "Full Garansi*", status: "check" },
-      },
+    id: "custom",
+    name: "CUSTOM",
+    pricePrefix: "mulai dari :",
+    priceBadge: "1,5 Jt",
+    activePeriod: "1 Tahun",
+    renewalPrice: "mulai dari : 600k/tahun*",
+    suitability: "Website Custom & Sistem Aplikasi",
+    deliveryTime: "Wajib Meet (Fleksibel)",
+    buttonLabel: "Jadwalkan Konsultasi & Meet",
+    waMessage: "Halo SOLVETA, saya ingin konsultasi dan menjadwalkan sesi meet untuk Paket Website Custom.",
+    checklist: [
+      { text: "Free Iklan Google Ads", included: true },
+      { text: "Optimasi Speed (Super Cepat)", included: true },
+      { text: "Free Desain Mockup", included: true },
+      { text: "Free Domain (.com, .net, .org, dll)", included: true },
+      { text: "Free Hosting (Akses Dashboard, Akses login cPanel)", included: true },
+      { text: "Unlimited Email Bisnis (nama@domain.com)", included: true },
+      { text: "Responsive Web (mobile friendly)", included: true },
+      { text: "SSL Security", included: true },
+      { text: "SEO Friendly", included: true },
+      { text: "Google Analytics", included: true },
+      { text: "Full Garansi*", included: true },
     ],
+    revisionRules: {
+      light: "Sesuai kesepakatan scope of work",
+      heavy: "Penambahan fitur di luar brief awal disesuaikan dengan sesi meet",
+    },
+    customNote: "Wajib Meet Online / Offline untuk finalisasi arsitektur sistem, database, dan alur kerja aplikasi.",
   },
 ];
 
@@ -181,73 +191,69 @@ export const PricingSection: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
 
-  const packagesMeta = [
-    {
-      id: "basic",
-      name: "BASIC",
-      price: "299K",
-      renewal: "249k/tahun*",
-      time: "1–2 Hari",
-      target: "Kebutuhan pribadi: landing page",
-    },
-    {
-      id: "standard",
-      name: "STANDARD",
-      price: "549K",
-      renewal: "399k/tahun*",
-      time: "3–5 Hari",
-      target: "Kebutuhan bisnis kecil",
-    },
-    {
-      id: "premium",
-      name: "PREMIUM",
-      price: "749K",
-      renewal: "399k/tahun*",
-      time: "3–5 Hari",
-      target: "Company profile & bisnis produk",
-    },
-    {
-      id: "custom",
-      name: "CUSTOM",
-      price: "1,5 Jt",
-      renewal: "mulai dari : 600k/tahun*",
-      time: "Wajib Meet",
-      target: "Website Custom",
-    },
-  ];
+  const [selectedFilter, setSelectedFilter] = useState<string>("all");
+
+  const displayedPackages =
+    selectedFilter === "all"
+      ? packageList
+      : packageList.filter((pkg) => pkg.id === selectedFilter);
 
   return (
-    <section id="pricing" className="py-16 sm:py-20 bg-white border-t border-gray-100">
-      <div className="max-w-[1180px] mx-auto px-4 sm:px-6">
+    <section id="pricing" className="py-16 sm:py-24 bg-slate-50/50 border-t border-gray-100">
+      <div className="max-w-[1140px] mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-12"
+          className="text-center mb-10"
         >
-          <span className="inline-block text-[11px] font-mono font-bold tracking-widest text-[#8B0021] bg-rose-50 border border-rose-200/60 px-3 py-1 rounded-full uppercase mb-2">
-            PILIHAN PAKET & LAYANAN
+          <span className="inline-block text-[11px] font-mono font-bold tracking-widest text-[#8B0021] bg-rose-50 border border-rose-200/70 px-3.5 py-1 rounded-full uppercase mb-3">
+            PILIHAN PAKET & RINCIAN LENGKAP
           </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight mb-2 uppercase">
-            PILIH SOLUSI SESUAI KEBUTUHAN
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 tracking-tight mb-3 uppercase">
+            INFORMASI RINCI SETIAP PAKET
           </h2>
-          <p className="text-xs sm:text-sm text-gray-500 max-w-xl mx-auto">
-            Solusi yang transparan dan dapat disesuaikan dengan skala bisnis Anda.
+          <p className="text-xs sm:text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed">
+            Rincian lengkap masing-masing 4 paket website dengan tata letak minimalis, batas garis tepi yang tegas, dan transparansi spesifikasi tanpa biaya tersembunyi.
           </p>
         </motion.div>
 
-        {/* 4 Cards Overview */}
-        <div
-          ref={ref}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 items-stretch mb-16"
-        >
-          {data.pricing.map((tier, index) => {
-            const meta = packagesMeta.find((p) => p.id === tier.id) || packagesMeta[index];
+        {/* Quick Filter Navigation Buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
+          <button
+            onClick={() => setSelectedFilter("all")}
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+              selectedFilter === "all"
+                ? "bg-[#8B0021] text-white border-[#8B0021] shadow-xs"
+                : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+            }`}
+          >
+            Semua 4 Paket (Berurutan)
+          </button>
+          {packageList.map((pkg) => (
+            <button
+              key={pkg.id}
+              onClick={() => setSelectedFilter(pkg.id)}
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all border ${
+                selectedFilter === pkg.id
+                  ? "bg-[#8B0021] text-white border-[#8B0021] shadow-xs"
+                  : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:bg-gray-50"
+              }`}
+            >
+              Paket {pkg.name} ({pkg.priceBadge})
+            </button>
+          ))}
+        </div>
+
+        {/* STACKED INDIVIDUAL PACKAGE CARDS (ONE BY ONE SEQUENTIALLY) */}
+        <div ref={ref} className="space-y-12 sm:space-y-16">
+          {displayedPackages.map((pkg, index) => {
+            const isPopular = pkg.popular;
 
             return (
               <motion.div
-                key={tier.id || tier.name}
+                key={pkg.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                 transition={{
@@ -255,117 +261,240 @@ export const PricingSection: React.FC = () => {
                   delay: index * 0.1,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                whileHover={{ y: -4 }}
-                className={`bg-white rounded-xl flex flex-col justify-between relative transition-all duration-200 overflow-hidden ${
-                  tier.popular
-                    ? "border-2 border-[#8B0021] shadow-md shadow-rose-900/5"
-                    : "border border-gray-200 hover:border-gray-300 shadow-2xs hover:shadow-xs"
+                id={`paket-${pkg.id}`}
+                className={`bg-white rounded-2xl transition-all duration-300 overflow-hidden shadow-2xs ${
+                  isPopular
+                    ? "border-2 border-[#8B0021] shadow-md shadow-rose-950/5"
+                    : "border border-gray-200 hover:border-gray-300 hover:shadow-xs"
                 }`}
               >
-                {tier.popular && (
-                  <div className="bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-center font-mono text-[10px] font-bold uppercase tracking-widest py-1">
-                    PALING DIMINATI (POPULAR)
+                {/* Popular Banner (if applicable) */}
+                {isPopular && (
+                  <div className="bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-center font-mono text-[11px] font-bold uppercase tracking-widest py-1.5 px-4 flex items-center justify-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span>PAKET PALING DIREKOMENDASIKAN (POPULAR)</span>
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
                   </div>
                 )}
 
-                <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    {/* Header Card */}
-                    <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className="text-[11px] font-mono font-bold tracking-wider text-gray-400 uppercase">
-                        Paket
-                      </span>
-                      {tier.deliveryTime && (
-                        <span className="text-[10px] font-semibold text-gray-600 bg-gray-100 border border-gray-200 px-2 py-0.5 rounded">
-                          ⏱ {tier.deliveryTime}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="text-base font-extrabold text-gray-900 tracking-tight uppercase mb-1">
-                      {tier.name}
-                    </div>
-
-                    <div className="flex items-baseline gap-1 mb-3">
-                      {tier.pricePrefix && (
-                        <span className="text-xs font-medium text-gray-500">
-                          {tier.pricePrefix}
-                        </span>
-                      )}
-                      <span className="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">
-                        {tier.price}
-                      </span>
-                    </div>
-
-                    {/* Masa Aktif & Perpanjangan Tag (Bordered Minimalist Box) */}
-                    <div className="border border-gray-200 bg-gray-50/70 rounded-lg p-2.5 mb-3 text-[11px]">
-                      <div className="text-gray-700 font-medium flex items-center gap-1.5 mb-0.5">
-                        <span>⏳ Masa aktif:</span>
-                        <strong className="font-semibold text-gray-900">1 Tahun</strong>
-                      </div>
-                      <div className="text-gray-600">
-                        Perpanjangan:{" "}
-                        <span className="font-bold text-gray-900">
-                          {tier.renewalPrice || meta?.renewal || "249k/tahun*"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Suitability & Delivery Time Box */}
-                    <div className="border border-gray-200 rounded-lg p-2.5 mb-5 text-[11px] bg-white">
-                      <div className="text-gray-500 text-[10px] uppercase font-semibold tracking-wider mb-0.5">
-                        Cocok untuk:
-                      </div>
-                      <div className="text-gray-800 font-medium leading-snug mb-1.5">
-                        {tier.suitability}
-                      </div>
-                      <div className="text-[10px] text-gray-500 flex items-center gap-1 pt-1 border-t border-gray-100">
-                        <span>Pengerjaan:</span>
-                        <span className="font-semibold text-gray-800">
-                          {tier.deliveryTime || meta?.time || "3–5 Hari"}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Feature list preview */}
-                    <div className="space-y-2 mb-6">
-                      <div className="text-[11px] font-semibold text-gray-700 uppercase tracking-wider mb-2">
-                        Fitur Utama:
-                      </div>
-                      {tier.features.slice(0, 5).map((feature, fIndex) => (
-                        <div
-                          key={fIndex}
-                          className="flex items-start gap-2 text-xs text-gray-600 leading-snug"
-                        >
-                          <Check className="w-3.5 h-3.5 text-[#8B0021] flex-shrink-0 mt-0.5 stroke-[2.5]" />
-                          <span>{feature}</span>
+                {/* Main Card Body (2 Columns Layout Matching Screenshot Redesign) */}
+                <div className="p-6 sm:p-8 lg:p-10">
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+                    {/* LEFT COLUMN: Price Pill, Masa Aktif Box, Cocok Untuk Box, CTA Button */}
+                    <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
+                      {/* Top Script Label + Large Redesigned Price Badge */}
+                      <div className="border border-gray-200 rounded-2xl p-5 bg-gradient-to-b from-gray-50/80 to-white text-center relative shadow-2xs">
+                        <div className="text-[11px] font-mono font-bold tracking-widest text-[#8B0021] uppercase mb-1">
+                          PAKET WEBSITE
                         </div>
-                      ))}
-                      {tier.features.length > 5 && (
-                        <div className="text-[11px] text-[#8B0021] font-medium pt-1">
-                          + {tier.features.length - 5} fitur lainnya (lihat detail bawah)
+
+                        {pkg.pricePrefix && (
+                          <div className="text-xs font-medium text-gray-500 mb-0.5">
+                            {pkg.pricePrefix}
+                          </div>
+                        )}
+
+                        <div className="text-xs font-extrabold uppercase tracking-widest text-gray-700 mb-1">
+                          {pkg.name}
                         </div>
-                      )}
+
+                        <div className="text-4xl sm:text-5xl font-black text-gray-950 tracking-tight">
+                          {pkg.priceBadge}
+                        </div>
+                      </div>
+
+                      {/* Box 1: Masa Aktif & Perpanjangan (Bordered Pill) */}
+                      <div className="border border-gray-200 rounded-xl p-4 bg-white shadow-2xs">
+                        <div className="flex items-center gap-2 text-xs font-semibold text-gray-700 mb-1">
+                          <span className="text-base">⏳</span>
+                          <span>Masa aktif {pkg.activePeriod},</span>
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          Perpanjangan :{" "}
+                          <span className="text-base sm:text-lg font-bold text-gray-900 ml-1">
+                            {pkg.renewalPrice}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Box 2: Cocok Untuk & Waktu Pengerjaan (Bordered Pill) */}
+                      <div className="border border-gray-200 rounded-xl p-4 bg-white shadow-2xs">
+                        <div className="text-xs text-gray-600 mb-1.5 leading-snug">
+                          Cocok untuk <strong className="text-gray-900 font-semibold">{pkg.suitability}</strong>
+                        </div>
+                        <div className="text-xs font-bold text-[#8B0021] flex items-center gap-1.5 pt-1.5 border-t border-gray-100">
+                          <span>⚡ Pengerjaan {pkg.deliveryTime}</span>
+                        </div>
+                      </div>
+
+                      {/* Action CTA Button */}
+                      <motion.a
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+                          pkg.waMessage
+                        )}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`w-full py-3.5 px-5 text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-xs ${
+                          isPopular
+                            ? "bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white"
+                            : "bg-gray-950 hover:bg-black text-white hover:shadow-sm"
+                        }`}
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>{pkg.buttonLabel}</span>
+                      </motion.a>
+                    </div>
+
+                    {/* RIGHT COLUMN: Feature Checklist with [✔] and [❌] */}
+                    <div className="lg:col-span-7 flex flex-col justify-between">
+                      <div>
+                        <div className="flex items-center justify-between pb-3 mb-4 border-b border-gray-100">
+                          <span className="text-xs font-mono font-bold tracking-wider text-gray-500 uppercase">
+                            Spesifikasi & Fitur Termasuk
+                          </span>
+                          <span className="text-[11px] text-gray-400 font-mono">
+                            {pkg.checklist.filter((c) => c.included).length} Fitur Aktif
+                          </span>
+                        </div>
+
+                        {/* Checklist items list */}
+                        <div className="border border-gray-200 rounded-xl divide-y divide-gray-100 bg-white overflow-hidden">
+                          {pkg.checklist.map((item, cIndex) => (
+                            <div
+                              key={cIndex}
+                              className={`p-3 sm:p-3.5 flex items-start gap-3 text-xs sm:text-sm transition-colors ${
+                                item.included
+                                  ? "text-gray-800 hover:bg-gray-50/50"
+                                  : "text-gray-400 bg-gray-50/30 line-through decoration-gray-300"
+                              }`}
+                            >
+                              {item.included ? (
+                                <div className="w-5 h-5 rounded flex items-center justify-center bg-emerald-100 text-emerald-700 flex-shrink-0 mt-0.5 border border-emerald-200/80">
+                                  <Check className="w-3.5 h-3.5 stroke-[3]" />
+                                </div>
+                              ) : (
+                                <div className="w-5 h-5 rounded flex items-center justify-center bg-rose-50 text-rose-500 flex-shrink-0 mt-0.5 border border-rose-200/60">
+                                  <X className="w-3.5 h-3.5 stroke-[3]" />
+                                </div>
+                              )}
+                              <span className="leading-snug font-medium">
+                                {item.text}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
+                </div>
 
-                  <div>
-                    <motion.a
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
-                        tier.waMessage || `Halo SOLVETA, saya tertarik dengan paket ${tier.name}`
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`w-full py-2.5 text-xs font-bold rounded-lg flex items-center justify-center transition-all ${
-                        tier.buttonVariant === "red" || tier.popular
-                          ? "bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white shadow-xs"
-                          : "bg-white hover:bg-rose-50/40 text-gray-800 border border-gray-300 hover:border-[#8B0021]/40"
-                      }`}
-                    >
-                      {tier.buttonLabel}
-                    </motion.a>
+                {/* BOTTOM SUB-SECTION: Add-ons & Revisi Info (Bordered Minimalist Sub-Cards) */}
+                <div className="border-t border-gray-200 bg-gray-50/60 p-6 sm:p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {/* Sub-Card 1: Domain Premium (if applicable) or General Note */}
+                    {pkg.domainAddons && pkg.domainAddons.length > 0 ? (
+                      <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs">
+                        <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
+                          <Globe className="w-3.5 h-3.5 text-[#8B0021]" />
+                          <span>Domain Premium (Biaya Tambahan):</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-x-2 gap-y-1.5 text-[11px] text-gray-600">
+                          {pkg.domainAddons.map((dom, dIdx) => (
+                            <div key={dIdx} className="flex justify-between items-center py-0.5 border-b border-gray-50">
+                              <span className="font-mono text-gray-700">{dom.name}</span>
+                              <span className="font-semibold text-gray-900">{dom.price}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
+                            <Globe className="w-3.5 h-3.5 text-[#8B0021]" />
+                            <span>Domain & Server Hosting:</span>
+                          </div>
+                          <p className="text-[11px] text-gray-500 leading-relaxed mb-2">
+                            Sudah termasuk sewa domain standar (.com, .net, .org) & hosting server berkecepatan tinggi selama 1 tahun pertama.
+                          </p>
+                        </div>
+                        <div className="text-[10px] text-emerald-700 font-semibold bg-emerald-50 border border-emerald-200/60 px-2 py-1 rounded">
+                          ✓ Siap online langsung tanpa biaya setup tambahan
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Sub-Card 2: Layanan Email Profesional */}
+                    {pkg.emailAddons && pkg.emailAddons.length > 0 ? (
+                      <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs">
+                        <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
+                          <Mail className="w-3.5 h-3.5 text-[#8B0021]" />
+                          <span>Layanan Email Profesional:</span>
+                        </div>
+                        <div className="space-y-2 text-[11px]">
+                          {pkg.emailAddons.map((em, eIdx) => (
+                            <div key={eIdx} className="flex justify-between items-center p-2 rounded bg-gray-50 border border-gray-100">
+                              <span className="text-gray-700 font-medium">{em.name}</span>
+                              <span className="font-bold text-gray-900">{em.price}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs flex flex-col justify-between">
+                        <div>
+                          <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
+                            <Mail className="w-3.5 h-3.5 text-[#8B0021]" />
+                            <span>Alokasi Email Bisnis:</span>
+                          </div>
+                          <p className="text-[11px] text-gray-500 leading-relaxed">
+                            {pkg.id === "standard" && "Termasuk 1 akun email bisnis (nama@domain.com) dengan webmail & setup SMTP."}
+                            {pkg.id === "premium" && "Termasuk 2 akun email bisnis (nama@domain.com) terkonfigurasi penuh."}
+                            {pkg.id === "custom" && "Unlimited akun email bisnis dengan hak akses cPanel penuh."}
+                          </p>
+                        </div>
+                        <div className="text-[10px] text-gray-500 pt-2 border-t border-gray-100">
+                          *Email tambahan dapat ditambahkan kapan saja (+Rp 50.000/email).
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Sub-Card 3: Tarif Revisi & Ketentuan */}
+                    <div className="border border-gray-200 rounded-xl bg-white p-4 text-xs md:col-span-2 lg:col-span-1">
+                      <div className="flex items-center gap-1.5 font-bold text-gray-900 uppercase tracking-wider text-[11px] mb-2">
+                        <ShieldCheck className="w-3.5 h-3.5 text-[#8B0021]" />
+                        <span>Tarif & Ketentuan Revisi:</span>
+                      </div>
+                      <div className="space-y-1.5 text-[11px] text-gray-600">
+                        <div className="flex items-start gap-1">
+                          <span className="text-gray-400">•</span>
+                          <div>
+                            <strong className="text-gray-800">Revisi Ringan:</strong> {pkg.revisionRules.light}
+                          </div>
+                        </div>
+                        <div className="flex items-start gap-1">
+                          <span className="text-gray-400">•</span>
+                          <div>
+                            <strong className="text-gray-800">Revisi Berat:</strong> {pkg.revisionRules.heavy}
+                          </div>
+                        </div>
+                        {pkg.revisionRules.extraPage && (
+                          <div className="flex items-start gap-1">
+                            <span className="text-gray-400">•</span>
+                            <div>
+                              <strong className="text-gray-800">Tambah Halaman:</strong> {pkg.revisionRules.extraPage}
+                            </div>
+                          </div>
+                        )}
+                        {pkg.customNote && (
+                          <div className="text-[10px] text-[#8B0021] font-semibold pt-1 border-t border-gray-100">
+                            {pkg.customNote}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -373,292 +502,33 @@ export const PricingSection: React.FC = () => {
           })}
         </div>
 
-        {/* DETAILED INFORMATION SECTION WITH MINIMALIST BORDERED LAYOUT */}
-        <div className="pt-6 border-t border-gray-200">
-          {/* Header of Details Section */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-gray-700 text-xs font-mono mb-2">
-              <FileText className="w-3.5 h-3.5 text-[#8B0021]" />
-              INFORMASI RINCI & PERBANDINGAN FITUR
-            </div>
-            <h3 className="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight mb-2">
-              Rincian Spesifikasi Lengkap 4 Paket
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-500 max-w-2xl mx-auto">
-              Perbandingan rinci seluruh parameter paket website secara transparan, dipisahkan dengan batas garis tepi minimalis.
-            </p>
-          </div>
-
-          {/* Desktop & Tablet: Full Minimalist Bordered Table with horizontal overflow on mobile */}
-          <div className="border border-gray-200 rounded-xl bg-white shadow-2xs overflow-hidden mb-10">
-            <div className="overflow-x-auto">
-              <div className="min-w-[680px]">
-                {/* Table Header */}
-                <div className="grid grid-cols-12 bg-gray-50/80 border-b border-gray-200 text-xs font-bold text-gray-900 sticky top-0 z-10 divide-x divide-gray-200">
-                  <div className="col-span-4 p-4 flex items-center text-gray-600 font-mono uppercase tracking-wider text-[11px]">
-                    Fitur & Spesifikasi
-                  </div>
-                  <div className="col-span-2 p-3 text-center">
-                    <div className="font-extrabold text-gray-900">BASIC</div>
-                    <div className="text-[11px] text-gray-500 font-normal">Rp 299K</div>
-                  </div>
-                  <div className="col-span-2 p-3 text-center bg-rose-50/50 relative">
-                    <span className="absolute top-1 right-2 text-[9px] font-mono font-bold text-[#8B0021] bg-rose-100 px-1.5 py-0.2 rounded">
-                      POPULAR
-                    </span>
-                    <div className="font-extrabold text-[#8B0021]">STANDARD</div>
-                    <div className="text-[11px] text-gray-600 font-normal">Rp 549K</div>
-                  </div>
-                  <div className="col-span-2 p-3 text-center">
-                    <div className="font-extrabold text-gray-900">PREMIUM</div>
-                    <div className="text-[11px] text-gray-500 font-normal">Rp 749K</div>
-                  </div>
-                  <div className="col-span-2 p-3 text-center">
-                    <div className="font-extrabold text-gray-900">CUSTOM</div>
-                    <div className="text-[11px] text-gray-500 font-normal">Mulai 1,5 Jt</div>
-                  </div>
-                </div>
-
-                {/* Table Categories and Rows */}
-                <div className="divide-y divide-gray-200 text-xs">
-                  {detailedSpecs.map((category, cIdx) => (
-                    <div key={cIdx} className="divide-y divide-gray-100">
-                      {/* Category Header Bar */}
-                      <div className="bg-gray-100/70 px-4 py-2.5 text-gray-800 font-bold text-[11px] uppercase tracking-wider flex items-center gap-2 border-b border-gray-200">
-                        <category.icon className="w-3.5 h-3.5 text-[#8B0021]" />
-                        <span>{category.title}</span>
-                      </div>
-
-                      {/* Category Rows */}
-                      {category.rows.map((row, rIdx) => (
-                        <div
-                          key={rIdx}
-                          className="grid grid-cols-12 divide-x divide-gray-200 hover:bg-gray-50/50 transition-colors items-center text-[12px]"
-                        >
-                          {/* Feature Name */}
-                          <div className="col-span-4 p-3.5 font-medium text-gray-800 flex items-center gap-2">
-                            <span>{row.name}</span>
-                          </div>
-
-                          {/* Basic */}
-                          <div className="col-span-2 p-3 text-center flex items-center justify-center gap-1.5 text-gray-700">
-                            {row.basic.status === "check" && (
-                              <Check className="w-4 h-4 text-emerald-600 flex-shrink-0 stroke-[2.5]" />
-                            )}
-                            {row.basic.status === "cross" && (
-                              <X className="w-4 h-4 text-rose-500 flex-shrink-0 stroke-[2.5]" />
-                            )}
-                            <span className="leading-snug">{row.basic.text}</span>
-                          </div>
-
-                          {/* Standard (Popular Column) */}
-                          <div className="col-span-2 p-3 text-center flex items-center justify-center gap-1.5 text-gray-900 bg-rose-50/20 font-medium">
-                            {row.standard.status === "check" && (
-                              <Check className="w-4 h-4 text-[#8B0021] flex-shrink-0 stroke-[2.5]" />
-                            )}
-                            {row.standard.status === "cross" && (
-                              <X className="w-4 h-4 text-rose-500 flex-shrink-0 stroke-[2.5]" />
-                            )}
-                            <span className="leading-snug">{row.standard.text}</span>
-                          </div>
-
-                          {/* Premium */}
-                          <div className="col-span-2 p-3 text-center flex items-center justify-center gap-1.5 text-gray-700">
-                            {row.premium.status === "check" && (
-                              <Check className="w-4 h-4 text-emerald-600 flex-shrink-0 stroke-[2.5]" />
-                            )}
-                            {row.premium.status === "cross" && (
-                              <X className="w-4 h-4 text-rose-500 flex-shrink-0 stroke-[2.5]" />
-                            )}
-                            <span className="leading-snug">{row.premium.text}</span>
-                          </div>
-
-                          {/* Custom */}
-                          <div className="col-span-2 p-3 text-center flex items-center justify-center gap-1.5 text-gray-700">
-                            {row.custom.status === "check" && (
-                              <Check className="w-4 h-4 text-emerald-600 flex-shrink-0 stroke-[2.5]" />
-                            )}
-                            {row.custom.status === "cross" && (
-                              <X className="w-4 h-4 text-rose-500 flex-shrink-0 stroke-[2.5]" />
-                            )}
-                            <span className="leading-snug">{row.custom.text}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ))}
-                </div>
-              </div>
+        {/* Global Assurance Banner */}
+        <div className="mt-12 border border-gray-200 rounded-2xl bg-white p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-gray-600 shadow-2xs">
+          <div className="flex items-start gap-3">
+            <Info className="w-5 h-5 text-[#8B0021] flex-shrink-0 mt-0.5" />
+            <div>
+              <strong className="text-gray-900 font-semibold block mb-0.5">
+                Garansi Penuh & Ketentuan Transparansi SOLVETA:
+              </strong>
+              <p className="text-[11px] leading-relaxed text-gray-500">
+                *Biaya perpanjangan tahun berikutnya digunakan untuk sewa domain & hosting aktif. Semua paket website mendapatkan garansi pemeliharaan perbaikan error secara cuma-cuma.
+              </p>
             </div>
           </div>
 
-          {/* 3 MINIMALIST BORDERED CARDS FOR ADD-ONS & POLICIES */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-            {/* Card 1: Domain Premium */}
-            <div className="border border-gray-200 rounded-xl bg-white p-5 shadow-2xs flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-900 mb-2">
-                  <Globe className="w-4 h-4 text-[#8B0021]" />
-                  <span>Domain Premium (Tambahan)</span>
-                </div>
-                <p className="text-[11px] text-gray-500 mb-4 leading-relaxed">
-                  Pilihan ekstensi domain premium dengan biaya tambahan untuk paket Basic/Standard:
-                </p>
-
-                <div className="border border-gray-200 rounded-lg divide-y divide-gray-100 text-xs">
-                  <div className="flex justify-between items-center p-2.5">
-                    <span className="font-mono font-medium text-gray-700">.web.id</span>
-                    <span className="font-semibold text-gray-900">+Rp 100.000</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2.5 bg-gray-50/50">
-                    <span className="font-mono font-medium text-gray-700">.blog</span>
-                    <span className="font-semibold text-gray-900">+Rp 100.000</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2.5">
-                    <span className="font-mono font-medium text-gray-700">.online</span>
-                    <span className="font-semibold text-gray-900">+Rp 100.000</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2.5 bg-gray-50/50">
-                    <span className="font-mono font-medium text-gray-700">.com</span>
-                    <span className="font-semibold text-[#8B0021]">+Rp 200.000</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2.5">
-                    <span className="font-mono font-medium text-gray-700">.info</span>
-                    <span className="font-semibold text-gray-900">+Rp 100.000</span>
-                  </div>
-                  <div className="flex justify-between items-center p-2.5 bg-gray-50/50">
-                    <span className="font-mono font-medium text-gray-700">dll (ekstensi lain)</span>
-                    <span className="text-[11px] text-gray-500 font-medium">Menyesuaikan</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-gray-100 text-[10px] text-gray-500">
-                *Domain gratis standar tetap berlaku sesuai paket yang dipilih.
-              </div>
-            </div>
-
-            {/* Card 2: Layanan Email Bisnis Profesional */}
-            <div className="border border-gray-200 rounded-xl bg-white p-5 shadow-2xs flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-900 mb-2">
-                  <Mail className="w-4 h-4 text-[#8B0021]" />
-                  <span>Layanan Email Bisnis</span>
-                </div>
-                <p className="text-[11px] text-gray-500 mb-4 leading-relaxed">
-                  Email profesional berdomain sendiri (contoh: <code className="text-gray-800 font-mono text-[10px]">info@bisnisanda.com</code>):
-                </p>
-
-                <div className="border border-gray-200 rounded-lg divide-y divide-gray-100 text-xs">
-                  <div className="flex justify-between items-center p-3">
-                    <div>
-                      <div className="font-semibold text-gray-900">1 Akun Email Bisnis</div>
-                      <div className="text-[10px] text-gray-500">Kapasitas penyimpanan dedicated</div>
-                    </div>
-                    <span className="font-bold text-gray-900">Rp 50.000</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3 bg-gray-50/50">
-                    <div>
-                      <div className="font-semibold text-gray-900">5 Akun Email Bisnis</div>
-                      <div className="text-[10px] text-gray-500">Cocok untuk tim operasional</div>
-                    </div>
-                    <span className="font-bold text-[#8B0021]">Rp 150.000</span>
-                  </div>
-                  <div className="flex justify-between items-center p-3">
-                    <div>
-                      <div className="font-semibold text-gray-900">Unlimited Email</div>
-                      <div className="text-[10px] text-gray-500">Akses kontrol cPanel penuh</div>
-                    </div>
-                    <span className="text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
-                      Gratis di Custom
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-gray-100 text-[10px] text-gray-500">
-                *Dapat diakses melalui Webmail, Outlook, Gmail, atau aplikasi Mail smartphone.
-              </div>
-            </div>
-
-            {/* Card 3: Ketentuan & Tarif Revisi */}
-            <div className="border border-gray-200 rounded-xl bg-white p-5 shadow-2xs flex flex-col justify-between">
-              <div>
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-900 mb-2">
-                  <ShieldCheck className="w-4 h-4 text-[#8B0021]" />
-                  <span>Tarif & Ketentuan Revisi</span>
-                </div>
-                <p className="text-[11px] text-gray-500 mb-4 leading-relaxed">
-                  Transparansi biaya pengerjaan revisi setelah kuota gratis selesai:
-                </p>
-
-                <div className="border border-gray-200 rounded-lg divide-y divide-gray-100 text-xs">
-                  <div className="p-3">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="font-semibold text-gray-900">Revisi Ringan</span>
-                      <span className="font-bold text-gray-900">Rp 30.000</span>
-                    </div>
-                    <p className="text-[10px] text-gray-500 leading-tight">
-                      Ganti logo, icon, warna aksen, penyesuaian teks kecil, link WhatsApp, atau kontak.
-                    </p>
-                  </div>
-
-                  <div className="p-3 bg-gray-50/50">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="font-semibold text-gray-900">Revisi Berat</span>
-                      <span className="font-bold text-[#8B0021]">Rp 50.000</span>
-                    </div>
-                    <p className="text-[10px] text-gray-500 leading-tight">
-                      Merubah layout halaman, menambah halaman, atau merombak struktur alur halaman.
-                    </p>
-                  </div>
-
-                  <div className="p-3">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="font-semibold text-gray-900">Penambahan Halaman</span>
-                      <span className="font-bold text-gray-900">Rp 50.000 <span className="text-[10px] font-normal text-gray-500">/halaman</span></span>
-                    </div>
-                    <p className="text-[10px] text-gray-500 leading-tight">
-                      Biaya desain & pembuatan halaman tambahan di luar batas paket awal.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-gray-100 text-[10px] text-gray-500">
-                *Revisi tidak merubah tema/konsep dasar yang sudah disetujui saat brief awal.
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Disclaimer and Assurance Box with Clean Minimalist Border */}
-          <div className="border border-gray-200 rounded-xl bg-gray-50/70 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-gray-600">
-            <div className="flex items-start gap-3">
-              <Info className="w-5 h-5 text-[#8B0021] flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-gray-900 font-semibold block mb-0.5">
-                  Ketentuan Transparansi Layanan SOLVETA:
-                </strong>
-                <p className="text-[11px] leading-relaxed text-gray-500">
-                  Semua paket website sudah mencakup sertifikat keamanan SSL, konfigurasi DNS domain, setup server hosting, dan jaminan perbaikan bug sistem (Full Garansi). Biaya perpanjangan tahun berikutnya hanya untuk memperpanjang domain dan sewa server hosting aktif.
-                </p>
-              </div>
-            </div>
-
-            <motion.a
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.98 }}
-              href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
-                "Halo SOLVETA, saya ingin konsultasi paket website yang paling tepat untuk bisnis saya."
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-shrink-0 px-4 py-2.5 bg-gray-900 hover:bg-black text-white text-xs font-bold rounded-lg transition-all flex items-center gap-2 shadow-2xs"
-            >
-              <span>Konsultasi Gratis via WhatsApp</span>
-              <span>→</span>
-            </motion.a>
-          </div>
+          <motion.a
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+            href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+              "Halo SOLVETA, saya ingin konsultasi mengenai pilihan paket website."
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-shrink-0 px-5 py-2.5 bg-[#8B0021] hover:bg-[#750019] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2 shadow-xs"
+          >
+            <span>Konsultasi WhatsApp</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </motion.a>
         </div>
       </div>
     </section>
