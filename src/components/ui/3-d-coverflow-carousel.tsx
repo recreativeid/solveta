@@ -133,7 +133,7 @@ export function CoverFlowCarousel({
 
   return (
     <section
-      className={`relative w-full min-h-[520px] sm:min-h-[560px] flex items-center justify-center overflow-hidden py-6 select-none font-sans ${className}`}
+      className={`relative w-full min-h-[480px] sm:min-h-[540px] flex items-center justify-center overflow-hidden py-4 select-none font-sans ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={handleTouchStart}
@@ -144,12 +144,18 @@ export function CoverFlowCarousel({
         <img
           src={items[currentIndex]?.img}
           alt="ambience background"
-          className="w-full h-full object-cover blur-[50px] opacity-10 dark:opacity-15 scale-125 transition-all duration-1000"
+          className="w-full h-full object-cover blur-[55px] opacity-15 dark:opacity-20 scale-125 transition-all duration-1000"
         />
         <div className="absolute inset-0 bg-radial from-transparent via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-[#FDFBF9] dark:to-[#07080E]" />
       </div>
 
-      <div className="relative w-full max-w-7xl mx-auto px-2 sm:px-4 z-10 flex flex-col items-center">
+      {/* LEFT SIDE EDGE FADE GRADIENT MASK (Pudar di ujung samping kiri) */}
+      <div className="absolute top-0 bottom-0 left-0 w-20 sm:w-44 md:w-60 bg-gradient-to-r from-[#FDFBF9] dark:from-[#07080E] via-[#FDFBF9]/90 dark:via-[#07080E]/90 to-transparent pointer-events-none z-35" />
+
+      {/* RIGHT SIDE EDGE FADE GRADIENT MASK (Pudar di ujung samping kanan) */}
+      <div className="absolute top-0 bottom-0 right-0 w-20 sm:w-44 md:w-60 bg-gradient-to-l from-[#FDFBF9] dark:from-[#07080E] via-[#FDFBF9]/90 dark:via-[#07080E]/90 to-transparent pointer-events-none z-35" />
+
+      <div className="relative w-full z-10 flex flex-col items-center">
         {/* Eyebrow Label */}
         {sectionLabel && (
           <div className="flex items-center gap-3 mb-6">
@@ -161,10 +167,10 @@ export function CoverFlowCarousel({
           </div>
         )}
 
-        {/* 3D Coverflow Stage (Widescreen Landscape Laptop Screens) */}
+        {/* 3D Coverflow Stage (Full Width Widescreen Landscape Laptop Screens with 2 Layers on Left & Right) */}
         <div
-          className="relative w-full h-[370px] sm:h-[430px] md:h-[470px] flex justify-center items-center mb-6"
-          style={{ perspective: "1500px" }}
+          className="relative w-full h-[360px] sm:h-[420px] md:h-[460px] flex justify-center items-center mb-4 overflow-visible"
+          style={{ perspective: "1600px" }}
         >
           {items.map((item, idx) => {
             const offset = (idx - currentIndex + total) % total;
@@ -172,7 +178,7 @@ export function CoverFlowCarousel({
             let transform = "translateX(0px) scale(0.4) rotateY(0deg)";
             let opacity = 0;
             let zIndex = 0;
-            let filter = isLightMode ? "brightness(0.9) blur(1.5px)" : "brightness(0.4) blur(1.5px)";
+            let filter = isLightMode ? "brightness(0.9) blur(1.5px)" : "brightness(0.45) blur(1.5px)";
             let isCenter = false;
 
             if (offset === 0) {
@@ -182,25 +188,29 @@ export function CoverFlowCarousel({
               zIndex = 30;
               filter = "brightness(1)";
             } else if (offset === 1) {
-              transform = "translateX(min(360px, 46vw)) scale(0.82) rotateY(-22deg)";
-              opacity = 0.75;
+              // 1st Layer Right
+              transform = "translateX(min(290px, 35vw)) scale(0.85) rotateY(-18deg)";
+              opacity = 0.85;
               zIndex = 20;
-              filter = isLightMode ? "brightness(0.92)" : "brightness(0.7)";
+              filter = isLightMode ? "brightness(0.92)" : "brightness(0.72)";
             } else if (offset === 2) {
-              transform = "translateX(min(620px, 78vw)) scale(0.66) rotateY(-34deg)";
-              opacity = 0.4;
+              // 2nd Layer Right
+              transform = "translateX(min(540px, 65vw)) scale(0.70) rotateY(-30deg)";
+              opacity = 0.55;
               zIndex = 10;
-              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.5) blur(1px)";
+              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.55) blur(1px)";
             } else if (offset === total - 1) {
-              transform = "translateX(-min(360px, 46vw)) scale(0.82) rotateY(22deg)";
-              opacity = 0.75;
+              // 1st Layer Left
+              transform = "translateX(-min(290px, 35vw)) scale(0.85) rotateY(18deg)";
+              opacity = 0.85;
               zIndex = 20;
-              filter = isLightMode ? "brightness(0.92)" : "brightness(0.7)";
+              filter = isLightMode ? "brightness(0.92)" : "brightness(0.72)";
             } else if (offset === total - 2) {
-              transform = "translateX(-min(620px, 78vw)) scale(0.66) rotateY(34deg)";
-              opacity = 0.4;
+              // 2nd Layer Left
+              transform = "translateX(-min(540px, 65vw)) scale(0.70) rotateY(30deg)";
+              opacity = 0.55;
               zIndex = 10;
-              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.5) blur(1px)";
+              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.55) blur(1px)";
             }
 
             return (
@@ -209,10 +219,10 @@ export function CoverFlowCarousel({
                 onClick={() => !isCenter && goToSlide(idx)}
                 style={{
                   position: "absolute",
-                  width: "min(680px, 88vw)",
-                  height: "min(400px, 54vw)",
-                  minHeight: "260px",
-                  borderRadius: "18px",
+                  width: "min(580px, 72vw)",
+                  height: "min(350px, 44vw)",
+                  minHeight: "240px",
+                  borderRadius: "16px",
                   overflow: "hidden",
                   backgroundColor: "#0d0e14",
                   border: isCenter
@@ -251,7 +261,7 @@ export function CoverFlowCarousel({
                   {/* Browser URL Tab Pill */}
                   <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-black/40 border border-white/10 text-[9px] sm:text-[10px] text-gray-300 font-mono">
                     <Globe className="w-2.5 h-2.5 text-rose-400" />
-                    <span className="truncate max-w-[140px] sm:max-w-[220px]">
+                    <span className="truncate max-w-[130px] sm:max-w-[200px]">
                       solveta.site/showcase/{item.titleLine1.toLowerCase().replace(/\s+/g, "-")}
                     </span>
                   </div>
@@ -280,9 +290,9 @@ export function CoverFlowCarousel({
                     transition: "opacity 500ms ease, transform 500ms ease",
                     pointerEvents: isCenter ? "auto" : "none",
                   }}
-                  className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 bg-gradient-to-t from-black/95 via-black/85 to-transparent backdrop-blur-xs border-t border-white/10 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-4 text-left"
+                  className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/95 via-black/85 to-transparent backdrop-blur-xs border-t border-white/10 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-4 text-left"
                 >
-                  <div className="space-y-1 max-w-lg">
+                  <div className="space-y-1 max-w-md">
                     {/* Category Tag (Mobile fallback) */}
                     <div className="sm:hidden">
                       <span className="text-[9px] font-bold font-mono px-2 py-0.5 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-300 uppercase">
@@ -291,13 +301,13 @@ export function CoverFlowCarousel({
                     </div>
 
                     {/* Main Title (Poppins Bold) */}
-                    <h4 className="text-sm sm:text-lg md:text-xl font-extrabold text-white tracking-tight uppercase leading-tight font-sans drop-shadow-md">
+                    <h4 className="text-sm sm:text-base md:text-lg font-extrabold text-white tracking-tight uppercase leading-tight font-sans drop-shadow-md">
                       {item.titleLine1} {item.titleLine2 && <span className="text-rose-300 font-semibold">{item.titleLine2}</span>}
                     </h4>
 
                     {/* Description */}
                     {item.desc && (
-                      <p className="text-[10px] sm:text-xs text-gray-300 line-clamp-2 leading-relaxed font-sans max-w-md">
+                      <p className="text-[10px] sm:text-xs text-gray-300 line-clamp-2 leading-relaxed font-sans max-w-sm">
                         {item.desc}
                       </p>
                     )}
@@ -314,7 +324,7 @@ export function CoverFlowCarousel({
                     }}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[11px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30"
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[11px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30"
                   >
                     <span>{item.ctaText || "Lihat Selengkapnya"}</span>
                     <ArrowRight className="w-3.5 h-3.5 text-rose-200" />
@@ -329,7 +339,7 @@ export function CoverFlowCarousel({
         <button
           onClick={prevSlide}
           aria-label="Previous portfolio"
-          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all"
+          className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all"
         >
           <ChevronLeft className="w-5 h-5" />
         </button>
@@ -337,7 +347,7 @@ export function CoverFlowCarousel({
         <button
           onClick={nextSlide}
           aria-label="Next portfolio"
-          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all"
+          className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all"
         >
           <ChevronRight className="w-5 h-5" />
         </button>

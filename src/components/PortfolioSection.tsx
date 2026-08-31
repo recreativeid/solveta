@@ -65,9 +65,9 @@ export const PortfolioSection: React.FC = () => {
 
   return (
     <section id="portfolio" className="py-20 bg-gradient-to-b from-white dark:from-[#07080E] via-[#FDFBF9] dark:via-[#090A12] to-white dark:to-[#07080E] border-t border-gray-100 dark:border-gray-800 relative overflow-hidden transition-colors duration-200">
-      <div className="max-w-[1240px] mx-auto px-4 sm:px-6">
-        {/* Centered Header */}
-        <div className="text-center max-w-2xl mx-auto mb-6">
+      {/* Centered Header & Category Filters */}
+      <div className="max-w-[1240px] mx-auto px-4 sm:px-6 mb-6">
+        <div className="text-center max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 15 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 15 }}
@@ -85,7 +85,7 @@ export const PortfolioSection: React.FC = () => {
             </p>
           </motion.div>
 
-          {/* Centered Category Filter Pills */}
+          {/* Category Filter Pills */}
           {hasCategories && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
@@ -109,38 +109,38 @@ export const PortfolioSection: React.FC = () => {
             </motion.div>
           )}
         </div>
+      </div>
 
-        {/* 3D Coverflow Interactive Carousel Stage (Landscape Laptop Layout) */}
-        <div ref={ref} className="w-full">
-          <CoverFlowCarousel
-            key={`${selectedCategory}-${theme}`}
-            items={carouselItems}
-            sectionLabel="SOLVETA SHOWCASE"
-            isLightMode={isLight}
-            autoplay={true}
-            autoplayDelay={5000}
-            onCtaClick={(item) => {
-              if (item.ctaUrl) {
-                window.open(item.ctaUrl, "_blank");
-              }
-            }}
-          />
-        </div>
+      {/* 3D Coverflow Interactive Carousel Stage (Full Width with side edge fade gradients) */}
+      <div ref={ref} className="w-full relative overflow-hidden">
+        <CoverFlowCarousel
+          key={`${selectedCategory}-${theme}`}
+          items={carouselItems}
+          sectionLabel="SOLVETA SHOWCASE"
+          isLightMode={isLight}
+          autoplay={true}
+          autoplayDelay={5000}
+          onCtaClick={(item) => {
+            if (item.ctaUrl) {
+              window.open(item.ctaUrl, "_blank");
+            }
+          }}
+        />
+      </div>
 
-        {/* Bottom Consultation Link */}
-        <div className="mt-8 text-center">
-          <a
-            href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
-              "Halo SOLVETA, saya ingin konsultasi mengenai pembuatan sistem atau website custom."
-            )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 text-xs font-bold font-sans text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200/80 dark:border-rose-800/80 px-5 py-2.5 rounded-full transition-colors shadow-2xs"
-          >
-            <span>Punya Kebutuhan Sistem / Website Serupa? Diskusikan dengan Kami</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </a>
-        </div>
+      {/* Bottom Consultation Link */}
+      <div className="mt-8 text-center max-w-[1240px] mx-auto px-4 sm:px-6">
+        <a
+          href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+            "Halo SOLVETA, saya ingin konsultasi mengenai pembuatan sistem atau website custom."
+          )}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-xs font-bold font-sans text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200/80 dark:border-rose-800/80 px-5 py-2.5 rounded-full transition-colors shadow-2xs"
+        >
+          <span>Punya Kebutuhan Sistem / Website Serupa? Diskusikan dengan Kami</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </a>
       </div>
     </section>
   );
