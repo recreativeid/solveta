@@ -8,6 +8,9 @@ export interface PricingTierData {
   name: string;
   pricePrefix?: string;
   price: string;
+  renewalPrice?: string;
+  activePeriod?: string;
+  deliveryTime?: string;
   popular?: boolean;
   features: string[];
   suitability: string;
@@ -60,6 +63,7 @@ export interface SiteDataState {
   contact: ContactData;
   siteCopy: SiteCopyData;
   categories: string[];
+  geminiApiKey?: string;
 }
 
 const defaultState: SiteDataState = {
@@ -68,13 +72,20 @@ const defaultState: SiteDataState = {
       id: "basic",
       name: "BASIC",
       price: "Rp 299K",
+      renewalPrice: "249k/tahun*",
+      activePeriod: "1 Tahun",
+      deliveryTime: "1–2 Hari",
+      suitability: "Kebutuhan pribadi: landing page",
       features: [
-        "Company Profile (1 Halaman)",
-        "Desain Template Premium",
-        "Tombol WhatsApp Langsung",
-        "Free Domain .my.id (1 Tahun)",
+        "Maksimal 1 Halaman (tambah Rp 50k/Halaman)",
+        "Revisi ringan 2x (Tidak berubah dari brief awal)",
+        "Optimasi Speed (High Perform)",
+        "Free Domain (.my.id, .site, .store, .xyz, .space, .fund, .shop)",
+        "Free Hosting (Akses Dashboard, Tanpa login cPanel)",
+        "Responsive Web (mobile friendly)",
+        "SSL Security",
+        "Full Garansi*",
       ],
-      suitability: "Freelancer, Konsultan, Bisnis Jasa Baru yang butuh online cepat.",
       buttonLabel: "Pilih Basic",
       buttonVariant: "outline",
       waMessage: "Halo SOLVETA, saya tertarik dengan paket Basic Rp299K",
@@ -83,14 +94,23 @@ const defaultState: SiteDataState = {
       id: "standard",
       name: "STANDARD",
       price: "Rp 549K",
+      renewalPrice: "399k/tahun*",
+      activePeriod: "1 Tahun",
+      deliveryTime: "3–5 Hari",
       popular: true,
+      suitability: "Kebutuhan bisnis kecil",
       features: [
-        "Website Multi-Halaman (Home, About, Services, Contact)",
-        "Desain Profesional & Responsif",
-        "Integrasi Google Maps & Media Sosial",
-        "Free Domain .com (1 Tahun)",
+        "Maksimal 5 Halaman (tambah Rp 50k/Halaman)",
+        "Revisi ringan 3x (Tidak berubah dari brief awal)",
+        "Optimasi Speed (2x lebih cepat)",
+        "Free Domain (.com, .net, .org, dll)",
+        "Free Hosting (Akses Dashboard, Tanpa login cPanel)",
+        "1 Email Bisnis (nama@domain.com)",
+        "Responsive Web (mobile friendly)",
+        "SSL Security",
+        "SEO Basic",
+        "Full Garansi*",
       ],
-      suitability: "UMKM, Startup, Klinik, atau Agensi yang butuh kredibilitas tinggi.",
       buttonLabel: "Pilih Standard",
       buttonVariant: "red",
       waMessage: "Halo SOLVETA, saya tertarik dengan paket Standard Rp549K",
@@ -99,13 +119,24 @@ const defaultState: SiteDataState = {
       id: "premium",
       name: "PREMIUM",
       price: "Rp 749K",
+      renewalPrice: "399k/tahun*",
+      activePeriod: "1 Tahun",
+      deliveryTime: "3–5 Hari",
+      suitability: "Company profile & bisnis produk",
       features: [
-        "Katalog Produk / Portofolio Lengkap",
-        "Fitur Pencarian & Filter Produk",
-        "Form Order terhubung ke WhatsApp",
-        "Free Domain .com (1 Tahun)",
+        "Maksimal 7 Halaman (tambah Rp 50k/Halaman)",
+        "Revisi ringan 5x (Tidak berubah dari brief awal)",
+        "Optimasi Speed (3x lebih cepat)",
+        "Free Desain Mockup",
+        "Free Domain (.com, .net, .org, dll)",
+        "Free Hosting (Akses Dashboard, Tanpa login cPanel)",
+        "2 Email Bisnis (nama@domain.com)",
+        "Responsive Web (mobile friendly)",
+        "SSL Security",
+        "SEO Friendly",
+        "Google Analytics",
+        "Full Garansi*",
       ],
-      suitability: "Toko Online (WhatsApp Based), Katalog Properti, Dealer Kendaraan.",
       buttonLabel: "Pilih Premium",
       buttonVariant: "outline",
       waMessage: "Halo SOLVETA, saya tertarik dengan paket Premium Rp749K",
@@ -115,13 +146,23 @@ const defaultState: SiteDataState = {
       name: "CUSTOM",
       pricePrefix: "Mulai",
       price: "Rp 1,5 Juta",
+      renewalPrice: "Mulai 600k/tahun*",
+      activePeriod: "1 Tahun",
+      deliveryTime: "Wajib Meet",
+      suitability: "Website Custom",
       features: [
-        "Sistem Database Custom (Gudang, Karyawan, dll)",
-        "Dashboard Admin & Laporan Otomatis",
-        "Integrasi API Pihak Ketiga (Opsional)",
-        "Keamanan Tingkat Lanjut",
+        "Free Iklan Google Ads",
+        "Optimasi Speed (Super Cepat)",
+        "Free Desain Mockup",
+        "Free Domain (.com, .net, .org, dll)",
+        "Free Hosting (Akses Dashboard, Akses login cPanel)",
+        "Unlimited Email Bisnis (nama@domain.com)",
+        "Responsive Web (mobile friendly)",
+        "SSL Security",
+        "SEO Friendly",
+        "Google Analytics",
+        "Full Garansi*",
       ],
-      suitability: "Perusahaan dengan kebutuhan operasional spesifik, Manajemen Stok, Sistem Absensi.",
       buttonLabel: "Hubungi Kami",
       buttonVariant: "outline",
       waMessage: "Halo SOLVETA, saya ingin mendiskusikan kebutuhan Custom Website & Sistem",
