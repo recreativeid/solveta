@@ -1,25 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-
-// Inline Icons (Zero external dependencies)
-const ChevronLeftIcon = () => (
-  <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-  </svg>
-);
-
-const ChevronRightIcon = () => (
-  <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-  </svg>
-);
-
-const ArrowRightIcon = () => (
-  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-  </svg>
-);
+import { ArrowRight, ChevronLeft, ChevronRight, Globe, Sparkles } from "lucide-react";
 
 export interface CarouselItem {
   id?: string;
@@ -49,8 +31,8 @@ export const defaultProjects: CarouselItem[] = [
     titleLine1: "MEDIKACARE",
     titleLine2: "– KLINIK & REKAM MEDIS",
     desc: "Digitalisasi rekam medis pasien, antrean online WhatsApp, dan sistem kasir klinik terpadu.",
-    img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop&q=80",
-    ctaText: "Konsultasi Solusi Ini",
+    img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&auto=format&fit=crop&q=80",
+    ctaText: "Lihat Selengkapnya",
     ctaUrl: "#",
   },
   {
@@ -58,8 +40,8 @@ export const defaultProjects: CarouselItem[] = [
     titleLine1: "NUSANTARA LOGISTICS",
     titleLine2: "– TRACKING PORTAL",
     desc: "Platform pelacakan kargo real-time dengan integrasi WhatsApp notification gateway.",
-    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop&q=80",
-    ctaText: "Konsultasi Solusi Ini",
+    img: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&auto=format&fit=crop&q=80",
+    ctaText: "Lihat Selengkapnya",
     ctaUrl: "#",
   },
   {
@@ -67,8 +49,8 @@ export const defaultProjects: CarouselItem[] = [
     titleLine1: "URBANVIBE PROPERTY",
     titleLine2: "– KATALOG PROPERTI",
     desc: "Website interaktif listing properti dengan virtual tour dan pemesanan WhatsApp.",
-    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80",
-    ctaText: "Konsultasi Solusi Ini",
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&auto=format&fit=crop&q=80",
+    ctaText: "Lihat Selengkapnya",
     ctaUrl: "#",
   },
   {
@@ -76,17 +58,17 @@ export const defaultProjects: CarouselItem[] = [
     titleLine1: "KOPI NUSANTARA",
     titleLine2: "– POS & INVENTORY",
     desc: "Sinkronisasi otomatis antara stok toko offline dan pesanan online multi-channel.",
-    img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop&q=80",
-    ctaText: "Konsultasi Solusi Ini",
+    img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&auto=format&fit=crop&q=80",
+    ctaText: "Lihat Selengkapnya",
     ctaUrl: "#",
   },
   {
     tag: "Corporate Profile",
     titleLine1: "ARTHA FINANSIAL",
     titleLine2: "– CORPORATE PORTAL",
-    desc: "Company profile modern ultra-fast dengan portal pengajuan konsultasi otomatis.",
-    img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80",
-    ctaText: "Konsultasi Solusi Ini",
+    desc: "Company profile modern ultra-fast dengan portal pengajuan konsultasi keuangan otomatis.",
+    img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&auto=format&fit=crop&q=80",
+    ctaText: "Lihat Selengkapnya",
     ctaUrl: "#",
   },
 ];
@@ -151,101 +133,38 @@ export function CoverFlowCarousel({
 
   return (
     <section
-      className={`relative w-full min-h-[640px] flex items-center justify-center overflow-hidden py-8 select-none ${className}`}
+      className={`relative w-full min-h-[520px] sm:min-h-[560px] flex items-center justify-center overflow-hidden py-6 select-none font-sans ${className}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Background Ambience (Bright & Clean Aesthetic) */}
-      {isLightMode ? (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <img
-            src={items[currentIndex]?.img}
-            alt="ambience background"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              filter: "brightness(1.1) blur(45px) opacity(0.12)",
-              transform: "scale(1.2)",
-              transition: "opacity 1000ms ease, filter 1000ms ease",
-            }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(circle at center, rgba(255,255,255,0.7) 0%, rgba(253,251,249,0.98) 100%)",
-            }}
-          />
-        </div>
-      ) : (
-        <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-          <img
-            src={items[currentIndex]?.img}
-            alt="ambience background"
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              filter: "brightness(0.22) blur(32px)",
-              transform: "scale(1.15)",
-              transition: "opacity 1000ms ease, filter 1000ms ease",
-            }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background:
-                "radial-gradient(circle at center, rgba(12,10,9,0.3) 0%, rgba(12,10,9,0.92) 100%)",
-            }}
-          />
-        </div>
-      )}
+      {/* Background Subtle Ambient Glow */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <img
+          src={items[currentIndex]?.img}
+          alt="ambience background"
+          className="w-full h-full object-cover blur-[50px] opacity-10 dark:opacity-15 scale-125 transition-all duration-1000"
+        />
+        <div className="absolute inset-0 bg-radial from-transparent via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-[#FDFBF9] dark:to-[#07080E]" />
+      </div>
 
-      <div className="relative w-full max-w-6xl mx-auto px-4 z-10 flex flex-col items-center">
-        {/* Eyebrow */}
+      <div className="relative w-full max-w-7xl mx-auto px-2 sm:px-4 z-10 flex flex-col items-center">
+        {/* Eyebrow Label */}
         {sectionLabel && (
           <div className="flex items-center gap-3 mb-6">
-            <span
-              style={{
-                width: "36px",
-                height: "1px",
-                background: isLightMode
-                  ? "linear-gradient(90deg, transparent, #8B0021)"
-                  : "linear-gradient(90deg, transparent, #c5a880)",
-              }}
-            />
-            <h3
-              style={{
-                fontSize: "0.75rem",
-                fontWeight: 700,
-                letterSpacing: "0.25em",
-                textTransform: "uppercase",
-                color: isLightMode ? "#8B0021" : "#c5a880",
-                margin: 0,
-                fontFamily: "monospace",
-              }}
-            >
+            <span className="w-9 h-[1px] bg-gradient-to-r from-transparent to-[#8B0021] dark:to-rose-400" />
+            <h3 className="font-mono text-[11px] font-bold tracking-widest uppercase text-[#8B0021] dark:text-rose-400">
               {sectionLabel}
             </h3>
-            <span
-              style={{
-                width: "36px",
-                height: "1px",
-                background: isLightMode
-                  ? "linear-gradient(90deg, #8B0021, transparent)"
-                  : "linear-gradient(90deg, #c5a880, transparent)",
-              }}
-            />
+            <span className="w-9 h-[1px] bg-gradient-to-r from-[#8B0021] dark:from-rose-400 to-transparent" />
           </div>
         )}
 
-        {/* 3D Coverflow Stage */}
+        {/* 3D Coverflow Stage (Widescreen Landscape Laptop Screens) */}
         <div
-          className="relative w-full h-[490px] sm:h-[520px] flex justify-center items-center mb-6"
-          style={{ perspective: "1400px" }}
+          className="relative w-full h-[370px] sm:h-[430px] md:h-[470px] flex justify-center items-center mb-6"
+          style={{ perspective: "1500px" }}
         >
           {items.map((item, idx) => {
             const offset = (idx - currentIndex + total) % total;
@@ -253,7 +172,7 @@ export function CoverFlowCarousel({
             let transform = "translateX(0px) scale(0.4) rotateY(0deg)";
             let opacity = 0;
             let zIndex = 0;
-            let filter = isLightMode ? "brightness(0.85) blur(2px)" : "brightness(0.4) blur(2px)";
+            let filter = isLightMode ? "brightness(0.9) blur(1.5px)" : "brightness(0.4) blur(1.5px)";
             let isCenter = false;
 
             if (offset === 0) {
@@ -263,25 +182,25 @@ export function CoverFlowCarousel({
               zIndex = 30;
               filter = "brightness(1)";
             } else if (offset === 1) {
-              transform = "translateX(270px) scale(0.84) rotateY(-22deg)";
-              opacity = 0.72;
+              transform = "translateX(min(360px, 46vw)) scale(0.82) rotateY(-22deg)";
+              opacity = 0.75;
               zIndex = 20;
-              filter = isLightMode ? "brightness(0.92)" : "brightness(0.75)";
+              filter = isLightMode ? "brightness(0.92)" : "brightness(0.7)";
             } else if (offset === 2) {
-              transform = "translateX(480px) scale(0.68) rotateY(-36deg)";
-              opacity = 0.42;
+              transform = "translateX(min(620px, 78vw)) scale(0.66) rotateY(-34deg)";
+              opacity = 0.4;
               zIndex = 10;
-              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.55) blur(1px)";
+              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.5) blur(1px)";
             } else if (offset === total - 1) {
-              transform = "translateX(-270px) scale(0.84) rotateY(22deg)";
-              opacity = 0.72;
+              transform = "translateX(-min(360px, 46vw)) scale(0.82) rotateY(22deg)";
+              opacity = 0.75;
               zIndex = 20;
-              filter = isLightMode ? "brightness(0.92)" : "brightness(0.75)";
+              filter = isLightMode ? "brightness(0.92)" : "brightness(0.7)";
             } else if (offset === total - 2) {
-              transform = "translateX(-480px) scale(0.68) rotateY(36deg)";
-              opacity = 0.42;
+              transform = "translateX(-min(620px, 78vw)) scale(0.66) rotateY(34deg)";
+              opacity = 0.4;
               zIndex = 10;
-              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.55) blur(1px)";
+              filter = isLightMode ? "brightness(0.88) blur(1px)" : "brightness(0.5) blur(1px)";
             }
 
             return (
@@ -290,16 +209,19 @@ export function CoverFlowCarousel({
                 onClick={() => !isCenter && goToSlide(idx)}
                 style={{
                   position: "absolute",
-                  width: "320px",
-                  height: "480px",
-                  borderRadius: "20px",
+                  width: "min(680px, 88vw)",
+                  height: "min(400px, 54vw)",
+                  minHeight: "260px",
+                  borderRadius: "18px",
                   overflow: "hidden",
-                  backgroundColor: "#ffffff",
-                  border: isLightMode
-                    ? isCenter
-                      ? "2px solid #8B0021"
-                      : "1px solid rgba(0, 0, 0, 0.12)"
-                    : "1px solid rgba(255, 255, 255, 0.12)",
+                  backgroundColor: "#0d0e14",
+                  border: isCenter
+                    ? isLightMode
+                      ? "2.5px solid #8B0021"
+                      : "2.5px solid #f43f5e"
+                    : isLightMode
+                    ? "1px solid rgba(0, 0, 0, 0.15)"
+                    : "1px solid rgba(255, 255, 255, 0.15)",
                   transform,
                   opacity,
                   zIndex,
@@ -308,177 +230,95 @@ export function CoverFlowCarousel({
                   transition: "all 750ms cubic-bezier(0.25, 1, 0.5, 1)",
                   boxShadow: isCenter
                     ? isLightMode
-                      ? "0 25px 60px -15px rgba(139,0,33,0.22), 0 0 25px rgba(139,0,33,0.12)"
-                      : "0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(197,168,128,0.25)"
+                      ? "0 25px 50px -12px rgba(139,0,33,0.3), 0 0 20px rgba(139,0,33,0.15)"
+                      : "0 25px 60px rgba(0,0,0,0.9), 0 0 30px rgba(244,63,94,0.3)"
                     : isLightMode
-                    ? "0 12px 30px rgba(0,0,0,0.08)"
-                    : "0 15px 35px rgba(0,0,0,0.5)",
+                    ? "0 12px 25px rgba(0,0,0,0.08)"
+                    : "0 15px 35px rgba(0,0,0,0.6)",
                   cursor: isCenter ? "default" : "pointer",
                 }}
+                className="group font-sans"
               >
-                {/* Photo */}
+                {/* 1. LAPTOP SCREEN TOP BROWSER BAR */}
+                <div className="absolute top-0 left-0 right-0 h-7 sm:h-8 bg-[#181924]/90 backdrop-blur-md border-b border-white/10 px-3 sm:px-4 flex items-center justify-between z-30 pointer-events-none">
+                  {/* macOS Window Controls */}
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                  </div>
+
+                  {/* Browser URL Tab Pill */}
+                  <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-black/40 border border-white/10 text-[9px] sm:text-[10px] text-gray-300 font-mono">
+                    <Globe className="w-2.5 h-2.5 text-rose-400" />
+                    <span className="truncate max-w-[140px] sm:max-w-[220px]">
+                      solveta.site/showcase/{item.titleLine1.toLowerCase().replace(/\s+/g, "-")}
+                    </span>
+                  </div>
+
+                  {/* Category Pill on Right */}
+                  <span className="text-[9px] sm:text-[10px] font-bold font-mono text-rose-300 uppercase tracking-wider hidden sm:inline-block">
+                    {item.tag || "Portofolio"}
+                  </span>
+                </div>
+
+                {/* 2. FULL WIDESCREEN PREVIEW IMAGE */}
                 <img
                   src={item.img}
                   alt={item.titleLine1}
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                  }}
+                  className="absolute inset-0 pt-7 sm:pt-8 w-full h-full object-cover object-top"
                 />
 
-                {/* Vignette Overlay */}
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.05) 30%, rgba(0,0,0,0.65) 65%, rgba(0,0,0,0.96) 100%)",
-                    pointerEvents: "none",
-                    zIndex: 10,
-                  }}
-                />
+                {/* Subtle Top & Bottom Gradient Overlay */}
+                <div className="absolute inset-0 pt-7 sm:pt-8 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none z-10" />
 
-                {/* Content Overlay */}
+                {/* 3. WIDESCREEN FROSTED GLASS BOTTOM BANNER OVERLAY */}
                 <div
                   style={{
-                    position: "relative",
-                    width: "100%",
-                    height: "100%",
-                    padding: "20px 18px 22px",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                    textAlign: "center",
-                    zIndex: 20,
                     opacity: isCenter ? 1 : 0,
                     transform: isCenter ? "translateY(0px)" : "translateY(16px)",
                     transition: "opacity 500ms ease, transform 500ms ease",
                     pointerEvents: isCenter ? "auto" : "none",
                   }}
+                  className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 bg-gradient-to-t from-black/95 via-black/85 to-transparent backdrop-blur-xs border-t border-white/10 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-4 text-left"
                 >
-                  {/* Category Tag Badge */}
-                  <div style={{ textAlign: "left", width: "100%" }}>
-                    <span
-                      style={{
-                        display: "inline-block",
-                        fontSize: "0.72rem",
-                        fontWeight: 700,
-                        letterSpacing: "0.06em",
-                        textTransform: "uppercase",
-                        backgroundColor: "rgba(255, 255, 255, 0.95)",
-                        color: "#8B0021",
-                        padding: "3px 10px",
-                        borderRadius: "9999px",
-                        boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
-                      }}
-                    >
-                      {item.tag || "Portofolio"}
-                    </span>
-                  </div>
-
-                  {/* Body Content */}
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: "3px",
-                      marginTop: "auto",
-                      paddingBottom: "4px",
-                    }}
-                  >
-                    <h2
-                      style={{
-                        fontSize: "1.45rem",
-                        fontWeight: 900,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.02em",
-                        color: "#ffffff",
-                        margin: 0,
-                        lineHeight: 1.15,
-                        textShadow: "0 3px 12px rgba(0,0,0,0.95)",
-                      }}
-                    >
-                      {item.titleLine1}
-                    </h2>
-
-                    {item.titleLine2 && (
-                      <span
-                        style={{
-                          fontSize: "0.95rem",
-                          fontWeight: 700,
-                          textTransform: "uppercase",
-                          letterSpacing: "0.04em",
-                          color: "#fce7ea",
-                          lineHeight: 1.2,
-                          textShadow: "0 2px 8px rgba(0,0,0,0.9)",
-                        }}
-                      >
-                        {item.titleLine2}
+                  <div className="space-y-1 max-w-lg">
+                    {/* Category Tag (Mobile fallback) */}
+                    <div className="sm:hidden">
+                      <span className="text-[9px] font-bold font-mono px-2 py-0.5 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-300 uppercase">
+                        {item.tag || "Portofolio"}
                       </span>
-                    )}
+                    </div>
 
-                    <div
-                      style={{
-                        width: "36px",
-                        height: "2px",
-                        backgroundColor: "#8B0021",
-                        borderRadius: "2px",
-                        margin: "6px auto 5px",
-                        boxShadow: "0 0 10px rgba(225,29,72,0.8)",
-                      }}
-                    />
+                    {/* Main Title (Poppins Bold) */}
+                    <h4 className="text-sm sm:text-lg md:text-xl font-extrabold text-white tracking-tight uppercase leading-tight font-sans drop-shadow-md">
+                      {item.titleLine1} {item.titleLine2 && <span className="text-rose-300 font-semibold">{item.titleLine2}</span>}
+                    </h4>
 
+                    {/* Description */}
                     {item.desc && (
-                      <p
-                        style={{
-                          fontSize: "0.8rem",
-                          color: "rgba(255,255,255,0.92)",
-                          maxWidth: "280px",
-                          margin: "0 0 12px",
-                          lineHeight: 1.35,
-                          textShadow: "0 2px 8px rgba(0,0,0,0.9)",
-                        }}
-                      >
+                      <p className="text-[10px] sm:text-xs text-gray-300 line-clamp-2 leading-relaxed font-sans max-w-md">
                         {item.desc}
                       </p>
                     )}
-
-                    <a
-                      href={item.ctaUrl || "#"}
-                      onClick={(e) => {
-                        if (onCtaClick) {
-                          e.preventDefault();
-                          onCtaClick(item);
-                        }
-                      }}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-flex",
-                        alignItems: "center",
-                        gap: "6px",
-                        padding: "8px 18px",
-                        borderRadius: "9999px",
-                        background: "linear-gradient(135deg, #8B0021 0%, #50000F 100%)",
-                        color: "#ffffff",
-                        fontSize: "0.72rem",
-                        fontWeight: 800,
-                        letterSpacing: "0.12em",
-                        textTransform: "uppercase",
-                        textDecoration: "none",
-                        boxShadow: "0 4px 14px rgba(139,0,33,0.4), 0 0 15px rgba(139,0,33,0.3)",
-                        cursor: "pointer",
-                        transition: "transform 200ms ease, box-shadow 200ms ease",
-                      }}
-                    >
-                      <span>{item.ctaText || "Konsultasi Solusi Ini"}</span>
-                      <ArrowRightIcon />
-                    </a>
                   </div>
+
+                  {/* CTA Button: "Lihat Selengkapnya →" */}
+                  <a
+                    href={item.ctaUrl || "#"}
+                    onClick={(e) => {
+                      if (onCtaClick) {
+                        e.preventDefault();
+                        onCtaClick(item);
+                      }
+                    }}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[11px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30"
+                  >
+                    <span>{item.ctaText || "Lihat Selengkapnya"}</span>
+                    <ArrowRight className="w-3.5 h-3.5 text-rose-200" />
+                  </a>
                 </div>
               </div>
             );
@@ -489,90 +329,31 @@ export function CoverFlowCarousel({
         <button
           onClick={prevSlide}
           aria-label="Previous portfolio"
-          style={{
-            position: "absolute",
-            left: "16px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: "44px",
-            height: "44px",
-            borderRadius: "50%",
-            backgroundColor: isLightMode ? "rgba(255,255,255,0.92)" : "rgba(0,0,0,0.55)",
-            border: isLightMode ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(255,255,255,0.2)",
-            color: isLightMode ? "#8B0021" : "#ffffff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backdropFilter: "blur(8px)",
-            cursor: "pointer",
-            boxShadow: isLightMode
-              ? "0 8px 20px rgba(0,0,0,0.12)"
-              : "0 8px 24px rgba(0,0,0,0.4)",
-            zIndex: 40,
-            transition: "all 200ms ease",
-          }}
+          className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all"
         >
-          <ChevronLeftIcon />
+          <ChevronLeft className="w-5 h-5" />
         </button>
 
         <button
           onClick={nextSlide}
           aria-label="Next portfolio"
-          style={{
-            position: "absolute",
-            right: "16px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: "44px",
-            height: "44px",
-            borderRadius: "50%",
-            backgroundColor: isLightMode ? "rgba(255,255,255,0.92)" : "rgba(0,0,0,0.55)",
-            border: isLightMode ? "1px solid rgba(0,0,0,0.12)" : "1px solid rgba(255,255,255,0.2)",
-            color: isLightMode ? "#8B0021" : "#ffffff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backdropFilter: "blur(8px)",
-            cursor: "pointer",
-            boxShadow: isLightMode
-              ? "0 8px 20px rgba(0,0,0,0.12)"
-              : "0 8px 24px rgba(0,0,0,0.4)",
-            zIndex: 40,
-            transition: "all 200ms ease",
-          }}
+          className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all"
         >
-          <ChevronRightIcon />
+          <ChevronRight className="w-5 h-5" />
         </button>
 
         {/* Pagination Dots */}
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", zIndex: 30 }}>
+        <div className="flex items-center justify-center gap-2 z-30 mt-2">
           {items.map((_, idx) => (
             <button
               key={idx}
               onClick={() => goToSlide(idx)}
               aria-label={`Go to slide ${idx + 1}`}
-              style={{
-                height: "8px",
-                width: idx === currentIndex ? "28px" : "8px",
-                borderRadius: "9999px",
-                backgroundColor:
-                  idx === currentIndex
-                    ? isLightMode
-                      ? "#8B0021"
-                      : "#c5a880"
-                    : isLightMode
-                    ? "rgba(0,0,0,0.2)"
-                    : "rgba(255,255,255,0.25)",
-                border: "none",
-                cursor: "pointer",
-                boxShadow:
-                  idx === currentIndex
-                    ? isLightMode
-                      ? "0 0 10px rgba(139,0,33,0.5)"
-                      : "0 0 10px rgba(197,168,128,0.7)"
-                    : "none",
-                transition: "all 300ms ease",
-              }}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                idx === currentIndex
+                  ? "w-7 bg-[#8B0021] dark:bg-rose-500 shadow-[0_0_10px_rgba(139,0,33,0.6)]"
+                  : "w-2 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400"
+              }`}
             />
           ))}
         </div>
