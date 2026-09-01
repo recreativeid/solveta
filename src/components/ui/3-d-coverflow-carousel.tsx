@@ -7,7 +7,7 @@ import React, {
   useRef,
   useLayoutEffect,
 } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight, Globe } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, Globe, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const useIsoLayoutEffect =
@@ -474,9 +474,23 @@ export function CoverFlowCarousel({
                           {item.desc}
                         </p>
                       )}
+
+                      {/* Tags / Tagar Badges */}
+                      {item.tags && item.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 pt-1">
+                          {item.tags.map((t, tIdx) => (
+                            <span
+                              key={tIdx}
+                              className="text-[8px] sm:text-[9px] font-semibold text-rose-200/90 bg-rose-950/70 border border-rose-500/30 px-1.5 py-0.5 rounded shadow-2xs"
+                            >
+                              #{t}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
-                    {/* CTA Button: "Lihat Selengkapnya →" */}
+                    {/* CTA Button: "Kunjungi Website →" / "Konsultasi Proyek →" */}
                     <a
                       href={item.ctaUrl || "#"}
                       onClick={(e) => {
@@ -487,10 +501,14 @@ export function CoverFlowCarousel({
                       }}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[11px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30"
+                      className="flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[10px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30"
                     >
-                      <span>{item.ctaText || "Lihat Selengkapnya"}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-rose-200" />
+                      <span>{item.ctaText || "Kunjungi Website"}</span>
+                      {item.ctaText === "Kunjungi Website" ? (
+                        <ExternalLink className="w-3.5 h-3.5 text-rose-200" />
+                      ) : (
+                        <ArrowRight className="w-3.5 h-3.5 text-rose-200" />
+                      )}
                     </a>
                   </div>
                 </div>

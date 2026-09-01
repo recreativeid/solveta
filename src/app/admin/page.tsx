@@ -37,6 +37,7 @@ import {
   Video,
   UploadCloud,
   RefreshCw,
+  ExternalLink,
 } from "lucide-react";
 import {
   SiteDataProvider,
@@ -90,6 +91,8 @@ function AdminPortalVisual() {
 
   // Edit Modal State for Portfolio Item
   const [editingPortfolio, setEditingPortfolio] = useState<PortfolioItemData | null>(null);
+  const [editPortTags, setEditPortTags] = useState("");
+  const [editPortLiveUrl, setEditPortLiveUrl] = useState("");
 
   // Edit Modal State for Client Brand
   const [editingBrand, setEditingBrand] = useState<ClientBrandItem | null>(null);
@@ -126,12 +129,13 @@ function AdminPortalVisual() {
   const [editWaNumber, setEditWaNumber] = useState(data.contact.whatsappNumber);
   const [editWaDisplay, setEditWaDisplay] = useState(data.contact.whatsappDisplay);
 
-  // New Portfolio Form State with File Upload
+  // New Portfolio Form State with File Upload & Live URL
   const [newPortTitle, setNewPortTitle] = useState("");
   const [newPortCategory, setNewPortCategory] = useState("");
   const [newPortDesc, setNewPortDesc] = useState("");
   const [newPortImage, setNewPortImage] = useState("");
   const [newPortTags, setNewPortTags] = useState("");
+  const [newPortLiveUrl, setNewPortLiveUrl] = useState("");
   const [newCategoryInput, setNewCategoryInput] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const editFileInputRef = useRef<HTMLInputElement>(null);
@@ -278,8 +282,14 @@ function AdminPortalVisual() {
 
     const tagsArray = newPortTags
       .split(",")
-      .map((t) => t.trim())
+      .map((t) => t.trim().replace(/^#/, ""))
       .filter((t) => t.length > 0);
+
+    const formattedLiveUrl = newPortLiveUrl.trim()
+      ? newPortLiveUrl.trim().startsWith("http")
+        ? newPortLiveUrl.trim()
+        : `https://${newPortLiveUrl.trim()}`
+      : "https://www.solveta.site";
 
     addPortfolioItem({
       title: newPortTitle,
@@ -289,7 +299,7 @@ function AdminPortalVisual() {
         "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&auto=format&fit=crop&q=80",
       description: newPortDesc,
       tags: tagsArray.length > 0 ? tagsArray : ["Custom", "SOLVETA"],
-      liveUrl: "https://www.solveta.site",
+      liveUrl: formattedLiveUrl,
     });
 
     if (newPortCategory.trim()) {
@@ -300,6 +310,7 @@ function AdminPortalVisual() {
     setNewPortDesc("");
     setNewPortImage("");
     setNewPortTags("");
+    setNewPortLiveUrl("");
     setNewPortCategory("");
     if (fileInputRef.current) fileInputRef.current.value = "";
     showToast("Portofolio baru berhasil ditambahkan!");
@@ -309,13 +320,24 @@ function AdminPortalVisual() {
     e.preventDefault();
     if (!editingPortfolio) return;
 
+    const tagsArray = editPortTags
+      .split(",")
+      .map((t) => t.trim().replace(/^#/, ""))
+      .filter((t) => t.length > 0);
+
+    const formattedLiveUrl = editPortLiveUrl.trim()
+      ? editPortLiveUrl.trim().startsWith("http")
+        ? editPortLiveUrl.trim()
+        : `https://${editPortLiveUrl.trim()}`
+      : editingPortfolio.liveUrl || "https://www.solveta.site";
+
     editPortfolioItem(editingPortfolio.id, {
       title: editingPortfolio.title,
       category: editingPortfolio.category,
       description: editingPortfolio.description,
       image: editingPortfolio.image,
-      tags: editingPortfolio.tags,
-      liveUrl: editingPortfolio.liveUrl,
+      tags: tagsArray.length > 0 ? tagsArray : editingPortfolio.tags,
+      liveUrl: formattedLiveUrl,
     });
 
     if (editingPortfolio.category) {
@@ -323,7 +345,7 @@ function AdminPortalVisual() {
     }
 
     setEditingPortfolio(null);
-    showToast("Portofolio berhasil diperbarui!");
+    showToast("Portofolio & Tagar berhasil diperbarui!");
   };
 
   const handleDeletePortfolio = (id: string, title: string) => {
@@ -1169,6 +1191,22 @@ function AdminPortalVisual() {
 
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    Link URL Website Asli / Live (Tujuan saat diklik)
+                  </label>
+                  <input
+                    type="text"
+                    value={newPortLiveUrl}
+                    onChange={(e) => setNewPortLiveUrl(e.target.value)}
+                    placeholder="Contoh: https://medikacare.com atau www.nusantaralogistics.co.id"
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white font-mono"
+                  />
+                  <p className="text-[10px] text-gray-400 mt-1">
+                    Masukkan URL website klien/asli agar pengunjung dapat mengklik dan mengunjungi langsung proyek ini.
+                  </p>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">
                     Deskripsi Singkat Karya
                   </label>
                   <textarea
@@ -1239,18 +1277,37 @@ function AdminPortalVisual() {
                           {item.tags.map((t, idx) => (
                             <span
                               key={idx}
-                              className="text-[9px] bg-gray-100 text-gray-600 px-1.5 py-0.2 rounded"
+                              className="text-[9px] bg-rose-50 text-[#8B0021] border border-rose-100 font-semibold px-1.5 py-0.5 rounded"
                             >
                               #{t}
                             </span>
                           ))}
                         </div>
+
+                        {item.liveUrl && item.liveUrl !== "#" && (
+                          <div className="mt-2.5 pt-2 border-t border-gray-100 flex items-center gap-1 text-[10px] text-gray-500 font-mono">
+                            <Globe className="w-3 h-3 text-rose-500 flex-shrink-0" />
+                            <a
+                              href={item.liveUrl.startsWith("http") ? item.liveUrl : `https://${item.liveUrl}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="truncate text-[#8B0021] hover:underline inline-flex items-center gap-1"
+                            >
+                              <span>{item.liveUrl.replace(/^https?:\/\//, "")}</span>
+                              <ExternalLink className="w-2.5 h-2.5 flex-shrink-0" />
+                            </a>
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     <div className="p-3 bg-gray-50/80 border-t border-gray-100 flex items-center justify-end gap-2">
                       <button
-                        onClick={() => setEditingPortfolio(item)}
+                        onClick={() => {
+                          setEditingPortfolio(item);
+                          setEditPortTags((item.tags || []).join(", "));
+                          setEditPortLiveUrl(item.liveUrl || "");
+                        }}
                         className="px-2.5 py-1 text-xs font-medium text-gray-700 hover:text-gray-900 bg-white border border-gray-300 hover:border-gray-400 rounded-md transition-colors"
                       >
                         Edit
@@ -2170,21 +2227,52 @@ function AdminPortalVisual() {
                   />
                 </div>
 
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Kategori
+                    </label>
+                    <input
+                      type="text"
+                      value={editingPortfolio.category || ""}
+                      onChange={(e) =>
+                        setEditingPortfolio({
+                          ...editingPortfolio,
+                          category: e.target.value,
+                        })
+                      }
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Tags / Tagar (Pisahkan dengan koma)
+                    </label>
+                    <input
+                      type="text"
+                      value={editPortTags}
+                      onChange={(e) => setEditPortTags(e.target.value)}
+                      placeholder="Contoh: Real Estate, Search Filter, Direct WA"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Kategori
+                    Link URL Website Asli / Live (Tujuan saat diklik)
                   </label>
                   <input
                     type="text"
-                    value={editingPortfolio.category || ""}
-                    onChange={(e) =>
-                      setEditingPortfolio({
-                        ...editingPortfolio,
-                        category: e.target.value,
-                      })
-                    }
-                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                    value={editPortLiveUrl}
+                    onChange={(e) => setEditPortLiveUrl(e.target.value)}
+                    placeholder="Contoh: https://klienanda.com atau https://tokokopi.id"
+                    className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white font-mono"
                   />
+                  <p className="text-[10px] text-gray-400 mt-1">
+                    Ketika pengunjung mengklik portofolio ini, mereka akan langsung diarahkan ke website asli ini.
+                  </p>
                 </div>
 
                 <div>
@@ -2232,7 +2320,7 @@ function AdminPortalVisual() {
                     type="submit"
                     className="flex-1 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
                   >
-                    Simpan Perubahan
+                    Simpan Perubahan &amp; Tagar
                   </button>
                   <button
                     type="button"

@@ -48,6 +48,21 @@ export const PortfolioSection: React.FC = () => {
       titleLine2 = `– ${parts.slice(1).join("-").trim()}`;
     }
 
+    const hasLiveUrl = Boolean(
+      p.liveUrl &&
+        p.liveUrl.trim().length > 0 &&
+        p.liveUrl !== "#" &&
+        !p.liveUrl.includes("wa.me")
+    );
+
+    const destinationUrl = hasLiveUrl
+      ? p.liveUrl!.startsWith("http")
+        ? p.liveUrl!
+        : `https://${p.liveUrl!}`
+      : `https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+          `Halo SOLVETA, saya ingin melihat detail dan konsultasi mengenai portofolio: ${p.title}`
+        )}`;
+
     return {
       id: p.id,
       tag: p.category || "Portofolio",
@@ -56,10 +71,8 @@ export const PortfolioSection: React.FC = () => {
       desc: p.description,
       img: p.image,
       tags: p.tags,
-      ctaText: "Lihat Selengkapnya",
-      ctaUrl: `https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
-        `Halo SOLVETA, saya ingin melihat detail dan konsultasi mengenai portofolio: ${p.title}`
-      )}`,
+      ctaText: hasLiveUrl ? "Kunjungi Website" : "Konsultasi Proyek",
+      ctaUrl: destinationUrl,
     };
   });
 
