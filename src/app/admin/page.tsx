@@ -2547,7 +2547,7 @@ function AdminPortalVisual() {
                       width={260}
                       height={260}
                       className={`w-full h-full object-contain filter grayscale transition-all ${
-                        previewDarkTheme ? "brightness-150 contrast-125 opacity-90" : "opacity-80"
+                        previewDarkTheme ? "invert opacity-90 contrast-125" : "opacity-80"
                       }`}
                     />
                   </div>

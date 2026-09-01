@@ -27,7 +27,7 @@ export const ClientMarquee: React.FC = () => {
     const hasName = Boolean(brand.name && brand.name.trim().length > 0);
     const hasLogo = Boolean(brand.logoImage && brand.logoImage.trim().length > 0);
 
-    // 1. Logo Mode (Clean, Frameless, No Border / Box, Prominent Size)
+    // 1. Logo Mode (Clean, Frameless, Invert Color to Crisp White in Dark Mode)
     if (hasLogo) {
       return (
         <div
@@ -37,19 +37,19 @@ export const ClientMarquee: React.FC = () => {
           <img
             src={brand.logoImage}
             alt={brand.name || "Client Logo"}
-            className="h-8 sm:h-10 md:h-12 w-auto max-w-[150px] sm:max-w-[190px] md:max-w-[220px] object-contain select-none pointer-events-none filter grayscale opacity-75 contrast-125 dark:brightness-150 dark:contrast-125 dark:opacity-90 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 group-hover:dark:brightness-125 transition-all duration-300"
+            className="h-8 sm:h-10 md:h-12 w-auto max-w-[150px] sm:max-w-[190px] md:max-w-[220px] object-contain select-none pointer-events-none filter grayscale opacity-75 contrast-125 dark:invert dark:opacity-90 dark:contrast-125 group-hover:grayscale-0 group-hover:dark:invert-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
           />
         </div>
       );
     }
 
-    // 2. Pure Typography / Brand Name Mode (Clean Text without Box / Border, like OpenAI, FORBES, etc.)
+    // 2. Pure Typography / Brand Name Mode (Clean White in Dark Mode, Dark in Light Mode)
     return (
       <div
         key={`${brand.id || index}-${index}`}
         className="flex items-center justify-center px-6 sm:px-10 md:px-12 py-2 flex-shrink-0 group cursor-default transition-all duration-300"
       >
-        <span className="text-base sm:text-lg md:text-xl font-extrabold font-sans tracking-tight text-gray-700 dark:text-gray-300 group-hover:text-gray-950 dark:group-hover:text-white group-hover:scale-105 transition-all duration-300 select-none whitespace-nowrap">
+        <span className="text-base sm:text-lg md:text-xl font-extrabold font-sans tracking-tight text-gray-800 dark:text-white/90 group-hover:text-black dark:group-hover:text-white group-hover:scale-105 transition-all duration-300 select-none whitespace-nowrap">
           {brand.name || "Partner"}
         </span>
       </div>
