@@ -338,19 +338,19 @@ export function CoverFlowCarousel({
         <div className="absolute inset-0 bg-radial from-transparent via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-[#FDFBF9] dark:to-[#07080E]" />
       </div>
 
-      {/* Side Fade Masks */}
-      <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-20 md:w-28 bg-gradient-to-r from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
-      <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-20 md:w-28 bg-gradient-to-l from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
+      {/* 4-Way Smooth Edge Fade Masks (Top, Bottom, Left, Right - completely eliminating any visible line boundaries) */}
+      <div className="absolute top-0 left-0 right-0 h-20 sm:h-32 bg-gradient-to-b from-white dark:from-[#07080E] via-white/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35" />
+      <div className="absolute bottom-0 left-0 right-0 h-20 sm:h-32 bg-gradient-to-t from-white dark:from-[#07080E] via-white/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35" />
+      <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-24 md:w-32 bg-gradient-to-r from-white dark:from-[#07080E] to-transparent pointer-events-none z-35" />
+      <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-24 md:w-32 bg-gradient-to-l from-white dark:from-[#07080E] to-transparent pointer-events-none z-35" />
 
       <div className="relative w-full z-10 flex flex-col items-center">
-        {/* Eyebrow Label */}
+        {/* Eyebrow Label Pill */}
         {sectionLabel && (
-          <div className="flex items-center gap-3 mb-6">
-            <span className="w-9 h-[1px] bg-gradient-to-r from-transparent to-[#8B0021] dark:to-rose-400" />
-            <h3 className="font-mono text-[11px] font-bold tracking-widest uppercase text-[#8B0021] dark:text-rose-400">
+          <div className="flex items-center justify-center mb-6">
+            <span className="px-3.5 py-1 rounded-full bg-rose-50 dark:bg-rose-950/60 border border-rose-200/50 dark:border-rose-800/40 text-[10px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-300 uppercase shadow-2xs">
               {sectionLabel}
-            </h3>
-            <span className="w-9 h-[1px] bg-gradient-to-r from-[#8B0021] dark:from-rose-400 to-transparent" />
+            </span>
           </div>
         )}
 
@@ -411,8 +411,8 @@ export function CoverFlowCarousel({
                   }}
                   className="group font-sans transition-shadow duration-300"
                 >
-                  {/* 1. LAPTOP SCREEN TOP BROWSER BAR */}
-                  <div className="absolute top-0 left-0 right-0 h-7 sm:h-8 bg-[#181924]/90 backdrop-blur-md border-b border-white/10 px-3 sm:px-4 flex items-center justify-between z-30 pointer-events-none">
+                  {/* 1. LAPTOP SCREEN TOP BROWSER BAR (Clean, Seamless, No Bottom Border Line) */}
+                  <div className="absolute top-0 left-0 right-0 h-7 sm:h-8 bg-[#181924]/90 backdrop-blur-md px-3 sm:px-4 flex items-center justify-between z-30 pointer-events-none">
                     {/* macOS Window Controls */}
                     <div className="flex items-center gap-1.5">
                       <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />

@@ -77,7 +77,7 @@ export const PortfolioSection: React.FC = () => {
   });
 
   return (
-    <section id="portfolio" className="py-20 bg-gradient-to-b from-white dark:from-[#07080E] via-[#FDFBF9] dark:via-[#090A12] to-white dark:to-[#07080E] border-t border-gray-100 dark:border-gray-800 relative overflow-hidden transition-colors duration-200">
+    <section id="portfolio" className="py-20 bg-gradient-to-b from-white dark:from-[#07080E] via-[#FDFBF9] dark:via-[#090A12] to-white dark:to-[#07080E] relative overflow-hidden transition-colors duration-200">
       {/* Centered Header & Category Filters */}
       <div className="max-w-[1240px] mx-auto px-4 sm:px-6 mb-6">
         <div className="text-center max-w-2xl mx-auto">
