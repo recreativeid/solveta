@@ -31,9 +31,12 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const hasStartedRef = useRef(false);
+  const userPausedManuallyRef = useRef(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -45,6 +48,65 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
       window.removeEventListener("resize", checkMobile);
     };
   }, []);
+
+  // Smart Viewport Video Control:
+  // 1. Starts from 00:00 when first scrolled into view (not running in background)
+  // 2. Pauses automatically when user scrolls away
+  // 3. Resumes playing when user scrolls back
+  useEffect(() => {
+    const container = containerRef.current;
+    const video = videoRef.current;
+    if (!container || !video) return;
+
+    // Reset started state when videoSrc changes
+    hasStartedRef.current = false;
+    userPausedManuallyRef.current = false;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // First time entering viewport: ensure starts from the very beginning (00:00)
+            if (!hasStartedRef.current) {
+              video.currentTime = 0;
+              hasStartedRef.current = true;
+            }
+
+            // Only auto-play if the user didn't explicitly pause manually
+            if (!userPausedManuallyRef.current) {
+              video
+                .play()
+                .then(() => setIsPlaying(true))
+                .catch(() => {
+                  // If browser restricts unmuted autoplay, mute and retry
+                  video.muted = true;
+                  setIsMuted(true);
+                  video
+                    .play()
+                    .then(() => setIsPlaying(true))
+                    .catch(() => {});
+                });
+            }
+          } else {
+            // User scrolled away from laptop: pause video to save resources & pause playback
+            if (!video.paused) {
+              video.pause();
+              setIsPlaying(false);
+            }
+          }
+        });
+      },
+      {
+        threshold: 0.25, // Trigger when 25% of laptop is in screen view
+      }
+    );
+
+    observer.observe(container);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [videoSrc]);
 
   // 3D Scroll-driven Rotation Animation (Aceternity style Container Scroll)
   const { scrollYProgress } = useScroll({
@@ -85,6 +147,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
       setIsMuted(nextMuted);
 
       if (videoRef.current.paused) {
+        userPausedManuallyRef.current = false;
         videoRef.current.play().catch(() => {});
         setIsPlaying(true);
       }
@@ -95,9 +158,11 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
   const togglePlay = () => {
     if (!videoRef.current || hasError) return;
     if (videoRef.current.paused) {
+      userPausedManuallyRef.current = false;
       videoRef.current.play().catch(() => {});
       setIsPlaying(true);
     } else {
+      userPausedManuallyRef.current = true;
       videoRef.current.pause();
       setIsPlaying(false);
     }
@@ -106,6 +171,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
   const handleRestart = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (videoRef.current) {
+      userPausedManuallyRef.current = false;
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {});
       setIsPlaying(true);
@@ -172,7 +238,6 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
                 ref={videoRef}
                 src={videoSrc}
                 poster={posterSrc}
-                autoPlay
                 loop
                 muted={isMuted}
                 playsInline
