@@ -15,6 +15,7 @@ import {
   Sparkles,
   Film,
   RotateCcw,
+  Maximize2,
 } from "lucide-react";
 
 interface LaptopMockup3DProps {
@@ -151,6 +152,22 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
         videoRef.current.play().catch(() => {});
         setIsPlaying(true);
       }
+    }
+  };
+
+  // Handle Fullscreen Video
+  const handleFullscreen = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.requestFullscreen) {
+      video.requestFullscreen();
+    } else if ((video as any).webkitRequestFullscreen) {
+      (video as any).webkitRequestFullscreen();
+    } else if ((video as any).webkitEnterFullscreen) {
+      (video as any).webkitEnterFullscreen();
+    } else if ((video as any).msRequestFullscreen) {
+      (video as any).msRequestFullscreen();
     }
   };
 
@@ -292,54 +309,46 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
                 )}
               </AnimatePresence>
 
-              {/* Interactive Audio & Control Badges */}
+              {/* Interactive Audio, Replay & Fullscreen Control Buttons */}
               {!hasError && (
-                <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none z-20">
+                <div className="absolute bottom-2.5 sm:bottom-3 left-2.5 sm:left-3 right-2.5 sm:right-3 flex items-center justify-between pointer-events-none z-20">
                   {/* Left: Replay Button */}
                   <button
                     onClick={handleRestart}
-                    className="pointer-events-auto flex items-center gap-1.5 px-2.5 py-1.5 bg-black/60 hover:bg-black/80 backdrop-blur-md text-gray-300 hover:text-white rounded-lg text-[10px] font-medium border border-white/10 transition-all shadow-md cursor-pointer"
+                    className="pointer-events-auto w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-black/65 hover:bg-black/90 backdrop-blur-md text-gray-200 hover:text-white rounded-full border border-white/20 transition-all shadow-md cursor-pointer hover:scale-110 active:scale-95"
                     title="Ulangi video dari awal"
                   >
-                    <RotateCcw className="w-3 h-3" />
-                    <span className="hidden sm:inline">Ulangi</span>
+                    <RotateCcw className="w-3.5 h-3.5" />
                   </button>
 
-                  {/* Right: Sound Toggle Button with Equalizer Soundwaves */}
-                  <button
-                    onClick={toggleSound}
-                    className={`pointer-events-auto flex items-center gap-2 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-full text-xs font-semibold backdrop-blur-md transition-all duration-300 shadow-xl border cursor-pointer ${
-                      isMuted
-                        ? "bg-black/75 hover:bg-black/90 text-gray-200 border-white/20 hover:border-rose-500/50"
-                        : "bg-gradient-to-r from-[#8B0021]/90 to-rose-600/90 text-white border-rose-400/60 shadow-[0_0_20px_rgba(244,63,94,0.4)]"
-                    }`}
-                  >
-                    {isMuted ? (
-                      <>
-                        <div className="relative flex items-center justify-center w-4 h-4">
-                          <VolumeX className="w-4 h-4 text-rose-400" />
-                        </div>
-                        <span className="text-[11px] font-medium tracking-wide">
-                          Nyalakan Suara
-                        </span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping" />
-                      </>
-                    ) : (
-                      <>
+                  {/* Right: Sound Toggle & Fullscreen Buttons */}
+                  <div className="flex items-center gap-2">
+                    {/* Sound Toggle Button (Icon Only, Minimal, Sleek) */}
+                    <button
+                      onClick={toggleSound}
+                      className={`pointer-events-auto w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 shadow-xl border cursor-pointer hover:scale-110 active:scale-95 ${
+                        isMuted
+                          ? "bg-black/65 hover:bg-black/90 text-gray-300 border-white/20 hover:border-rose-400"
+                          : "bg-[#8B0021] hover:bg-[#a30026] text-white border-rose-400/60 shadow-[0_0_15px_rgba(244,63,94,0.5)]"
+                      }`}
+                      title={isMuted ? "Hidupkan Suara" : "Matikan Suara"}
+                    >
+                      {isMuted ? (
+                        <VolumeX className="w-4 h-4 text-rose-300" />
+                      ) : (
                         <Volume2 className="w-4 h-4 text-white" />
-                        <span className="text-[11px] font-medium tracking-wide">
-                          Audio Aktif
-                        </span>
-                        {/* Animated Equalizer Wave Bars */}
-                        <div className="flex items-center gap-0.5 h-3">
-                          <span className="w-0.5 h-full bg-white rounded-full animate-bounce [animation-delay:-0.3s]" />
-                          <span className="w-0.5 h-3/4 bg-white rounded-full animate-bounce [animation-delay:-0.15s]" />
-                          <span className="w-0.5 h-full bg-white rounded-full animate-bounce [animation-delay:-0.45s]" />
-                          <span className="w-0.5 h-2/3 bg-white rounded-full animate-bounce" />
-                        </div>
-                      </>
-                    )}
-                  </button>
+                      )}
+                    </button>
+
+                    {/* Fullscreen Button */}
+                    <button
+                      onClick={handleFullscreen}
+                      className="pointer-events-auto w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-black/65 hover:bg-black/90 backdrop-blur-md text-gray-200 hover:text-white rounded-full border border-white/20 transition-all shadow-md cursor-pointer hover:scale-110 active:scale-95"
+                      title="Lihat Layar Penuh (Fullscreen)"
+                    >
+                      <Maximize2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
