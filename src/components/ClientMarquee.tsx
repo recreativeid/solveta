@@ -27,56 +27,58 @@ export const ClientMarquee: React.FC = () => {
     const hasName = Boolean(brand.name && brand.name.trim().length > 0);
     const hasLogo = Boolean(brand.logoImage && brand.logoImage.trim().length > 0);
 
-    // 1. Pure Logo Mode (Styled like shadcnblocks logos3 - frameless, clean, monochrome)
+    // 1. Pure Logo Mode: Uniform Symmetrical Oval Capsule with Pure White Background
     if (hasLogo && !hasName) {
       return (
         <div
           key={`${brand.id || index}-${index}`}
-          className="flex items-center justify-center px-6 sm:px-8 py-2 h-14 sm:h-16 flex-shrink-0 group cursor-default transition-all duration-300"
+          className="w-36 sm:w-44 md:w-48 h-14 sm:h-16 flex items-center justify-center bg-white dark:bg-[#11121C] border border-gray-200/90 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4 py-2 shadow-2xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0"
         >
           <img
             src={brand.logoImage}
             alt={brand.name || "Client Logo"}
-            className="h-8 sm:h-10 md:h-12 w-auto max-w-[150px] sm:max-w-[190px] object-contain filter grayscale opacity-60 contrast-125 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 select-none pointer-events-none"
+            className="max-h-7 sm:max-h-9 w-auto max-w-[85%] object-contain filter grayscale opacity-70 contrast-125 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 select-none pointer-events-none"
           />
         </div>
       );
     }
 
-    // 2. Logo + Name Combined Pill
+    // 2. Logo + Name Combined Oval Capsule (Uniform Height & Balanced Width)
     if (hasLogo && hasName) {
       return (
         <div
           key={`${brand.id || index}-${index}`}
-          className="flex items-center justify-center gap-2.5 bg-white/80 dark:bg-[#11121C]/80 backdrop-blur-xs border border-gray-200/80 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-3 py-1.5 shadow-2xs hover:shadow-sm transition-all duration-300 cursor-default group flex-shrink-0 h-11 sm:h-12"
+          className="min-w-40 sm:min-w-48 md:min-w-52 h-14 sm:h-16 flex items-center justify-center gap-2.5 bg-white dark:bg-[#11121C] border border-gray-200/90 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4 py-2 shadow-2xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0"
         >
           <img
             src={brand.logoImage}
             alt={brand.name || "Client Logo"}
-            className="h-7 sm:h-8 w-auto max-w-[120px] object-contain filter grayscale opacity-65 contrast-125 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+            className="max-h-7 sm:max-h-8 w-auto max-w-[70px] sm:max-w-[90px] object-contain filter grayscale opacity-70 contrast-125 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 flex-shrink-0"
           />
-          <span className="text-xs font-semibold text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white tracking-tight transition-colors pr-2">
+          <span className="text-xs font-bold text-gray-700 dark:text-gray-300 group-hover:text-gray-950 dark:group-hover:text-white tracking-tight transition-colors truncate">
             {brand.name}
           </span>
         </div>
       );
     }
 
-    // 3. Text Only Pill (Fallback if no logo image uploaded)
+    // 3. Text Only Oval Capsule (Uniform Symmetrical Dimensions)
     return (
       <div
         key={`${brand.id || index}-${index}`}
-        className="flex items-center justify-center gap-2 bg-white/80 dark:bg-[#11121C]/80 backdrop-blur-xs border border-gray-200/80 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4.5 py-2 shadow-2xs hover:shadow-sm transition-all duration-300 cursor-default group flex-shrink-0 h-10 sm:h-11"
+        className="w-36 sm:w-44 md:w-48 h-14 sm:h-16 flex items-center justify-center gap-2 bg-white dark:bg-[#11121C] border border-gray-200/90 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4 py-2 shadow-2xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0"
       >
         <div className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-gray-600 group-hover:bg-[#8B0021] dark:group-hover:bg-rose-500 transition-colors flex-shrink-0" />
-        <span className="text-xs font-semibold text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white tracking-tight transition-colors whitespace-nowrap">
-          {brand.name || "Client Partner"}
-        </span>
-        {brand.label && (
-          <span className="text-[10px] text-gray-400 dark:text-gray-500 font-normal whitespace-nowrap">
-            &bull; {brand.label}
+        <div className="flex flex-col items-start min-w-0">
+          <span className="text-xs font-bold text-gray-700 dark:text-gray-300 group-hover:text-gray-950 dark:group-hover:text-white tracking-tight transition-colors truncate">
+            {brand.name || "Client Partner"}
           </span>
-        )}
+          {brand.label && (
+            <span className="text-[10px] text-gray-400 dark:text-gray-500 font-normal truncate">
+              {brand.label}
+            </span>
+          )}
+        </div>
       </div>
     );
   };
@@ -107,7 +109,7 @@ export const ClientMarquee: React.FC = () => {
                 ease: "linear",
               },
             }}
-            className="flex items-center gap-4 sm:gap-6 pr-6"
+            className="flex items-center gap-3 sm:gap-4 pr-4"
           >
             {row1Items.map((brand, i) => renderBrandPill(brand, i))}
           </motion.div>
@@ -125,7 +127,7 @@ export const ClientMarquee: React.FC = () => {
                 ease: "linear",
               },
             }}
-            className="flex items-center gap-4 sm:gap-6 pr-6"
+            className="flex items-center gap-3 sm:gap-4 pr-4"
           >
             {row2Items.map((brand, i) => renderBrandPill(brand, i + 500))}
           </motion.div>
