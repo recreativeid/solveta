@@ -120,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
           <motion.a
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
-            href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+            href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
               "Halo SOLVETA, saya ingin berkonsultasi mengenai solusi digital dan pembuatan website."
             )}`}
             target="_blank"

@@ -36,7 +36,7 @@ export const PhilosophySection: React.FC = () => {
             <motion.a
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
-              href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+              href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
                 "Halo SOLVETA, saya ingin berkonsultasi mengenai kebutuhan solusi digital dan teknologi untuk bisnis saya."
               )}`}
               target="_blank"

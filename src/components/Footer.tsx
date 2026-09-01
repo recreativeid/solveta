@@ -50,13 +50,13 @@ export const Footer: React.FC = () => {
             </div>
             <div className="flex flex-col gap-1.5 text-xs text-gray-600 dark:text-gray-400">
               <a
-                href={`https://wa.me/${data.contact.whatsappNumber}`}
+                href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 hover:text-[#8B0021] dark:hover:text-rose-400 transition-colors"
               >
                 <Phone className="w-3.5 h-3.5 text-gray-400" />
-                <span>{data.contact.whatsappDisplay}</span>
+                <span>{data.contact?.whatsappDisplay || "+62 857-1966-3154"}</span>
               </a>
               <a
                 href={`https://${data.contact.websiteUrl}`}

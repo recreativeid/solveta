@@ -199,7 +199,7 @@ export const PricingSection: React.FC = () => {
                       <motion.a
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+                        href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
                           pkg.waMessage
                         )}`}
                         target="_blank"
@@ -387,7 +387,7 @@ export const PricingSection: React.FC = () => {
           <motion.a
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
-            href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+            href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
               "Halo SOLVETA, saya ingin konsultasi mengenai pilihan paket website."
             )}`}
             target="_blank"

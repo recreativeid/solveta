@@ -16,7 +16,7 @@ export const Hero: React.FC = () => {
     const waText = encodeURIComponent(
       "Halo SOLVETA, saya ingin memesan pembuatan website / konsultasi solusi digital untuk bisnis saya."
     );
-    window.open(`https://wa.me/${data.contact.whatsappNumber}?text=${waText}`, "_blank");
+    window.open(`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${waText}`, "_blank");
   };
 
   const handleScrollToDetails = () => {

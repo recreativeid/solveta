@@ -59,7 +59,7 @@ export const PortfolioSection: React.FC = () => {
       ? p.liveUrl!.startsWith("http")
         ? p.liveUrl!
         : `https://${p.liveUrl!}`
-      : `https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+      : `https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
           `Halo SOLVETA, saya ingin melihat detail dan konsultasi mengenai portofolio: ${p.title}`
         )}`;
 
@@ -144,7 +144,7 @@ export const PortfolioSection: React.FC = () => {
       {/* Bottom Consultation Link */}
       <div className="mt-8 text-center max-w-[1240px] mx-auto px-4 sm:px-6">
         <a
-          href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+          href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
             "Halo SOLVETA, saya ingin konsultasi mengenai pembuatan sistem atau website custom."
           )}`}
           target="_blank"

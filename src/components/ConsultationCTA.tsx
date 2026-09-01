@@ -33,7 +33,7 @@ export const ConsultationCTA: React.FC = () => {
           <motion.a
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            href={`https://wa.me/${data.contact.whatsappNumber}?text=${encodeURIComponent(
+            href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
               "Halo SOLVETA, saya ingin konsultasi gratis mengenai solusi digital bisnis saya."
             )}`}
             target="_blank"
