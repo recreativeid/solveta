@@ -12,8 +12,7 @@ import {
   Volume2,
   VolumeX,
   Play,
-  Sparkles,
-  Film,
+  Pause,
   RotateCcw,
   Maximize2,
 } from "lucide-react";
@@ -32,8 +31,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
 
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isMuted, setIsMuted] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
 
   // Path resolver for GitHub Pages / base paths
@@ -66,13 +64,11 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
     if (!video) return;
 
     video.muted = true;
+    video.playsInline = true;
     const playPromise = video.play();
     if (playPromise !== undefined) {
       playPromise
-        .then(() => {
-          setIsPlaying(true);
-          setHasError(false);
-        })
+        .then(() => setIsPlaying(true))
         .catch(() => {
           // Autoplay restricted until interaction
         });
@@ -80,7 +76,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
   }, [resolvedVideoSrc]);
 
   // Smart Viewport Video Control:
-  // 1. Plays automatically when scrolled into view
+  // 1. Plays automatically when scrolled into view (if not manually paused)
   // 2. Pauses automatically when user scrolls away
   // 3. Resumes playing when user scrolls back
   useEffect(() => {
@@ -88,38 +84,19 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
     const video = videoRef.current;
     if (!container || !video) return;
 
-    userPausedManuallyRef.current = false;
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            if (!userPausedManuallyRef.current) {
-              video.muted = isMuted;
+            if (!userPausedManuallyRef.current && video.paused) {
               const playPromise = video.play();
               if (playPromise !== undefined) {
-                playPromise
-                  .then(() => {
-                    setIsPlaying(true);
-                    setHasError(false);
-                  })
-                  .catch(() => {
-                    video.muted = true;
-                    setIsMuted(true);
-                    video
-                      .play()
-                      .then(() => {
-                        setIsPlaying(true);
-                        setHasError(false);
-                      })
-                      .catch(() => {});
-                  });
+                playPromise.catch(() => {});
               }
             }
           } else {
             if (!video.paused) {
               video.pause();
-              setIsPlaying(false);
             }
           }
         });
@@ -134,7 +111,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [resolvedVideoSrc, isMuted]);
+  }, [resolvedVideoSrc]);
 
   // 3D Scroll-driven Rotation Animation (Aceternity style Container Scroll)
   const { scrollYProgress } = useScroll({
@@ -168,19 +145,40 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
     setMousePos({ x: 0, y: 0 });
   };
 
-  // Toggle Sound (Mute / Unmute)
+  // Toggle Sound (Mute / Unmute) with explicit volume control
   const toggleSound = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (videoRef.current) {
-      const nextMuted = !isMuted;
-      videoRef.current.muted = nextMuted;
-      setIsMuted(nextMuted);
+    const video = videoRef.current;
+    if (!video) return;
 
-      if (videoRef.current.paused) {
+    if (video.muted) {
+      video.muted = false;
+      video.volume = 1.0;
+      setIsMuted(false);
+      // Ensure playing when unmuting
+      if (video.paused) {
         userPausedManuallyRef.current = false;
-        videoRef.current.play().catch(() => {});
-        setIsPlaying(true);
+        video.play().catch(() => {});
       }
+    } else {
+      video.muted = true;
+      setIsMuted(true);
+    }
+  };
+
+  // Toggle Play / Pause
+  const togglePlay = (e?: React.MouseEvent) => {
+    if (e) e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      userPausedManuallyRef.current = false;
+      video.play().then(() => setIsPlaying(true)).catch(() => {});
+    } else {
+      userPausedManuallyRef.current = true;
+      video.pause();
+      setIsPlaying(false);
     }
   };
 
@@ -200,29 +198,14 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
     }
   };
 
-  // Toggle Play / Pause on screen click
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      userPausedManuallyRef.current = false;
-      videoRef.current.play().catch(() => {});
-      setIsPlaying(true);
-    } else {
-      userPausedManuallyRef.current = true;
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
-
   // Restart video from beginning
   const handleRestart = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (videoRef.current) {
-      videoRef.current.currentTime = 0;
-      userPausedManuallyRef.current = false;
-      videoRef.current.play().catch(() => {});
-      setIsPlaying(true);
-    }
+    const video = videoRef.current;
+    if (!video) return;
+    video.currentTime = 0;
+    userPausedManuallyRef.current = false;
+    video.play().catch(() => {});
   };
 
   return (
@@ -297,25 +280,24 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
                 muted={isMuted}
                 playsInline
                 preload="auto"
-                onPlay={() => {
-                  setIsPlaying(true);
-                  setHasError(false);
-                }}
+                onPlay={() => setIsPlaying(true)}
                 onPause={() => setIsPlaying(false)}
-                onError={() => {
-                  console.log("Video source error");
+                onVolumeChange={() => {
+                  if (videoRef.current) {
+                    setIsMuted(videoRef.current.muted);
+                  }
                 }}
                 className="w-full h-full object-cover"
               />
 
-              {/* Play / Pause Center Overlay Indicator */}
+              {/* Play / Pause Center Overlay Indicator when paused */}
               <AnimatePresence>
                 {!isPlaying && (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.8 }}
-                    className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center z-10"
+                    className="absolute inset-0 bg-black/45 backdrop-blur-[2px] flex items-center justify-center z-10 pointer-events-none"
                   >
                     <div className="w-14 h-14 rounded-full bg-rose-600/90 text-white flex items-center justify-center shadow-[0_0_30px_rgba(225,29,72,0.6)] border border-rose-400/50">
                       <Play className="w-6 h-6 fill-white translate-x-0.5" />
@@ -324,28 +306,44 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
                 )}
               </AnimatePresence>
 
-              {/* Interactive Audio, Replay & Fullscreen Control Buttons */}
+              {/* Interactive Audio, Play/Pause, Replay & Fullscreen Control Buttons */}
               <div className="absolute bottom-2.5 sm:bottom-3 left-2.5 sm:left-3 right-2.5 sm:right-3 flex items-center justify-between pointer-events-none z-20">
-                {/* Left: Replay Button */}
-                <button
-                  onClick={handleRestart}
-                  className="pointer-events-auto w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-black/65 hover:bg-black/90 backdrop-blur-md text-gray-200 hover:text-white rounded-full border border-white/20 transition-all shadow-md cursor-pointer hover:scale-110 active:scale-95"
-                  title="Ulangi video dari awal"
-                >
-                  <RotateCcw className="w-3.5 h-3.5" />
-                </button>
+                {/* Left: Play/Pause and Replay Buttons */}
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  {/* Play / Pause Toggle Button */}
+                  <button
+                    onClick={togglePlay}
+                    className="pointer-events-auto w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-black/70 hover:bg-black/95 backdrop-blur-md text-gray-200 hover:text-white rounded-full border border-white/20 transition-all shadow-md cursor-pointer hover:scale-110 active:scale-95"
+                    title={isPlaying ? "Jeda Video (Pause)" : "Putar Video (Play)"}
+                  >
+                    {isPlaying ? (
+                      <Pause className="w-3.5 h-3.5 fill-white" />
+                    ) : (
+                      <Play className="w-3.5 h-3.5 fill-white translate-x-0.5" />
+                    )}
+                  </button>
+
+                  {/* Replay Button */}
+                  <button
+                    onClick={handleRestart}
+                    className="pointer-events-auto w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-black/70 hover:bg-black/95 backdrop-blur-md text-gray-200 hover:text-white rounded-full border border-white/20 transition-all shadow-md cursor-pointer hover:scale-110 active:scale-95"
+                    title="Ulangi video dari awal"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5" />
+                  </button>
+                </div>
 
                 {/* Right: Sound Toggle & Fullscreen Buttons */}
-                <div className="flex items-center gap-2">
-                  {/* Sound Toggle Button (Icon Only, Minimal, Sleek) */}
+                <div className="flex items-center gap-1.5 sm:gap-2">
+                  {/* Sound Toggle Button */}
                   <button
                     onClick={toggleSound}
                     className={`pointer-events-auto w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center rounded-full backdrop-blur-md transition-all duration-300 shadow-xl border cursor-pointer hover:scale-110 active:scale-95 ${
                       isMuted
-                        ? "bg-black/65 hover:bg-black/90 text-gray-300 border-white/20 hover:border-rose-400"
+                        ? "bg-black/70 hover:bg-black/95 text-gray-300 border-white/20 hover:border-rose-400"
                         : "bg-[#8B0021] hover:bg-[#a30026] text-white border-rose-400/60 shadow-[0_0_15px_rgba(244,63,94,0.5)]"
                     }`}
-                    title={isMuted ? "Hidupkan Suara" : "Matikan Suara"}
+                    title={isMuted ? "Hidupkan Suara (Unmute)" : "Matikan Suara (Mute)"}
                   >
                     {isMuted ? (
                       <VolumeX className="w-4 h-4 text-rose-300" />
@@ -357,7 +355,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
                   {/* Fullscreen Button */}
                   <button
                     onClick={handleFullscreen}
-                    className="pointer-events-auto w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-black/65 hover:bg-black/90 backdrop-blur-md text-gray-200 hover:text-white rounded-full border border-white/20 transition-all shadow-md cursor-pointer hover:scale-110 active:scale-95"
+                    className="pointer-events-auto w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center bg-black/70 hover:bg-black/95 backdrop-blur-md text-gray-200 hover:text-white rounded-full border border-white/20 transition-all shadow-md cursor-pointer hover:scale-110 active:scale-95"
                     title="Lihat Layar Penuh (Fullscreen)"
                   >
                     <Maximize2 className="w-3.5 h-3.5" />
