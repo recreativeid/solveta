@@ -39,6 +39,9 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${poppins.variable} ${jetbrainsMono.variable} scroll-smooth`}>
       <head>
+        <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta httpEquiv="Pragma" content="no-cache" />
+        <meta httpEquiv="Expires" content="0" />
         <link rel="icon" href="./solveta-logo.png" type="image/png" />
         <link rel="apple-touch-icon" href="./solveta-logo.png" />
       </head>

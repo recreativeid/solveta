@@ -389,7 +389,7 @@ interface SiteContextType {
 const SiteContext = createContext<SiteContextType | undefined>(undefined);
 
 // Persistent Storage Key
-const STORAGE_KEY = "solveta_site_cms_data_v9";
+const STORAGE_KEY = "solveta_site_cms_data_v10";
 
 export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<SiteDataState>(defaultState);
@@ -398,10 +398,12 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   // Load from LocalStorage
   useEffect(() => {
     try {
-      const saved =
-        localStorage.getItem(STORAGE_KEY) ||
-        localStorage.getItem("solveta_site_cms_data_v8") ||
-        localStorage.getItem("solveta_site_cms_data_v7");
+      // Clean up obsolete legacy cache keys
+      ["solveta_site_cms_data_v7", "solveta_site_cms_data_v8", "solveta_site_cms_data_v9"].forEach(
+        (oldKey) => localStorage.removeItem(oldKey)
+      );
+
+      const saved = localStorage.getItem(STORAGE_KEY);
 
       if (saved) {
         const parsed = JSON.parse(saved);
