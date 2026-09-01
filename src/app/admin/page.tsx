@@ -2596,14 +2596,14 @@ function AdminPortalVisual() {
                   )}
                 </div>
 
-                {/* 2. Zoom In / Out Controls */}
-                <div className="space-y-1.5">
+                {/* 2. Zoom In / Out Controls (Up to 1000%) */}
+                <div className="space-y-2">
                   <div className="flex items-center justify-between text-xs font-semibold text-gray-700">
                     <span className="flex items-center gap-1.5">
                       <ZoomIn className="w-3.5 h-3.5 text-[#8B0021]" />
-                      <span>Zoom Logo (Perbesar / Perkecil)</span>
+                      <span>Zoom Logo (Hingga 1000%)</span>
                     </span>
-                    <span className="text-[11px] font-mono font-bold text-[#8B0021]">
+                    <span className="text-xs font-mono font-extrabold text-[#8B0021] bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200">
                       {Math.round(cropZoom * 100)}%
                     </span>
                   </div>
@@ -2611,7 +2611,7 @@ function AdminPortalVisual() {
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => setCropZoom((prev) => Math.max(0.4, Number((prev - 0.1).toFixed(2))))}
+                      onClick={() => setCropZoom((prev) => Math.max(0.2, Number((prev - (prev > 2 ? 0.5 : 0.2)).toFixed(2))))}
                       className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
                       title="Perkecil"
                     >
@@ -2619,8 +2619,8 @@ function AdminPortalVisual() {
                     </button>
                     <input
                       type="range"
-                      min="0.4"
-                      max="2.5"
+                      min="0.2"
+                      max="10.0"
                       step="0.05"
                       value={cropZoom}
                       onChange={(e) => setCropZoom(Number(e.target.value))}
@@ -2628,12 +2628,31 @@ function AdminPortalVisual() {
                     />
                     <button
                       type="button"
-                      onClick={() => setCropZoom((prev) => Math.min(2.5, Number((prev + 0.1).toFixed(2))))}
+                      onClick={() => setCropZoom((prev) => Math.min(10.0, Number((prev + (prev >= 2 ? 0.5 : 0.2)).toFixed(2))))}
                       className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
                       title="Perbesar"
                     >
                       <ZoomIn className="w-3.5 h-3.5" />
                     </button>
+                  </div>
+
+                  {/* Quick Zoom Presets */}
+                  <div className="flex items-center gap-1.5 pt-0.5">
+                    <span className="text-[10px] text-gray-400 font-semibold mr-1">Preset Cepat:</span>
+                    {[0.5, 1.0, 2.0, 3.5, 5.0, 7.5, 10.0].map((preset) => (
+                      <button
+                        key={preset}
+                        type="button"
+                        onClick={() => setCropZoom(preset)}
+                        className={`px-2 py-0.5 rounded text-[10px] font-bold font-mono transition-all cursor-pointer ${
+                          cropZoom === preset
+                            ? "bg-[#8B0021] text-white shadow-xs"
+                            : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                        }`}
+                      >
+                        {preset * 100}%
+                      </button>
+                    ))}
                     <button
                       type="button"
                       onClick={() => {
@@ -2641,7 +2660,7 @@ function AdminPortalVisual() {
                         setCropOffsetX(0);
                         setCropOffsetY(0);
                       }}
-                      className="px-2.5 py-1.5 text-[10px] font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                      className="ml-auto px-2 py-0.5 text-[10px] font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors flex items-center gap-1 cursor-pointer"
                       title="Reset Posisi & Zoom"
                     >
                       <RotateCcw className="w-3 h-3" />
@@ -2658,8 +2677,8 @@ function AdminPortalVisual() {
                     </label>
                     <input
                       type="range"
-                      min="-120"
-                      max="120"
+                      min="-500"
+                      max="500"
                       value={cropOffsetX}
                       onChange={(e) => setCropOffsetX(Number(e.target.value))}
                       className="w-full accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
@@ -2671,8 +2690,8 @@ function AdminPortalVisual() {
                     </label>
                     <input
                       type="range"
-                      min="-60"
-                      max="60"
+                      min="-350"
+                      max="350"
                       value={cropOffsetY}
                       onChange={(e) => setCropOffsetY(Number(e.target.value))}
                       className="w-full accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
