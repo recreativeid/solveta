@@ -252,11 +252,12 @@ function AdminPortalVisual() {
     const finalPng = canvas.toDataURL("image/png");
     if (isEditModeForBrand && editingBrand) {
       setEditingBrand({ ...editingBrand, logoImage: finalPng });
+      editClientBrand(editingBrand.id, { logoImage: finalPng });
     } else {
       setNewBrandLogo(finalPng);
     }
     setCropModalOpen(false);
-    showToast("Logo berhasil diproses (Latar belakang transparan & zoom disesuaikan)!");
+    showToast("Logo berhasil diproses & langsung diperbarui!");
   };
 
   const handleLogin = (e: React.FormEvent) => {

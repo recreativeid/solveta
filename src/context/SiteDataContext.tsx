@@ -493,6 +493,25 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         }
       })();
     }
+
+    const handleStorageChange = () => {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          setData(JSON.parse(saved));
+        }
+      } catch (e) {}
+    };
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("storage", handleStorageChange);
+    }
+
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("storage", handleStorageChange);
+      }
+    };
   }, []);
 
   // Save to LocalStorage & Supabase
@@ -500,6 +519,9 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     setData(newState);
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("storage"));
+      }
     } catch (e) {
       console.error("Failed to save to localStorage", e);
     }
