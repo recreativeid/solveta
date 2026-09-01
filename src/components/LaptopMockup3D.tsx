@@ -6,7 +6,6 @@ import {
   Volume2,
   VolumeX,
   Play,
-  ShieldCheck,
   Sparkles,
   Film,
   RotateCcw,
@@ -115,28 +114,13 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
             onClick={togglePlay}
             className="w-full aspect-[16/10] bg-[#0c0d12] rounded-[10px] sm:rounded-[14px] overflow-hidden flex flex-col text-left border border-[#232533] shadow-inner font-sans relative cursor-pointer group"
           >
-            {/* Browser Header Bar */}
-            <div className="h-8 bg-[#14151e]/90 backdrop-blur-md border-b border-[#202230] flex items-center justify-between px-3 sm:px-4 flex-shrink-0 z-20">
+            {/* Window Header Bar */}
+            <div className="h-6 sm:h-7 bg-[#14151e]/90 backdrop-blur-md border-b border-[#202230] flex items-center px-3 sm:px-4 flex-shrink-0 z-20">
               {/* Window Controls */}
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]" />
                 <div className="w-2.5 h-2.5 rounded-full bg-[#27c93f]" />
-              </div>
-
-              {/* URL Address Bar */}
-              <div className="hidden sm:flex items-center gap-1.5 px-3 py-0.5 bg-[#0e0f16]/90 border border-[#232535] rounded-full text-[10px] text-gray-400 font-mono w-64 justify-center">
-                <ShieldCheck className="w-3 h-3 text-emerald-400" />
-                <span className="text-gray-300">https://solveta.site/profile-video</span>
-              </div>
-
-              {/* Status Badge */}
-              <div className="flex items-center gap-1.5 text-[10px] text-rose-300 font-mono font-semibold">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-600"></span>
-                </span>
-                <span>SHOWREEL LIVE</span>
               </div>
             </div>
 
