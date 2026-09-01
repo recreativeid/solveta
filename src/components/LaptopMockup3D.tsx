@@ -23,8 +23,10 @@ interface LaptopMockup3DProps {
   posterSrc?: string;
 }
 
+const DEFAULT_FALLBACK_VIDEO = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4";
+
 export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
-  videoSrc = "/videos/profile.mp4",
+  videoSrc = DEFAULT_FALLBACK_VIDEO,
   posterSrc,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -35,6 +37,17 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasError, setHasError] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Path resolver for GitHub Pages / base paths
+  const resolvedVideoSrc = React.useMemo(() => {
+    const raw = videoSrc || DEFAULT_FALLBACK_VIDEO;
+    if (raw.startsWith("http") || raw.startsWith("data:")) return raw;
+    const isProd = process.env.NODE_ENV === "production";
+    if (isProd && raw.startsWith("/") && !raw.startsWith("/solveta")) {
+      return `/solveta${raw}`;
+    }
+    return raw;
+  }, [videoSrc]);
 
   const hasStartedRef = useRef(false);
   const userPausedManuallyRef = useRef(false);
@@ -253,7 +266,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
               {/* HTML5 Video Tag */}
               <video
                 ref={videoRef}
-                src={videoSrc}
+                src={resolvedVideoSrc}
                 poster={posterSrc}
                 loop
                 muted={isMuted}

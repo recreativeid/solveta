@@ -394,7 +394,7 @@ const defaultState: SiteDataState = {
   },
   siteCopy: {
     siteLogo: "",
-    profileVideo: "/videos/profile.mp4",
+    profileVideo: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
     heroEyebrow: "SOLVE TECHNOLOGY AGENCY",
     heroHeadline: "Mengubah Tantangan Bisnis Menjadi Solusi Digital.",
     heroSubtitle: "Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.",
