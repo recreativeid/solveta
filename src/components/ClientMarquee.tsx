@@ -28,15 +28,15 @@ export const ClientMarquee: React.FC = () => {
       return (
         <div
           key={`${brand.id || index}-${index}`}
-          className="flex items-center justify-center bg-white dark:bg-[#11121C] border border-gray-200 dark:border-gray-800 hover:border-brand-600 dark:hover:border-rose-500 rounded-full overflow-hidden shadow-2xs hover:shadow-sm transition-all duration-300 cursor-default group flex-shrink-0 h-10 sm:h-11"
+          className="flex items-center justify-center bg-white dark:bg-[#11121C] border border-gray-200 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full overflow-hidden shadow-2xs hover:shadow-sm transition-all duration-300 cursor-default group flex-shrink-0 h-10 sm:h-11 px-1"
         >
           <img
             src={brand.logoImage}
             alt={brand.name || "Client Logo"}
-            className="h-full w-auto max-w-[160px] object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-auto max-w-[160px] object-cover rounded-full filter grayscale opacity-65 contrast-125 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
           />
           {brand.name && brand.name.trim().length > 0 && (
-            <span className="text-xs font-bold text-gray-800 dark:text-gray-200 group-hover:text-brand-900 dark:group-hover:text-rose-300 tracking-tight transition-colors px-3.5">
+            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white tracking-tight transition-colors px-3">
               {brand.name}
             </span>
           )}
@@ -47,14 +47,14 @@ export const ClientMarquee: React.FC = () => {
     return (
       <div
         key={`${brand.id || index}-${index}`}
-        className="flex items-center justify-center gap-2 bg-white dark:bg-[#11121C] border border-gray-200 dark:border-gray-800 hover:border-brand-600 dark:hover:border-rose-500 rounded-full px-5 py-2 shadow-2xs hover:shadow-sm transition-all duration-300 cursor-default group flex-shrink-0 h-10 sm:h-11"
+        className="flex items-center justify-center gap-2 bg-white dark:bg-[#11121C] border border-gray-200 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4.5 py-2 shadow-2xs hover:shadow-sm transition-all duration-300 cursor-default group flex-shrink-0 h-10 sm:h-11"
       >
-        <div className="w-2 h-2 rounded-full bg-brand-700 dark:bg-rose-500 group-hover:scale-125 transition-transform flex-shrink-0" />
-        <span className="text-xs font-bold text-gray-800 dark:text-gray-200 group-hover:text-brand-900 dark:group-hover:text-rose-300 tracking-tight transition-colors whitespace-nowrap">
+        <div className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-gray-600 group-hover:bg-[#8B0021] dark:group-hover:bg-rose-500 transition-colors flex-shrink-0" />
+        <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white tracking-tight transition-colors whitespace-nowrap">
           {brand.name}
         </span>
         {brand.label && (
-          <span className="text-[10px] text-gray-400 dark:text-gray-500 font-medium whitespace-nowrap">
+          <span className="text-[10px] text-gray-400 dark:text-gray-500 font-normal whitespace-nowrap">
             &bull; {brand.label}
           </span>
         )}

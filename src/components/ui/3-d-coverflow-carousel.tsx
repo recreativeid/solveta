@@ -232,6 +232,12 @@ export function CoverFlowCarousel({
 
   // Interactive Pointer Down (Start dragging)
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    // If clicking an interactive button or link, do NOT initiate pointer drag capture
+    const target = event.target as HTMLElement | null;
+    if (target && target.closest("a, button, [data-interactive]")) {
+      return;
+    }
+
     if (rafRef.current !== null) {
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
@@ -440,7 +446,7 @@ export function CoverFlowCarousel({
                   {/* Subtle Top & Bottom Gradient Overlay */}
                   <div className="absolute inset-0 pt-7 sm:pt-8 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none z-10" />
 
-                  {/* 3. WIDESCREEN FROSTED GLASS BOTTOM BANNER OVERLAY */}
+                  {/* 3. WIDESCREEN FROSTED GLASS BOTTOM BANNER OVERLAY (Seamless Gradient, No Middle Line) */}
                   <div
                     ref={(node) => {
                       bannerRefs.current[index] = node;
@@ -448,7 +454,7 @@ export function CoverFlowCarousel({
                     style={{
                       transition: "opacity 350ms ease, transform 350ms ease",
                     }}
-                    className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/95 via-black/85 to-transparent backdrop-blur-xs border-t border-white/10 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-4 text-left"
+                    className="absolute bottom-0 left-0 right-0 p-3.5 sm:p-4.5 bg-gradient-to-t from-black/95 via-black/75 to-transparent z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-4 text-left pointer-events-auto"
                   >
                     <div className="space-y-1 max-w-md">
                       {/* Category Tag (Mobile fallback) */}
@@ -474,34 +480,22 @@ export function CoverFlowCarousel({
                           {item.desc}
                         </p>
                       )}
-
-                      {/* Tags / Tagar Badges */}
-                      {item.tags && item.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1 pt-1">
-                          {item.tags.map((t, tIdx) => (
-                            <span
-                              key={tIdx}
-                              className="text-[8px] sm:text-[9px] font-semibold text-rose-200/90 bg-rose-950/70 border border-rose-500/30 px-1.5 py-0.5 rounded shadow-2xs"
-                            >
-                              #{t}
-                            </span>
-                          ))}
-                        </div>
-                      )}
                     </div>
 
                     {/* CTA Button: "Kunjungi Website →" / "Konsultasi Proyek →" */}
                     <a
                       href={item.ctaUrl || "#"}
+                      data-interactive="true"
+                      onPointerDown={(e) => e.stopPropagation()}
                       onClick={(e) => {
-                        if (onCtaClick) {
-                          e.preventDefault();
-                          onCtaClick(item);
+                        e.stopPropagation();
+                        if (item.ctaUrl && item.ctaUrl !== "#") {
+                          window.open(item.ctaUrl, "_blank");
                         }
                       }}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[10px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30"
+                      className="flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[10px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30 relative z-30 pointer-events-auto"
                     >
                       <span>{item.ctaText || "Kunjungi Website"}</span>
                       {item.ctaText === "Kunjungi Website" ? (
