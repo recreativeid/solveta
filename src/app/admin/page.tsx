@@ -1557,15 +1557,24 @@ function AdminPortalVisual() {
                             {brand.label}
                           </div>
                         )}
-                      </div>
+                    <div className="flex items-center gap-1 flex-shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => setEditingBrand(brand)}
+                        className="p-1.5 text-gray-500 hover:text-[#8B0021] hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
+                        title="Edit Logo & Data Brand"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteBrand(brand.id, brand.name || "Logo")}
+                        className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                        title="Hapus"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
                     </div>
-
-                    <button
-                      onClick={() => handleDeleteBrand(brand.id, brand.name || "Logo")}
-                      className="p-1 text-gray-400 hover:text-red-600 rounded flex-shrink-0"
-                    >
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
                   </div>
                 ))}
               </div>
@@ -2452,6 +2461,148 @@ function AdminPortalVisual() {
                     type="button"
                     onClick={() => setEditingPortfolio(null)}
                     className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg transition-colors"
+                  >
+                    Batal
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+
+        {/* MODAL: EDIT CLIENT BRAND / LOGO */}
+        {editingBrand && (
+          <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              className="bg-white border border-gray-200 rounded-3xl p-6 max-w-lg w-full shadow-2xl relative font-sans max-h-[90vh] overflow-y-auto"
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-rose-50 text-[#8B0021]">
+                    <Edit3 className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-gray-900">
+                      Edit Logo &amp; Data Klien
+                    </h3>
+                    <p className="text-[10px] text-gray-400">
+                      Perbarui file logo, atur ulang crop/zoom, atau ubah nama brand.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setEditingBrand(null)}
+                  className="p-1.5 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              <form onSubmit={handleUpdateBrand} className="space-y-4">
+                {/* Logo Image Preview & Studio Actions */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-semibold text-gray-700">
+                    Logo Klien Saat Ini:
+                  </label>
+                  <div className="p-4 bg-[#07080E] rounded-2xl border border-gray-800 flex items-center justify-center min-h-[100px]">
+                    {editingBrand.logoImage ? (
+                      <img
+                        src={editingBrand.logoImage}
+                        alt="Logo Preview"
+                        className="h-10 sm:h-12 w-auto max-w-[200px] object-contain invert"
+                      />
+                    ) : (
+                      <span className="text-xs text-gray-500 font-medium">Belum ada logo gambar (hanya teks)</span>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                    {editingBrand.logoImage && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setRawLogoToCrop(editingBrand.logoImage || "");
+                          setCropZoom(1.0);
+                          setCropOffsetX(0);
+                          setCropOffsetY(0);
+                          setAutoRemoveBg(true);
+                          setBgThreshold(35);
+                          setIsEditModeForBrand(true);
+                          setCropModalOpen(true);
+                        }}
+                        className="py-2 px-3 bg-rose-50 hover:bg-rose-100 text-[#8B0021] text-xs font-bold rounded-xl border border-rose-200 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                      >
+                        <Crop className="w-3.5 h-3.5" />
+                        <span>Buka Logo Studio (Crop/Zoom)</span>
+                      </button>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => editBrandLogoInputRef.current?.click()}
+                      className="py-2 px-3 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold rounded-xl border border-gray-200 flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Ganti File Logo Baru</span>
+                    </button>
+                    <input
+                      ref={editBrandLogoInputRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => handleBrandLogoUpload(e, true)}
+                      className="hidden"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 gap-3 pt-2">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Nama Brand / Klien <span className="text-gray-400 font-normal">(Opsional jika hanya ingin logo)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={editingBrand.name || ""}
+                      onChange={(e) =>
+                        setEditingBrand({ ...editingBrand, name: e.target.value })
+                      }
+                      placeholder="Kosongkan jika hanya logo"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Sektor / Label Bisnis <span className="text-gray-400 font-normal">(Opsional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={editingBrand.label || ""}
+                      onChange={(e) =>
+                        setEditingBrand({ ...editingBrand, label: e.target.value })
+                      }
+                      placeholder="Contoh: Supply Chain & Tracking"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
+                  <button
+                    type="submit"
+                    className="flex-1 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                  >
+                    <Check className="w-4 h-4" />
+                    <span>Simpan Perubahan</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditingBrand(null)}
+                    className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
                   >
                     Batal
                   </button>
