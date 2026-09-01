@@ -40,61 +40,51 @@ export const OpeningScreen: React.FC = () => {
           initial={{ opacity: 1 }}
           exit={{
             opacity: 0,
-            scale: 1.05,
-            filter: "blur(30px)",
-            backdropFilter: "blur(45px)",
+            scale: 1.04,
+            filter: "blur(24px)",
             transition: {
-              duration: 1.15,
-              ease: [0.22, 1, 0.36, 1], // Soft, luxurious cubic-bezier easing
+              duration: 1.0,
+              ease: [0.22, 1, 0.36, 1], // Soft luxury cubic-bezier easing
             },
           }}
-          className="fixed inset-0 z-[100] bg-white/95 backdrop-blur-3xl flex flex-col items-center justify-center p-6 select-none overflow-hidden font-sans"
+          className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 select-none overflow-hidden font-sans"
         >
-          {/* Ambient Soft Glassmorphism Flare Glow */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 1.35, filter: "blur(50px)" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="absolute w-[520px] h-[320px] bg-gradient-to-r from-[#8B0021]/15 via-rose-500/10 to-[#50000F]/15 rounded-full blur-[95px] pointer-events-none -z-10"
-          />
-
-          {/* Inner Content Card (Dissolves with Soft Blur & Lift) */}
+          {/* Inner Content (Dissolves with Soft Blur on exit) */}
           <motion.div
             initial={{ opacity: 1, y: 0 }}
             exit={{
               opacity: 0,
-              y: -22,
-              scale: 0.95,
-              filter: "blur(18px)",
-              transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
+              y: -18,
+              scale: 0.96,
+              filter: "blur(14px)",
+              transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
             }}
             className="flex flex-col items-center max-w-lg w-full text-center relative z-10"
           >
-            {/* Logo Image */}
+            {/* Logo Image - 100% Pure White Seamless Blend without Box */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9, y: 15 }}
+              initial={{ opacity: 0, scale: 0.9, y: 12 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-              className="mb-4 flex items-center justify-center"
+              transition={{ duration: 1.0, ease: [0.16, 1, 0.3, 1] }}
+              className="mb-4 flex items-center justify-center bg-transparent"
             >
               <img
                 src={logoSrc}
                 alt="SOLVETA"
-                className="w-64 sm:w-80 md:w-96 h-auto object-contain mix-blend-multiply"
+                className="w-64 sm:w-80 md:w-96 h-auto object-contain bg-transparent"
               />
             </motion.div>
 
-            {/* Loading Progress Bar with Frosted Glass styling */}
+            {/* Loading Progress Bar */}
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
               className="w-full max-w-[280px] sm:max-w-[340px] space-y-2.5 font-sans mt-2"
             >
-              <div className="h-1.5 sm:h-2 w-full bg-gray-200/60 backdrop-blur-md rounded-full overflow-hidden p-0.5 border border-gray-300/50 shadow-inner">
+              <div className="h-1.5 sm:h-2 w-full bg-gray-100 rounded-full overflow-hidden p-0.5 border border-gray-200 shadow-inner">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] rounded-full shadow-[0_0_12px_rgba(139,0,33,0.5)]"
+                  className="h-full bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] rounded-full shadow-sm"
                   style={{ width: `${Math.min(100, progress)}%` }}
                   transition={{ ease: "linear" }}
                 />
