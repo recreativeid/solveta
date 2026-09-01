@@ -549,12 +549,25 @@ function AdminPortalVisual() {
   };
 
   const saveWhatsApp = async () => {
+    let cleanNumber = editWaNumber.replace(/[^0-9]/g, "");
+    if (cleanNumber.startsWith("0")) {
+      cleanNumber = "62" + cleanNumber.substring(1);
+    } else if (cleanNumber.startsWith("8")) {
+      cleanNumber = "62" + cleanNumber;
+    }
+
+    const display = editWaDisplay.trim() || (
+      cleanNumber.startsWith("62")
+        ? `+62 ${cleanNumber.substring(2, 5)}-${cleanNumber.substring(5, 9)}-${cleanNumber.substring(9)}`
+        : editWaNumber
+    );
+
     const updatedState: SiteDataState = {
       ...data,
       contact: {
         ...data.contact,
-        whatsappNumber: editWaNumber.replace(/[^0-9]/g, ""),
-        whatsappDisplay: editWaDisplay,
+        whatsappNumber: cleanNumber || "6285719663154",
+        whatsappDisplay: display,
       },
     };
     saveData(updatedState);
