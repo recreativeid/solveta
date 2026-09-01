@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -27,9 +27,6 @@ jobs:
           node-version: "20"
           cache: "npm"
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
       - name: Install dependencies
         run: npm install
 
@@ -39,10 +36,17 @@ jobs:
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_6MVHJX_Yy2romiVJ13pnEQ_hSr92REe' }}
         run: npm run build
 
-      - name: Create .nojekyll and 404.html fallback
+      - name: Create .nojekyll and 404 fallback
         run: |
           touch ./out/.nojekyll
-          cp ./out/index.html ./out/404.html
+          cp -f ./out/index.html ./out/404.html
+
+      - name: Deploy to gh-pages branch (Dual Support)
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: out
+          branch: gh-pages
+        continue-on-error: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
