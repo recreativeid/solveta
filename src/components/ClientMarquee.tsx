@@ -27,50 +27,50 @@ export const ClientMarquee: React.FC = () => {
     const hasName = Boolean(brand.name && brand.name.trim().length > 0);
     const hasLogo = Boolean(brand.logoImage && brand.logoImage.trim().length > 0);
 
-    // 1. Pure Logo Mode: Uniform Symmetrical Oval Capsule with Pure White Background
+    // 1. Pure Logo Mode: Full original color, pure solid white oval background
     if (hasLogo && !hasName) {
       return (
         <div
           key={`${brand.id || index}-${index}`}
-          className="w-36 sm:w-44 md:w-48 h-14 sm:h-16 flex items-center justify-center bg-white dark:bg-[#11121C] border border-gray-200/90 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4 py-2 shadow-2xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0"
+          className="w-40 sm:w-48 md:w-52 h-14 sm:h-16 flex items-center justify-center bg-white border border-gray-200 dark:border-white/20 hover:border-[#8B0021]/60 dark:hover:border-rose-400 rounded-full px-3 py-1.5 shadow-xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0 overflow-hidden"
         >
           <img
             src={brand.logoImage}
             alt={brand.name || "Client Logo"}
-            className="max-h-7 sm:max-h-9 w-auto max-w-[85%] object-contain filter grayscale opacity-70 contrast-125 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 select-none pointer-events-none"
+            className="w-full h-full object-contain p-1 select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
           />
         </div>
       );
     }
 
-    // 2. Logo + Name Combined Oval Capsule (Uniform Height & Balanced Width)
+    // 2. Logo + Name Combined Oval Capsule (Full original colors, solid white background)
     if (hasLogo && hasName) {
       return (
         <div
           key={`${brand.id || index}-${index}`}
-          className="min-w-40 sm:min-w-48 md:min-w-52 h-14 sm:h-16 flex items-center justify-center gap-2.5 bg-white dark:bg-[#11121C] border border-gray-200/90 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4 py-2 shadow-2xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0"
+          className="min-w-44 sm:min-w-52 md:min-w-56 h-14 sm:h-16 flex items-center justify-center gap-3 bg-white border border-gray-200 dark:border-white/20 hover:border-[#8B0021]/60 dark:hover:border-rose-400 rounded-full px-4 py-2 shadow-xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0 overflow-hidden"
         >
           <img
             src={brand.logoImage}
             alt={brand.name || "Client Logo"}
-            className="max-h-7 sm:max-h-8 w-auto max-w-[70px] sm:max-w-[90px] object-contain filter grayscale opacity-70 contrast-125 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 flex-shrink-0"
+            className="h-8 sm:h-9 w-auto max-w-[90px] sm:max-w-[110px] object-contain flex-shrink-0"
           />
-          <span className="text-xs font-bold text-gray-700 dark:text-gray-300 group-hover:text-gray-950 dark:group-hover:text-white tracking-tight transition-colors truncate">
+          <span className="text-xs font-bold text-gray-900 tracking-tight truncate">
             {brand.name}
           </span>
         </div>
       );
     }
 
-    // 3. Text Only Oval Capsule (Uniform Symmetrical Dimensions)
+    // 3. Text Only Oval Capsule (Fallback if no logo image uploaded)
     return (
       <div
         key={`${brand.id || index}-${index}`}
-        className="w-36 sm:w-44 md:w-48 h-14 sm:h-16 flex items-center justify-center gap-2 bg-white dark:bg-[#11121C] border border-gray-200/90 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4 py-2 shadow-2xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0"
+        className="w-40 sm:w-48 md:w-52 h-14 sm:h-16 flex items-center justify-center gap-2 bg-white dark:bg-[#11121C] border border-gray-200 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4 py-2 shadow-xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0"
       >
-        <div className="w-1.5 h-1.5 rounded-full bg-gray-400 dark:bg-gray-600 group-hover:bg-[#8B0021] dark:group-hover:bg-rose-500 transition-colors flex-shrink-0" />
+        <div className="w-2 h-2 rounded-full bg-[#8B0021] dark:bg-rose-500 transition-colors flex-shrink-0" />
         <div className="flex flex-col items-start min-w-0">
-          <span className="text-xs font-bold text-gray-700 dark:text-gray-300 group-hover:text-gray-950 dark:group-hover:text-white tracking-tight transition-colors truncate">
+          <span className="text-xs font-bold text-gray-800 dark:text-gray-200 group-hover:text-gray-950 dark:group-hover:text-white tracking-tight truncate">
             {brand.name || "Client Partner"}
           </span>
           {brand.label && (
