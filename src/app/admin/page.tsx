@@ -1557,6 +1557,9 @@ function AdminPortalVisual() {
                             {brand.label}
                           </div>
                         )}
+                      </div>
+                    </div>
+
                     <div className="flex items-center gap-1 flex-shrink-0">
                       <button
                         type="button"
