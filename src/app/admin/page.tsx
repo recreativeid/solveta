@@ -1507,9 +1507,11 @@ function AdminPortalVisual() {
                     updateSiteCopy({
                       marqueeLogoHeight: editMarqueeLogoHeight,
                       marqueeLogoSpacing: editMarqueeLogoSpacing,
+                      marqueeLogoScale: editMarqueeLogoScale,
+                      marqueeLogoMaxWidth: editMarqueeLogoMaxWidth,
                       marqueeSpeed: editMarqueeSpeed,
                     });
-                    showToast("Pengaturan ukuran & jarak logo berhasil disimpan & aktif di landing page!");
+                    showToast("Pengaturan ukuran, skala & jarak logo berhasil disimpan & aktif di landing page!");
                   }}
                   className="px-4 py-2 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer flex-shrink-0"
                 >
