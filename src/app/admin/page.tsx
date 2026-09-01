@@ -380,7 +380,7 @@ function AdminPortalVisual() {
     showToast("Kategori baru berhasil ditambahkan!");
   };
 
-  const saveVisualChanges = () => {
+  const saveVisualChanges = async () => {
     updateSiteCopy({
       heroHeadline: editHeadline,
       heroSubtitle: editSubtitle,
@@ -390,14 +390,16 @@ function AdminPortalVisual() {
       marqueeSpeed: editMarqueeSpeed,
     });
     updatePricing(editPricingList);
-    showToast("Semua perubahan teks dan harga berhasil disimpan!");
+    await syncWithSupabase();
+    showToast("Semua perubahan teks dan harga berhasil disimpan & disinkronkan!");
   };
 
-  const saveWhatsApp = () => {
+  const saveWhatsApp = async () => {
     updateContact({
       whatsappNumber: editWaNumber.replace(/[^0-9]/g, ""),
       whatsappDisplay: editWaDisplay,
     });
+    await syncWithSupabase();
     showToast("Nomor WhatsApp berhasil diperbarui di seluruh website!");
   };
 

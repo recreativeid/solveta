@@ -36,8 +36,10 @@ jobs:
       - name: Build with Next.js
         run: npm run build
 
-      - name: Create .nojekyll file
-        run: touch ./out/.nojekyll
+      - name: Create .nojekyll and 404.html fallback
+        run: |
+          touch ./out/.nojekyll
+          cp ./out/index.html ./out/404.html
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
