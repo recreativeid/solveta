@@ -34,6 +34,9 @@ jobs:
         run: npm ci
 
       - name: Build with Next.js
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://ymaqdrsomailsnqkgmag.supabase.co' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_6MVHJX_Yy2romiVJ13pnEQ_hSr92REe' }}
         run: npm run build
 
       - name: Create .nojekyll and 404.html fallback
@@ -54,5 +57,4 @@ jobs:
     needs: build
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4
