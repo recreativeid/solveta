@@ -337,48 +337,7 @@ const defaultState: SiteDataState = {
       liveUrl: "https://www.solveta.site",
     },
   ],
-  clientBrands: [
-    {
-      id: "brand-1",
-      name: "MedikaCare Group",
-      label: "Healthcare System",
-    },
-    {
-      id: "brand-2",
-      name: "Nusantara Logistics",
-      label: "Supply Chain & Tracking",
-    },
-    {
-      id: "brand-3",
-      name: "UrbanVibe Properties",
-      label: "Real Estate & Listings",
-    },
-    {
-      id: "brand-4",
-      name: "Kopi Nusantara POS",
-      label: "Retail & E-Commerce",
-    },
-    {
-      id: "brand-5",
-      name: "Artha Finansial",
-      label: "Fintech & Corporate",
-    },
-    {
-      id: "brand-6",
-      name: "Apex Global Industri",
-      label: "Manufacturing ERP",
-    },
-    {
-      id: "brand-7",
-      name: "Samudra Retail",
-      label: "Multi-Store Management",
-    },
-    {
-      id: "brand-8",
-      name: "Garda Security Tech",
-      label: "Access Control & IoT",
-    },
-  ],
+  clientBrands: [],
   categories: [
     "Custom System",
     "Web Application",
@@ -394,7 +353,7 @@ const defaultState: SiteDataState = {
   },
   siteCopy: {
     siteLogo: "",
-    profileVideo: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+    profileVideo: "/videos/profile.mp4",
     heroEyebrow: "SOLVE TECHNOLOGY AGENCY",
     heroHeadline: "Mengubah Tantangan Bisnis Menjadi Solusi Digital.",
     heroSubtitle: "Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.",
@@ -463,9 +422,25 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
           };
         });
 
+        // Filter out legacy dummy brand placeholders (brand-1 to brand-8)
+        const cleanedBrands = (parsed.clientBrands || []).filter(
+          (b: ClientBrandItem) =>
+            b.logoImage ||
+            (!b.id?.startsWith("brand-") &&
+              b.name !== "MedikaCare Group" &&
+              b.name !== "Nusantara Logistics" &&
+              b.name !== "UrbanVibe Properties" &&
+              b.name !== "Kopi Nusantara POS" &&
+              b.name !== "Artha Finansial" &&
+              b.name !== "Apex Global Industri" &&
+              b.name !== "Samudra Retail" &&
+              b.name !== "Garda Security Tech")
+        );
+
         setData((prev) => ({
           ...defaultState,
           ...parsed,
+          clientBrands: cleanedBrands,
           pricing: mergedPricing.length > 0 ? mergedPricing : defaultState.pricing,
           siteCopy: { ...defaultState.siteCopy, ...(parsed.siteCopy || {}) },
           contact: { ...defaultState.contact, ...(parsed.contact || {}) },
@@ -491,11 +466,25 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             .single();
 
           if (sbData && sbData.data) {
+            const sbBrands = (sbData.data.clientBrands || []).filter(
+              (b: ClientBrandItem) =>
+                b.logoImage ||
+                (!b.id?.startsWith("brand-") &&
+                  b.name !== "MedikaCare Group" &&
+                  b.name !== "Nusantara Logistics" &&
+                  b.name !== "UrbanVibe Properties" &&
+                  b.name !== "Kopi Nusantara POS" &&
+                  b.name !== "Artha Finansial" &&
+                  b.name !== "Apex Global Industri" &&
+                  b.name !== "Samudra Retail" &&
+                  b.name !== "Garda Security Tech")
+            );
             setData((prev) => ({
               ...defaultState,
               ...sbData.data,
+              clientBrands: sbBrands,
             }));
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(sbData.data));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...sbData.data, clientBrands: sbBrands }));
           }
         } catch (err) {
           console.log("Supabase fetch fallback:", err);
