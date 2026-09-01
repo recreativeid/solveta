@@ -76,6 +76,8 @@ export interface SiteCopyData {
   consultationDesc?: string;
   marqueeTitle: string;
   marqueeSpeed?: number; // Duration in seconds
+  marqueeLogoHeight?: number; // Logo height in px (default 46)
+  marqueeLogoSpacing?: number; // Spacing between logos in px (default 36)
 }
 
 export interface ContactData {
@@ -361,6 +363,8 @@ const defaultState: SiteDataState = {
     portfolioSubtitle: "",
     marqueeTitle: "DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG",
     marqueeSpeed: 35,
+    marqueeLogoHeight: 46,
+    marqueeLogoSpacing: 36,
   },
 };
 

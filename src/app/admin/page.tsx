@@ -45,6 +45,7 @@ import {
   Sun,
   Moon,
   Settings,
+  Sliders,
 } from "lucide-react";
 import {
   SiteDataProvider,
@@ -112,6 +113,12 @@ function AdminPortalVisual() {
   const [editConsultationDesc, setEditConsultationDesc] = useState(data.siteCopy.consultationDesc || "");
   const [editPricingList, setEditPricingList] = useState<PricingTierData[]>(data.pricing);
   const [editMarqueeSpeed, setEditMarqueeSpeed] = useState<number>(data.siteCopy.marqueeSpeed || 35);
+  const [editMarqueeLogoHeight, setEditMarqueeLogoHeight] = useState<number>(
+    data.siteCopy.marqueeLogoHeight || 46
+  );
+  const [editMarqueeLogoSpacing, setEditMarqueeLogoSpacing] = useState<number>(
+    data.siteCopy.marqueeLogoSpacing || 36
+  );
   const [tempLogo, setTempLogo] = useState<string>(data.siteCopy.siteLogo || "");
 
   // Video Profile Management State
@@ -130,6 +137,9 @@ function AdminPortalVisual() {
     setEditPortfolioTitle(data.siteCopy.portfolioTitle);
     setTempLogo(data.siteCopy.siteLogo || "");
     setEditVideoUrl(data.siteCopy.profileVideo || "/videos/profile.mp4");
+    setEditMarqueeSpeed(data.siteCopy.marqueeSpeed || 35);
+    setEditMarqueeLogoHeight(data.siteCopy.marqueeLogoHeight || 46);
+    setEditMarqueeLogoSpacing(data.siteCopy.marqueeLogoSpacing || 36);
   }, [data]);
 
   // WhatsApp Form
@@ -1443,6 +1453,129 @@ function AdminPortalVisual() {
         {/* MODE 3: BRANDS / LOGO MANAGER */}
         {activeMode === "brands" && (
           <div className="space-y-6 bg-white">
+            {/* 1. MARQUEE DISPLAY & SIZE CUSTOMIZATION SETTINGS */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
+                <div>
+                  <h2 className="text-sm font-bold text-gray-900 flex items-center gap-2">
+                    <Sliders className="w-4 h-4 text-[#7B0B1E]" />
+                    <span>Kustomisasi Ukuran &amp; Jarak Logo Marquee</span>
+                  </h2>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Sesuaikan tinggi logo dan jarak spasi antar-logo agar tampil pas dan proporsional di landing page.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    updateSiteCopy({
+                      marqueeLogoHeight: editMarqueeLogoHeight,
+                      marqueeLogoSpacing: editMarqueeLogoSpacing,
+                      marqueeSpeed: editMarqueeSpeed,
+                    });
+                    showToast("Pengaturan ukuran & jarak logo berhasil disimpan & aktif di landing page!");
+                  }}
+                  className="px-4 py-2 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-bold rounded-xl shadow-xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer flex-shrink-0"
+                >
+                  <Check className="w-3.5 h-3.5" />
+                  <span>Simpan Ukuran &amp; Jarak</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                {/* 1. Slider Tinggi Logo */}
+                <div className="p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-gray-800">
+                      📏 Tinggi Logo (Size)
+                    </label>
+                    <span className="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                      {editMarqueeLogoHeight}px
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="24"
+                    max="96"
+                    step="2"
+                    value={editMarqueeLogoHeight}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      setEditMarqueeLogoHeight(val);
+                      updateSiteCopy({ marqueeLogoHeight: val });
+                    }}
+                    className="w-full accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[10px] text-gray-400 font-mono">
+                    <span>24px (Kecil)</span>
+                    <span>46px (Ideal)</span>
+                    <span>96px (Besar)</span>
+                  </div>
+                </div>
+
+                {/* 2. Slider Jarak / Spacing Antar Logo */}
+                <div className="p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-gray-800">
+                      ↔️ Jarak Spasi Antar Logo
+                    </label>
+                    <span className="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                      {editMarqueeLogoSpacing}px
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="12"
+                    max="80"
+                    step="2"
+                    value={editMarqueeLogoSpacing}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      setEditMarqueeLogoSpacing(val);
+                      updateSiteCopy({ marqueeLogoSpacing: val });
+                    }}
+                    className="w-full accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[10px] text-gray-400 font-mono">
+                    <span>12px (Rapat)</span>
+                    <span>36px (Ideal)</span>
+                    <span>80px (Renggang)</span>
+                  </div>
+                </div>
+
+                {/* 3. Slider Kecepatan Marquee */}
+                <div className="p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-gray-800">
+                      ⚡ Kecepatan Berjalan
+                    </label>
+                    <span className="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                      {editMarqueeSpeed}s
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="15"
+                    max="65"
+                    step="5"
+                    value={editMarqueeSpeed}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      setEditMarqueeSpeed(val);
+                      updateSiteCopy({ marqueeSpeed: val });
+                    }}
+                    className="w-full accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[10px] text-gray-400 font-mono">
+                    <span>15s (Cepat)</span>
+                    <span>35s (Sedang)</span>
+                    <span>65s (Pelan)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 2. ADD NEW LOGO FORM */}
             <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs">
               <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
                 <Building2 className="w-4 h-4 text-[#7B0B1E]" />
