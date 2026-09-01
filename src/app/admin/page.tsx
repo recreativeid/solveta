@@ -187,13 +187,13 @@ function AdminPortalVisual() {
       const cw = canvas.width;
       const ch = canvas.height;
 
-      // Calculate aspect ratio fit
+      // Calculate aspect ratio fit for 1:1 square ratio
       const aspect = img.width / img.height;
-      let baseW = cw * 0.75;
+      let baseW = cw * 0.82;
       let baseH = baseW / aspect;
 
-      if (baseH > ch * 0.8) {
-        baseH = ch * 0.8;
+      if (baseH > ch * 0.82) {
+        baseH = ch * 0.82;
         baseW = baseH * aspect;
       }
 
@@ -2534,9 +2534,9 @@ function AdminPortalVisual() {
                       : "bg-gray-100 border-gray-200"
                   }`}
                 >
-                  {/* Simulated Oval Capsule in Marquee */}
+                  {/* Simulated 1:1 Square Card in Marquee */}
                   <div
-                    className={`w-52 sm:w-60 h-16 sm:h-18 rounded-full border flex items-center justify-center p-2 shadow-sm relative overflow-hidden transition-colors ${
+                    className={`w-36 h-36 sm:w-44 sm:h-44 rounded-2xl border flex items-center justify-center p-3 shadow-sm relative overflow-hidden transition-colors ${
                       previewDarkTheme
                         ? "bg-[#11121C] border-gray-800"
                         : "bg-white border-gray-200"
@@ -2544,8 +2544,8 @@ function AdminPortalVisual() {
                   >
                     <canvas
                       ref={logoCanvasRef}
-                      width={400}
-                      height={160}
+                      width={260}
+                      height={260}
                       className={`w-full h-full object-contain filter grayscale transition-all ${
                         previewDarkTheme ? "brightness-150 contrast-125 opacity-90" : "opacity-80"
                       }`}
