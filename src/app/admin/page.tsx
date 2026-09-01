@@ -358,19 +358,22 @@ function AdminPortalVisual() {
   // Client Brand actions
   const handleCreateBrand = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newBrandName.trim()) return;
+    if (!newBrandName.trim() && !newBrandLogo.trim()) {
+      showToast("Harap upload logo gambar atau masukkan nama brand!");
+      return;
+    }
 
     addClientBrand({
-      name: newBrandName.trim(),
-      label: newBrandLabel.trim() || "Verified Client",
-      logoImage: newBrandLogo.trim(),
+      name: newBrandName.trim() || undefined,
+      label: newBrandLabel.trim() || undefined,
+      logoImage: newBrandLogo.trim() || undefined,
     });
 
     setNewBrandName("");
     setNewBrandLabel("");
     setNewBrandLogo("");
     if (brandLogoInputRef.current) brandLogoInputRef.current.value = "";
-    showToast("Klien / Brand baru berhasil ditambahkan ke Marquee!");
+    showToast("Logo / Brand baru berhasil ditambahkan ke Marquee!");
   };
 
   const handleUpdateBrand = (e: React.FormEvent) => {
@@ -1339,47 +1342,18 @@ function AdminPortalVisual() {
               </p>
 
               <form onSubmit={handleCreateBrand} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Nama Brand / Klien *
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={newBrandName}
-                      onChange={(e) => setNewBrandName(e.target.value)}
-                      placeholder="Contoh: Nusantara Logistics"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Sektor / Label Bisnis
-                    </label>
-                    <input
-                      type="text"
-                      value={newBrandLabel}
-                      onChange={(e) => setNewBrandLabel(e.target.value)}
-                      placeholder="Contoh: Supply Chain & Tracking"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
-                    />
-                  </div>
-                </div>
-
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1">
-                    Upload Logo Gambar (Opsional)
+                    Upload File Logo Gambar (Format PNG Transparan / SVG direkomendasikan)
                   </label>
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
                       onClick={() => brandLogoInputRef.current?.click()}
-                      className="w-full py-2 px-3 border border-dashed border-gray-300 rounded-lg hover:border-[#7B0B1E] bg-gray-50/50 hover:bg-rose-50/30 text-xs font-medium text-gray-600 hover:text-[#7B0B1E] flex items-center justify-center gap-2 transition-all cursor-pointer"
+                      className="w-full py-2.5 px-3 border border-dashed border-gray-300 rounded-lg hover:border-[#7B0B1E] bg-gray-50/50 hover:bg-rose-50/30 text-xs font-medium text-gray-600 hover:text-[#7B0B1E] flex items-center justify-center gap-2 transition-all cursor-pointer"
                     >
                       <Upload className="w-4 h-4" />
-                      <span>Upload Ikon Logo Brand dari Laptop</span>
+                      <span>{newBrandLogo ? "✓ Logo Terpilih (Klik untuk ganti)" : "Upload Ikon Logo Brand dari Laptop"}</span>
                     </button>
                     <input
                       ref={brandLogoInputRef}
@@ -1387,6 +1361,46 @@ function AdminPortalVisual() {
                       accept="image/*"
                       onChange={(e) => handleBrandLogoUpload(e, false)}
                       className="hidden"
+                    />
+                  </div>
+                  {newBrandLogo && (
+                    <div className="mt-2 p-2 bg-gray-50 rounded-lg border border-gray-200 flex items-center gap-2.5">
+                      <img
+                        src={newBrandLogo}
+                        alt="Preview Logo"
+                        className="h-8 w-auto max-w-[120px] object-contain rounded filter grayscale"
+                      />
+                      <span className="text-[11px] text-emerald-700 font-medium">
+                        ✓ Logo siap ditambahkan (mode logos3 murni jika nama dikosongkan)
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Nama Brand / Klien <span className="text-gray-400 font-normal">(Opsional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={newBrandName}
+                      onChange={(e) => setNewBrandName(e.target.value)}
+                      placeholder="Kosongkan jika hanya ingin menampilkan logo saja"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                      Sektor / Label Bisnis <span className="text-gray-400 font-normal">(Opsional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={newBrandLabel}
+                      onChange={(e) => setNewBrandLabel(e.target.value)}
+                      placeholder="Contoh: Supply Chain & Tracking"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
                     />
                   </div>
                 </div>
@@ -1417,7 +1431,7 @@ function AdminPortalVisual() {
                         <img
                           src={brand.logoImage}
                           alt={brand.name || "Brand"}
-                          className="w-7 h-7 object-contain rounded flex-shrink-0"
+                          className="h-7 w-auto max-w-[80px] object-contain rounded filter grayscale flex-shrink-0"
                         />
                       ) : (
                         <div className="w-7 h-7 rounded bg-rose-50 text-[#7B0B1E] font-bold text-xs flex items-center justify-center flex-shrink-0">
@@ -1426,16 +1440,18 @@ function AdminPortalVisual() {
                       )}
                       <div className="min-w-0">
                         <div className="text-xs font-bold text-gray-900 truncate">
-                          {brand.name}
+                          {brand.name || "Logo Murni"}
                         </div>
-                        <div className="text-[10px] text-gray-400 truncate">
-                          {brand.label}
-                        </div>
+                        {brand.label && (
+                          <div className="text-[10px] text-gray-400 truncate">
+                            {brand.label}
+                          </div>
+                        )}
                       </div>
                     </div>
 
                     <button
-                      onClick={() => handleDeleteBrand(brand.id, brand.name)}
+                      onClick={() => handleDeleteBrand(brand.id, brand.name || "Logo")}
                       className="p-1 text-gray-400 hover:text-red-600 rounded flex-shrink-0"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
