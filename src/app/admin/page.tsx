@@ -121,6 +121,12 @@ function AdminPortalVisual() {
   const [editMarqueeLogoSpacing, setEditMarqueeLogoSpacing] = useState<number>(
     data.siteCopy.marqueeLogoSpacing || 36
   );
+  const [editMarqueeLogoScale, setEditMarqueeLogoScale] = useState<number>(
+    data.siteCopy.marqueeLogoScale || 100
+  );
+  const [editMarqueeLogoMaxWidth, setEditMarqueeLogoMaxWidth] = useState<number>(
+    data.siteCopy.marqueeLogoMaxWidth || 240
+  );
   const [tempLogo, setTempLogo] = useState<string>(data.siteCopy.siteLogo || "");
 
   // Video Profile Management State
@@ -142,6 +148,8 @@ function AdminPortalVisual() {
     setEditMarqueeSpeed(data.siteCopy.marqueeSpeed || 35);
     setEditMarqueeLogoHeight(data.siteCopy.marqueeLogoHeight || 46);
     setEditMarqueeLogoSpacing(data.siteCopy.marqueeLogoSpacing || 36);
+    setEditMarqueeLogoScale(data.siteCopy.marqueeLogoScale || 100);
+    setEditMarqueeLogoMaxWidth(data.siteCopy.marqueeLogoMaxWidth || 240);
   }, [data]);
 
   // WhatsApp Form
@@ -507,10 +515,11 @@ function AdminPortalVisual() {
       name: editingBrand.name,
       label: editingBrand.label,
       logoImage: editingBrand.logoImage,
+      scale: editingBrand.scale || 1.0,
     });
 
     setEditingBrand(null);
-    showToast("Data brand berhasil diperbarui!");
+    showToast("Data & ukuran brand berhasil diperbarui!");
   };
 
   const handleDeleteBrand = (id: string, name?: string) => {
@@ -541,11 +550,13 @@ function AdminPortalVisual() {
         marqueeSpeed: editMarqueeSpeed,
         marqueeLogoHeight: editMarqueeLogoHeight,
         marqueeLogoSpacing: editMarqueeLogoSpacing,
+        marqueeLogoScale: editMarqueeLogoScale,
+        marqueeLogoMaxWidth: editMarqueeLogoMaxWidth,
       },
       pricing: editPricingList,
     };
     saveData(updatedState);
-    showToast("Semua perubahan teks dan harga berhasil disimpan & aktif di website!");
+    showToast("Semua perubahan teks, harga & ukuran logo berhasil disimpan!");
   };
 
   const saveWhatsApp = async () => {
@@ -1507,12 +1518,12 @@ function AdminPortalVisual() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {/* 1. Slider Tinggi Logo */}
                 <div className="p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 space-y-2">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-gray-800">
-                      📏 Tinggi Logo (Size)
+                      📏 Tinggi Logo
                     </label>
                     <span className="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
                       {editMarqueeLogoHeight}px
@@ -1534,11 +1545,41 @@ function AdminPortalVisual() {
                   <div className="flex justify-between text-[10px] text-gray-400 font-mono">
                     <span>24px (Kecil)</span>
                     <span>46px (Ideal)</span>
-                    <span>96px (Besar)</span>
+                    <span>96px (Tinggi)</span>
                   </div>
                 </div>
 
-                {/* 2. Slider Jarak / Spacing Antar Logo */}
+                {/* 2. Slider Skala / Pembesaran Logo Global */}
+                <div className="p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-bold text-gray-800">
+                      🔍 Skala Ukuran Logo
+                    </label>
+                    <span className="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                      {editMarqueeLogoScale}%
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min="50"
+                    max="250"
+                    step="5"
+                    value={editMarqueeLogoScale}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      setEditMarqueeLogoScale(val);
+                      updateSiteCopy({ marqueeLogoScale: val });
+                    }}
+                    className="w-full accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+                  />
+                  <div className="flex justify-between text-[10px] text-gray-400 font-mono">
+                    <span>50%</span>
+                    <span>100% (Normal)</span>
+                    <span>250% (Besar)</span>
+                  </div>
+                </div>
+
+                {/* 3. Slider Jarak / Spacing Antar Logo */}
                 <div className="p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 space-y-2">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-gray-800">
@@ -1568,7 +1609,7 @@ function AdminPortalVisual() {
                   </div>
                 </div>
 
-                {/* 3. Slider Kecepatan Marquee */}
+                {/* 4. Slider Kecepatan Marquee */}
                 <div className="p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 space-y-2">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-bold text-gray-800">
@@ -2752,6 +2793,34 @@ function AdminPortalVisual() {
                       placeholder="Contoh: Supply Chain & Tracking"
                       className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none bg-white shadow-xs"
                     />
+                  </div>
+
+                  {/* Individual Scale / Size Multiplier for this Logo */}
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-gray-800">
+                        🔍 Ukuran / Skala Khusus Logo Ini
+                      </label>
+                      <span className="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                        {Math.round((editingBrand.scale || 1.0) * 100)}%
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0.5"
+                      max="2.5"
+                      step="0.05"
+                      value={editingBrand.scale || 1.0}
+                      onChange={(e) =>
+                        setEditingBrand({ ...editingBrand, scale: Number(e.target.value) })
+                      }
+                      className="w-full accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+                    />
+                    <div className="flex justify-between text-[10px] text-gray-400 font-mono">
+                      <span>50% (Kecil)</span>
+                      <span>100% (Normal)</span>
+                      <span>250% (Besar)</span>
+                    </div>
                   </div>
                 </div>
 

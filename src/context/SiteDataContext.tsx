@@ -62,6 +62,7 @@ export interface ClientBrandItem {
   name?: string;
   label?: string;
   logoImage?: string; // Base64 data URL or external URL (optional)
+  scale?: number; // Custom scale multiplier for this logo (e.g. 0.5 to 2.5, default 1.0)
 }
 
 export interface SiteCopyData {
@@ -78,6 +79,8 @@ export interface SiteCopyData {
   marqueeSpeed?: number; // Duration in seconds
   marqueeLogoHeight?: number; // Logo height in px (default 46)
   marqueeLogoSpacing?: number; // Spacing between logos in px (default 36)
+  marqueeLogoScale?: number; // Global Logo scale percentage (default 100%, range 50% - 250%)
+  marqueeLogoMaxWidth?: number; // Global Max width in px (default 240)
 }
 
 export interface ContactData {
@@ -365,6 +368,8 @@ const defaultState: SiteDataState = {
     marqueeSpeed: 35,
     marqueeLogoHeight: 46,
     marqueeLogoSpacing: 36,
+    marqueeLogoScale: 100,
+    marqueeLogoMaxWidth: 240,
   },
 };
 

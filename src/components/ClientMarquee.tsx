@@ -24,12 +24,18 @@ export const ClientMarquee: React.FC = () => {
   const speed = data.siteCopy.marqueeSpeed || 35;
   const logoHeight = data.siteCopy.marqueeLogoHeight || 46;
   const logoSpacing = data.siteCopy.marqueeLogoSpacing || 36;
+  const logoScalePercent = (data.siteCopy.marqueeLogoScale || 100) / 100;
+  const logoMaxWidth = data.siteCopy.marqueeLogoMaxWidth || 240;
 
   const renderBrandPill = (brand: ClientBrandItem, index: number) => {
     const hasName = Boolean(brand.name && brand.name.trim().length > 0);
     const hasLogo = Boolean(brand.logoImage && brand.logoImage.trim().length > 0);
+    const individualScale = brand.scale || 1.0;
+    const effectiveScale = logoScalePercent * individualScale;
+    const finalHeight = Math.round(logoHeight * effectiveScale);
+    const finalMaxWidth = Math.round(logoMaxWidth * effectiveScale);
 
-    // 1. Logo Mode (Dynamic Custom Height & Spacing, Invert to Pure Crisp White in Dark Mode)
+    // 1. Logo Mode (Dynamic Custom Height, Scale & Spacing, Invert to Pure Crisp White in Dark Mode)
     if (hasLogo) {
       return (
         <div
@@ -41,9 +47,9 @@ export const ClientMarquee: React.FC = () => {
             src={brand.logoImage}
             alt={brand.name || "Client Logo"}
             style={{
-              height: `${logoHeight}px`,
-              maxHeight: `${Math.round(logoHeight * 1.3)}px`,
-              maxWidth: `${Math.round(logoHeight * 3.8)}px`,
+              height: `${finalHeight}px`,
+              maxHeight: `${Math.round(finalHeight * 1.35)}px`,
+              maxWidth: `${finalMaxWidth}px`,
             }}
             className="w-auto object-contain select-none pointer-events-none filter grayscale opacity-80 contrast-125 dark:invert dark:opacity-95 dark:contrast-125 group-hover:grayscale-0 group-hover:dark:invert-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
           />
@@ -59,7 +65,7 @@ export const ClientMarquee: React.FC = () => {
         className="flex items-center justify-center py-2 flex-shrink-0 group cursor-default transition-all duration-300"
       >
         <span
-          style={{ fontSize: `${Math.max(14, Math.round(logoHeight * 0.42))}px` }}
+          style={{ fontSize: `${Math.max(14, Math.round(finalHeight * 0.42))}px` }}
           className="font-black font-sans tracking-tight text-gray-800 dark:text-white/90 group-hover:text-black dark:group-hover:text-white group-hover:scale-105 transition-all duration-300 select-none whitespace-nowrap"
         >
           {brand.name || "Partner"}
