@@ -386,7 +386,8 @@ interface SiteContextType {
   updateSiteCopy: (copy: Partial<SiteCopyData>) => void;
   updateSiteLogo: (logoBase64: string) => void;
   updateProfileVideo: (videoSrc: string) => void;
-  syncWithSupabase: () => Promise<boolean>;
+  saveData: (newState: SiteDataState) => void;
+  syncWithSupabase: (stateToSync?: SiteDataState) => Promise<boolean>;
   resetToDefaults: () => void;
 }
 
@@ -649,13 +650,14 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
-  const syncWithSupabase = async (): Promise<boolean> => {
+  const syncWithSupabase = async (stateToSync?: SiteDataState): Promise<boolean> => {
     if (!isSupabaseConfigured()) return false;
     try {
       const client = getSupabaseClient();
+      const payload = stateToSync || data;
       const { error } = await client.from("site_content").upsert({
         id: "solveta_cms_main",
-        data: data,
+        data: payload,
         updated_at: new Date().toISOString(),
       });
       return !error;
@@ -674,6 +676,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     <SiteContext.Provider
       value={{
         data,
+        saveData,
         updatePricing,
         updatePortfolio,
         addPortfolioItem,

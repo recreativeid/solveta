@@ -61,6 +61,7 @@ import {
 function AdminPortalVisual() {
   const {
     data,
+    saveData,
     updatePricing,
     updatePortfolio,
     addPortfolioItem,
@@ -527,26 +528,36 @@ function AdminPortalVisual() {
   };
 
   const saveVisualChanges = async () => {
-    updateSiteCopy({
-      heroHeadline: editHeadline,
-      heroSubtitle: editSubtitle,
-      portfolioTitle: editPortfolioTitle,
-      consultationTitle: editConsultationTitle,
-      consultationDesc: editConsultationDesc,
-      marqueeSpeed: editMarqueeSpeed,
-    });
-    updatePricing(editPricingList);
-    await syncWithSupabase();
-    showToast("Semua perubahan teks dan harga berhasil disimpan & disinkronkan!");
+    const updatedState: SiteDataState = {
+      ...data,
+      siteCopy: {
+        ...data.siteCopy,
+        heroHeadline: editHeadline,
+        heroSubtitle: editSubtitle,
+        portfolioTitle: editPortfolioTitle,
+        consultationTitle: editConsultationTitle,
+        consultationDesc: editConsultationDesc,
+        marqueeSpeed: editMarqueeSpeed,
+        marqueeLogoHeight: editMarqueeLogoHeight,
+        marqueeLogoSpacing: editMarqueeLogoSpacing,
+      },
+      pricing: editPricingList,
+    };
+    saveData(updatedState);
+    showToast("Semua perubahan teks dan harga berhasil disimpan & aktif di website!");
   };
 
   const saveWhatsApp = async () => {
-    updateContact({
-      whatsappNumber: editWaNumber.replace(/[^0-9]/g, ""),
-      whatsappDisplay: editWaDisplay,
-    });
-    await syncWithSupabase();
-    showToast("Nomor WhatsApp berhasil diperbarui di seluruh website!");
+    const updatedState: SiteDataState = {
+      ...data,
+      contact: {
+        ...data.contact,
+        whatsappNumber: editWaNumber.replace(/[^0-9]/g, ""),
+        whatsappDisplay: editWaDisplay,
+      },
+    };
+    saveData(updatedState);
+    showToast("Nomor WhatsApp berhasil diperbarui & disimpan di website!");
   };
 
   if (!isAuthenticated) {
@@ -1623,7 +1634,7 @@ function AdminPortalVisual() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    <label className="block text-xs font-bold text-gray-800 mb-1.5">
                       Nama Brand / Klien <span className="text-gray-400 font-normal">(Opsional)</span>
                     </label>
                     <input
@@ -1631,12 +1642,12 @@ function AdminPortalVisual() {
                       value={newBrandName}
                       onChange={(e) => setNewBrandName(e.target.value)}
                       placeholder="Kosongkan jika hanya ingin menampilkan logo saja"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                      className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none bg-white shadow-xs"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    <label className="block text-xs font-bold text-gray-800 mb-1.5">
                       Sektor / Label Bisnis <span className="text-gray-400 font-normal">(Opsional)</span>
                     </label>
                     <input
@@ -1644,16 +1655,17 @@ function AdminPortalVisual() {
                       value={newBrandLabel}
                       onChange={(e) => setNewBrandLabel(e.target.value)}
                       placeholder="Contoh: Supply Chain & Tracking"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                      className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none bg-white shadow-xs"
                     />
                   </div>
                 </div>
 
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg transition-all shadow-xs"
+                  className="px-6 py-3 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-bold rounded-xl transition-all shadow-xs cursor-pointer flex items-center gap-2"
                 >
-                  Tambahkan ke Marquee
+                  <Plus className="w-4 h-4" />
+                  <span>Tambahkan ke Marquee</span>
                 </button>
               </form>
             </div>
@@ -1732,7 +1744,7 @@ function AdminPortalVisual() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-gray-800 mb-1.5">
                   Nomor WhatsApp (Format Internasional Tanpa +)
                 </label>
                 <input
@@ -1740,15 +1752,15 @@ function AdminPortalVisual() {
                   value={editWaNumber}
                   onChange={(e) => setEditWaNumber(e.target.value)}
                   placeholder="Contoh: 6285719663154"
-                  className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none font-mono bg-white"
+                  className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none font-mono bg-white shadow-xs"
                 />
-                <p className="text-[10px] text-gray-400 mt-1">
+                <p className="text-[11px] text-gray-500 mt-1">
                   Gunakan kode negara 62 di depan (misal: 6285719663154).
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-1">
+                <label className="block text-xs font-bold text-gray-800 mb-1.5">
                   Teks Tampilan WhatsApp di Footer / Kontak
                 </label>
                 <input
@@ -1756,16 +1768,17 @@ function AdminPortalVisual() {
                   value={editWaDisplay}
                   onChange={(e) => setEditWaDisplay(e.target.value)}
                   placeholder="Contoh: +62 857-1966-3154"
-                  className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                  className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none bg-white shadow-xs"
                 />
               </div>
 
               <button
                 type="button"
                 onClick={saveWhatsApp}
-                className="w-full py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
+                className="w-full py-3 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-bold text-xs rounded-xl transition-all shadow-sm cursor-pointer flex items-center justify-center gap-2"
               >
-                Simpan Nomor WhatsApp
+                <Save className="w-4 h-4" />
+                <span>Simpan Nomor WhatsApp</span>
               </button>
             </div>
           </div>
@@ -2698,7 +2711,7 @@ function AdminPortalVisual() {
 
                 <div className="grid grid-cols-1 gap-3 pt-2">
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    <label className="block text-xs font-bold text-gray-800 mb-1.5">
                       Nama Brand / Klien <span className="text-gray-400 font-normal">(Opsional jika hanya ingin logo)</span>
                     </label>
                     <input
@@ -2708,12 +2721,12 @@ function AdminPortalVisual() {
                         setEditingBrand({ ...editingBrand, name: e.target.value })
                       }
                       placeholder="Kosongkan jika hanya logo"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                      className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none bg-white shadow-xs"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-gray-700 mb-1">
+                    <label className="block text-xs font-bold text-gray-800 mb-1.5">
                       Sektor / Label Bisnis <span className="text-gray-400 font-normal">(Opsional)</span>
                     </label>
                     <input
@@ -2723,7 +2736,7 @@ function AdminPortalVisual() {
                         setEditingBrand({ ...editingBrand, label: e.target.value })
                       }
                       placeholder="Contoh: Supply Chain & Tracking"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                      className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none bg-white shadow-xs"
                     />
                   </div>
                 </div>

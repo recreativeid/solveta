@@ -9,6 +9,9 @@
   body {
     @apply bg-[#FDFBF9] dark:bg-[#07080E] text-gray-700 dark:text-gray-200 antialiased selection:bg-brand-100 dark:selection:bg-rose-950 selection:text-brand-900 dark:selection:text-rose-200 transition-colors duration-200;
   }
+  input, textarea, select {
+    color: #111827;
+  }
 }
 
 .glass-card {
