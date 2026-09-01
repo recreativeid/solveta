@@ -29,6 +29,14 @@ import {
   Sparkles,
   Layers,
   MessageCircle,
+  Film,
+  Play,
+  Pause,
+  Volume2,
+  VolumeX,
+  Video,
+  UploadCloud,
+  RefreshCw,
 } from "lucide-react";
 import {
   SiteDataProvider,
@@ -57,6 +65,7 @@ function AdminPortalVisual() {
     updateContact,
     updateSiteCopy,
     updateSiteLogo,
+    updateProfileVideo,
     syncWithSupabase,
     resetToDefaults,
   } = useSiteData();
@@ -67,8 +76,10 @@ function AdminPortalVisual() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
 
-  // Active View Mode: 'visual' | 'pricing' | 'portfolio' | 'brands' | 'contact'
-  const [activeMode, setActiveMode] = useState<"visual" | "pricing" | "portfolio" | "brands" | "contact">("visual");
+  // Active View Mode: 'visual' | 'pricing' | 'portfolio' | 'brands' | 'contact' | 'video'
+  const [activeMode, setActiveMode] = useState<
+    "visual" | "pricing" | "portfolio" | "brands" | "contact" | "video"
+  >("visual");
   const [toastMessage, setToastMessage] = useState("");
 
   // Edit Modal State for Live Visual Editor
@@ -93,6 +104,14 @@ function AdminPortalVisual() {
   const [editMarqueeSpeed, setEditMarqueeSpeed] = useState<number>(data.siteCopy.marqueeSpeed || 35);
   const [tempLogo, setTempLogo] = useState<string>(data.siteCopy.siteLogo || "");
 
+  // Video Profile Management State
+  const [editVideoUrl, setEditVideoUrl] = useState<string>(
+    data.siteCopy.profileVideo || "/videos/profile.mp4"
+  );
+  const [inputVideoLink, setInputVideoLink] = useState<string>("");
+  const [isVideoLoading, setIsVideoLoading] = useState<boolean>(false);
+  const videoFileInputRef = useRef<HTMLInputElement>(null);
+
   // Synchronize when data loads
   useEffect(() => {
     setEditPricingList(data.pricing);
@@ -100,6 +119,7 @@ function AdminPortalVisual() {
     setEditSubtitle(data.siteCopy.heroSubtitle);
     setEditPortfolioTitle(data.siteCopy.portfolioTitle);
     setTempLogo(data.siteCopy.siteLogo || "");
+    setEditVideoUrl(data.siteCopy.profileVideo || "/videos/profile.mp4");
   }, [data]);
 
   // WhatsApp Form
@@ -204,6 +224,51 @@ function AdminPortalVisual() {
       showToast("Foto Profil / Logo Brand berhasil diperbarui!");
     };
     reader.readAsDataURL(file);
+  };
+
+  // Handle profile video file upload (.mp4, .webm, etc.)
+  const handleVideoFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 30 * 1024 * 1024) {
+      alert(
+        "Ukuran file video maksimal 30MB untuk upload langsung via browser. Untuk file berukuran lebih besar, Anda bisa meletakkannya langsung di folder: solveta/public/videos/profile.mp4 atau menggunakan link URL CDN."
+      );
+      return;
+    }
+
+    setIsVideoLoading(true);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result as string;
+      setEditVideoUrl(result);
+      updateProfileVideo(result);
+      setIsVideoLoading(false);
+      showToast("Video profil berhasil diunggah & disimpan ke website!");
+    };
+    reader.onerror = () => {
+      setIsVideoLoading(false);
+      alert("Gagal membaca file video. Silakan coba lagi.");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Handle custom video URL input
+  const handleSaveVideoUrl = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputVideoLink.trim()) return;
+    setEditVideoUrl(inputVideoLink.trim());
+    updateProfileVideo(inputVideoLink.trim());
+    setInputVideoLink("");
+    showToast("Link video profil berhasil diperbarui!");
+  };
+
+  // Reset video to default
+  const handleResetVideo = () => {
+    setEditVideoUrl("/videos/profile.mp4");
+    updateProfileVideo("/videos/profile.mp4");
+    showToast("Video profil dikembalikan ke default (/videos/profile.mp4)");
   };
 
   // Portfolio actions
@@ -535,6 +600,20 @@ function AdminPortalVisual() {
                 <span>Kontak WA</span>
               </span>
             </button>
+
+            <button
+              onClick={() => setActiveMode("video")}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+                activeMode === "video"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                <Film className="w-3.5 h-3.5 text-[#7B0B1E]" />
+                <span>Video Profil</span>
+              </span>
+            </button>
           </div>
 
           {/* Action Buttons */}
@@ -615,6 +694,49 @@ function AdminPortalVisual() {
                     onChange={handleSiteLogoUpload}
                     className="hidden"
                   />
+                </div>
+              </div>
+
+              {/* VIDEO PROFIL LAPTOP 3D MANAGER CARD */}
+              <div className="p-5 bg-gradient-to-r from-gray-900 to-[#181926] text-white rounded-2xl border border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-12 rounded-xl overflow-hidden border border-rose-500/30 bg-black shadow-xs flex-shrink-0 flex items-center justify-center relative">
+                    <video
+                      src={editVideoUrl}
+                      muted
+                      loop
+                      autoPlay
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
+                      <Play className="w-4 h-4 text-white/90" />
+                    </div>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-xs font-bold text-white">
+                        Video Profil Web (Layar Laptop 3D Hero)
+                      </h3>
+                      <span className="text-[9px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full border border-rose-500/30 font-mono">
+                        Autoplay + Audio
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-gray-400 mt-0.5">
+                      Upload file MP4/WebM atau link URL CDN untuk diputar di dalam layar laptop 3D.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setActiveMode("video")}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-xs font-bold text-white rounded-xl shadow-xs transition-all cursor-pointer"
+                  >
+                    <Film className="w-3.5 h-3.5" />
+                    <span>Buka Pengaturan Video</span>
+                  </button>
                 </div>
               </div>
 
@@ -1314,6 +1436,224 @@ function AdminPortalVisual() {
               >
                 Simpan Nomor WhatsApp
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* MODE 5: VIDEO PROFIL (3D LAPTOP SCREEN) */}
+        {activeMode === "video" && (
+          <div className="max-w-4xl mx-auto space-y-6">
+            {/* Header Card */}
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <div className="flex items-center gap-3.5">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#8B0021] to-[#50000F] text-white flex items-center justify-center shadow-sm flex-shrink-0">
+                  <Film className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-gray-900">
+                    Kelola Video Profil (Layar Laptop 3D)
+                  </h2>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    Upload file video atau masukkan link URL untuk diputar otomatis di layar laptop 3D Hero Section.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={handleResetVideo}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                  title="Kembalikan ke file default /videos/profile.mp4"
+                >
+                  <RefreshCw className="w-3.5 h-3.5" />
+                  <span>Reset ke Default</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+              {/* Left Column: Upload Methods */}
+              <div className="lg:col-span-7 space-y-6">
+                {/* Method 1: Upload File Video */}
+                <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <UploadCloud className="w-4 h-4 text-[#8B0021]" />
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900">
+                        Metode 1: Upload File Video Langsung
+                      </h3>
+                    </div>
+                    <span className="text-[10px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
+                      MP4 / WebM (Maks 30MB)
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Pilih file video dari komputer/laptop Anda. File akan otomatis tersimpan dan aktif di website.
+                  </p>
+
+                  <div
+                    onClick={() => videoFileInputRef.current?.click()}
+                    className="border-2 border-dashed border-gray-300 hover:border-[#8B0021] bg-gray-50/50 hover:bg-rose-50/30 rounded-xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-2 group"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white border border-gray-200 group-hover:border-rose-300 text-gray-400 group-hover:text-[#8B0021] flex items-center justify-center transition-colors shadow-2xs">
+                      {isVideoLoading ? (
+                        <RefreshCw className="w-5 h-5 animate-spin text-[#8B0021]" />
+                      ) : (
+                        <Upload className="w-5 h-5" />
+                      )}
+                    </div>
+
+                    <div className="text-xs font-bold text-gray-800 group-hover:text-[#8B0021]">
+                      {isVideoLoading
+                        ? "Sedang memproses video..."
+                        : "Klik untuk Pilih Video dari Laptop / HP"}
+                    </div>
+                    <div className="text-[10px] text-gray-400">
+                      Mendukung format .mp4, .webm, .mov (Ukuran ideal: 2MB – 15MB)
+                    </div>
+                  </div>
+
+                  <input
+                    ref={videoFileInputRef}
+                    type="file"
+                    accept="video/mp4,video/webm,video/ogg,video/quicktime"
+                    onChange={handleVideoFileUpload}
+                    className="hidden"
+                  />
+                </div>
+
+                {/* Method 2: Insert Video URL */}
+                <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <Globe className="w-4 h-4 text-[#8B0021]" />
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900">
+                        Metode 2: Gunakan Link URL Video (CDN / Cloud)
+                      </h3>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Jika video disimpan di CDN (Cloudinary, Supabase Storage, AWS S3, atau link hosting langsung):
+                  </p>
+
+                  <form onSubmit={handleSaveVideoUrl} className="space-y-3">
+                    <div>
+                      <label className="block text-[11px] font-semibold text-gray-700 mb-1">
+                        URL Link File Video (.mp4 / .webm)
+                      </label>
+                      <input
+                        type="text"
+                        value={inputVideoLink}
+                        onChange={(e) => setInputVideoLink(e.target.value)}
+                        placeholder="https://domain.com/videos/profil-solveta.mp4"
+                        className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white font-mono"
+                      />
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2">
+                      <button
+                        type="submit"
+                        disabled={!inputVideoLink.trim()}
+                        className="px-4 py-2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] disabled:opacity-50 text-white text-xs font-bold rounded-lg shadow-xs transition-all cursor-pointer"
+                      >
+                        Terapkan Link Video
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setInputVideoLink("/videos/profile.mp4");
+                        }}
+                        className="text-[11px] text-[#8B0021] hover:underline font-medium cursor-pointer"
+                      >
+                        Pakai /videos/profile.mp4
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                {/* Developer Instructions Card */}
+                <div className="bg-amber-50/60 border border-amber-200/80 rounded-2xl p-5 space-y-2 text-left">
+                  <div className="flex items-center gap-2 text-xs font-bold text-amber-900">
+                    <Sparkles className="w-4 h-4 text-amber-600" />
+                    <span>Panduan Penempatan File Manual di Coding</span>
+                  </div>
+                  <p className="text-[11px] text-amber-800/90 leading-relaxed">
+                    Anda juga bisa langsung meng-copy file video ke folder proyek berikut:
+                  </p>
+                  <div className="p-2 bg-white/90 rounded-lg border border-amber-200 text-[10px] font-mono text-gray-800 break-all select-all">
+                    solveta/public/videos/profile.mp4
+                  </div>
+                  <p className="text-[10px] text-amber-700/80">
+                    * Browser akan otomatis memutar video tersebut saat dibuka (muted) dan pengunjung bisa klik tombol <b>&quot;Nyalakan Suara&quot;</b> kapan saja.
+                  </p>
+                </div>
+              </div>
+
+              {/* Right Column: Live Interactive Preview Player */}
+              <div className="lg:col-span-5 space-y-4">
+                <div className="bg-white border border-gray-200 rounded-2xl p-5 shadow-xs sticky top-20 space-y-4">
+                  <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+                    <div className="flex items-center gap-2">
+                      <Video className="w-4 h-4 text-[#8B0021]" />
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900">
+                        Live Preview Player
+                      </h3>
+                    </div>
+                    <span className="text-[10px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                      <span>Aktif di Web</span>
+                    </span>
+                  </div>
+
+                  {/* Video Player Display Container */}
+                  <div className="aspect-[16/10] bg-[#0c0d12] rounded-xl overflow-hidden border border-gray-800 shadow-md relative group flex items-center justify-center">
+                    <video
+                      key={editVideoUrl}
+                      src={editVideoUrl}
+                      controls
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  {/* Video Info Metadata */}
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-1.5 text-left">
+                    <div className="text-[11px] font-bold text-gray-800 flex items-center justify-between">
+                      <span>Sumber Video Saat Ini:</span>
+                      <span className="text-[10px] font-mono text-gray-500">
+                        {editVideoUrl.startsWith("data:")
+                          ? "File Upload (Base64)"
+                          : editVideoUrl.startsWith("http")
+                          ? "Link External (CDN)"
+                          : "File Lokal"}
+                      </span>
+                    </div>
+                    <div className="text-[10px] text-gray-500 font-mono break-all truncate">
+                      {editVideoUrl.startsWith("data:")
+                        ? `${editVideoUrl.substring(0, 45)}... (Tersimpan di Data Web)`
+                        : editVideoUrl}
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-gray-100 flex items-center justify-between">
+                    <Link
+                      href="/"
+                      target="_blank"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-[#8B0021] hover:underline"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                      <span>Lihat Tampilan di Beranda Utama</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

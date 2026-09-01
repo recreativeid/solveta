@@ -173,7 +173,7 @@ export const Hero: React.FC = () => {
 
         {/* 3D Animated Laptop Mockup (Facing Forward, Cradled by the Earth Horizon Arc) */}
         <div className="relative z-20">
-          <LaptopMockup3D />
+          <LaptopMockup3D videoSrc={data.siteCopy.profileVideo || "/videos/profile.mp4"} />
         </div>
       </div>
     </section>

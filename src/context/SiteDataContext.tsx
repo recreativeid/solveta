@@ -66,6 +66,7 @@ export interface ClientBrandItem {
 
 export interface SiteCopyData {
   siteLogo?: string; // Base64 data URL or image path for top-left navbar logo
+  profileVideo?: string; // Video URL or Base64 / public path for 3D Laptop Hero
   heroEyebrow: string;
   heroHeadline: string;
   heroSubtitle: string;
@@ -393,6 +394,7 @@ const defaultState: SiteDataState = {
   },
   siteCopy: {
     siteLogo: "",
+    profileVideo: "/videos/profile.mp4",
     heroEyebrow: "SOLVE TECHNOLOGY AGENCY",
     heroHeadline: "Mengubah Tantangan Bisnis Menjadi Solusi Digital.",
     heroSubtitle: "Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.",
@@ -420,6 +422,7 @@ interface SiteContextType {
   updateContact: (contact: Partial<ContactData>) => void;
   updateSiteCopy: (copy: Partial<SiteCopyData>) => void;
   updateSiteLogo: (logoBase64: string) => void;
+  updateProfileVideo: (videoSrc: string) => void;
   syncWithSupabase: () => Promise<boolean>;
   resetToDefaults: () => void;
 }
@@ -622,6 +625,13 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     });
   };
 
+  const updateProfileVideo = (videoSrc: string) => {
+    saveData({
+      ...data,
+      siteCopy: { ...data.siteCopy, profileVideo: videoSrc },
+    });
+  };
+
   const syncWithSupabase = async (): Promise<boolean> => {
     if (!isSupabaseConfigured()) return false;
     try {
@@ -662,6 +672,7 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         updateContact,
         updateSiteCopy,
         updateSiteLogo,
+        updateProfileVideo,
         syncWithSupabase,
         resetToDefaults,
       }}
