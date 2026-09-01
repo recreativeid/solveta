@@ -1,7 +1,17 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, useRef } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight, Globe, Sparkles } from "lucide-react";
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+  useLayoutEffect,
+} from "react";
+import { ArrowRight, ChevronLeft, ChevronRight, Globe } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+const useIsoLayoutEffect =
+  typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 export interface CarouselItem {
   id?: string;
@@ -82,88 +92,249 @@ export function CoverFlowCarousel({
   isLightMode = true,
   onCtaClick,
 }: CoverFlowCarouselProps) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const count = items.length;
+
+  const frameRef = useRef<HTMLDivElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const bannerRefs = useRef<(HTMLDivElement | null)[]>([]);
+  
+  // Continuous fractional position - source of truth
+  const posRef = useRef(0);
+  const targetRef = useRef(0);
+  const widthRef = useRef(0);
+  const rafRef = useRef<number | null>(null);
+  const dragRef = useRef<{
+    id: number;
+    x: number;
+    pos: number;
+    v: number;
+    t: number;
+  } | null>(null);
+
+  const [selected, setSelected] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const touchStartX = useRef(0);
-  const total = items.length;
 
-  const nextSlide = useCallback(() => {
-    if (total <= 0) return;
-    setCurrentIndex((prev) => (prev + 1) % total);
-  }, [total]);
+  // Constants for 3D physics coverflow rake
+  const rotate = 32; // degrees tilt for neighbours
+  const depth = 0.55; // depth factor
+  const falloff = 0.62; // distance damping
+  const gap = 0.08; // gap ratio
 
-  const prevSlide = useCallback(() => {
-    if (total <= 0) return;
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
-  }, [total]);
+  // Nearest whole card, folded back into 0..count-1
+  const indexAt = useCallback(
+    (pos: number) => ((Math.round(pos) % count) + count) % count,
+    [count]
+  );
 
-  const goToSlide = (idx: number) => {
-    if (total <= 0) return;
-    setCurrentIndex(((idx % total) + total) % total);
-  };
+  // Fast direct DOM paint for 60fps/120fps gesture smoothness
+  const paint = useCallback(() => {
+    const width = widthRef.current;
+    if (!width || count === 0) return;
+    const pitch = width * (1 + gap);
+    const pos = posRef.current;
 
-  useEffect(() => {
-    if (!autoplay || isHovered || total <= 1) return;
-    const interval = setInterval(nextSlide, autoplayDelay);
-    return () => clearInterval(interval);
-  }, [autoplay, autoplayDelay, isHovered, nextSlide, total]);
+    cardRefs.current.forEach((card, index) => {
+      if (!card) return;
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft") prevSlide();
-      if (e.key === "ArrowRight") nextSlide();
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [nextSlide, prevSlide]);
+      // Fold distance into the shortest way round the ring
+      let offset = index - pos;
+      offset = ((offset % count) + count) % count;
+      if (offset > count / 2) offset -= count;
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
+      const distance = Math.abs(offset);
+      const isCenter = distance < 0.45;
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const diff = e.changedTouches[0].clientX - touchStartX.current;
-    if (Math.abs(diff) > 45) {
-      if (diff < 0) nextSlide();
-      else prevSlide();
+      // 3D physics ramp calculations
+      const ramp = Math.pow(distance, falloff);
+      const tilt = Math.min(rotate * ramp, 65) * Math.sign(offset);
+
+      // Apply transform & 3D perspective
+      card.style.transform = `translateX(calc(-50% + ${offset * pitch}px)) translateZ(${-depth * width * ramp}px) rotateY(${-tilt}deg)`;
+
+      // Dynamic opacity & z-index
+      const edge = Math.min(1, Math.max(0, count / 2 - distance));
+      const baseOpacity = Math.max(0, 1 - 0.15 * distance) * edge;
+      card.style.opacity = String(baseOpacity);
+      card.style.zIndex = String(100 - Math.round(distance * 10));
+
+      // Visual styling for center vs side cards
+      if (isCenter) {
+        card.style.borderColor = isLightMode ? "#8B0021" : "#f43f5e";
+        card.style.boxShadow = isLightMode
+          ? "0 25px 50px -12px rgba(139,0,33,0.3), 0 0 20px rgba(139,0,33,0.15)"
+          : "0 25px 60px rgba(0,0,0,0.9), 0 0 30px rgba(244,63,94,0.3)";
+        card.style.filter = "brightness(1)";
+        card.style.cursor = "default";
+      } else {
+        card.style.borderColor = isLightMode
+          ? "rgba(0, 0, 0, 0.15)"
+          : "rgba(255, 255, 255, 0.15)";
+        card.style.boxShadow = isLightMode
+          ? "0 12px 25px rgba(0,0,0,0.08)"
+          : "0 15px 35px rgba(0,0,0,0.6)";
+        card.style.filter = isLightMode
+          ? `brightness(${Math.max(0.75, 1 - distance * 0.1)})`
+          : `brightness(${Math.max(0.45, 0.9 - distance * 0.2)})`;
+        card.style.cursor = "pointer";
+      }
+
+      // Smoothly reveal/hide bottom glass banner based on closeness to center
+      const banner = bannerRefs.current[index];
+      if (banner) {
+        const bannerOpacity = Math.max(0, 1 - distance * 2.2);
+        banner.style.opacity = String(bannerOpacity);
+        banner.style.transform = `translateY(${(1 - bannerOpacity) * 16}px)`;
+        banner.style.pointerEvents = isCenter ? "auto" : "none";
+      }
+    });
+  }, [count, depth, falloff, gap, isLightMode, rotate]);
+
+  // Smooth exponential ease-out settle animation
+  const settle = useCallback(
+    (target: number) => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      targetRef.current = target;
+      setSelected(indexAt(target));
+
+      const step = () => {
+        const remaining = target - posRef.current;
+        if (Math.abs(remaining) < 0.0004) {
+          posRef.current = target;
+          paint();
+          rafRef.current = null;
+          return;
+        }
+        // Exponential ease-out physics
+        posRef.current += remaining * 0.16;
+        paint();
+        rafRef.current = requestAnimationFrame(step);
+      };
+      rafRef.current = requestAnimationFrame(step);
+    },
+    [indexAt, paint]
+  );
+
+  const goTo = useCallback(
+    (index: number) => {
+      const target =
+        index + Math.round((targetRef.current - index) / count) * count;
+      settle(target);
+    },
+    [count, settle]
+  );
+
+  const nudge = useCallback(
+    (by: number) => {
+      settle(Math.round(targetRef.current) + by);
+    },
+    [settle]
+  );
+
+  // Interactive Pointer Down (Start dragging)
+  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
     }
+    event.currentTarget.setPointerCapture(event.pointerId);
+    targetRef.current = posRef.current;
+    dragRef.current = {
+      id: event.pointerId,
+      x: event.clientX,
+      pos: posRef.current,
+      v: 0,
+      t: performance.now(),
+    };
   };
+
+  // Interactive Pointer Move (Dragging with 60fps/120fps direct DOM response)
+  const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag || drag.id !== event.pointerId) return;
+
+    const pitch = widthRef.current * (1 + gap);
+    if (!pitch) return;
+
+    const now = performance.now();
+    const previous = posRef.current;
+    posRef.current = drag.pos - (event.clientX - drag.x) / pitch;
+    // Calculate velocity for kinetic throw
+    drag.v = ((posRef.current - previous) / Math.max(now - drag.t, 1)) * 1000;
+    drag.t = now;
+
+    const index = indexAt(posRef.current);
+    if (index !== selected) setSelected(index);
+    paint();
+  };
+
+  // Interactive Pointer Up (Release & Kinetic Settle)
+  const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag || drag.id !== event.pointerId) return;
+    dragRef.current = null;
+    // Kinetic flick throw (max 2 cards carry)
+    const carried = Math.max(-2, Math.min(2, drag.v * 0.18));
+    settle(Math.round(posRef.current + carried));
+  };
+
+  // Measure card width for 100% responsive rake & perspective
+  useIsoLayoutEffect(() => {
+    const frame = frameRef.current;
+    if (!frame) return;
+
+    const measure = () => {
+      const card = cardRefs.current[0];
+      if (!card) return;
+      widthRef.current = card.offsetWidth;
+      paint();
+    };
+
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(frame);
+    return () => observer.disconnect();
+  }, [paint]);
+
+  // Autoplay loop
+  useEffect(() => {
+    if (!autoplay || isHovered || dragRef.current !== null || count <= 1) return;
+    const interval = setInterval(() => {
+      nudge(1);
+    }, autoplayDelay);
+    return () => clearInterval(interval);
+  }, [autoplay, autoplayDelay, count, isHovered, nudge]);
+
+  // Cleanup RAF
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   if (!items || items.length === 0) return null;
 
-  // 5 Guaranteed Slots: 2 on Left [-2, -1], Center [0], 2 on Right [1, 2]
-  const slots = [-2, -1, 0, 1, 2];
-
   return (
     <section
-      className={`relative w-full min-h-[500px] sm:min-h-[560px] flex items-center justify-center overflow-hidden py-4 select-none font-sans ${className}`}
+      className={cn(
+        "relative w-full min-h-[480px] sm:min-h-[540px] flex items-center justify-center overflow-hidden py-4 select-none font-sans",
+        className
+      )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
       {/* Background Subtle Ambient Glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <img
-          src={items[currentIndex % total]?.img}
+          src={items[selected % count]?.img}
           alt="ambience background"
           className="w-full h-full object-cover blur-[60px] opacity-15 dark:opacity-20 scale-125 transition-all duration-1000"
         />
         <div className="absolute inset-0 bg-radial from-transparent via-[#FDFBF9]/80 dark:via-[#07080E]/80 to-[#FDFBF9] dark:to-[#07080E]" />
       </div>
 
-      {/* 4-WAY EDGE FADE GRADIENT MASKS (Soft edge fade) */}
-      {/* 1. LEFT SIDE FADE MASK */}
+      {/* Side Fade Masks */}
       <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-20 md:w-28 bg-gradient-to-r from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
-
-      {/* 2. RIGHT SIDE FADE MASK */}
       <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-20 md:w-28 bg-gradient-to-l from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
-
-      {/* 3. TOP EDGE FADE MASK */}
-      <div className="absolute top-0 left-0 right-0 h-10 sm:h-16 bg-gradient-to-b from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
-
-      {/* 4. BOTTOM EDGE FADE MASK */}
-      <div className="absolute bottom-0 left-0 right-0 h-10 sm:h-16 bg-gradient-to-t from-[#FDFBF9] dark:from-[#07080E] to-transparent pointer-events-none z-35" />
 
       <div className="relative w-full z-10 flex flex-col items-center">
         {/* Eyebrow Label */}
@@ -177,179 +348,161 @@ export function CoverFlowCarousel({
           </div>
         )}
 
-        {/* 3D Coverflow Stage (Always renders 2 layers on Left, 1 Center, 2 on Right) */}
+        {/* 3D Coverflow Container with Preserved 3D & Gesture Touch Drag */}
         <div
-          className="relative w-full h-[360px] sm:h-[420px] md:h-[460px] flex justify-center items-center mb-4 overflow-visible"
-          style={{ perspective: "1600px" }}
-        >
-          {slots.map((slotOffset) => {
-            const itemIndex = ((currentIndex + slotOffset) % total + total) % total;
-            const item = items[itemIndex];
-            if (!item) return null;
-
-            let transform = "translateX(0px) scale(0.4) rotateY(0deg)";
-            let opacity = 0;
-            let zIndex = 0;
-            let filter = isLightMode ? "brightness(0.9) blur(1.5px)" : "brightness(0.45) blur(1.5px)";
-            let isCenter = false;
-
-            if (slotOffset === 0) {
-              isCenter = true;
-              transform = "translateX(0px) scale(1) rotateY(0deg)";
-              opacity = 1;
-              zIndex = 30;
-              filter = "brightness(1)";
-            } else if (slotOffset === 1) {
-              // 1st Layer Right
-              transform = "translateX(min(310px, 34vw)) scale(0.86) rotateY(-20deg)";
-              opacity = 0.90;
-              zIndex = 20;
-              filter = isLightMode ? "brightness(0.94)" : "brightness(0.78)";
-            } else if (slotOffset === 2) {
-              // 2nd Layer Right
-              transform = "translateX(min(550px, 62vw)) scale(0.72) rotateY(-30deg)";
-              opacity = 0.70;
-              zIndex = 10;
-              filter = isLightMode ? "brightness(0.88)" : "brightness(0.60)";
-            } else if (slotOffset === -1) {
-              // 1st Layer Left
-              transform = "translateX(calc(-1 * min(310px, 34vw))) scale(0.86) rotateY(20deg)";
-              opacity = 0.90;
-              zIndex = 20;
-              filter = isLightMode ? "brightness(0.94)" : "brightness(0.78)";
-            } else if (slotOffset === -2) {
-              // 2nd Layer Left
-              transform = "translateX(calc(-1 * min(550px, 62vw))) scale(0.72) rotateY(30deg)";
-              opacity = 0.70;
-              zIndex = 10;
-              filter = isLightMode ? "brightness(0.88)" : "brightness(0.60)";
+          ref={frameRef}
+          tabIndex={0}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onKeyDown={(event) => {
+            if (event.key === "ArrowLeft") {
+              event.preventDefault();
+              nudge(-1);
+            } else if (event.key === "ArrowRight") {
+              event.preventDefault();
+              nudge(1);
             }
-
-            return (
-              <div
-                key={`slot-${slotOffset}-${itemIndex}-${item.id || item.titleLine1}`}
-                onClick={() => !isCenter && goToSlide(currentIndex + slotOffset)}
-                style={{
-                  position: "absolute",
-                  width: "min(560px, 70vw)",
-                  height: "min(340px, 42vw)",
-                  minHeight: "240px",
-                  borderRadius: "16px",
-                  overflow: "hidden",
-                  backgroundColor: "#0d0e14",
-                  border: isCenter
-                    ? isLightMode
-                      ? "2.5px solid #8B0021"
-                      : "2.5px solid #f43f5e"
-                    : isLightMode
-                    ? "1px solid rgba(0, 0, 0, 0.15)"
-                    : "1px solid rgba(255, 255, 255, 0.15)",
-                  transform,
-                  opacity,
-                  zIndex,
-                  filter,
-                  transformOrigin: "center center",
-                  transition: "all 750ms cubic-bezier(0.25, 1, 0.5, 1)",
-                  boxShadow: isCenter
-                    ? isLightMode
-                      ? "0 25px 50px -12px rgba(139,0,33,0.3), 0 0 20px rgba(139,0,33,0.15)"
-                      : "0 25px 60px rgba(0,0,0,0.9), 0 0 30px rgba(244,63,94,0.3)"
-                    : isLightMode
-                    ? "0 12px 25px rgba(0,0,0,0.08)"
-                    : "0 15px 35px rgba(0,0,0,0.6)",
-                  cursor: isCenter ? "default" : "pointer",
-                }}
-                className="group font-sans"
-              >
-                {/* 1. LAPTOP SCREEN TOP BROWSER BAR */}
-                <div className="absolute top-0 left-0 right-0 h-7 sm:h-8 bg-[#181924]/90 backdrop-blur-md border-b border-white/10 px-3 sm:px-4 flex items-center justify-between z-30 pointer-events-none">
-                  {/* macOS Window Controls */}
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
-                  </div>
-
-                  {/* Browser URL Tab Pill */}
-                  <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-black/40 border border-white/10 text-[9px] sm:text-[10px] text-gray-300 font-mono">
-                    <Globe className="w-2.5 h-2.5 text-rose-400" />
-                    <span className="truncate max-w-[130px] sm:max-w-[200px]">
-                      solveta.site/showcase/{item.titleLine1.toLowerCase().replace(/\s+/g, "-")}
-                    </span>
-                  </div>
-
-                  {/* Category Pill on Right */}
-                  <span className="text-[9px] sm:text-[10px] font-bold font-mono text-rose-300 uppercase tracking-wider hidden sm:inline-block">
-                    {item.tag || "Portofolio"}
-                  </span>
-                </div>
-
-                {/* 2. FULL WIDESCREEN PREVIEW IMAGE */}
-                <img
-                  src={item.img}
-                  alt={item.titleLine1}
-                  className="absolute inset-0 pt-7 sm:pt-8 w-full h-full object-cover object-top"
-                />
-
-                {/* Subtle Top & Bottom Gradient Overlay */}
-                <div className="absolute inset-0 pt-7 sm:pt-8 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none z-10" />
-
-                {/* 3. WIDESCREEN FROSTED GLASS BOTTOM BANNER OVERLAY */}
+          }}
+          className="relative w-full h-[360px] sm:h-[420px] md:h-[460px] flex justify-center items-center mb-4 overflow-visible cursor-grab active:cursor-grabbing outline-none"
+          style={{
+            perspective: "1600px",
+            touchAction: "pan-y",
+          }}
+        >
+          <div
+            className="relative w-full h-full flex items-center justify-center select-none"
+            style={{
+              transformStyle: "preserve-3d",
+            }}
+          >
+            {items.map((item, index) => {
+              return (
                 <div
-                  style={{
-                    opacity: isCenter ? 1 : 0,
-                    transform: isCenter ? "translateY(0px)" : "translateY(16px)",
-                    transition: "opacity 500ms ease, transform 500ms ease",
-                    pointerEvents: isCenter ? "auto" : "none",
+                  key={item.id || `card-${index}-${item.titleLine1}`}
+                  ref={(node) => {
+                    cardRefs.current[index] = node;
                   }}
-                  className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/95 via-black/85 to-transparent backdrop-blur-xs border-t border-white/10 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-4 text-left"
+                  onClick={() => {
+                    if (index !== selected) {
+                      goTo(index);
+                    }
+                  }}
+                  style={{
+                    position: "absolute",
+                    left: "50%",
+                    width: "min(560px, 70vw)",
+                    height: "min(340px, 42vw)",
+                    minHeight: "220px",
+                    borderRadius: "16px",
+                    overflow: "hidden",
+                    backgroundColor: "#0d0e14",
+                    borderWidth: "2.5px",
+                    borderStyle: "solid",
+                    transformOrigin: "center center",
+                    willChange: "transform, opacity",
+                  }}
+                  className="group font-sans transition-shadow duration-300"
                 >
-                  <div className="space-y-1 max-w-md">
-                    {/* Category Tag (Mobile fallback) */}
-                    <div className="sm:hidden">
-                      <span className="text-[9px] font-bold font-mono px-2 py-0.5 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-300 uppercase">
-                        {item.tag || "Portofolio"}
+                  {/* 1. LAPTOP SCREEN TOP BROWSER BAR */}
+                  <div className="absolute top-0 left-0 right-0 h-7 sm:h-8 bg-[#181924]/90 backdrop-blur-md border-b border-white/10 px-3 sm:px-4 flex items-center justify-between z-30 pointer-events-none">
+                    {/* macOS Window Controls */}
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                    </div>
+
+                    {/* Browser URL Tab Pill */}
+                    <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-black/40 border border-white/10 text-[9px] sm:text-[10px] text-gray-300 font-mono">
+                      <Globe className="w-2.5 h-2.5 text-rose-400" />
+                      <span className="truncate max-w-[130px] sm:max-w-[200px]">
+                        solveta.site/showcase/
+                        {item.titleLine1.toLowerCase().replace(/\s+/g, "-")}
                       </span>
                     </div>
 
-                    {/* Main Title (Poppins Bold) */}
-                    <h4 className="text-sm sm:text-base md:text-lg font-extrabold text-white tracking-tight uppercase leading-tight font-sans drop-shadow-md">
-                      {item.titleLine1} {item.titleLine2 && <span className="text-rose-300 font-semibold">{item.titleLine2}</span>}
-                    </h4>
-
-                    {/* Description */}
-                    {item.desc && (
-                      <p className="text-[10px] sm:text-xs text-gray-300 line-clamp-2 leading-relaxed font-sans max-w-sm">
-                        {item.desc}
-                      </p>
-                    )}
+                    {/* Category Pill on Right */}
+                    <span className="text-[9px] sm:text-[10px] font-bold font-mono text-rose-300 uppercase tracking-wider hidden sm:inline-block">
+                      {item.tag || "Portofolio"}
+                    </span>
                   </div>
 
-                  {/* CTA Button: "Lihat Selengkapnya →" */}
-                  <a
-                    href={item.ctaUrl || "#"}
-                    onClick={(e) => {
-                      if (onCtaClick) {
-                        e.preventDefault();
-                        onCtaClick(item);
-                      }
+                  {/* 2. FULL WIDESCREEN PREVIEW IMAGE */}
+                  <img
+                    src={item.img}
+                    alt={item.titleLine1}
+                    draggable={false}
+                    className="absolute inset-0 pt-7 sm:pt-8 w-full h-full object-cover object-top select-none pointer-events-none"
+                  />
+
+                  {/* Subtle Top & Bottom Gradient Overlay */}
+                  <div className="absolute inset-0 pt-7 sm:pt-8 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none z-10" />
+
+                  {/* 3. WIDESCREEN FROSTED GLASS BOTTOM BANNER OVERLAY */}
+                  <div
+                    ref={(node) => {
+                      bannerRefs.current[index] = node;
                     }}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[11px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30"
+                    style={{
+                      transition: "opacity 350ms ease, transform 350ms ease",
+                    }}
+                    className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 bg-gradient-to-t from-black/95 via-black/85 to-transparent backdrop-blur-xs border-t border-white/10 z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-4 text-left"
                   >
-                    <span>{item.ctaText || "Lihat Selengkapnya"}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-rose-200" />
-                  </a>
+                    <div className="space-y-1 max-w-md">
+                      {/* Category Tag (Mobile fallback) */}
+                      <div className="sm:hidden">
+                        <span className="text-[9px] font-bold font-mono px-2 py-0.5 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-300 uppercase">
+                          {item.tag || "Portofolio"}
+                        </span>
+                      </div>
+
+                      {/* Main Title */}
+                      <h4 className="text-sm sm:text-base md:text-lg font-extrabold text-white tracking-tight uppercase leading-tight font-sans drop-shadow-md">
+                        {item.titleLine1}{" "}
+                        {item.titleLine2 && (
+                          <span className="text-rose-300 font-semibold">
+                            {item.titleLine2}
+                          </span>
+                        )}
+                      </h4>
+
+                      {/* Description */}
+                      {item.desc && (
+                        <p className="text-[10px] sm:text-xs text-gray-300 line-clamp-2 leading-relaxed font-sans max-w-sm">
+                          {item.desc}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* CTA Button: "Lihat Selengkapnya →" */}
+                    <a
+                      href={item.ctaUrl || "#"}
+                      onClick={(e) => {
+                        if (onCtaClick) {
+                          e.preventDefault();
+                          onCtaClick(item);
+                        }
+                      }}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-shrink-0 inline-flex items-center gap-1.5 px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[11px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30"
+                    >
+                      <span>{item.ctaText || "Lihat Selengkapnya"}</span>
+                      <ArrowRight className="w-3.5 h-3.5 text-rose-200" />
+                    </a>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
 
         {/* Navigation Arrows */}
         <button
-          onClick={prevSlide}
+          type="button"
+          onClick={() => nudge(-1)}
           aria-label="Previous portfolio"
           className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all"
         >
@@ -357,7 +510,8 @@ export function CoverFlowCarousel({
         </button>
 
         <button
-          onClick={nextSlide}
+          type="button"
+          onClick={() => nudge(1)}
           aria-label="Next portfolio"
           className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all"
         >
@@ -369,10 +523,11 @@ export function CoverFlowCarousel({
           {items.map((_, idx) => (
             <button
               key={idx}
-              onClick={() => goToSlide(idx)}
+              type="button"
+              onClick={() => goTo(idx)}
               aria-label={`Go to slide ${idx + 1}`}
               className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                idx === currentIndex
+                idx === selected
                   ? "w-7 bg-[#8B0021] dark:bg-rose-500 shadow-[0_0_10px_rgba(139,0,33,0.6)]"
                   : "w-2 bg-gray-300 dark:bg-gray-700 hover:bg-gray-400"
               }`}
