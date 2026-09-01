@@ -27,35 +27,35 @@ export const ClientMarquee: React.FC = () => {
     const hasName = Boolean(brand.name && brand.name.trim().length > 0);
     const hasLogo = Boolean(brand.logoImage && brand.logoImage.trim().length > 0);
 
-    // 1. Pure Logo Mode: Full original color, pure solid white oval background
+    // 1. Pure Logo Mode: Adapts to theme background (Light vs Dark), Grayscale, Brightened in Dark Mode
     if (hasLogo && !hasName) {
       return (
         <div
           key={`${brand.id || index}-${index}`}
-          className="w-40 sm:w-48 md:w-52 h-14 sm:h-16 flex items-center justify-center bg-white border border-gray-200 dark:border-white/20 hover:border-[#8B0021]/60 dark:hover:border-rose-400 rounded-full px-3 py-1.5 shadow-xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0 overflow-hidden"
+          className="w-40 sm:w-48 md:w-52 h-14 sm:h-16 flex items-center justify-center bg-white/90 dark:bg-[#11121C]/90 backdrop-blur-md border border-gray-200/80 dark:border-gray-800/80 hover:border-[#8B0021]/60 dark:hover:border-rose-400 rounded-full px-4 py-2 shadow-2xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0 overflow-hidden"
         >
           <img
             src={brand.logoImage}
             alt={brand.name || "Client Logo"}
-            className="w-full h-full object-contain p-1 select-none pointer-events-none transition-transform duration-300 group-hover:scale-105"
+            className="w-full h-full object-contain p-1 select-none pointer-events-none filter grayscale opacity-75 contrast-110 dark:brightness-150 dark:contrast-125 dark:opacity-90 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 group-hover:dark:brightness-125 transition-all duration-300"
           />
         </div>
       );
     }
 
-    // 2. Logo + Name Combined Oval Capsule (Full original colors, solid white background)
+    // 2. Logo + Name Combined Oval Capsule
     if (hasLogo && hasName) {
       return (
         <div
           key={`${brand.id || index}-${index}`}
-          className="min-w-44 sm:min-w-52 md:min-w-56 h-14 sm:h-16 flex items-center justify-center gap-3 bg-white border border-gray-200 dark:border-white/20 hover:border-[#8B0021]/60 dark:hover:border-rose-400 rounded-full px-4 py-2 shadow-xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0 overflow-hidden"
+          className="min-w-44 sm:min-w-52 md:min-w-56 h-14 sm:h-16 flex items-center justify-center gap-3 bg-white/90 dark:bg-[#11121C]/90 backdrop-blur-md border border-gray-200/80 dark:border-gray-800/80 hover:border-[#8B0021]/60 dark:hover:border-rose-400 rounded-full px-4.5 py-2 shadow-2xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0 overflow-hidden"
         >
           <img
             src={brand.logoImage}
             alt={brand.name || "Client Logo"}
-            className="h-8 sm:h-9 w-auto max-w-[90px] sm:max-w-[110px] object-contain flex-shrink-0"
+            className="h-7 sm:h-8 w-auto max-w-[85px] sm:max-w-[100px] object-contain flex-shrink-0 filter grayscale opacity-75 contrast-110 dark:brightness-150 dark:contrast-125 dark:opacity-90 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
           />
-          <span className="text-xs font-bold text-gray-900 tracking-tight truncate">
+          <span className="text-xs font-bold text-gray-700 dark:text-gray-200 group-hover:text-gray-950 dark:group-hover:text-white tracking-tight truncate">
             {brand.name}
           </span>
         </div>
@@ -66,7 +66,7 @@ export const ClientMarquee: React.FC = () => {
     return (
       <div
         key={`${brand.id || index}-${index}`}
-        className="w-40 sm:w-48 md:w-52 h-14 sm:h-16 flex items-center justify-center gap-2 bg-white dark:bg-[#11121C] border border-gray-200 dark:border-gray-800 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4 py-2 shadow-xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0"
+        className="w-40 sm:w-48 md:w-52 h-14 sm:h-16 flex items-center justify-center gap-2 bg-white/90 dark:bg-[#11121C]/90 backdrop-blur-md border border-gray-200/80 dark:border-gray-800/80 hover:border-[#8B0021]/50 dark:hover:border-rose-500 rounded-full px-4 py-2 shadow-2xs hover:shadow-md transition-all duration-300 cursor-default group flex-shrink-0"
       >
         <div className="w-2 h-2 rounded-full bg-[#8B0021] dark:bg-rose-500 transition-colors flex-shrink-0" />
         <div className="flex flex-col items-start min-w-0">

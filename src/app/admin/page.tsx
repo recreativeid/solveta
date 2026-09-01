@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -38,6 +38,13 @@ import {
   UploadCloud,
   RefreshCw,
   ExternalLink,
+  ZoomIn,
+  ZoomOut,
+  Crop,
+  Wand2,
+  Sun,
+  Moon,
+  Settings,
 } from "lucide-react";
 import {
   SiteDataProvider,
@@ -148,9 +155,108 @@ function AdminPortalVisual() {
   const editBrandLogoInputRef = useRef<HTMLInputElement>(null);
   const siteLogoInputRef = useRef<HTMLInputElement>(null);
 
+  // Interactive Logo Studio (Crop, Zoom In/Out, Auto-Remove Background)
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [rawLogoToCrop, setRawLogoToCrop] = useState<string | null>(null);
+  const [cropZoom, setCropZoom] = useState<number>(1.0);
+  const [cropOffsetX, setCropOffsetX] = useState<number>(0);
+  const [cropOffsetY, setCropOffsetY] = useState<number>(0);
+  const [autoRemoveBg, setAutoRemoveBg] = useState<boolean>(true);
+  const [bgThreshold, setBgThreshold] = useState<number>(35);
+  const [previewDarkTheme, setPreviewDarkTheme] = useState<boolean>(true);
+  const [isEditModeForBrand, setIsEditModeForBrand] = useState<boolean>(false);
+  const logoCanvasRef = useRef<HTMLCanvasElement>(null);
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(""), 3500);
+  };
+
+  // Redraw canvas whenever zoom, offset, autoRemoveBg, threshold or raw image changes
+  const redrawLogoCanvas = useCallback(() => {
+    const canvas = logoCanvasRef.current;
+    if (!canvas || !rawLogoToCrop) return;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    if (!ctx) return;
+
+    const img = new window.Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const cw = canvas.width;
+      const ch = canvas.height;
+
+      // Calculate aspect ratio fit
+      const aspect = img.width / img.height;
+      let baseW = cw * 0.75;
+      let baseH = baseW / aspect;
+
+      if (baseH > ch * 0.8) {
+        baseH = ch * 0.8;
+        baseW = baseH * aspect;
+      }
+
+      const drawW = baseW * cropZoom;
+      const drawH = baseH * cropZoom;
+
+      const drawX = (cw - drawW) / 2 + cropOffsetX;
+      const drawY = (ch - drawH) / 2 + cropOffsetY;
+
+      ctx.drawImage(img, drawX, drawY, drawW, drawH);
+
+      if (autoRemoveBg) {
+        const imgData = ctx.getImageData(0, 0, cw, ch);
+        const data = imgData.data;
+
+        // Sample top-left and top-right corner pixel colors
+        const sampleR = (data[0] + data[(cw - 1) * 4]) / 2;
+        const sampleG = (data[1] + data[(cw - 1) * 4 + 1]) / 2;
+        const sampleB = (data[2] + data[(cw - 1) * 4 + 2]) / 2;
+
+        const maxDiff = bgThreshold * 2.5;
+
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
+          const a = data[i + 3];
+          if (a === 0) continue;
+
+          // Check if pixel is white/near-white or matches sampled background
+          const isNearWhite = r > 255 - maxDiff && g > 255 - maxDiff && b > 255 - maxDiff;
+          const isCornerBgMatch =
+            Math.abs(r - sampleR) < bgThreshold * 1.5 &&
+            Math.abs(g - sampleG) < bgThreshold * 1.5 &&
+            Math.abs(b - sampleB) < bgThreshold * 1.5;
+
+          if (isNearWhite || (sampleR > 200 && isCornerBgMatch)) {
+            data[i + 3] = 0; // Make transparent!
+          }
+        }
+        ctx.putImageData(imgData, 0, 0);
+      }
+    };
+    img.src = rawLogoToCrop;
+  }, [rawLogoToCrop, cropZoom, cropOffsetX, cropOffsetY, autoRemoveBg, bgThreshold]);
+
+  useEffect(() => {
+    if (cropModalOpen && rawLogoToCrop) {
+      redrawLogoCanvas();
+    }
+  }, [cropModalOpen, rawLogoToCrop, redrawLogoCanvas]);
+
+  const applyCroppedLogo = () => {
+    const canvas = logoCanvasRef.current;
+    if (!canvas) return;
+    const finalPng = canvas.toDataURL("image/png");
+    if (isEditModeForBrand && editingBrand) {
+      setEditingBrand({ ...editingBrand, logoImage: finalPng });
+    } else {
+      setNewBrandLogo(finalPng);
+    }
+    setCropModalOpen(false);
+    showToast("Logo berhasil diproses (Latar belakang transparan & zoom disesuaikan)!");
   };
 
   const handleLogin = (e: React.FormEvent) => {
@@ -188,26 +294,30 @@ function AdminPortalVisual() {
     reader.readAsDataURL(file);
   };
 
-  // Handle client logo file upload
+  // Handle client logo file upload - opens interactive Logo Studio
   const handleBrandLogoUpload = (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 2 * 1024 * 1024) {
-      alert("Ukuran logo maksimal 2MB");
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Ukuran logo maksimal 5MB");
       return;
     }
 
+    setIsEditModeForBrand(isEdit);
     const reader = new FileReader();
     reader.onload = (event) => {
       const result = event.target?.result as string;
-      if (isEdit && editingBrand) {
-        setEditingBrand({ ...editingBrand, logoImage: result });
-      } else {
-        setNewBrandLogo(result);
-      }
+      setRawLogoToCrop(result);
+      setCropZoom(1.0);
+      setCropOffsetX(0);
+      setCropOffsetY(0);
+      setAutoRemoveBg(true);
+      setBgThreshold(35);
+      setCropModalOpen(true);
     };
     reader.readAsDataURL(file);
+    e.target.value = "";
   };
 
   // Handle site main logo upload
@@ -2347,6 +2457,248 @@ function AdminPortalVisual() {
                   </button>
                 </div>
               </form>
+            </motion.div>
+          </div>
+        )}
+
+        {/* MODAL: INTERACTIVE LOGO STUDIO (CROP, ZOOM & AUTO-REMOVE BACKGROUND) */}
+        {cropModalOpen && rawLogoToCrop && (
+          <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              className="bg-white border border-gray-200 rounded-3xl p-5 sm:p-6 max-w-xl w-full shadow-2xl relative font-sans max-h-[92vh] overflow-y-auto"
+            >
+              <div className="flex items-center justify-between pb-3 border-b border-gray-100 mb-4">
+                <div className="flex items-center gap-2">
+                  <div className="p-1.5 rounded-lg bg-rose-50 text-[#8B0021]">
+                    <Crop className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <h3 className="text-xs font-extrabold uppercase tracking-wider text-gray-900">
+                      Studio Penyesuaian Logo &amp; Latar Belakang
+                    </h3>
+                    <p className="text-[10px] text-gray-400">
+                      Zoom, geser posisi, dan hapus background putih logo secara otomatis.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setCropModalOpen(false)}
+                  className="p-1.5 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* LIVE CANVAS PREVIEW STAGE WITH OVAL CAPSULE GUIDE */}
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-xs font-semibold text-gray-700 px-1">
+                  <span>Pratinjau Kapsul Oval Marquee:</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] text-gray-400 font-normal">Tes Tema:</span>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewDarkTheme(false)}
+                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                        !previewDarkTheme
+                          ? "bg-rose-50 text-[#8B0021] border border-rose-200"
+                          : "bg-gray-100 text-gray-600 border border-gray-200"
+                      }`}
+                    >
+                      <Sun className="w-3 h-3" />
+                      <span>Terang</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setPreviewDarkTheme(true)}
+                      className={`px-2.5 py-1 rounded-md text-[10px] font-bold transition-all flex items-center gap-1 cursor-pointer ${
+                        previewDarkTheme
+                          ? "bg-gray-900 text-white border border-gray-800"
+                          : "bg-gray-100 text-gray-600 border border-gray-200"
+                      }`}
+                    >
+                      <Moon className="w-3 h-3" />
+                      <span>Gelap</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Canvas Container with Theme Simulation */}
+                <div
+                  className={`p-6 sm:p-8 rounded-2xl flex items-center justify-center transition-colors border ${
+                    previewDarkTheme
+                      ? "bg-[#07080E] border-gray-800"
+                      : "bg-gray-100 border-gray-200"
+                  }`}
+                >
+                  {/* Simulated Oval Capsule in Marquee */}
+                  <div
+                    className={`w-52 sm:w-60 h-16 sm:h-18 rounded-full border flex items-center justify-center p-2 shadow-sm relative overflow-hidden transition-colors ${
+                      previewDarkTheme
+                        ? "bg-[#11121C] border-gray-800"
+                        : "bg-white border-gray-200"
+                    }`}
+                  >
+                    <canvas
+                      ref={logoCanvasRef}
+                      width={400}
+                      height={160}
+                      className={`w-full h-full object-contain filter grayscale transition-all ${
+                        previewDarkTheme ? "brightness-150 contrast-125 opacity-90" : "opacity-80"
+                      }`}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* CONTROLS */}
+              <div className="mt-4 space-y-3.5 pt-3 border-t border-gray-100">
+                {/* 1. Auto Remove Background Switch & Threshold */}
+                <div className="p-3 bg-rose-50/70 rounded-xl border border-rose-100 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="flex items-center gap-2 text-xs font-bold text-gray-900 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={autoRemoveBg}
+                        onChange={(e) => setAutoRemoveBg(e.target.checked)}
+                        className="w-4 h-4 rounded text-[#8B0021] focus:ring-[#8B0021] accent-[#8B0021] cursor-pointer"
+                      />
+                      <span className="flex items-center gap-1.5 text-[#8B0021]">
+                        <Wand2 className="w-3.5 h-3.5" />
+                        <span>Hapus Latar Belakang Putih Otomatis (Transparan)</span>
+                      </span>
+                    </label>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white text-rose-800 font-mono font-bold border border-rose-200">
+                      {autoRemoveBg ? "AKTIF" : "NONAKTIF"}
+                    </span>
+                  </div>
+
+                  {autoRemoveBg && (
+                    <div className="pt-1 flex items-center gap-3">
+                      <span className="text-[10px] text-gray-500 font-semibold whitespace-nowrap">
+                        Sensitivitas Transparansi:
+                      </span>
+                      <input
+                        type="range"
+                        min="10"
+                        max="80"
+                        value={bgThreshold}
+                        onChange={(e) => setBgThreshold(Number(e.target.value))}
+                        className="flex-1 accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+                      />
+                      <span className="text-[10px] font-mono text-gray-600 w-6 text-right">
+                        {bgThreshold}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* 2. Zoom In / Out Controls */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-xs font-semibold text-gray-700">
+                    <span className="flex items-center gap-1.5">
+                      <ZoomIn className="w-3.5 h-3.5 text-[#8B0021]" />
+                      <span>Zoom Logo (Perbesar / Perkecil)</span>
+                    </span>
+                    <span className="text-[11px] font-mono font-bold text-[#8B0021]">
+                      {Math.round(cropZoom * 100)}%
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setCropZoom((prev) => Math.max(0.4, Number((prev - 0.1).toFixed(2))))}
+                      className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
+                      title="Perkecil"
+                    >
+                      <ZoomOut className="w-3.5 h-3.5" />
+                    </button>
+                    <input
+                      type="range"
+                      min="0.4"
+                      max="2.5"
+                      step="0.05"
+                      value={cropZoom}
+                      onChange={(e) => setCropZoom(Number(e.target.value))}
+                      className="flex-1 accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setCropZoom((prev) => Math.min(2.5, Number((prev + 0.1).toFixed(2))))}
+                      className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
+                      title="Perbesar"
+                    >
+                      <ZoomIn className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setCropZoom(1.0);
+                        setCropOffsetX(0);
+                        setCropOffsetY(0);
+                      }}
+                      className="px-2.5 py-1.5 text-[10px] font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
+                      title="Reset Posisi & Zoom"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      <span>Reset</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 3. Position Adjustment (Pan X & Y) */}
+                <div className="grid grid-cols-2 gap-3 pt-1">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-gray-600 mb-1">
+                      Geser Horizontal (X): {cropOffsetX}px
+                    </label>
+                    <input
+                      type="range"
+                      min="-120"
+                      max="120"
+                      value={cropOffsetX}
+                      onChange={(e) => setCropOffsetX(Number(e.target.value))}
+                      className="w-full accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-gray-600 mb-1">
+                      Geser Vertikal (Y): {cropOffsetY}px
+                    </label>
+                    <input
+                      type="range"
+                      min="-60"
+                      max="60"
+                      value={cropOffsetY}
+                      onChange={(e) => setCropOffsetY(Number(e.target.value))}
+                      className="w-full accent-[#8B0021] h-1.5 bg-gray-200 rounded-lg cursor-pointer"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* ACTION BUTTONS */}
+              <div className="flex items-center gap-2 pt-4 border-t border-gray-100 mt-4">
+                <button
+                  type="button"
+                  onClick={applyCroppedLogo}
+                  className="flex-1 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-xl transition-all shadow-xs flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <Check className="w-4 h-4" />
+                  <span>Terapkan &amp; Simpan Logo</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setCropModalOpen(false)}
+                  className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-xl transition-colors cursor-pointer"
+                >
+                  Batal
+                </button>
+              </div>
             </motion.div>
           </div>
         )}
