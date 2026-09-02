@@ -49,6 +49,7 @@ import {
   DollarSign,
   TrendingUp,
   Calculator,
+  ArrowRight,
 } from "lucide-react";
 import { ProfitLossManager } from "@/components/ProfitLossManager";
 import {
@@ -713,7 +714,7 @@ function AdminPortalVisual() {
   );
 
   return (
-    <div className="min-h-screen bg-[#F8F9FA] flex flex-col md:flex-row font-sans">
+    <div className="min-h-screen bg-white flex flex-col md:flex-row font-sans text-left">
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
@@ -721,209 +722,164 @@ function AdminPortalVisual() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-4 right-4 z-50 bg-gray-900 text-white px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold flex items-center gap-2 border border-gray-700"
+            className="fixed top-4 right-4 z-50 bg-gray-900 text-white px-3.5 py-2 rounded-lg shadow-md text-xs font-medium flex items-center gap-2 border border-gray-800"
           >
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
             <span>{toastMessage}</span>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* LEFT SIDEBAR (STICKY ON DESKTOP) */}
-      <aside className="w-full md:w-72 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col justify-between sticky top-0 md:h-screen z-40 shadow-xs">
-        <div className="p-5 flex flex-col h-full overflow-y-auto">
-          {/* Logo & Brand Info Header */}
+      {/* LEFT SIDEBAR (CLEAN MINIMALIST SAAS) */}
+      <aside className="w-full md:w-60 bg-white border-r border-gray-100 flex-shrink-0 flex flex-col justify-between sticky top-0 md:h-screen z-40">
+        <div className="p-4 flex flex-col h-full overflow-y-auto">
+          {/* Brand Header */}
           <Link
             href="/"
-            className="flex items-center gap-3 pb-5 border-b border-gray-100 group"
+            className="flex items-center gap-2.5 pb-4 border-b border-gray-100 group"
             title="Kembali ke Beranda"
           >
-            <div className="w-10 h-10 rounded-xl overflow-hidden border border-rose-200 bg-white shadow-2xs flex items-center justify-center flex-shrink-0">
+            <div className="w-8 h-8 rounded-lg overflow-hidden border border-gray-200 bg-white flex items-center justify-center flex-shrink-0">
               <img
                 src={currentLogoSrc}
                 alt="SOLVETA Logo"
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="text-left">
-              <div className="text-sm font-extrabold tracking-tight text-gray-900 flex items-center gap-1.5">
-                <span>SOLVETA</span>
-                <span className="font-mono text-[9px] px-1.5 py-0.2 bg-rose-50 text-[#8B0021] border border-rose-200 rounded font-bold">
-                  DEV CMS
-                </span>
+            <div>
+              <div className="text-xs font-bold tracking-tight text-gray-900">
+                SOLVETA
               </div>
-              <div className="text-[11px] text-gray-400">
-                Visual Live Editor &amp; Pricing
+              <div className="text-[10px] text-gray-400 font-normal">
+                Developer Console
               </div>
             </div>
           </Link>
 
           {/* Navigation Menu (Left Sidebar) */}
-          <div className="py-5 space-y-1.5 flex-1">
-            <div className="text-[10px] font-mono font-bold tracking-widest text-gray-400 uppercase px-3 mb-2">
-              Daftar Menu Developer
+          <div className="py-4 space-y-1 flex-1">
+            <div className="text-[10px] font-medium tracking-wider text-gray-400 uppercase px-2 mb-2">
+              Menu
             </div>
 
             {/* 1. Edit Visual */}
             <button
               type="button"
               onClick={() => setActiveMode("visual")}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2.5 cursor-pointer ${
                 activeMode === "visual"
-                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                  ? "bg-gray-100 text-gray-950 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${activeMode === "visual" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
-                <Edit3 className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <div className="text-xs font-bold">Edit Visual</div>
-                <div className="text-[10px] text-gray-400 font-normal">Teks Hero &amp; Judul</div>
-              </div>
+              <Edit3 className={`w-3.5 h-3.5 ${activeMode === "visual" ? "text-gray-900" : "text-gray-400"}`} />
+              <span>Edit Visual</span>
             </button>
 
             {/* 2. Paket & Harga */}
             <button
               type="button"
               onClick={() => setActiveMode("pricing")}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2.5 cursor-pointer ${
                 activeMode === "pricing"
-                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                  ? "bg-gray-100 text-gray-950 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${activeMode === "pricing" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
-                <Tag className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <div className="text-xs font-bold">Paket &amp; Harga</div>
-                <div className="text-[10px] text-gray-400 font-normal">4 Paket Layanan</div>
-              </div>
+              <Tag className={`w-3.5 h-3.5 ${activeMode === "pricing" ? "text-gray-900" : "text-gray-400"}`} />
+              <span>Paket &amp; Harga</span>
             </button>
 
-            {/* 3. Kelola HPP & Laba Rugi (PROMINENT HIGHLIGHT) */}
+            {/* 3. Kelola HPP & Laba Rugi */}
             <button
               type="button"
               onClick={() => setActiveMode("profit")}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer border ${
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2.5 cursor-pointer ${
                 activeMode === "profit"
-                  ? "bg-emerald-800 text-white border-emerald-900 shadow-sm"
-                  : "bg-emerald-50/90 text-emerald-950 border-emerald-300 hover:bg-emerald-100"
+                  ? "bg-gray-100 text-gray-950 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${activeMode === "profit" ? "bg-white text-emerald-800" : "bg-emerald-600 text-white"}`}>
-                <DollarSign className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <div className="text-xs font-extrabold flex items-center justify-between">
-                  <span>Kelola HPP &amp; Laba Rugi</span>
-                  <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-black uppercase ${activeMode === "profit" ? "bg-white text-emerald-900" : "bg-emerald-200 text-emerald-900"}`}>
-                    BARU
-                  </span>
-                </div>
-                <div className={`text-[10px] font-normal ${activeMode === "profit" ? "text-emerald-100" : "text-emerald-700"}`}>
-                  Rincian Beban &amp; Margin
-                </div>
-              </div>
+              <DollarSign className={`w-3.5 h-3.5 ${activeMode === "profit" ? "text-gray-900" : "text-gray-400"}`} />
+              <span>Kelola HPP &amp; Margin</span>
             </button>
 
             {/* 4. Portofolio */}
             <button
               type="button"
               onClick={() => setActiveMode("portfolio")}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2.5 cursor-pointer ${
                 activeMode === "portfolio"
-                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                  ? "bg-gray-100 text-gray-950 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${activeMode === "portfolio" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
-                <ImageIcon className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <div className="text-xs font-bold">Portofolio</div>
-                <div className="text-[10px] text-gray-400 font-normal">Galeri Foto &amp; Link Live</div>
-              </div>
+              <ImageIcon className={`w-3.5 h-3.5 ${activeMode === "portfolio" ? "text-gray-900" : "text-gray-400"}`} />
+              <span>Portofolio</span>
             </button>
 
             {/* 5. Logo Klien */}
             <button
               type="button"
               onClick={() => setActiveMode("brands")}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2.5 cursor-pointer ${
                 activeMode === "brands"
-                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                  ? "bg-gray-100 text-gray-950 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${activeMode === "brands" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
-                <Building2 className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <div className="text-xs font-bold">Logo Klien</div>
-                <div className="text-[10px] text-gray-400 font-normal">Ukuran, Skala &amp; Marquee</div>
-              </div>
+              <Building2 className={`w-3.5 h-3.5 ${activeMode === "brands" ? "text-gray-900" : "text-gray-400"}`} />
+              <span>Logo Klien</span>
             </button>
 
             {/* 6. Kontak WA */}
             <button
               type="button"
               onClick={() => setActiveMode("contact")}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2.5 cursor-pointer ${
                 activeMode === "contact"
-                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                  ? "bg-gray-100 text-gray-950 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${activeMode === "contact" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
-                <Phone className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <div className="text-xs font-bold">Kontak WA</div>
-                <div className="text-[10px] text-gray-400 font-normal">Nomor HP &amp; Tombol Web</div>
-              </div>
+              <Phone className={`w-3.5 h-3.5 ${activeMode === "contact" ? "text-gray-900" : "text-gray-400"}`} />
+              <span>Kontak WA</span>
             </button>
 
             {/* 7. Video Profil */}
             <button
               type="button"
               onClick={() => setActiveMode("video")}
-              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2.5 cursor-pointer ${
                 activeMode === "video"
-                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
-                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+                  ? "bg-gray-100 text-gray-950 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
               }`}
             >
-              <div className={`p-1.5 rounded-lg ${activeMode === "video" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
-                <Film className="w-4 h-4" />
-              </div>
-              <div className="flex-1">
-                <div className="text-xs font-bold">Video Profil</div>
-                <div className="text-[10px] text-gray-400 font-normal">Video Layar 3D Laptop</div>
-              </div>
+              <Film className={`w-3.5 h-3.5 ${activeMode === "video" ? "text-gray-900" : "text-gray-400"}`} />
+              <span>Video Profil</span>
             </button>
           </div>
 
           {/* Sidebar Bottom Action Buttons */}
-          <div className="pt-4 border-t border-gray-100 space-y-2">
+          <div className="pt-3 border-t border-gray-100 space-y-2">
             <button
               type="button"
               onClick={saveVisualChanges}
-              className="w-full py-2.5 px-4 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-2 px-3 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
             >
-              <Save className="w-4 h-4" />
+              <Save className="w-3.5 h-3.5" />
               <span>Simpan Perubahan</span>
             </button>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <Link
                 href="/"
                 target="_blank"
-                className="flex-1 py-2 px-3 text-center text-xs font-semibold text-gray-700 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl transition-colors flex items-center justify-center gap-1.5"
+                className="flex-1 py-1.5 px-2 text-center text-xs font-medium text-gray-600 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg transition-colors flex items-center justify-center gap-1"
               >
-                <Eye className="w-3.5 h-3.5" />
-                <span>Buka Live Web</span>
+                <Eye className="w-3.5 h-3.5 text-gray-400" />
+                <span>Buka Web</span>
               </Link>
 
               <button
@@ -935,7 +891,7 @@ function AdminPortalVisual() {
                     setTimeout(() => window.location.reload(), 600);
                   }
                 }}
-                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 border border-gray-200 rounded-xl transition-colors cursor-pointer"
+                className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 border border-gray-200 rounded-lg transition-colors cursor-pointer"
                 title="Reset Default"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
@@ -946,32 +902,33 @@ function AdminPortalVisual() {
       </aside>
 
       {/* RIGHT MAIN CONTENT AREA */}
-      <main className="flex-1 flex flex-col min-w-0 bg-[#F8F9FA] overflow-y-auto">
+      <main className="flex-1 flex flex-col min-w-0 bg-white overflow-y-auto">
         {/* Top Header Bar */}
-        <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 px-6 py-3.5 flex items-center justify-between shadow-2xs">
+        <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-xs border-b border-gray-100 px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono text-gray-400">Dashboard /</span>
-            <h1 className="text-xs sm:text-sm font-extrabold text-gray-900 uppercase tracking-tight">
-              {activeMode === "visual" && "✏️ Edit Visual Teks & Konten Web"}
-              {activeMode === "pricing" && "🏷️ Manajemen 4 Paket & Harga"}
-              {activeMode === "profit" && "📊 Perhitungan Laba Rugi & HPP Layanan"}
-              {activeMode === "portfolio" && "🖼️ Portofolio & Galeri Proyek"}
-              {activeMode === "brands" && "🏢 Klien, Logo & Kustomisasi Marquee"}
-              {activeMode === "contact" && "📱 Pengaturan Kontak WhatsApp"}
-              {activeMode === "video" && "🎬 Video Profil Layar Laptop 3D"}
+            <span className="text-xs text-gray-400 font-medium">Developer</span>
+            <span className="text-gray-300">/</span>
+            <h1 className="text-xs font-semibold text-gray-900">
+              {activeMode === "visual" && "Edit Visual"}
+              {activeMode === "pricing" && "Paket & Harga"}
+              {activeMode === "profit" && "Kelola HPP & Margin"}
+              {activeMode === "portfolio" && "Portofolio"}
+              {activeMode === "brands" && "Logo Klien"}
+              {activeMode === "contact" && "Kontak WhatsApp"}
+              {activeMode === "video" && "Video Profil"}
             </h1>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Cloud Database: Aktif</span>
+            <div className="hidden sm:flex items-center gap-1.5 text-xs text-gray-500 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span>Database Aktif</span>
             </div>
 
             <button
               type="button"
               onClick={saveVisualChanges}
-              className="px-4 py-1.5 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
             >
               <Save className="w-3.5 h-3.5" />
               <span>Simpan</span>
@@ -980,15 +937,15 @@ function AdminPortalVisual() {
         </header>
 
         {/* Dynamic Main Body Content */}
-        <div className="flex-grow p-4 sm:p-6 lg:p-8 max-w-[1240px] w-full mx-auto space-y-6">
+        <div className="flex-grow p-4 sm:p-6 lg:p-8 max-w-5xl w-full mx-auto space-y-6">
         {/* MODE 1: VISUAL LIVE PREVIEW WITH CLICK-TO-EDIT */}
         {activeMode === "visual" && (
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden">
-            <div className="p-6 sm:p-12 space-y-12">
+          <div className="bg-white border border-gray-200/80 rounded-xl overflow-hidden font-sans">
+            <div className="p-5 sm:p-8 space-y-8">
               {/* BRAND LOGO CHANGER */}
-              <div className="p-5 bg-rose-50/40 rounded-2xl border border-rose-100 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 rounded-2xl overflow-hidden border border-rose-200 bg-white shadow-xs flex-shrink-0 flex items-center justify-center">
+              <div className="p-4 bg-white rounded-xl border border-gray-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 bg-white flex-shrink-0 flex items-center justify-center">
                     <img
                       src={currentLogoSrc}
                       alt="Brand Logo"
@@ -996,11 +953,11 @@ function AdminPortalVisual() {
                     />
                   </div>
                   <div>
-                    <h3 className="text-xs font-bold text-gray-900">
-                      Foto Profil / Logo Brand (Kiri Atas Web &amp; Opening Screen)
+                    <h3 className="text-xs font-semibold text-gray-900">
+                      Logo Brand (Header &amp; Opening)
                     </h3>
-                    <p className="text-[11px] text-gray-500">
-                      Ganti logo utama SOLVETA yang tampil di Navbar kiri atas dan saat animasi pembuka website.
+                    <p className="text-[11px] text-gray-400 mt-0.5">
+                      Logo utama SOLVETA yang tampil di pojok kiri atas dan animasi pembuka.
                     </p>
                   </div>
                 </div>
@@ -1009,10 +966,10 @@ function AdminPortalVisual() {
                   <button
                     type="button"
                     onClick={() => siteLogoInputRef.current?.click()}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-white hover:bg-rose-50 border border-rose-200 hover:border-[#7B0B1E] text-xs font-bold text-[#7B0B1E] rounded-xl shadow-2xs transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-gray-50 border border-gray-200 text-xs font-medium text-gray-700 rounded-lg transition-colors cursor-pointer"
                   >
-                    <Camera className="w-3.5 h-3.5" />
-                    <span>Upload Foto / Logo Baru</span>
+                    <Camera className="w-3.5 h-3.5 text-gray-400" />
+                    <span>Ganti Logo</span>
                   </button>
                   <input
                     ref={siteLogoInputRef}
@@ -1025,9 +982,9 @@ function AdminPortalVisual() {
               </div>
 
               {/* VIDEO PROFIL LAPTOP 3D MANAGER CARD */}
-              <div className="p-5 bg-gradient-to-r from-gray-900 to-[#181926] text-white rounded-2xl border border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-12 rounded-xl overflow-hidden border border-rose-500/30 bg-black shadow-xs flex-shrink-0 flex items-center justify-center relative">
+              <div className="p-4 bg-white rounded-xl border border-gray-200/80 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3.5">
+                  <div className="w-14 h-10 rounded-lg overflow-hidden border border-gray-200 bg-black flex-shrink-0 flex items-center justify-center relative">
                     <video
                       src={editVideoUrl}
                       muted
@@ -1036,21 +993,16 @@ function AdminPortalVisual() {
                       playsInline
                       className="w-full h-full object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                      <Play className="w-4 h-4 text-white/90" />
+                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                      <Play className="w-3.5 h-3.5 text-white/90" />
                     </div>
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <h3 className="text-xs font-bold text-white">
-                        Video Profil Web (Layar Laptop 3D Hero)
-                      </h3>
-                      <span className="text-[9px] bg-rose-500/20 text-rose-300 px-2 py-0.5 rounded-full border border-rose-500/30 font-mono">
-                        Autoplay + Audio
-                      </span>
-                    </div>
+                    <h3 className="text-xs font-semibold text-gray-900">
+                      Video Profil (Layar Laptop 3D)
+                    </h3>
                     <p className="text-[11px] text-gray-400 mt-0.5">
-                      Upload file MP4/WebM atau link URL CDN untuk diputar di dalam layar laptop 3D.
+                      Video hero yang diputar di dalam layar interaktif laptop 3D.
                     </p>
                   </div>
                 </div>
@@ -1059,10 +1011,10 @@ function AdminPortalVisual() {
                   <button
                     type="button"
                     onClick={() => setActiveMode("video")}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-xs font-bold text-white rounded-xl shadow-xs transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg transition-colors cursor-pointer"
                   >
                     <Film className="w-3.5 h-3.5" />
-                    <span>Buka Pengaturan Video</span>
+                    <span>Kelola Video</span>
                   </button>
                 </div>
               </div>
@@ -1251,49 +1203,44 @@ function AdminPortalVisual() {
         {/* MODE: PRICING MANAGER (Dedicated Full Section) */}
         {activeMode === "pricing" && (
           <div className="space-y-6 bg-white">
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-xs">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 mb-6 border-b border-gray-100">
+            <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-7 font-sans">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 mb-5 border-b border-gray-100">
                 <div>
-                  <h2 className="text-base sm:text-lg font-bold text-gray-950 flex items-center gap-2">
-                    <Tag className="w-4 h-4 text-[#8B0021]" />
-                    <span>Kelola 4 Paket Website &amp; Spesifikasi Detail</span>
+                  <h2 className="text-sm sm:text-base font-semibold text-gray-900">
+                    Paket Website &amp; Rincian Fitur
                   </h2>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Ubah nominal harga, biaya perpanjangan, estimasi waktu, checklist fitur termasuk/tidak, domain premium, email, dan tarif revisi untuk setiap paket.
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    Kelola harga, masa aktif, waktu pengerjaan, dan checklist fitur masing-masing paket.
                   </p>
                 </div>
 
                 <button
                   onClick={saveVisualChanges}
-                  className="px-4 py-2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-xs font-bold rounded-xl shadow-xs hover:from-[#9E0026] hover:to-[#5E0013] transition-all flex items-center gap-1.5"
+                  className="px-3.5 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
                 >
                   <Save className="w-3.5 h-3.5" />
-                  <span>Simpan Semua Perubahan</span>
+                  <span>Simpan Perubahan</span>
                 </button>
               </div>
 
-              {/* BANNER: KALKULATOR HPP & LABA BERSIH TIAP PAKET */}
-              <div className="mb-8 p-5 sm:p-6 bg-gradient-to-r from-gray-900 via-[#131622] to-[#0b0c12] text-white rounded-2xl shadow-md border border-emerald-500/30 flex flex-col md:flex-row items-center justify-between gap-5">
-                <div className="space-y-1.5 text-left">
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-950/80 text-emerald-400 rounded-full text-xs font-bold border border-emerald-500/40">
-                    <DollarSign className="w-3.5 h-3.5" />
-                    <span>Kalkulator HPP &amp; Laba Bersih Per Layanan (Baru)</span>
+              {/* CLEAN SAAS CALLOUT: KALKULATOR HPP & LABA BERSIH TIAP PAKET */}
+              <div className="mb-6 p-4 bg-gray-50/80 rounded-xl border border-gray-200/80 flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div className="space-y-0.5 text-left">
+                  <div className="text-xs font-semibold text-gray-900">
+                    Kalkulator HPP &amp; Analisis Laba Rugi
                   </div>
-                  <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
-                    Ingin Tahu Rincian Modal Beban &amp; Berapa Untung Bersih Tiap Paket?
-                  </h3>
-                  <p className="text-xs text-gray-300 max-w-xl leading-relaxed">
-                    Hitung komponen beban pokok (domain, cloud server, aset/lisensi, dan fee tenaga kerja) serta ketahui nominal laba bersih yang Anda peroleh dari setiap paket.
+                  <p className="text-xs text-gray-500">
+                    Rincian beban pokok (domain, cloud, fee tenaga kerja) dan laba bersih per paket.
                   </p>
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setActiveMode("profit")}
-                  className="px-5 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-gray-950 text-xs font-black rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer flex-shrink-0"
+                  className="px-3 py-1.5 bg-white hover:bg-gray-100 text-gray-800 border border-gray-200 text-xs font-medium rounded-lg transition-colors flex items-center gap-1 flex-shrink-0 cursor-pointer"
                 >
-                  <TrendingUp className="w-4 h-4" />
-                  <span>Buka Tabel Laba Rugi &amp; HPP &rarr;</span>
+                  <span>Kelola HPP</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-gray-400" />
                 </button>
               </div>
 
@@ -1561,7 +1508,7 @@ function AdminPortalVisual() {
 
                 <button
                   type="submit"
-                  className="px-5 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-lg transition-all shadow-xs"
+                  className="px-4 py-2 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg transition-colors cursor-pointer"
                 >
                   Tambahkan ke Portofolio
                 </button>
@@ -1656,20 +1603,16 @@ function AdminPortalVisual() {
 
         {/* MODE 3: BRANDS / LOGO MANAGER */}
         {activeMode === "brands" && (
-          <div className="space-y-6 bg-white">
+          <div className="space-y-6 bg-white font-sans">
             {/* 1. MARQUEE DISPLAY & SIZE CUSTOMIZATION SETTINGS */}
-            <div className="bg-white border-2 border-rose-100 dark:border-rose-900/40 rounded-2xl p-6 shadow-md space-y-6">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-100 pb-5">
+            <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-gray-100 pb-4">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-rose-50 text-[#8B0021] rounded-full text-xs font-bold mb-2">
-                    <Sliders className="w-3.5 h-3.5" />
-                    <span>Pusat Kontrol Ukuran &amp; Tampilan Logo</span>
-                  </div>
-                  <h2 className="text-base font-extrabold text-gray-950">
+                  <h2 className="text-sm sm:text-base font-semibold text-gray-900">
                     Kustomisasi Ukuran Logo Klien (Marquee)
                   </h2>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Gunakan tombol instan atau slider di bawah untuk memperbesar logo sesuai selera. Perubahan langsung terlihat di kotak pratinjau.
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    Atur tinggi, jarak, dan skala logo klien yang berjalan di landing page.
                   </p>
                 </div>
                 <button
@@ -1682,23 +1625,22 @@ function AdminPortalVisual() {
                       marqueeLogoMaxWidth: editMarqueeLogoMaxWidth,
                       marqueeSpeed: editMarqueeSpeed,
                     });
-                    showToast("🎉 Ukuran logo berhasil disimpan & langsung aktif di landing page!");
+                    showToast("Ukuran logo berhasil disimpan!");
                   }}
-                  className="px-6 py-3 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-bold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer flex-shrink-0"
+                  className="px-3.5 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer flex-shrink-0"
                 >
-                  <Save className="w-4 h-4" />
-                  <span>SIMPAN &amp; AKTIFKAN UKURAN</span>
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Simpan Ukuran</span>
                 </button>
               </div>
 
               {/* A. TOMBOL CEPAT PILIHAN UKURAN LOGO */}
-              <div className="p-4 bg-rose-50/50 rounded-xl border border-rose-100 space-y-3">
+              <div className="p-3.5 bg-gray-50/80 rounded-xl border border-gray-200/80 space-y-2.5">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                  <span className="text-xs font-bold text-gray-900 flex items-center gap-1.5">
-                    <span>🚀 Tombol Cepat Ukuran:</span>
-                    <span className="text-[11px] font-normal text-gray-500">(Klik salah satu untuk mengubah instan)</span>
+                  <span className="text-xs font-medium text-gray-700">
+                    Pilihan Ukuran Cepat
                   </span>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5">
                     <button
                       type="button"
                       onClick={() => {
@@ -1706,9 +1648,9 @@ function AdminPortalVisual() {
                         setEditMarqueeLogoHeight(newH);
                         updateSiteCopy({ marqueeLogoHeight: newH });
                       }}
-                      className="px-2.5 py-1 bg-white hover:bg-gray-100 border border-gray-300 text-gray-800 text-xs font-bold rounded-lg shadow-2xs transition-all cursor-pointer"
+                      className="px-2.5 py-1 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium rounded-lg transition-colors cursor-pointer"
                     >
-                      ➖ Perkecil (-5px)
+                      -5px
                     </button>
                     <button
                       type="button"
@@ -1717,9 +1659,9 @@ function AdminPortalVisual() {
                         setEditMarqueeLogoHeight(newH);
                         updateSiteCopy({ marqueeLogoHeight: newH });
                       }}
-                      className="px-2.5 py-1 bg-white hover:bg-gray-100 border border-gray-300 text-gray-800 text-xs font-bold rounded-lg shadow-2xs transition-all cursor-pointer"
+                      className="px-2.5 py-1 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium rounded-lg transition-colors cursor-pointer"
                     >
-                      ➕ Perbesar (+5px)
+                      +5px
                     </button>
                   </div>
                 </div>
@@ -1732,13 +1674,13 @@ function AdminPortalVisual() {
                       setEditMarqueeLogoScale(100);
                       updateSiteCopy({ marqueeLogoHeight: 45, marqueeLogoScale: 100 });
                     }}
-                    className={`py-2 px-3 rounded-lg border text-xs font-bold transition-all text-center cursor-pointer ${
+                    className={`py-1.5 px-3 rounded-lg border text-xs font-medium transition-colors text-center cursor-pointer ${
                       editMarqueeLogoHeight <= 48
-                        ? "bg-[#8B0021] text-white border-[#8B0021] shadow-xs"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-gray-300"
+                        ? "bg-gray-900 text-white border-gray-900"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                     }`}
                   >
-                    🌱 Kecil (45px)
+                    Kecil (45px)
                   </button>
 
                   <button
@@ -1748,13 +1690,13 @@ function AdminPortalVisual() {
                       setEditMarqueeLogoScale(100);
                       updateSiteCopy({ marqueeLogoHeight: 60, marqueeLogoScale: 100 });
                     }}
-                    className={`py-2 px-3 rounded-lg border text-xs font-bold transition-all text-center cursor-pointer ${
+                    className={`py-1.5 px-3 rounded-lg border text-xs font-medium transition-colors text-center cursor-pointer ${
                       editMarqueeLogoHeight > 48 && editMarqueeLogoHeight <= 68
-                        ? "bg-[#8B0021] text-white border-[#8B0021] shadow-xs"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-gray-300"
+                        ? "bg-gray-900 text-white border-gray-900"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                     }`}
                   >
-                    🌿 Sedang (60px)
+                    Sedang (60px)
                   </button>
 
                   <button
@@ -1764,13 +1706,13 @@ function AdminPortalVisual() {
                       setEditMarqueeLogoScale(115);
                       updateSiteCopy({ marqueeLogoHeight: 78, marqueeLogoScale: 115 });
                     }}
-                    className={`py-2 px-3 rounded-lg border text-xs font-bold transition-all text-center cursor-pointer ${
+                    className={`py-1.5 px-3 rounded-lg border text-xs font-medium transition-colors text-center cursor-pointer ${
                       editMarqueeLogoHeight > 68 && editMarqueeLogoHeight <= 85
-                        ? "bg-[#8B0021] text-white border-[#8B0021] shadow-xs"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-gray-300 ring-2 ring-rose-200"
+                        ? "bg-gray-900 text-white border-gray-900"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                     }`}
                   >
-                    ⭐ Besar (78px) ✨
+                    Besar (78px)
                   </button>
 
                   <button
@@ -1780,13 +1722,13 @@ function AdminPortalVisual() {
                       setEditMarqueeLogoScale(130);
                       updateSiteCopy({ marqueeLogoHeight: 98, marqueeLogoScale: 130 });
                     }}
-                    className={`py-2 px-3 rounded-lg border text-xs font-bold transition-all text-center cursor-pointer ${
+                    className={`py-1.5 px-3 rounded-lg border text-xs font-medium transition-colors text-center cursor-pointer ${
                       editMarqueeLogoHeight > 85 && editMarqueeLogoHeight <= 108
-                        ? "bg-[#8B0021] text-white border-[#8B0021] shadow-xs"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-gray-300"
+                        ? "bg-gray-900 text-white border-gray-900"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                     }`}
                   >
-                    🔥 Ekstra Besar (98px)
+                    Ekstra (98px)
                   </button>
 
                   <button
@@ -1796,13 +1738,13 @@ function AdminPortalVisual() {
                       setEditMarqueeLogoScale(150);
                       updateSiteCopy({ marqueeLogoHeight: 125, marqueeLogoScale: 150 });
                     }}
-                    className={`py-2 px-3 rounded-lg border text-xs font-bold transition-all text-center cursor-pointer ${
+                    className={`py-1.5 px-3 rounded-lg border text-xs font-medium transition-colors text-center cursor-pointer ${
                       editMarqueeLogoHeight > 108
-                        ? "bg-[#8B0021] text-white border-[#8B0021] shadow-xs"
-                        : "bg-white text-gray-700 border-gray-200 hover:border-gray-300"
+                        ? "bg-gray-900 text-white border-gray-900"
+                        : "bg-white text-gray-700 border-gray-200 hover:bg-gray-50"
                     }`}
                   >
-                    👑 Jumbo (125px)
+                    Maksimal (125px)
                   </button>
                 </div>
               </div>
@@ -2120,50 +2062,49 @@ function AdminPortalVisual() {
 
         {/* MODE 4: WHATSAPP & CONTACT */}
         {activeMode === "contact" && (
-          <div className="max-w-xl mx-auto bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 shadow-xs">
-            <h2 className="text-sm font-bold text-gray-900 mb-1 flex items-center gap-2">
-              <Phone className="w-4 h-4 text-[#7B0B1E]" />
-              <span>Pengaturan Kontak WhatsApp Resmi</span>
+          <div className="max-w-md mx-auto bg-white border border-gray-200/80 rounded-xl p-6 font-sans">
+            <h2 className="text-sm font-semibold text-gray-900 mb-0.5">
+              Kontak WhatsApp Resmi
             </h2>
-            <p className="text-xs text-gray-500 mb-6">
-              Nomor ini akan otomatis digunakan di seluruh tombol &quot;Konsultasi&quot; dan &quot;Pesan Paket&quot; di website.
+            <p className="text-xs text-gray-400 mb-5">
+              Nomor ini otomatis digunakan pada seluruh tombol konsultasi dan pemesanan.
             </p>
 
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               <div>
-                <label className="block text-xs font-bold text-gray-800 mb-1.5">
-                  Nomor WhatsApp Admin / Sales
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  Nomor WhatsApp Admin
                 </label>
                 <input
                   type="text"
                   value={editWaNumber}
                   onChange={(e) => setEditWaNumber(e.target.value)}
-                  placeholder="Contoh: 085719663154 atau 6285719663154"
-                  className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none font-mono bg-white shadow-xs"
+                  placeholder="Contoh: 085719663154"
+                  className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                 />
-                <p className="text-[11px] text-gray-500 mt-1">
-                  * Otomatis dibersihkan &amp; diformat valid ke format internasional (misal: <code>0857...</code> otomatis menjadi <code>62857...</code>).
+                <p className="text-[11px] text-gray-400 mt-1">
+                  Format otomatis disesuaikan (misal 08... menjadi 628...).
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-gray-800 mb-1.5">
-                  Teks Tampilan WhatsApp di Footer / Web (Label Visual)
+                <label className="block text-xs font-medium text-gray-700 mb-1">
+                  Label Tampilan di Web (Opsional)
                 </label>
                 <input
                   type="text"
                   value={editWaDisplay}
                   onChange={(e) => setEditWaDisplay(e.target.value)}
                   placeholder="Contoh: +62 857-1966-3154"
-                  className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none bg-white shadow-xs"
+                  className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                 />
               </div>
 
               {/* Live Preview Box & Test Button */}
-              <div className="p-4 bg-rose-50/60 border border-rose-200 rounded-xl space-y-2">
-                <div className="text-xs font-bold text-gray-800 flex items-center justify-between">
-                  <span>Pratinjau Link WhatsApp Valid:</span>
-                  <span className="font-mono text-[11px] text-[#8B0021] font-extrabold">
+              <div className="p-3.5 bg-gray-50/80 border border-gray-200/80 rounded-lg space-y-2">
+                <div className="text-xs text-gray-600 flex items-center justify-between">
+                  <span>Link Tujuan:</span>
+                  <span className="font-mono text-xs text-gray-900 font-medium">
                     wa.me/{cleanWhatsAppNumber(editWaNumber)}
                   </span>
                 </div>
@@ -2171,20 +2112,20 @@ function AdminPortalVisual() {
                   href={getWhatsAppUrl(editWaNumber, "Halo SOLVETA, ini adalah uji coba pesan WhatsApp dari admin.")}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-2xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                  className="w-full py-1.5 px-3 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>📲 Test Buka Link WhatsApp Sekarang</span>
+                  <Phone className="w-3.5 h-3.5 text-gray-400" />
+                  <span>Uji Coba Kirim Pesan</span>
                 </a>
               </div>
 
               <button
                 type="button"
                 onClick={saveWhatsApp}
-                className="w-full py-3 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-bold text-xs rounded-xl transition-all shadow-sm cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-2 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg transition-colors cursor-pointer flex items-center justify-center gap-1.5"
               >
-                <Save className="w-4 h-4" />
-                <span>Simpan Nomor WhatsApp</span>
+                <Save className="w-3.5 h-3.5" />
+                <span>Simpan Kontak</span>
               </button>
             </div>
           </div>
@@ -2192,101 +2133,87 @@ function AdminPortalVisual() {
 
         {/* MODE 5: VIDEO PROFIL (3D LAPTOP SCREEN) */}
         {activeMode === "video" && (
-          <div className="max-w-4xl mx-auto space-y-6">
+          <div className="max-w-4xl mx-auto space-y-6 font-sans">
             {/* Header Card */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-              <div className="flex items-center gap-3.5">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#8B0021] to-[#50000F] text-white flex items-center justify-center shadow-sm flex-shrink-0">
-                  <Film className="w-6 h-6" />
-                </div>
-                <div>
-                  <h2 className="text-base font-bold text-gray-900">
-                    Kelola Video Profil (Layar Laptop 3D Hero)
-                  </h2>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    Upload video lokal (maks. 100 MB) untuk diputar instan tanpa macet, atau masukkan link URL CDN sebagai cadangan.
-                  </p>
-                </div>
+            <div className="bg-white border border-gray-200/80 rounded-xl p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <h2 className="text-sm sm:text-base font-semibold text-gray-900">
+                  Video Profil (Layar Laptop 3D)
+                </h2>
+                <p className="text-xs text-gray-400 mt-0.5">
+                  Upload file video (maksimal 100 MB) atau masukkan link URL CDN video sebagai cadangan.
+                </p>
               </div>
 
               <div className="flex items-center gap-2">
                 <button
                   type="button"
                   onClick={handleResetVideo}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-semibold rounded-lg transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium rounded-lg transition-colors cursor-pointer"
                   title="Kembalikan ke file default /videos/profile.mp4"
                 >
-                  <RefreshCw className="w-3.5 h-3.5" />
-                  <span>Reset ke Default</span>
+                  <RefreshCw className="w-3.5 h-3.5 text-gray-400" />
+                  <span>Reset Default</span>
                 </button>
               </div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Left Column: Upload Methods with Priority Ordering */}
-              <div className="lg:col-span-7 space-y-6">
+              <div className="lg:col-span-7 space-y-5">
                 {/* PRIORITY 1: UPLOAD FILE VIDEO (MAX 100 MB) */}
-                <div className={`bg-white border rounded-2xl p-6 shadow-xs space-y-4 ${uploadedVideoMeta ? "border-emerald-300 ring-1 ring-emerald-200" : "border-gray-200"}`}>
+                <div className="bg-white border border-gray-200/80 rounded-xl p-5 space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-black">
-                        1
-                      </div>
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
-                        <UploadCloud className="w-4 h-4 text-[#8B0021]" />
-                        <span>Prioritas Utama: Upload File Video</span>
-                      </h3>
-                    </div>
-                    <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
-                      Maks. 100 MB (Anti Macet)
+                    <h3 className="text-xs font-semibold text-gray-900">
+                      Upload File Video Langsung
+                    </h3>
+                    <span className="text-[11px] font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+                      Maks. 100 MB
                     </span>
                   </div>
 
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Video yang diupload disimpan langsung di memori browser dengan <strong>0 buffering</strong> sehingga diputar lancar dan tidak macet-macet saat website dibuka.
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Video tersimpan di browser dan langsung diputar tanpa buffering saat pengunjung membuka halaman.
                   </p>
 
                   {/* ACTIVE UPLOADED VIDEO INFO */}
                   {uploadedVideoMeta ? (
-                    <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-3">
+                    <div className="p-3.5 bg-gray-50/80 border border-gray-200/80 rounded-lg space-y-3">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2.5">
-                          <div className="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-2xs flex-shrink-0">
-                            <Check className="w-5 h-5" />
-                          </div>
                           <div>
-                            <div className="text-xs font-extrabold text-emerald-950 truncate max-w-[220px] sm:max-w-xs">
+                            <div className="text-xs font-semibold text-gray-900 truncate max-w-[220px] sm:max-w-xs">
                               {uploadedVideoMeta.name}
                             </div>
-                            <div className="text-[11px] text-emerald-700 font-mono">
-                              Ukuran: <strong>{uploadedVideoMeta.sizeMb} MB</strong> (dari maks 100 MB)
+                            <div className="text-[11px] text-gray-400">
+                              Ukuran: {uploadedVideoMeta.sizeMb} MB
                             </div>
                           </div>
                         </div>
 
-                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-200/80 px-2 py-0.5 rounded-md uppercase">
-                          Sedang Aktif
+                        <span className="text-[10px] font-medium text-gray-700 bg-gray-200 px-2 py-0.5 rounded">
+                          Aktif
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-2 pt-2 border-t border-emerald-200/70">
+                      <div className="flex items-center gap-2 pt-2 border-t border-gray-200/70">
                         <button
                           type="button"
                           onClick={() => videoFileInputRef.current?.click()}
                           disabled={isVideoLoading}
-                          className="px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold rounded-lg border border-gray-300 shadow-2xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                          className="px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 text-xs font-medium rounded-lg border border-gray-200 transition-colors flex items-center gap-1.5 cursor-pointer"
                         >
-                          <Upload className="w-3.5 h-3.5 text-[#8B0021]" />
-                          <span>Ganti Video Lain (Maks. 100MB)</span>
+                          <Upload className="w-3.5 h-3.5 text-gray-400" />
+                          <span>Ganti Video</span>
                         </button>
 
                         <button
                           type="button"
                           onClick={handleRemoveUploadedVideo}
-                          className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-[#8B0021] text-xs font-bold rounded-lg border border-rose-200 transition-colors flex items-center gap-1.5 cursor-pointer"
+                          className="px-3 py-1.5 bg-white hover:bg-red-50 text-red-600 text-xs font-medium rounded-lg border border-gray-200 hover:border-red-200 transition-colors flex items-center gap-1.5 cursor-pointer"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
-                          <span>Hapus Video Upload</span>
+                          <span>Hapus</span>
                         </button>
                       </div>
                     </div>
@@ -2294,23 +2221,23 @@ function AdminPortalVisual() {
                     /* UPLOAD DROPZONE */
                     <div
                       onClick={() => videoFileInputRef.current?.click()}
-                      className="border-2 border-dashed border-gray-300 hover:border-[#8B0021] bg-gray-50/50 hover:bg-rose-50/30 rounded-xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-2 group"
+                      className="border border-dashed border-gray-300 hover:border-gray-900 bg-gray-50/40 hover:bg-gray-50 rounded-xl p-6 text-center cursor-pointer transition-colors flex flex-col items-center justify-center space-y-2 group"
                     >
-                      <div className="w-12 h-12 rounded-full bg-white border border-gray-200 group-hover:border-rose-300 text-gray-400 group-hover:text-[#8B0021] flex items-center justify-center transition-colors shadow-2xs">
+                      <div className="w-10 h-10 rounded-lg bg-white border border-gray-200 text-gray-400 group-hover:text-gray-900 flex items-center justify-center transition-colors">
                         {isVideoLoading ? (
-                          <RefreshCw className="w-6 h-6 animate-spin text-[#8B0021]" />
+                          <RefreshCw className="w-5 h-5 animate-spin text-gray-900" />
                         ) : (
-                          <Upload className="w-6 h-6" />
+                          <Upload className="w-5 h-5" />
                         )}
                       </div>
 
-                      <div className="text-xs font-bold text-gray-800 group-hover:text-[#8B0021]">
+                      <div className="text-xs font-medium text-gray-800">
                         {isVideoLoading
                           ? "Sedang menyimpan video ke penyimpanan browser..."
-                          : "Klik untuk Upload Video dari Laptop / HP"}
+                          : "Pilih file video dari komputer"}
                       </div>
-                      <div className="text-[11px] text-gray-400 font-medium">
-                        Mendukung format .mp4, .webm, .mov (Kapasitas hingga <strong>100 MB</strong>)
+                      <div className="text-[11px] text-gray-400">
+                        Mendukung MP4, WebM, MOV (hingga 100 MB)
                       </div>
                     </div>
                   )}
@@ -2325,34 +2252,28 @@ function AdminPortalVisual() {
                 </div>
 
                 {/* PRIORITY 2: INSERT VIDEO URL (CADANGAN / FALLBACK) */}
-                <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs space-y-4">
+                <div className="bg-white border border-gray-200/80 rounded-xl p-5 space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center text-xs font-black">
-                        2
-                      </div>
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
-                        <Globe className="w-4 h-4 text-gray-500" />
-                        <span>Prioritas Cadangan: Link URL Video (CDN / Hosting)</span>
-                      </h3>
-                    </div>
+                    <h3 className="text-xs font-semibold text-gray-900">
+                      Link URL Video Cadangan
+                    </h3>
                   </div>
 
                   <p className="text-xs text-gray-500 leading-relaxed">
-                    Digunakan secara otomatis jika belum ada file video yang diupload di atas, atau jika file upload dihapus.
+                    Digunakan secara otomatis jika belum ada file video yang diunggah.
                   </p>
 
                   <form onSubmit={handleSaveVideoUrl} className="space-y-3">
                     <div>
-                      <label className="block text-[11px] font-semibold text-gray-700 mb-1">
-                        URL Link File Video (.mp4 / .webm)
+                      <label className="block text-[11px] font-medium text-gray-700 mb-1">
+                        URL Link Video (.mp4 / .webm)
                       </label>
                       <input
                         type="text"
                         value={inputVideoLink}
                         onChange={(e) => setInputVideoLink(e.target.value)}
-                        placeholder={data.siteCopy.profileVideo || "https://domain.com/videos/profil-solveta.mp4"}
-                        className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white font-mono"
+                        placeholder={data.siteCopy.profileVideo || "https://domain.com/videos/profil.mp4"}
+                        className="w-full text-xs p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-mono"
                       />
                     </div>
 
@@ -2360,9 +2281,9 @@ function AdminPortalVisual() {
                       <button
                         type="submit"
                         disabled={!inputVideoLink.trim()}
-                        className="px-4 py-2 bg-gray-900 hover:bg-black disabled:opacity-40 text-white text-xs font-bold rounded-lg shadow-xs transition-all cursor-pointer"
+                        className="px-3.5 py-1.5 bg-gray-900 hover:bg-black disabled:opacity-40 text-white text-xs font-medium rounded-lg transition-colors cursor-pointer"
                       >
-                        Terapkan Link URL Cadangan
+                        Terapkan URL
                       </button>
 
                       <button
@@ -2370,9 +2291,9 @@ function AdminPortalVisual() {
                         onClick={() => {
                           setInputVideoLink("/videos/profile.mp4");
                         }}
-                        className="text-[11px] text-[#8B0021] hover:underline font-medium cursor-pointer"
+                        className="text-[11px] text-gray-500 hover:text-gray-900 hover:underline cursor-pointer"
                       >
-                        Pakai bawaan: /videos/profile.mp4
+                        Gunakan bawaan (/videos/profile.mp4)
                       </button>
                     </div>
                   </form>

@@ -242,104 +242,75 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
   };
 
   return (
-    <div className="space-y-6 bg-white">
-      {/* 1. FINANCIAL EXECUTIVE SUMMARY CARDS */}
+    <div className="space-y-6 bg-white font-sans text-left">
+      {/* 1. FINANCIAL EXECUTIVE SUMMARY CARDS (CLEAN MINIMALIST SAAS) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Metric 1: Estimasi Omset Bulanan */}
-        <div className="p-5 bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl shadow-sm border border-gray-700 relative overflow-hidden">
-          <div className="flex items-center justify-between text-gray-400 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">
-              Estimasi Omset / Bulan
-            </span>
-            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-emerald-400">
-              <TrendingUp className="w-4 h-4" />
-            </div>
+        <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
+          <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
+            Estimasi Omset / Bulan
           </div>
-          <div className="text-xl sm:text-2xl font-black text-white tracking-tight">
+          <div className="text-2xl font-semibold text-gray-900 tracking-tight">
             {formatIDR(summary.totalMonthlyRevenue)}
           </div>
-          <p className="text-[11px] text-gray-400 mt-2">
+          <p className="text-[11px] text-gray-400 mt-1">
             Akumulasi target seluruh paket layanan
           </p>
         </div>
 
         {/* Metric 2: Total Beban Pokok & Operasional */}
-        <div className="p-5 bg-white rounded-2xl shadow-xs border border-gray-200">
-          <div className="flex items-center justify-between text-gray-500 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">
-              Total Beban / HPP Bulan Ini
-            </span>
-            <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center text-[#8B0021]">
-              <DollarSign className="w-4 h-4" />
-            </div>
+        <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
+          <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
+            Total Beban / HPP Bulan Ini
           </div>
-          <div className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+          <div className="text-2xl font-semibold text-gray-900 tracking-tight">
             {formatIDR(summary.totalMonthlyCosts)}
           </div>
-          <p className="text-[11px] text-gray-500 mt-2">
+          <p className="text-[11px] text-gray-400 mt-1">
             Domain, server, tools &amp; tenaga kerja
           </p>
         </div>
 
         {/* Metric 3: Total Laba Bersih Bulanan */}
-        <div className="p-5 bg-emerald-50/70 border border-emerald-200 rounded-2xl shadow-xs">
-          <div className="flex items-center justify-between text-emerald-800 mb-2">
-            <span className="text-xs font-bold uppercase tracking-wider">
-              Proyeksi Laba Bersih (Net Profit)
-            </span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-xs">
-              <Zap className="w-4 h-4" />
-            </div>
+        <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
+          <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
+            Proyeksi Laba Bersih
           </div>
-          <div className="text-xl sm:text-2xl font-black text-emerald-950 tracking-tight">
+          <div className="text-2xl font-semibold text-gray-900 tracking-tight">
             {formatIDR(summary.totalMonthlyNetProfit)}
           </div>
-          <p className="text-[11px] text-emerald-700 font-medium mt-2">
-            Uang bersih yang masuk ke kas bisnis
+          <p className="text-[11px] text-gray-400 mt-1">
+            Estimasi laba bersih masuk kas bisnis
           </p>
         </div>
 
         {/* Metric 4: Rata-Rata Margin Keuntungan */}
-        <div className="p-5 bg-white rounded-2xl shadow-xs border border-gray-200">
-          <div className="flex items-center justify-between text-gray-500 mb-2">
-            <span className="text-xs font-semibold uppercase tracking-wider">
-              Rata-rata Margin Bersih
-            </span>
-            <div className="w-8 h-8 rounded-lg bg-purple-50 flex items-center justify-center text-purple-600">
-              <ArrowUpRight className="w-4 h-4" />
-            </div>
+        <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
+          <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
+            Rata-rata Margin Bersih
           </div>
-          <div className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
+          <div className="text-2xl font-semibold text-gray-900 tracking-tight flex items-center gap-2">
             <span>{averageMargin}%</span>
-            <span
-              className={`text-xs px-2 py-0.5 rounded-full font-bold ${
-                averageMargin >= 40
-                  ? "bg-emerald-100 text-emerald-800"
-                  : averageMargin >= 20
-                  ? "bg-amber-100 text-amber-800"
-                  : "bg-rose-100 text-rose-800"
-              }`}
-            >
-              {averageMargin >= 40 ? "Sangat Sehat" : averageMargin >= 20 ? "Standar" : "Perlu Optimasi"}
+            <span className="text-[11px] font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
+              {averageMargin >= 40 ? "Sehat" : averageMargin >= 20 ? "Normal" : "Rendah"}
             </span>
           </div>
-          <p className="text-[11px] text-gray-500 mt-2">
+          <p className="text-[11px] text-gray-400 mt-1">
             Persentase keuntungan bersih rata-rata
           </p>
         </div>
       </div>
 
       {/* 2. TABEL PERHITUNGAN LABA RUGI & RINCIAN KOMPONEN BEBAN */}
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden">
+      <div className="bg-white border border-gray-200/80 rounded-xl overflow-hidden">
         {/* Table Header Bar */}
-        <div className="p-5 sm:p-6 border-b border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gray-50/50">
+        <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
           <div>
-            <h2 className="text-sm sm:text-base font-extrabold text-gray-950 flex items-center gap-2">
-              <DollarSign className="w-5 h-5 text-[#8B0021]" />
-              <span>Tabel Rincian Komponen Biaya &amp; Margin Bersih Tiap Layanan</span>
+            <h2 className="text-sm font-semibold text-gray-900">
+              Rincian Komponen Biaya &amp; Margin Tiap Layanan
             </h2>
-            <p className="text-xs text-gray-500 mt-1">
-              Klik pada baris paket untuk membuka rincian komponen beban atau menambahkan biaya kustom baru.
+            <p className="text-xs text-gray-400 mt-0.5">
+              Klik baris layanan untuk membuka rincian beban atau menambahkan biaya baru.
             </p>
           </div>
 
@@ -347,39 +318,39 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
             <button
               type="button"
               onClick={handleExportCSV}
-              className="px-3 py-2 bg-white hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-xl border border-gray-300 shadow-2xs flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 text-xs font-medium rounded-lg border border-gray-200 shadow-none flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              <Download className="w-3.5 h-3.5" />
+              <Download className="w-3.5 h-3.5 text-gray-500" />
               <span>Ekspor CSV</span>
             </button>
 
             <button
               type="button"
               onClick={() => setServiceModalOpen(true)}
-              className="px-4 py-2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-bold rounded-xl shadow-xs flex items-center gap-1.5 transition-all cursor-pointer"
+              className="px-3.5 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg shadow-none flex items-center gap-1.5 transition-colors cursor-pointer"
             >
-              <Plus className="w-4 h-4" />
-              <span>+ Tambah Layanan Baru</span>
+              <Plus className="w-3.5 h-3.5" />
+              <span>Tambah Layanan</span>
             </button>
           </div>
         </div>
 
         {/* Table Body */}
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+          <table className="w-full text-left text-xs border-collapse font-sans">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-100/70 text-gray-600 font-bold uppercase tracking-wider text-[11px]">
-                <th className="py-3.5 px-4">Nama Layanan / Paket</th>
-                <th className="py-3.5 px-4 text-right">Harga Jual (Revenue)</th>
-                <th className="py-3.5 px-4 text-right">Total Beban (HPP)</th>
-                <th className="py-3.5 px-4 text-right">Laba Bersih / Unit</th>
-                <th className="py-3.5 px-4 text-center">Margin (%)</th>
-                <th className="py-3.5 px-4 text-center">Estimasi Order/Bln</th>
-                <th className="py-3.5 px-4 text-right">Proyeksi Laba/Bln</th>
-                <th className="py-3.5 px-4 text-center">Rincian Beban</th>
+              <tr className="border-b border-gray-100 bg-white text-gray-400 font-medium uppercase tracking-wider text-[11px]">
+                <th className="py-3 px-4">Nama Layanan</th>
+                <th className="py-3 px-4 text-right">Harga Jual</th>
+                <th className="py-3 px-4 text-right">Total Beban (HPP)</th>
+                <th className="py-3 px-4 text-right">Laba Bersih</th>
+                <th className="py-3 px-4 text-center">Margin</th>
+                <th className="py-3 px-4 text-center">Estimasi Order/Bln</th>
+                <th className="py-3 px-4 text-right">Proyeksi Laba/Bln</th>
+                <th className="py-3 px-4 text-center">Rincian</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100 font-medium">
+            <tbody className="divide-y divide-gray-100 text-gray-700">
               {analyses.map((service) => {
                 const metrics = calculateServiceMetrics(service);
                 const isExpanded = expandedServiceId === service.id;
@@ -390,75 +361,64 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                       onClick={() =>
                         setExpandedServiceId(isExpanded ? null : service.id)
                       }
-                      className={`hover:bg-rose-50/40 transition-colors cursor-pointer ${
-                        isExpanded ? "bg-rose-50/30" : ""
+                      className={`hover:bg-gray-50/70 transition-colors cursor-pointer ${
+                        isExpanded ? "bg-gray-50/40" : ""
                       }`}
                     >
                       {/* 1. Nama Layanan */}
-                      <td className="py-4 px-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-[#8B0021]" />
-                          <div>
-                            <span className="font-extrabold text-gray-950 text-sm block">
-                              {service.serviceName}
+                      <td className="py-3.5 px-4">
+                        <div>
+                          <span className="font-semibold text-gray-900 text-xs block">
+                            {service.serviceName}
+                          </span>
+                          {service.notes && (
+                            <span className="text-[11px] text-gray-400 block line-clamp-1 mt-0.5">
+                              {service.notes}
                             </span>
-                            {service.notes && (
-                              <span className="text-[11px] text-gray-400 block line-clamp-1">
-                                {service.notes}
-                              </span>
-                            )}
-                          </div>
+                          )}
                         </div>
                       </td>
 
                       {/* 2. Harga Jual */}
-                      <td className="py-4 px-4 text-right font-bold text-gray-900">
+                      <td className="py-3.5 px-4 text-right font-medium text-gray-900">
                         {formatIDR(service.sellingPrice)}
                       </td>
 
                       {/* 3. Total Beban HPP */}
-                      <td className="py-4 px-4 text-right font-bold text-rose-600">
+                      <td className="py-3.5 px-4 text-right text-gray-600 font-medium">
                         {formatIDR(metrics.totalCosts)}
                       </td>
 
                       {/* 4. Laba Bersih */}
-                      <td className="py-4 px-4 text-right font-extrabold text-emerald-600">
+                      <td className="py-3.5 px-4 text-right font-semibold text-gray-900">
                         {formatIDR(metrics.netProfit)}
                       </td>
 
                       {/* 5. Margin Badge */}
-                      <td className="py-4 px-4 text-center">
-                        <span
-                          className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-extrabold ${
-                            metrics.marginPercent >= 45
-                              ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
-                              : metrics.marginPercent >= 20
-                              ? "bg-amber-100 text-amber-800 border border-amber-200"
-                              : "bg-rose-100 text-rose-800 border border-rose-200"
-                          }`}
-                        >
+                      <td className="py-3.5 px-4 text-center">
+                        <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-700">
                           {metrics.marginPercent}%
                         </span>
                       </td>
 
                       {/* 6. Estimasi Order / Bulan */}
-                      <td className="py-4 px-4 text-center font-mono font-bold text-gray-700">
+                      <td className="py-3.5 px-4 text-center text-gray-600">
                         {metrics.monthlyOrders} proyek
                       </td>
 
                       {/* 7. Proyeksi Laba Bulanan */}
-                      <td className="py-4 px-4 text-right font-black text-gray-950">
+                      <td className="py-3.5 px-4 text-right font-semibold text-gray-900">
                         {formatIDR(metrics.monthlyNetProfit)}
                       </td>
 
                       {/* 8. Accordion Toggle */}
-                      <td className="py-4 px-4 text-center">
+                      <td className="py-3.5 px-4 text-center">
                         <button
                           type="button"
-                          className="p-1 text-gray-400 hover:text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+                          className="p-1 text-gray-400 hover:text-gray-700 rounded transition-colors"
                         >
                           {isExpanded ? (
-                            <ChevronUp className="w-4 h-4 text-[#8B0021]" />
+                            <ChevronUp className="w-4 h-4" />
                           ) : (
                             <ChevronDown className="w-4 h-4" />
                           )}
@@ -468,17 +428,16 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
 
                     {/* EXPANDED ACCORDION: DETAIL KOMPONEN BEBAN & EDITING */}
                     {isExpanded && (
-                      <tr className="bg-gray-50/90 border-b border-gray-200">
-                        <td colSpan={8} className="p-5 sm:p-6">
+                      <tr className="bg-gray-50/40 border-b border-gray-100">
+                        <td colSpan={8} className="p-5">
                           <div className="space-y-4 max-w-4xl">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200 pb-3">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200/60 pb-3">
                               <div>
-                                <h3 className="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center gap-1.5">
-                                  <span>📦 Komponen Beban Biaya:</span>
-                                  <span className="text-[#8B0021]">{service.serviceName}</span>
+                                <h3 className="text-xs font-semibold text-gray-900">
+                                  Komponen Beban: {service.serviceName}
                                 </h3>
-                                <p className="text-[11px] text-gray-500">
-                                  Tambahkan atau sesuaikan beban infrastruktur, lisensi, dan biaya tenaga kerja untuk paket ini.
+                                <p className="text-[11px] text-gray-400 mt-0.5">
+                                  Kelola rincian biaya infrastruktur, lisensi, dan fee tenaga kerja.
                                 </p>
                               </div>
 
@@ -486,10 +445,10 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                                 <button
                                   type="button"
                                   onClick={() => handleOpenAddCost(service.id)}
-                                  className="px-3 py-1.5 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-bold rounded-lg shadow-2xs flex items-center gap-1 transition-colors cursor-pointer"
+                                  className="px-3 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
                                 >
                                   <Plus className="w-3.5 h-3.5" />
-                                  <span>+ Tambah Komponen Beban</span>
+                                  <span>Tambah Biaya</span>
                                 </button>
 
                                 <button
@@ -500,7 +459,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                                       showToast("Layanan berhasil dihapus dari analisis!");
                                     }
                                   }}
-                                  className="p-1.5 text-gray-400 hover:text-rose-600 rounded-lg hover:bg-white border border-transparent hover:border-gray-200 transition-colors cursor-pointer"
+                                  className="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-white border border-transparent hover:border-gray-200 transition-colors cursor-pointer"
                                   title="Hapus Layanan Ini"
                                 >
                                   <Trash2 className="w-3.5 h-3.5" />
@@ -509,10 +468,10 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                             </div>
 
                             {/* Quick Editor for Selling Price & Monthly Target */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-2xs">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-gray-200/70">
                               <div>
-                                <label className="block text-[11px] font-bold text-gray-700 mb-1">
-                                  💵 Harga Jual Layanan (Rp):
+                                <label className="block text-[11px] font-medium text-gray-600 mb-1">
+                                  Harga Jual Layanan (Rp)
                                 </label>
                                 <input
                                   type="number"
@@ -522,13 +481,13 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                                       sellingPrice: Number(e.target.value) || 0,
                                     })
                                   }
-                                  className="w-full text-xs font-bold text-gray-900 p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none"
+                                  className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                                 />
                               </div>
 
                               <div>
-                                <label className="block text-[11px] font-bold text-gray-700 mb-1">
-                                  🎯 Estimasi Order per Bulan (Proyek):
+                                <label className="block text-[11px] font-medium text-gray-600 mb-1">
+                                  Estimasi Order per Bulan (Proyek)
                                 </label>
                                 <input
                                   type="number"
@@ -540,7 +499,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                                       estimatedMonthlyOrders: Number(e.target.value) || 1,
                                     })
                                   }
-                                  className="w-full text-xs font-bold text-gray-900 p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none"
+                                  className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                                 />
                               </div>
                             </div>
@@ -549,35 +508,29 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                             <div className="space-y-2">
                               {(!service.costs || service.costs.length === 0) && (
                                 <p className="text-xs text-gray-400 italic py-2">
-                                  Belum ada komponen beban untuk paket ini. Klik tombol "+ Tambah Komponen Beban" di atas.
+                                  Belum ada komponen beban untuk paket ini. Klik tombol "+ Tambah Biaya" di atas.
                                 </p>
                               )}
 
                               {service.costs?.map((cost) => {
                                 const catInfo = getCategoryInfo(cost.category);
-                                const CatIcon = catInfo.icon;
 
                                 return (
                                   <div
                                     key={cost.id}
-                                    className="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-all shadow-2xs"
+                                    className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200/70 hover:border-gray-300 transition-colors"
                                   >
-                                    <div className="flex items-center gap-3">
-                                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center border ${catInfo.color}`}>
-                                        <CatIcon className="w-3.5 h-3.5" />
-                                      </div>
-                                      <div>
-                                        <span className="font-bold text-xs text-gray-900 block">
-                                          {cost.name}
-                                        </span>
-                                        <span className="text-[10px] text-gray-400 block font-mono">
-                                          {catInfo.label}
-                                        </span>
-                                      </div>
+                                    <div>
+                                      <span className="font-medium text-xs text-gray-900 block">
+                                        {cost.name}
+                                      </span>
+                                      <span className="text-[10px] text-gray-400 block">
+                                        {catInfo.label}
+                                      </span>
                                     </div>
 
                                     <div className="flex items-center gap-4">
-                                      <span className="font-mono font-bold text-xs text-rose-600">
+                                      <span className="font-medium text-xs text-gray-800">
                                         {formatIDR(cost.amount)}
                                       </span>
 
@@ -632,58 +585,57 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
       {/* 3. MODAL: TAMBAH KOMPONEN BEBAN BIAYA BARU */}
       <AnimatePresence>
         {costModalOpen && (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl border border-gray-200"
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
+              className="bg-white rounded-xl p-6 max-w-md w-full shadow-xl border border-gray-200/80 font-sans"
             >
-              <h3 className="text-sm font-extrabold text-gray-950 mb-1 flex items-center gap-2">
-                <Plus className="w-4 h-4 text-[#8B0021]" />
-                <span>Tambah Komponen Beban Biaya</span>
+              <h3 className="text-sm font-semibold text-gray-900 mb-0.5">
+                Tambah Komponen Beban Biaya
               </h3>
-              <p className="text-xs text-gray-500 mb-4">
-                Masukkan biaya modal, domain, server, atau fee tenaga kerja untuk layanan ini.
+              <p className="text-xs text-gray-400 mb-4">
+                Tambahkan beban modal, domain, server, atau fee ke layanan ini.
               </p>
 
-              <form onSubmit={handleSaveCost} className="space-y-4 text-xs">
+              <form onSubmit={handleSaveCost} className="space-y-3.5 text-xs">
                 <div>
-                  <label className="block font-bold text-gray-800 mb-1">
-                    Nama Komponen Biaya:
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Nama Komponen Biaya
                   </label>
                   <input
                     type="text"
                     required
                     value={costName}
                     onChange={(e) => setCostName(e.target.value)}
-                    placeholder="Contoh: Domain .com 1 Tahun, Fee Freelance Developer"
-                    className="w-full text-xs font-bold text-gray-900 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] outline-none"
+                    placeholder="Contoh: Domain .com 1 Tahun, Fee Developer"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-gray-800 mb-1">
-                    Kategori Beban:
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Kategori Beban
                   </label>
                   <select
                     value={costCategory}
                     onChange={(e) =>
                       setCostCategory(e.target.value as ServiceCostItem["category"])
                     }
-                    className="w-full text-xs font-bold text-gray-900 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                   >
-                    <option value="infrastruktur">🌐 Infrastruktur (Domain, Hosting, SSL, CDN)</option>
-                    <option value="tenaga_kerja">⚡ Tenaga Kerja / Fee Developer / Desainer</option>
-                    <option value="lisensi_tools">🎨 Lisensi Tools, Aset 3D &amp; Font</option>
-                    <option value="operasional">🛡️ Operasional, QA &amp; CS Buffer</option>
-                    <option value="lainnya">📦 Lain-lain</option>
+                    <option value="infrastruktur">Infrastruktur (Domain, Hosting, SSL)</option>
+                    <option value="tenaga_kerja">Tenaga Kerja / Fee Eksekusi</option>
+                    <option value="lisensi_tools">Lisensi Tools &amp; Aset</option>
+                    <option value="operasional">Operasional &amp; Maintenance</option>
+                    <option value="lainnya">Lain-lain</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block font-bold text-gray-800 mb-1">
-                    Nominal Biaya (Rp):
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Nominal Biaya (Rp)
                   </label>
                   <input
                     type="number"
@@ -692,37 +644,36 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                     step="1000"
                     value={costAmount}
                     onChange={(e) => setCostAmount(Number(e.target.value))}
-                    className="w-full text-xs font-bold text-gray-900 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] outline-none font-mono"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-gray-800 mb-1">
-                    Catatan / Keterangan (Opsional):
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Keterangan (Opsional)
                   </label>
                   <input
                     type="text"
                     value={costNotes}
                     onChange={(e) => setCostNotes(e.target.value)}
-                    placeholder="Contoh: Berlangganan tahunan di Namecheap"
-                    className="w-full text-xs font-medium text-gray-900 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] outline-none"
+                    placeholder="Contoh: Langganan tahunan"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                   />
                 </div>
 
-                <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
-                  <button
-                    type="submit"
-                    className="flex-1 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center gap-1"
-                  >
-                    <Check className="w-4 h-4" />
-                    <span>Simpan Komponen Biaya</span>
-                  </button>
+                <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-100">
                   <button
                     type="button"
                     onClick={() => setCostModalOpen(false)}
-                    className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+                    className="px-3.5 py-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-medium text-xs rounded-lg transition-colors cursor-pointer"
                   >
                     Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-gray-900 hover:bg-black text-white font-medium text-xs rounded-lg transition-colors cursor-pointer"
+                  >
+                    Simpan Biaya
                   </button>
                 </div>
               </form>
@@ -734,40 +685,39 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
       {/* 4. MODAL: TAMBAH LAYANAN BARU KE KALKULATOR */}
       <AnimatePresence>
         {serviceModalOpen && (
-          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
             <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              className="bg-white rounded-2xl p-6 max-w-md w-full shadow-2xl border border-gray-200"
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
+              className="bg-white rounded-xl p-6 max-w-md w-full shadow-xl border border-gray-200/80 font-sans"
             >
-              <h3 className="text-sm font-extrabold text-gray-950 mb-1 flex items-center gap-2">
-                <Plus className="w-4 h-4 text-[#8B0021]" />
-                <span>Tambah Layanan / Paket Baru</span>
+              <h3 className="text-sm font-semibold text-gray-900 mb-0.5">
+                Tambah Layanan Baru
               </h3>
-              <p className="text-xs text-gray-500 mb-4">
-                Buat skema perhitungan laba rugi untuk layanan atau proyek baru Anda.
+              <p className="text-xs text-gray-400 mb-4">
+                Buat skema perhitungan laba rugi dan HPP untuk layanan baru.
               </p>
 
-              <form onSubmit={handleSaveNewService} className="space-y-4 text-xs">
+              <form onSubmit={handleSaveNewService} className="space-y-3.5 text-xs">
                 <div>
-                  <label className="block font-bold text-gray-800 mb-1">
-                    Nama Layanan:
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Nama Layanan / Paket
                   </label>
                   <input
                     type="text"
                     required
                     value={newServiceName}
                     onChange={(e) => setNewServiceName(e.target.value)}
-                    placeholder="Contoh: Paket Website E-Commerce & Payment"
-                    className="w-full text-xs font-bold text-gray-900 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] outline-none"
+                    placeholder="Contoh: Paket E-Commerce & Payment Gateway"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                   />
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block font-bold text-gray-800 mb-1">
-                      Harga Jual (Rp):
+                    <label className="block font-medium text-gray-700 mb-1">
+                      Harga Jual (Rp)
                     </label>
                     <input
                       type="number"
@@ -776,13 +726,13 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                       step="10000"
                       value={newSellingPrice}
                       onChange={(e) => setNewSellingPrice(Number(e.target.value))}
-                      className="w-full text-xs font-bold text-gray-900 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] outline-none font-mono"
+                      className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                     />
                   </div>
 
                   <div>
-                    <label className="block font-bold text-gray-800 mb-1">
-                      Target Order/Bln:
+                    <label className="block font-medium text-gray-700 mb-1">
+                      Target Order / Bln
                     </label>
                     <input
                       type="number"
@@ -790,14 +740,14 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                       max="100"
                       value={newEstimatedOrders}
                       onChange={(e) => setNewEstimatedOrders(Number(e.target.value))}
-                      className="w-full text-xs font-bold text-gray-900 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] outline-none font-mono"
+                      className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-bold text-gray-800 mb-1">
-                    Alokasi Fee Tenaga Kerja / Eksekusi (Rp):
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Estimasi Fee Tenaga Kerja / Eksekusi (Rp)
                   </label>
                   <input
                     type="number"
@@ -805,37 +755,37 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                     step="10000"
                     value={newLaborFee}
                     onChange={(e) => setNewLaborFee(Number(e.target.value))}
-                    className="w-full text-xs font-bold text-gray-900 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] outline-none font-mono"
+                    placeholder="Contoh: 300000"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                   />
                 </div>
 
                 <div>
-                  <label className="block font-bold text-gray-800 mb-1">
-                    Deskripsi / Catatan (Opsional):
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Catatan Layanan (Opsional)
                   </label>
                   <input
                     type="text"
                     value={newServiceNotes}
                     onChange={(e) => setNewServiceNotes(e.target.value)}
-                    placeholder="Contoh: Termasuk integrasi payment gateway Midtrans"
-                    className="w-full text-xs font-medium text-gray-900 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] outline-none"
+                    placeholder="Keterangan singkat target klien..."
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                   />
                 </div>
 
-                <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
-                  <button
-                    type="submit"
-                    className="flex-1 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer flex items-center justify-center gap-1"
-                  >
-                    <Check className="w-4 h-4" />
-                    <span>Tambahkan Layanan</span>
-                  </button>
+                <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-100">
                   <button
                     type="button"
                     onClick={() => setServiceModalOpen(false)}
-                    className="px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-xs rounded-xl transition-colors cursor-pointer"
+                    className="px-3.5 py-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-medium text-xs rounded-lg transition-colors cursor-pointer"
                   >
                     Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-gray-900 hover:bg-black text-white font-medium text-xs rounded-lg transition-colors cursor-pointer"
+                  >
+                    Tambah Layanan
                   </button>
                 </div>
               </form>
