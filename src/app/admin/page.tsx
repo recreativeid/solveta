@@ -718,12 +718,12 @@ function AdminPortalVisual() {
           </div>
 
           {/* Mode Switcher Tabs */}
-          <div className="flex items-center gap-1 bg-gray-100/80 p-1 rounded-lg border border-gray-200/80">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 bg-gray-100/90 p-1.5 rounded-xl border border-gray-200">
             <button
               onClick={() => setActiveMode("visual")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
                 activeMode === "visual"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
@@ -735,9 +735,9 @@ function AdminPortalVisual() {
 
             <button
               onClick={() => setActiveMode("pricing")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
                 activeMode === "pricing"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
@@ -749,9 +749,9 @@ function AdminPortalVisual() {
 
             <button
               onClick={() => setActiveMode("portfolio")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
                 activeMode === "portfolio"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
@@ -763,9 +763,9 @@ function AdminPortalVisual() {
 
             <button
               onClick={() => setActiveMode("brands")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
                 activeMode === "brands"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
@@ -777,9 +777,9 @@ function AdminPortalVisual() {
 
             <button
               onClick={() => setActiveMode("contact")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
                 activeMode === "contact"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
@@ -791,9 +791,9 @@ function AdminPortalVisual() {
 
             <button
               onClick={() => setActiveMode("video")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
                 activeMode === "video"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs"
+                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
                   : "text-gray-600 hover:text-gray-900"
               }`}
             >
@@ -803,17 +803,21 @@ function AdminPortalVisual() {
               </span>
             </button>
 
+            {/* HIGH-VISIBILITY LABA RUGI TAB */}
             <button
               onClick={() => setActiveMode("profit")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+              className={`text-xs px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeMode === "profit"
-                  ? "bg-[#8B0021] text-white border border-[#8B0021] shadow-2xs font-bold"
-                  : "text-gray-700 hover:text-gray-950 hover:bg-rose-50/60"
+                  ? "bg-emerald-700 text-white shadow-xs font-extrabold border border-emerald-600"
+                  : "bg-emerald-50 text-emerald-950 border border-emerald-300 hover:bg-emerald-100 font-bold"
               }`}
             >
-              <span className="flex items-center gap-1.5">
-                <DollarSign className={`w-3.5 h-3.5 ${activeMode === "profit" ? "text-white" : "text-[#7B0B1E]"}`} />
-                <span>📊 Laba Rugi Layanan</span>
+              <DollarSign className={`w-3.5 h-3.5 ${activeMode === "profit" ? "text-emerald-200" : "text-emerald-700"}`} />
+              <span>📊 Hitung Laba Rugi (HPP)</span>
+              <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-black uppercase ${
+                activeMode === "profit" ? "bg-white text-emerald-900" : "bg-emerald-200 text-emerald-900"
+              }`}>
+                BARU
               </span>
             </button>
           </div>
@@ -1144,6 +1148,31 @@ function AdminPortalVisual() {
                 >
                   <Save className="w-3.5 h-3.5" />
                   <span>Simpan Semua Perubahan</span>
+                </button>
+              </div>
+
+              {/* BANNER: KALKULATOR HPP & LABA BERSIH TIAP PAKET */}
+              <div className="mb-8 p-5 sm:p-6 bg-gradient-to-r from-gray-900 via-[#131622] to-[#0b0c12] text-white rounded-2xl shadow-md border border-emerald-500/30 flex flex-col md:flex-row items-center justify-between gap-5">
+                <div className="space-y-1.5 text-left">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-emerald-950/80 text-emerald-400 rounded-full text-xs font-bold border border-emerald-500/40">
+                    <DollarSign className="w-3.5 h-3.5" />
+                    <span>Kalkulator HPP &amp; Laba Bersih Per Layanan (Baru)</span>
+                  </div>
+                  <h3 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
+                    Ingin Tahu Rincian Modal Beban &amp; Berapa Untung Bersih Tiap Paket?
+                  </h3>
+                  <p className="text-xs text-gray-300 max-w-xl leading-relaxed">
+                    Hitung komponen beban pokok (domain, cloud server, aset/lisensi, dan fee tenaga kerja) serta ketahui nominal laba bersih yang Anda peroleh dari setiap paket.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setActiveMode("profit")}
+                  className="px-5 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-gray-950 text-xs font-black rounded-xl shadow-lg transition-all flex items-center gap-2 cursor-pointer flex-shrink-0"
+                >
+                  <TrendingUp className="w-4 h-4" />
+                  <span>Buka Tabel Laba Rugi &amp; HPP &rarr;</span>
                 </button>
               </div>
 
