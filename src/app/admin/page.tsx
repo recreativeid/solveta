@@ -745,7 +745,7 @@ function AdminPortalVisual() {
               <img
                 src={currentLogoSrc}
                 alt="SOLVETA Logo"
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain p-0.5"
               />
             </div>
             <div>
@@ -951,7 +951,7 @@ function AdminPortalVisual() {
                     <img
                       src={currentLogoSrc}
                       alt="Brand Logo"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain p-1"
                     />
                   </div>
                   <div>
