@@ -8,6 +8,7 @@ import {
   Plus,
   Trash2,
   Edit3,
+  Edit,
   Check,
   ChevronDown,
   ChevronUp,
@@ -27,6 +28,7 @@ import {
 import {
   useSiteData,
   ServiceProfitAnalysis,
+  AddonServiceItem,
   ServiceCostItem,
 } from "@/context/SiteDataContext";
 
@@ -42,12 +44,29 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
     addCostToService,
     removeCostFromService,
     editCostInService,
+    updateAddonServices,
+    addAddonService,
+    editAddonService,
+    deleteAddonService,
   } = useSiteData();
 
   const analyses: ServiceProfitAnalysis[] =
     data.profitAnalysis && data.profitAnalysis.length > 0
       ? data.profitAnalysis
       : [];
+
+  const addonList: AddonServiceItem[] =
+    data.addonServices && data.addonServices.length > 0
+      ? data.addonServices
+      : [];
+
+  // Modal State for Addon Services
+  const [addonModalOpen, setAddonModalOpen] = useState(false);
+  const [editingAddonId, setEditingAddonId] = useState<string | null>(null);
+  const [addonName, setAddonName] = useState("");
+  const [addonPrice, setAddonPrice] = useState("");
+  const [addonThirdParty, setAddonThirdParty] = useState("-");
+  const [addonCategory, setAddonCategory] = useState("Layanan");
 
   // Expanded row for accordion cost details
   const [expandedServiceId, setExpandedServiceId] = useState<string | null>(
@@ -239,6 +258,35 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
     link.click();
     document.body.removeChild(link);
     showToast("Laporan Laba Rugi berhasil diekspor ke CSV!");
+  };
+
+  const handleSaveAddon = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!addonName.trim() || !addonPrice.trim()) {
+      showToast("Nama dan tarif layanan tambahan wajib diisi.");
+      return;
+    }
+
+    if (editingAddonId) {
+      editAddonService(editingAddonId, {
+        name: addonName.trim(),
+        priceDescription: addonPrice.trim(),
+        thirdPartyCost: addonThirdParty.trim() || "-",
+        category: addonCategory.trim(),
+      });
+      showToast("Layanan tambahan berhasil diperbarui!");
+    } else {
+      addAddonService({
+        name: addonName.trim(),
+        priceDescription: addonPrice.trim(),
+        thirdPartyCost: addonThirdParty.trim() || "-",
+        category: addonCategory.trim(),
+      });
+      showToast("Layanan tambahan baru berhasil ditambahkan!");
+    }
+
+    setAddonModalOpen(false);
+    setEditingAddonId(null);
   };
 
   return (
@@ -582,6 +630,96 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
         </div>
       </div>
 
+      {/* 2.5 TABEL LAYANAN TAMBAHAN (ADD-ONS & PAY-AS-YOU-GO) */}
+      <div className="bg-white border border-gray-200/80 rounded-xl overflow-hidden">
+        <div className="p-5 border-b border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">
+          <div>
+            <h2 className="text-sm font-semibold text-gray-900">
+              5. Layanan Tambahan (Add-ons &amp; Pay-as-you-go)
+            </h2>
+            <p className="text-xs text-gray-400 mt-0.5">
+              Rincian tarif layanan add-on, integrasi API, dan biaya platform pihak ketiga.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => {
+              setEditingAddonId(null);
+              setAddonName("");
+              setAddonPrice("");
+              setAddonThirdParty("-");
+              setAddonCategory("Layanan");
+              setAddonModalOpen(true);
+            }}
+            className="px-3.5 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg shadow-none flex items-center gap-1.5 transition-colors cursor-pointer"
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span>Tambah Layanan Tambahan</span>
+          </button>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left border-collapse text-xs">
+            <thead>
+              <tr className="bg-white border-b border-gray-100 text-gray-400 font-medium uppercase text-[11px] tracking-wider">
+                <th className="py-3 px-5">Layanan Tambahan</th>
+                <th className="py-3 px-5">Harga / Pay-as-you-go</th>
+                <th className="py-3 px-5">Biaya Platform / Pihak Ketiga</th>
+                <th className="py-3 px-5">Kategori</th>
+                <th className="py-3 px-5 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-100 font-sans">
+              {addonList.map((addon) => (
+                <tr key={addon.id} className="hover:bg-gray-50/50 transition-colors">
+                  <td className="py-3.5 px-5 font-medium text-gray-900">{addon.name}</td>
+                  <td className="py-3.5 px-5 text-gray-900 font-semibold">{addon.priceDescription}</td>
+                  <td className="py-3.5 px-5 text-gray-500">{addon.thirdPartyCost}</td>
+                  <td className="py-3.5 px-5">
+                    <span className="text-[11px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded">
+                      {addon.category || "Layanan"}
+                    </span>
+                  </td>
+                  <td className="py-3.5 px-5 text-right">
+                    <div className="flex items-center justify-end gap-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingAddonId(addon.id);
+                          setAddonName(addon.name);
+                          setAddonPrice(addon.priceDescription);
+                          setAddonThirdParty(addon.thirdPartyCost);
+                          setAddonCategory(addon.category || "Layanan");
+                          setAddonModalOpen(true);
+                        }}
+                        className="p-1 hover:bg-gray-100 text-gray-400 hover:text-gray-700 rounded transition-colors"
+                        title="Edit Layanan Tambahan"
+                      >
+                        <Edit className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (confirm(`Hapus layanan tambahan "${addon.name}"?`)) {
+                            deleteAddonService(addon.id);
+                            showToast("Layanan tambahan berhasil dihapus!");
+                          }
+                        }}
+                        className="p-1 hover:bg-red-50 text-gray-400 hover:text-red-600 rounded transition-colors"
+                        title="Hapus Layanan Tambahan"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       {/* 3. MODAL: TAMBAH KOMPONEN BEBAN BIAYA BARU */}
       <AnimatePresence>
         {costModalOpen && (
@@ -786,6 +924,102 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                     className="px-4 py-2 bg-gray-900 hover:bg-black text-white font-medium text-xs rounded-lg transition-colors cursor-pointer"
                   >
                     Tambah Layanan
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* 5. MODAL: TAMBAH / EDIT LAYANAN TAMBAHAN */}
+      <AnimatePresence>
+        {addonModalOpen && (
+          <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.96, y: 10 }}
+              className="bg-white rounded-xl p-6 max-w-md w-full shadow-xl border border-gray-200/80 font-sans"
+            >
+              <h3 className="text-sm font-semibold text-gray-900 mb-0.5">
+                {editingAddonId ? "Edit Layanan Tambahan" : "Tambah Layanan Tambahan Baru"}
+              </h3>
+              <p className="text-xs text-gray-400 mb-4">
+                Tentukan skema tarif add-on dan estimasi biaya platform / pihak ketiga.
+              </p>
+
+              <form onSubmit={handleSaveAddon} className="space-y-3.5 text-xs">
+                <div>
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Nama Layanan Tambahan
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={addonName}
+                    onChange={(e) => setAddonName(e.target.value)}
+                    placeholder="Contoh: WhatsApp Business API, Tambah 1 Halaman"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Harga / Pay-as-you-go (Label Tampilan)
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={addonPrice}
+                    onChange={(e) => setAddonPrice(e.target.value)}
+                    placeholder="Contoh: Rp30K / revisi, Mulai Rp150K"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Biaya Platform / Pihak Ketiga (HPP Pihak Luar)
+                  </label>
+                  <input
+                    type="text"
+                    value={addonThirdParty}
+                    onChange={(e) => setAddonThirdParty(e.target.value)}
+                    placeholder="Contoh: - atau Sesuai tarif Meta/provider & penggunaan"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Kategori Layanan
+                  </label>
+                  <input
+                    type="text"
+                    value={addonCategory}
+                    onChange={(e) => setAddonCategory(e.target.value)}
+                    placeholder="Contoh: Integrasi API, Revisi, Halaman, AI"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
+                  />
+                </div>
+
+                <div className="flex items-center justify-end gap-2 pt-3 border-t border-gray-100">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAddonModalOpen(false);
+                      setEditingAddonId(null);
+                    }}
+                    className="px-3.5 py-2 bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 font-medium text-xs rounded-lg transition-colors cursor-pointer"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-gray-900 hover:bg-black text-white font-medium text-xs rounded-lg transition-colors cursor-pointer"
+                  >
+                    Simpan Layanan Tambahan
                   </button>
                 </div>
               </form>

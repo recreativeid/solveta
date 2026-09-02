@@ -94,13 +94,56 @@ export interface ServiceCostItem {
 
 export interface ServiceProfitAnalysis {
   id: string;
-  serviceName: string; // e.g. "Paket Website BASIC"
-  tierId?: string; // e.g. "basic", "standard", "premium", "custom"
+  serviceName: string; // e.g. "1. Basic — 299k"
+  tierId?: string; // e.g. "basic", "standard", "premium", "platinum", "custom"
   sellingPrice: number; // in IDR
   laborFee?: number; // Fee tenaga kerja / kompensasi pembuat
   estimatedMonthlyOrders?: number; // Estimasi jumlah order per bulan
   costs: ServiceCostItem[];
   notes?: string;
+}
+
+export interface AddonServiceItem {
+  id: string;
+  name: string;
+  priceDescription: string;
+  thirdPartyCost: string;
+  basePrice?: number;
+  category?: string;
+}
+
+export interface CustomerOrderSubmission {
+  id: string;
+  timestamp: string;
+  fullName: string;
+  whatsappNumber: string;
+  brandName: string;
+  businessDescription: string;
+  websiteType: string;
+  pagesNeeded: string;
+  designColorTheme: string;
+  hasDomain: string;
+  hasLogo: string;
+  productPhotos: string;
+  exampleWebsites: string;
+  specialNotes: string;
+  websiteAndDomainName: string;
+  selectedPackage: string;
+  businessProfile: string;
+  status?: "Baru" | "Dihubungi" | "Selesai";
+}
+
+export interface ProjectTransactionRecord {
+  id: string;
+  date: string; // YYYY-MM-DD
+  customerName: string;
+  phoneNumber: string;
+  servicePrice: number;
+  websiteName: string;
+  websiteLink: string;
+  status: "Terlaksana" | "Progress" | "Batal";
+  notes: string;
+  invoiceNumber: string;
 }
 
 export interface ContactData {
@@ -120,6 +163,9 @@ export interface SiteDataState {
   categories: string[];
   geminiApiKey?: string;
   profitAnalysis?: ServiceProfitAnalysis[];
+  addonServices?: AddonServiceItem[];
+  orderSubmissions?: CustomerOrderSubmission[];
+  projectTransactions?: ProjectTransactionRecord[];
 }
 
 const defaultState: SiteDataState = {
@@ -396,67 +442,160 @@ const defaultState: SiteDataState = {
   profitAnalysis: [
     {
       id: "profit-basic",
-      serviceName: "Paket Website BASIC",
+      serviceName: "1. Basic — 299k",
       tierId: "basic",
       sellingPrice: 299000,
       laborFee: 75000,
       estimatedMonthlyOrders: 6,
       costs: [
-        { id: "c-1", name: "Domain .my.id / Subdomain 1 Tahun", category: "infrastruktur", amount: 25000 },
-        { id: "c-2", name: "Hosting Cloud & SSL Deployment", category: "infrastruktur", amount: 30000 },
-        { id: "c-3", name: "Asset & Template Base", category: "lisensi_tools", amount: 20000 },
-        { id: "c-4", name: "Biaya Tenaga Kerja / Setup Dev", category: "tenaga_kerja", amount: 75000 },
+        { id: "c-1", name: "Hosting / Tahun", category: "infrastruktur", amount: 60000 },
+        { id: "c-2", name: "Domain", category: "infrastruktur", amount: 30000 },
+        { id: "c-3", name: "Customer Service", category: "operasional", amount: 15000 },
+        { id: "c-4", name: "Development", category: "tenaga_kerja", amount: 75000 },
+        { id: "c-5", name: "Iklan", category: "operasional", amount: 50000 },
       ],
-      notes: "Paket ekonomis untuk landing page personal & UMKM.",
+      notes: "Total Beban: 230K, Estimasi Margin: 69K (atau 58K setelah pajak/buffer).",
     },
     {
       id: "profit-standard",
-      serviceName: "Paket Website STANDARD (Popular)",
+      serviceName: "2. Standard — 549k",
       tierId: "standard",
-      sellingPrice: 599000,
-      laborFee: 150000,
+      sellingPrice: 549000,
+      laborFee: 199000,
       estimatedMonthlyOrders: 10,
       costs: [
-        { id: "c-5", name: "Domain .com Resmi 1 Tahun", category: "infrastruktur", amount: 135000 },
-        { id: "c-6", name: "High-Speed Cloud Server & CDN", category: "infrastruktur", amount: 60000 },
-        { id: "c-7", name: "Icon, Font & Graphics Pack", category: "lisensi_tools", amount: 50000 },
-        { id: "c-8", name: "Biaya Tenaga Kerja Frontend Dev", category: "tenaga_kerja", amount: 150000 },
-        { id: "c-9", name: "Buffer Revisi & CS Handling", category: "operasional", amount: 40000 },
+        { id: "c-6", name: "Hosting / Tahun", category: "infrastruktur", amount: 100000 },
+        { id: "c-7", name: "Domain", category: "infrastruktur", amount: 50000 },
+        { id: "c-8", name: "Customer Service", category: "operasional", amount: 20000 },
+        { id: "c-9", name: "Development", category: "tenaga_kerja", amount: 199000 },
+        { id: "c-10", name: "Iklan", category: "operasional", amount: 50000 },
+        { id: "c-11", name: "Buffer Operasional & Tools", category: "operasional", amount: 41000 },
       ],
-      notes: "Paket paling diminati bisnis dan profil perusahaan.",
+      notes: "Total Beban: 460K, Estimasi Margin: 89K (atau 139K sebelum buffer operasional).",
     },
     {
       id: "profit-premium",
-      serviceName: "Paket Website PREMIUM (Bisnis)",
+      serviceName: "3. Premium — 849k",
       tierId: "premium",
-      sellingPrice: 1499000,
-      laborFee: 450000,
-      estimatedMonthlyOrders: 4,
+      sellingPrice: 849000,
+      laborFee: 405000,
+      estimatedMonthlyOrders: 5,
       costs: [
-        { id: "c-10", name: "Domain .com Premium + Private DNS", category: "infrastruktur", amount: 175000 },
-        { id: "c-11", name: "Dedicated Cloud Server + DB Setup", category: "infrastruktur", amount: 150000 },
-        { id: "c-12", name: "3D Visual Assets & Animation Suite", category: "lisensi_tools", amount: 120000 },
-        { id: "c-13", name: "Biaya Tenaga Kerja Fullstack Developer", category: "tenaga_kerja", amount: 450000 },
-        { id: "c-14", name: "QA Testing, SEO & Security Hardening", category: "operasional", amount: 100000 },
-        { id: "c-15", name: "Buffer Support 30 Hari", category: "operasional", amount: 100000 },
+        { id: "c-12", name: "Hosting / Tahun", category: "infrastruktur", amount: 150000 },
+        { id: "c-13", name: "Domain", category: "infrastruktur", amount: 50000 },
+        { id: "c-14", name: "Customer Service", category: "operasional", amount: 25000 },
+        { id: "c-15", name: "Development", category: "tenaga_kerja", amount: 405000 },
+        { id: "c-16", name: "Iklan", category: "operasional", amount: 50000 },
       ],
-      notes: "Paket komprehensif dengan animasi 3D dan optimasi performa tinggi.",
+      notes: "Total Beban: 680K, Estimasi Margin: 169K.",
     },
     {
-      id: "profit-custom",
-      serviceName: "Paket CUSTOM / Enterprise System",
-      tierId: "custom",
-      sellingPrice: 3500000,
+      id: "profit-platinum",
+      serviceName: "4. Platinum — Custom",
+      tierId: "platinum",
+      sellingPrice: 2500000,
       laborFee: 1200000,
       estimatedMonthlyOrders: 2,
       costs: [
-        { id: "c-16", name: "Custom Cloud Architecture & Scalability", category: "infrastruktur", amount: 350000 },
-        { id: "c-17", name: "Database Design & Third-party APIs", category: "infrastruktur", amount: 300000 },
-        { id: "c-18", name: "Tailored UI/UX Design System", category: "lisensi_tools", amount: 400000 },
-        { id: "c-19", name: "Biaya Tenaga Senior Software Engineer", category: "tenaga_kerja", amount: 1200000 },
-        { id: "c-20", name: "End-to-End QA Testing & Deployment", category: "operasional", amount: 250000 },
+        { id: "c-17", name: "Hosting / VPS / Cloud", category: "infrastruktur", amount: 350000, notes: "By Requirement" },
+        { id: "c-18", name: "Domain", category: "infrastruktur", amount: 150000, notes: "By Requirement" },
+        { id: "c-19", name: "Customer Service", category: "operasional", amount: 30000 },
+        { id: "c-20", name: "Development", category: "tenaga_kerja", amount: 1200000, notes: "By Complexity" },
+        { id: "c-21", name: "Iklan / Marketing", category: "operasional", amount: 50000 },
       ],
-      notes: "Solusi sistem web & database kustom dengan arsitektur modular.",
+      notes: "Total Beban: Custom (By Requirement & Complexity), Margin: Custom.",
+    },
+  ],
+  addonServices: [
+    { id: "add-1", name: "Revisi ringan tambahan", priceDescription: "Rp30K / revisi", thirdPartyCost: "-", basePrice: 30000, category: "Revisi" },
+    { id: "add-2", name: "Revisi berat tambahan", priceDescription: "Rp50K / revisi", thirdPartyCost: "-", basePrice: 50000, category: "Revisi" },
+    { id: "add-3", name: "Tambah 1 halaman", priceDescription: "Rp50K / halaman", thirdPartyCost: "-", basePrice: 50000, category: "Halaman" },
+    { id: "add-4", name: "WhatsApp Business API", priceDescription: "Mulai Rp150K", thirdPartyCost: "Sesuai tarif Meta/provider & penggunaan", basePrice: 150000, category: "Integrasi API" },
+    { id: "add-5", name: "Google Maps API / Places / Routes", priceDescription: "Mulai Rp150K", thirdPartyCost: "Sesuai tarif Meta/provider & penggunaan", basePrice: 150000, category: "Integrasi API" },
+    { id: "add-6", name: "API sederhana", priceDescription: "Mulai Rp150K", thirdPartyCost: "Sesuai API pihak ketiga", basePrice: 150000, category: "Integrasi API" },
+    { id: "add-7", name: "API kompleks", priceDescription: "Mulai Rp250K", thirdPartyCost: "Sesuai API pihak ketiga", basePrice: 250000, category: "Integrasi API" },
+    { id: "add-8", name: "Payment Gateway", priceDescription: "Mulai Rp250K", thirdPartyCost: "Fee transaksi/provider", basePrice: 250000, category: "Payment" },
+    { id: "add-9", name: "Email / SMTP", priceDescription: "Mulai Rp50K", thirdPartyCost: "Sesuai provider", basePrice: 50000, category: "Email" },
+    { id: "add-10", name: "AI API", priceDescription: "Mulai Rp250K", thirdPartyCost: "Pay-as-you-go / token sesuai provider", basePrice: 250000, category: "AI & Otomasi" },
+  ],
+  orderSubmissions: [
+    {
+      id: "sub-1",
+      timestamp: "2026-09-02 10:24",
+      fullName: "Budi Santoso",
+      whatsappNumber: "081234567890",
+      brandName: "Kopi Senja Nusantara",
+      businessDescription: "Kedai kopi artisan dan penjualan biji kopi sangrai online.",
+      websiteType: "Website E-Commerce & Menu Digital",
+      pagesNeeded: "Home, Menu, Tentang Kami, Galeri, Checkout WhatsApp",
+      designColorTheme: "Warm Espresso, Krem Natural, dan Aksen Emas",
+      hasDomain: "Belum punya (ingin dibantu carikan)",
+      hasLogo: "Sudah punya (format vector PNG transparan)",
+      productPhotos: "Ada 15 foto produk resolusi tinggi siap pakai",
+      exampleWebsites: "https://bluebottlecoffee.com",
+      specialNotes: "Mohon integrasikan tombol pesan langsung ke WhatsApp kasir.",
+      websiteAndDomainName: "kopisenjanusantara.com",
+      selectedPackage: "Standard (549k)",
+      businessProfile: "UMKM kopi lokal berpusat di Bandung berdiri sejak 2021.",
+      status: "Baru",
+    },
+    {
+      id: "sub-2",
+      timestamp: "2026-09-01 16:45",
+      fullName: "Siti Rahmawati",
+      whatsappNumber: "085798765432",
+      brandName: "Glow & Co Beauty",
+      businessDescription: "Klinik estetika medis dan skincare organik terdaftar BPOM.",
+      websiteType: "Company Profile & Reservasi Treatment",
+      pagesNeeded: "Beranda, Layanan Dokter, Treatment & Biaya, Testimoni, Kontak",
+      designColorTheme: "Clean White, Pastel Pink, dan Sage Green",
+      hasDomain: "Sudah punya (glowandco.id)",
+      hasLogo: "Sudah punya",
+      productPhotos: "Tersedia di Google Drive klinik",
+      exampleWebsites: "https://erha.co.id",
+      specialNotes: "Perlu form booking jadwal dokter dengan notifikasi WA otomatis.",
+      websiteAndDomainName: "glowandco.id",
+      selectedPackage: "Premium (849k)",
+      businessProfile: "Klinik perawatan kulit dengan 2 cabang di Jakarta Selatan.",
+      status: "Dihubungi",
+    },
+  ],
+  projectTransactions: [
+    {
+      id: "proj-1",
+      date: "2026-09-02",
+      customerName: "Budi Santoso",
+      phoneNumber: "081234567890",
+      servicePrice: 549000,
+      websiteName: "Kopi Senja Nusantara",
+      websiteLink: "https://kopisenja.solveta.site",
+      status: "Progress",
+      notes: "Tahap perakitan katalog produk dan integrasi tombol checkout WA.",
+      invoiceNumber: "INV-20260902-001",
+    },
+    {
+      id: "proj-2",
+      date: "2026-08-28",
+      customerName: "Dr. Hendra Wijaya",
+      phoneNumber: "081987654321",
+      servicePrice: 849000,
+      websiteName: "Klinik Medika Utama",
+      websiteLink: "https://medikautama.id",
+      status: "Terlaksana",
+      notes: "Website selesai 100%, domain aktif, serah terima akun selesai.",
+      invoiceNumber: "INV-20260828-002",
+    },
+    {
+      id: "proj-3",
+      date: "2026-08-20",
+      customerName: "Ahmad Fauzi",
+      phoneNumber: "087711223344",
+      servicePrice: 299000,
+      websiteName: "Fauzi Portfolio & CV",
+      websiteLink: "https://fauzi.my.id",
+      status: "Terlaksana",
+      notes: "Landing page personal selesai, revisi minor font selesai.",
+      invoiceNumber: "INV-20260820-003",
     },
   ],
 };
@@ -486,6 +625,19 @@ interface SiteContextType {
   addCostToService: (serviceId: string, cost: Omit<ServiceCostItem, "id">) => void;
   removeCostFromService: (serviceId: string, costId: string) => void;
   editCostInService: (serviceId: string, costId: string, updated: Partial<ServiceCostItem>) => void;
+  // Addon services
+  updateAddonServices: (addons: AddonServiceItem[]) => void;
+  addAddonService: (addon: Omit<AddonServiceItem, "id">) => void;
+  editAddonService: (id: string, updated: Partial<AddonServiceItem>) => void;
+  deleteAddonService: (id: string) => void;
+  // Customer order submissions
+  addOrderSubmission: (submission: Omit<CustomerOrderSubmission, "id" | "timestamp">) => void;
+  deleteOrderSubmission: (id: string) => void;
+  updateOrderSubmissionStatus: (id: string, status: "Baru" | "Dihubungi" | "Selesai") => void;
+  // Project transactions
+  addProjectTransaction: (transaction: Omit<ProjectTransactionRecord, "id">) => void;
+  editProjectTransaction: (id: string, updated: Partial<ProjectTransactionRecord>) => void;
+  deleteProjectTransaction: (id: string) => void;
   saveData: (newState: SiteDataState) => void;
   syncWithSupabase: (stateToSync?: SiteDataState) => Promise<boolean>;
   resetToDefaults: () => void;
@@ -494,7 +646,7 @@ interface SiteContextType {
 const SiteContext = createContext<SiteContextType | undefined>(undefined);
 
 // Persistent Storage Key
-const STORAGE_KEY = "solveta_site_cms_data_v10";
+const STORAGE_KEY = "solveta_site_cms_data_v11";
 
 export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [data, setData] = useState<SiteDataState>(defaultState);
@@ -833,6 +985,86 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     saveData({ ...data, profitAnalysis: newItems });
   };
 
+  // Addon services actions
+  const updateAddonServices = (addons: AddonServiceItem[]) => {
+    saveData({ ...data, addonServices: addons });
+  };
+
+  const addAddonService = (addon: Omit<AddonServiceItem, "id">) => {
+    const current = data.addonServices || defaultState.addonServices || [];
+    const newItem: AddonServiceItem = {
+      ...addon,
+      id: `add-${Date.now()}`,
+    };
+    saveData({ ...data, addonServices: [...current, newItem] });
+  };
+
+  const editAddonService = (id: string, updated: Partial<AddonServiceItem>) => {
+    const current = data.addonServices || defaultState.addonServices || [];
+    const newItems = current.map((a) => (a.id === id ? { ...a, ...updated } : a));
+    saveData({ ...data, addonServices: newItems });
+  };
+
+  const deleteAddonService = (id: string) => {
+    const current = data.addonServices || defaultState.addonServices || [];
+    saveData({
+      ...data,
+      addonServices: current.filter((a) => a.id !== id),
+    });
+  };
+
+  // Customer order submissions actions
+  const addOrderSubmission = (submission: Omit<CustomerOrderSubmission, "id" | "timestamp">) => {
+    const current = data.orderSubmissions || defaultState.orderSubmissions || [];
+    const now = new Date();
+    const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+    const newSubmission: CustomerOrderSubmission = {
+      ...submission,
+      id: `sub-${Date.now()}`,
+      timestamp: formattedDate,
+      status: submission.status || "Baru",
+    };
+    saveData({ ...data, orderSubmissions: [newSubmission, ...current] });
+  };
+
+  const deleteOrderSubmission = (id: string) => {
+    const current = data.orderSubmissions || defaultState.orderSubmissions || [];
+    saveData({
+      ...data,
+      orderSubmissions: current.filter((s) => s.id !== id),
+    });
+  };
+
+  const updateOrderSubmissionStatus = (id: string, status: "Baru" | "Dihubungi" | "Selesai") => {
+    const current = data.orderSubmissions || defaultState.orderSubmissions || [];
+    const updated = current.map((s) => (s.id === id ? { ...s, status } : s));
+    saveData({ ...data, orderSubmissions: updated });
+  };
+
+  // Project transactions actions
+  const addProjectTransaction = (transaction: Omit<ProjectTransactionRecord, "id">) => {
+    const current = data.projectTransactions || defaultState.projectTransactions || [];
+    const newRecord: ProjectTransactionRecord = {
+      ...transaction,
+      id: `proj-${Date.now()}`,
+    };
+    saveData({ ...data, projectTransactions: [newRecord, ...current] });
+  };
+
+  const editProjectTransaction = (id: string, updated: Partial<ProjectTransactionRecord>) => {
+    const current = data.projectTransactions || defaultState.projectTransactions || [];
+    const updatedRecords = current.map((p) => (p.id === id ? { ...p, ...updated } : p));
+    saveData({ ...data, projectTransactions: updatedRecords });
+  };
+
+  const deleteProjectTransaction = (id: string) => {
+    const current = data.projectTransactions || defaultState.projectTransactions || [];
+    saveData({
+      ...data,
+      projectTransactions: current.filter((p) => p.id !== id),
+    });
+  };
+
   const syncWithSupabase = async (stateToSync?: SiteDataState): Promise<boolean> => {
     if (!isSupabaseConfigured()) return false;
     try {
@@ -883,6 +1115,16 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         addCostToService,
         removeCostFromService,
         editCostInService,
+        updateAddonServices,
+        addAddonService,
+        editAddonService,
+        deleteAddonService,
+        addOrderSubmission,
+        deleteOrderSubmission,
+        updateOrderSubmissionStatus,
+        addProjectTransaction,
+        editProjectTransaction,
+        deleteProjectTransaction,
         syncWithSupabase,
         resetToDefaults,
       }}

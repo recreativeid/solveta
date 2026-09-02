@@ -50,8 +50,13 @@ import {
   TrendingUp,
   Calculator,
   ArrowRight,
+  ClipboardList,
+  Receipt,
+  FileText,
 } from "lucide-react";
 import { ProfitLossManager } from "@/components/ProfitLossManager";
+import { OrderSubmissionsManager } from "@/components/OrderSubmissionsManager";
+import { ProjectTransactionsManager } from "@/components/ProjectTransactionsManager";
 import {
   saveUploadedVideo,
   getUploadedVideo,
@@ -101,9 +106,9 @@ function AdminPortalVisual() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
 
-  // Active View Mode: 'visual' | 'pricing' | 'portfolio' | 'brands' | 'contact' | 'video' | 'profit'
+  // Active View Mode: 'visual' | 'pricing' | 'portfolio' | 'brands' | 'contact' | 'video' | 'profit' | 'orders' | 'projects'
   const [activeMode, setActiveMode] = useState<
-    "visual" | "pricing" | "portfolio" | "brands" | "contact" | "video" | "profit"
+    "visual" | "pricing" | "portfolio" | "brands" | "contact" | "video" | "profit" | "orders" | "projects"
   >("visual");
   const [toastMessage, setToastMessage] = useState("");
 
@@ -861,6 +866,47 @@ function AdminPortalVisual() {
               <Film className={`w-3.5 h-3.5 ${activeMode === "video" ? "text-gray-900" : "text-gray-400"}`} />
               <span>Video Profil</span>
             </button>
+
+            {/* 8. Rekap Formulir Order */}
+            <button
+              type="button"
+              onClick={() => setActiveMode("orders")}
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2.5 cursor-pointer ${
+                activeMode === "orders"
+                  ? "bg-gray-100 text-gray-950 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
+              }`}
+            >
+              <ClipboardList className={`w-3.5 h-3.5 ${activeMode === "orders" ? "text-gray-900" : "text-gray-400"}`} />
+              <span>Rekap Formulir Order</span>
+            </button>
+
+            {/* 9. Pencatatan Proyek & Invoice */}
+            <button
+              type="button"
+              onClick={() => setActiveMode("projects")}
+              className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center gap-2.5 cursor-pointer ${
+                activeMode === "projects"
+                  ? "bg-gray-100 text-gray-950 font-semibold"
+                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium"
+              }`}
+            >
+              <Receipt className={`w-3.5 h-3.5 ${activeMode === "projects" ? "text-gray-900" : "text-gray-400"}`} />
+              <span>Pencatatan Proyek &amp; Invoice</span>
+            </button>
+
+            {/* Link to Customer Form */}
+            <div className="pt-2 border-t border-gray-100/80">
+              <Link
+                href="/formulir"
+                target="_blank"
+                className="w-full text-left px-3 py-1.5 rounded-lg text-xs text-gray-400 hover:text-gray-800 hover:bg-gray-50 transition-colors flex items-center gap-2.5"
+                title="Buka Formulir Kebutuhan Customer"
+              >
+                <FileText className="w-3.5 h-3.5 text-gray-400" />
+                <span>Buka Form Customer</span>
+              </Link>
+            </div>
           </div>
 
           {/* Sidebar Bottom Action Buttons */}
@@ -918,6 +964,8 @@ function AdminPortalVisual() {
               {activeMode === "brands" && "Logo Klien"}
               {activeMode === "contact" && "Kontak WhatsApp"}
               {activeMode === "video" && "Video Profil"}
+              {activeMode === "orders" && "Rekap Formulir Order"}
+              {activeMode === "projects" && "Pencatatan Proyek & Invoice"}
             </h1>
           </div>
 
@@ -2391,6 +2439,16 @@ function AdminPortalVisual() {
         {/* MODE 7: PROFIT & LOSS / MARGIN CALCULATOR */}
         {activeMode === "profit" && (
           <ProfitLossManager showToast={showToast} />
+        )}
+
+        {/* MODE 8: REKAP FORMULIR ORDER CUSTOMER */}
+        {activeMode === "orders" && (
+          <OrderSubmissionsManager showToast={showToast} />
+        )}
+
+        {/* MODE 9: PENCATATAN PROYEK & INVOICE */}
+        {activeMode === "projects" && (
+          <ProjectTransactionsManager showToast={showToast} />
         )}
         </div>
       </main>
