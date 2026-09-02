@@ -671,7 +671,7 @@ function AdminPortalVisual() {
     "/solveta-logo.jpg";
 
   return (
-    <div className="min-h-screen bg-[#FDFBF9] flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col md:flex-row font-sans">
       {/* Toast Notification */}
       <AnimatePresence>
         {toastMessage && (
@@ -687,179 +687,258 @@ function AdminPortalVisual() {
         )}
       </AnimatePresence>
 
-      {/* Top Navbar */}
-      <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-gray-200 px-4 sm:px-6 py-3 shadow-2xs">
-        <div className="max-w-[1240px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <Link
-              href="/"
-              className="flex items-center gap-2.5 group"
-              title="Kembali ke Beranda"
-            >
-              <div className="w-8 h-8 rounded-lg overflow-hidden border border-rose-200 bg-white shadow-2xs flex items-center justify-center">
-                <img
-                  src={currentLogoSrc}
-                  alt="SOLVETA Logo"
-                  className="w-full h-full object-cover"
-                />
+      {/* LEFT SIDEBAR (STICKY ON DESKTOP) */}
+      <aside className="w-full md:w-72 bg-white border-r border-gray-200 flex-shrink-0 flex flex-col justify-between sticky top-0 md:h-screen z-40 shadow-xs">
+        <div className="p-5 flex flex-col h-full overflow-y-auto">
+          {/* Logo & Brand Info Header */}
+          <Link
+            href="/"
+            className="flex items-center gap-3 pb-5 border-b border-gray-100 group"
+            title="Kembali ke Beranda"
+          >
+            <div className="w-10 h-10 rounded-xl overflow-hidden border border-rose-200 bg-white shadow-2xs flex items-center justify-center flex-shrink-0">
+              <img
+                src={currentLogoSrc}
+                alt="SOLVETA Logo"
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="text-left">
+              <div className="text-sm font-extrabold tracking-tight text-gray-900 flex items-center gap-1.5">
+                <span>SOLVETA</span>
+                <span className="font-mono text-[9px] px-1.5 py-0.2 bg-rose-50 text-[#8B0021] border border-rose-200 rounded font-bold">
+                  DEV CMS
+                </span>
               </div>
-              <div className="text-left">
-                <div className="text-xs font-extrabold tracking-tight text-gray-900 flex items-center gap-1">
-                  <span>SOLVETA</span>
-                  <span className="font-mono text-[9px] px-1.5 py-0.2 bg-rose-50 text-[#8B0021] border border-rose-200 rounded font-semibold">
-                    DEV CMS
+              <div className="text-[11px] text-gray-400">
+                Visual Live Editor &amp; Pricing
+              </div>
+            </div>
+          </Link>
+
+          {/* Navigation Menu (Left Sidebar) */}
+          <div className="py-5 space-y-1.5 flex-1">
+            <div className="text-[10px] font-mono font-bold tracking-widest text-gray-400 uppercase px-3 mb-2">
+              Daftar Menu Developer
+            </div>
+
+            {/* 1. Edit Visual */}
+            <button
+              type="button"
+              onClick={() => setActiveMode("visual")}
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
+                activeMode === "visual"
+                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+              }`}
+            >
+              <div className={`p-1.5 rounded-lg ${activeMode === "visual" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
+                <Edit3 className="w-4 h-4" />
+              </div>
+              <div className="flex-1">
+                <div className="text-xs font-bold">Edit Visual</div>
+                <div className="text-[10px] text-gray-400 font-normal">Teks Hero &amp; Judul</div>
+              </div>
+            </button>
+
+            {/* 2. Paket & Harga */}
+            <button
+              type="button"
+              onClick={() => setActiveMode("pricing")}
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
+                activeMode === "pricing"
+                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
+              }`}
+            >
+              <div className={`p-1.5 rounded-lg ${activeMode === "pricing" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
+                <Tag className="w-4 h-4" />
+              </div>
+              <div className="flex-1">
+                <div className="text-xs font-bold">Paket &amp; Harga</div>
+                <div className="text-[10px] text-gray-400 font-normal">4 Paket Layanan</div>
+              </div>
+            </button>
+
+            {/* 3. Kelola HPP & Laba Rugi (PROMINENT HIGHLIGHT) */}
+            <button
+              type="button"
+              onClick={() => setActiveMode("profit")}
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer border ${
+                activeMode === "profit"
+                  ? "bg-emerald-800 text-white border-emerald-900 shadow-sm"
+                  : "bg-emerald-50/90 text-emerald-950 border-emerald-300 hover:bg-emerald-100"
+              }`}
+            >
+              <div className={`p-1.5 rounded-lg ${activeMode === "profit" ? "bg-white text-emerald-800" : "bg-emerald-600 text-white"}`}>
+                <DollarSign className="w-4 h-4" />
+              </div>
+              <div className="flex-1">
+                <div className="text-xs font-extrabold flex items-center justify-between">
+                  <span>Kelola HPP &amp; Laba Rugi</span>
+                  <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-black uppercase ${activeMode === "profit" ? "bg-white text-emerald-900" : "bg-emerald-200 text-emerald-900"}`}>
+                    BARU
                   </span>
                 </div>
-                <div className="text-[10px] text-gray-400">
-                  Visual Live Editor &amp; Pricing Manager
+                <div className={`text-[10px] font-normal ${activeMode === "profit" ? "text-emerald-100" : "text-emerald-700"}`}>
+                  Rincian Beban &amp; Margin
                 </div>
               </div>
-            </Link>
-          </div>
-
-          {/* Mode Switcher Tabs */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 bg-gray-100/90 p-1.5 rounded-xl border border-gray-200">
-            <button
-              onClick={() => setActiveMode("visual")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
-                activeMode === "visual"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              <span className="flex items-center gap-1.5">
-                <Edit3 className="w-3.5 h-3.5 text-[#7B0B1E]" />
-                <span>Edit Visual</span>
-              </span>
             </button>
 
+            {/* 4. Portofolio */}
             <button
-              onClick={() => setActiveMode("pricing")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
-                activeMode === "pricing"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
-                  : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
-              <span className="flex items-center gap-1.5">
-                <Tag className="w-3.5 h-3.5 text-[#7B0B1E]" />
-                <span>Paket &amp; Harga</span>
-              </span>
-            </button>
-
-            <button
+              type="button"
               onClick={() => setActiveMode("portfolio")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
                 activeMode === "portfolio"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
-                  : "text-gray-600 hover:text-gray-900"
+                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
               }`}
             >
-              <span className="flex items-center gap-1.5">
-                <ImageIcon className="w-3.5 h-3.5 text-[#7B0B1E]" />
-                <span>Portofolio</span>
-              </span>
+              <div className={`p-1.5 rounded-lg ${activeMode === "portfolio" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
+                <ImageIcon className="w-4 h-4" />
+              </div>
+              <div className="flex-1">
+                <div className="text-xs font-bold">Portofolio</div>
+                <div className="text-[10px] text-gray-400 font-normal">Galeri Foto &amp; Link Live</div>
+              </div>
             </button>
 
+            {/* 5. Logo Klien */}
             <button
+              type="button"
               onClick={() => setActiveMode("brands")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
                 activeMode === "brands"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
-                  : "text-gray-600 hover:text-gray-900"
+                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
               }`}
             >
-              <span className="flex items-center gap-1.5">
-                <Building2 className="w-3.5 h-3.5 text-[#7B0B1E]" />
-                <span>Logo Klien</span>
-              </span>
+              <div className={`p-1.5 rounded-lg ${activeMode === "brands" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
+                <Building2 className="w-4 h-4" />
+              </div>
+              <div className="flex-1">
+                <div className="text-xs font-bold">Logo Klien</div>
+                <div className="text-[10px] text-gray-400 font-normal">Ukuran, Skala &amp; Marquee</div>
+              </div>
             </button>
 
+            {/* 6. Kontak WA */}
             <button
+              type="button"
               onClick={() => setActiveMode("contact")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
                 activeMode === "contact"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
-                  : "text-gray-600 hover:text-gray-900"
+                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
               }`}
             >
-              <span className="flex items-center gap-1.5">
-                <Phone className="w-3.5 h-3.5 text-[#7B0B1E]" />
-                <span>Kontak WA</span>
-              </span>
+              <div className={`p-1.5 rounded-lg ${activeMode === "contact" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
+                <Phone className="w-4 h-4" />
+              </div>
+              <div className="flex-1">
+                <div className="text-xs font-bold">Kontak WA</div>
+                <div className="text-[10px] text-gray-400 font-normal">Nomor HP &amp; Tombol Web</div>
+              </div>
             </button>
 
+            {/* 7. Video Profil */}
             <button
+              type="button"
               onClick={() => setActiveMode("video")}
-              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all cursor-pointer ${
+              className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all flex items-center gap-3 cursor-pointer ${
                 activeMode === "video"
-                  ? "bg-white text-[#7B0B1E] border border-gray-200 shadow-2xs font-bold"
-                  : "text-gray-600 hover:text-gray-900"
+                  ? "bg-rose-50/90 text-[#8B0021] border border-rose-200 shadow-2xs"
+                  : "text-gray-700 hover:bg-gray-50 hover:text-gray-900 border border-transparent"
               }`}
             >
-              <span className="flex items-center gap-1.5">
-                <Film className="w-3.5 h-3.5 text-[#7B0B1E]" />
-                <span>Video Profil</span>
-              </span>
-            </button>
-
-            {/* HIGH-VISIBILITY LABA RUGI TAB */}
-            <button
-              onClick={() => setActiveMode("profit")}
-              className={`text-xs px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
-                activeMode === "profit"
-                  ? "bg-emerald-700 text-white shadow-xs font-extrabold border border-emerald-600"
-                  : "bg-emerald-50 text-emerald-950 border border-emerald-300 hover:bg-emerald-100 font-bold"
-              }`}
-            >
-              <DollarSign className={`w-3.5 h-3.5 ${activeMode === "profit" ? "text-emerald-200" : "text-emerald-700"}`} />
-              <span>📊 Hitung Laba Rugi (HPP)</span>
-              <span className={`text-[9px] px-1.5 py-0.2 rounded-full font-black uppercase ${
-                activeMode === "profit" ? "bg-white text-emerald-900" : "bg-emerald-200 text-emerald-900"
-              }`}>
-                BARU
-              </span>
+              <div className={`p-1.5 rounded-lg ${activeMode === "video" ? "bg-[#8B0021] text-white" : "bg-gray-100 text-gray-600"}`}>
+                <Film className="w-4 h-4" />
+              </div>
+              <div className="flex-1">
+                <div className="text-xs font-bold">Video Profil</div>
+                <div className="text-[10px] text-gray-400 font-normal">Video Layar 3D Laptop</div>
+              </div>
             </button>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex items-center gap-2">
+          {/* Sidebar Bottom Action Buttons */}
+          <div className="pt-4 border-t border-gray-100 space-y-2">
             <button
+              type="button"
               onClick={saveVisualChanges}
-              className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-semibold rounded-md shadow-xs transition-all"
+              className="w-full py-2.5 px-4 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-bold rounded-xl shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Save className="w-3.5 h-3.5" />
+              <Save className="w-4 h-4" />
               <span>Simpan Perubahan</span>
             </button>
 
-            <Link
-              href="/"
-              target="_blank"
-              className="inline-flex items-center gap-1 text-xs font-medium text-gray-600 hover:text-gray-900 bg-white border border-gray-200 hover:bg-gray-50 px-3 py-1.5 rounded-md transition-colors"
-            >
-              <Eye className="w-3.5 h-3.5" />
-              <span>Buka Live Web</span>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link
+                href="/"
+                target="_blank"
+                className="flex-1 py-2 px-3 text-center text-xs font-semibold text-gray-700 hover:text-gray-900 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-xl transition-colors flex items-center justify-center gap-1.5"
+              >
+                <Eye className="w-3.5 h-3.5" />
+                <span>Buka Live Web</span>
+              </Link>
 
-            <button
-              onClick={() => {
-                if (confirm("Kembalikan semua teks & harga ke setelan awal bawaan?")) {
-                  resetToDefaults();
-                  showToast("Data dikembalikan ke setelan awal!");
-                  setTimeout(() => window.location.reload(), 600);
-                }
-              }}
-              className="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
-              title="Reset Default"
-            >
-              <RotateCcw className="w-4 h-4" />
-            </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (confirm("Kembalikan semua teks & harga ke setelan awal bawaan?")) {
+                    resetToDefaults();
+                    showToast("Data dikembalikan ke setelan awal!");
+                    setTimeout(() => window.location.reload(), 600);
+                  }
+                }}
+                className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 border border-gray-200 rounded-xl transition-colors cursor-pointer"
+                title="Reset Default"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+              </button>
+            </div>
           </div>
         </div>
-      </header>
+      </aside>
 
-      {/* Main Content Area */}
-      <div className="flex-grow p-4 sm:p-6 max-w-[1240px] mx-auto w-full bg-white">
+      {/* RIGHT MAIN CONTENT AREA */}
+      <main className="flex-1 flex flex-col min-w-0 bg-[#F8F9FA] overflow-y-auto">
+        {/* Top Header Bar */}
+        <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 px-6 py-3.5 flex items-center justify-between shadow-2xs">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-mono text-gray-400">Dashboard /</span>
+            <h1 className="text-xs sm:text-sm font-extrabold text-gray-900 uppercase tracking-tight">
+              {activeMode === "visual" && "✏️ Edit Visual Teks & Konten Web"}
+              {activeMode === "pricing" && "🏷️ Manajemen 4 Paket & Harga"}
+              {activeMode === "profit" && "📊 Perhitungan Laba Rugi & HPP Layanan"}
+              {activeMode === "portfolio" && "🖼️ Portofolio & Galeri Proyek"}
+              {activeMode === "brands" && "🏢 Klien, Logo & Kustomisasi Marquee"}
+              {activeMode === "contact" && "📱 Pengaturan Kontak WhatsApp"}
+              {activeMode === "video" && "🎬 Video Profil Layar Laptop 3D"}
+            </h1>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-mono font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              <span>Cloud Database: Aktif</span>
+            </div>
+
+            <button
+              type="button"
+              onClick={saveVisualChanges}
+              className="px-4 py-1.5 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-bold rounded-lg shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+            >
+              <Save className="w-3.5 h-3.5" />
+              <span>Simpan</span>
+            </button>
+          </div>
+        </header>
+
+        {/* Dynamic Main Body Content */}
+        <div className="flex-grow p-4 sm:p-6 lg:p-8 max-w-[1240px] w-full mx-auto space-y-6">
         {/* MODE 1: VISUAL LIVE PREVIEW WITH CLICK-TO-EDIT */}
         {activeMode === "visual" && (
           <div className="bg-white border border-gray-200 rounded-2xl shadow-xs overflow-hidden">
@@ -2272,7 +2351,8 @@ function AdminPortalVisual() {
         {activeMode === "profit" && (
           <ProfitLossManager showToast={showToast} />
         )}
-      </div>
+        </div>
+      </main>
 
       {/* MODAL: EDIT VISUAL & PRICING TARGET */}
       <AnimatePresence>
