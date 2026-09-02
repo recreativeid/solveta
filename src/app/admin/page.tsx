@@ -46,7 +46,11 @@ import {
   Moon,
   Settings,
   Sliders,
+  DollarSign,
+  TrendingUp,
+  Calculator,
 } from "lucide-react";
+import { ProfitLossManager } from "@/components/ProfitLossManager";
 import {
   SiteDataProvider,
   useSiteData,
@@ -87,9 +91,9 @@ function AdminPortalVisual() {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(false);
 
-  // Active View Mode: 'visual' | 'pricing' | 'portfolio' | 'brands' | 'contact' | 'video'
+  // Active View Mode: 'visual' | 'pricing' | 'portfolio' | 'brands' | 'contact' | 'video' | 'profit'
   const [activeMode, setActiveMode] = useState<
-    "visual" | "pricing" | "portfolio" | "brands" | "contact" | "video"
+    "visual" | "pricing" | "portfolio" | "brands" | "contact" | "video" | "profit"
   >("visual");
   const [toastMessage, setToastMessage] = useState("");
 
@@ -796,6 +800,20 @@ function AdminPortalVisual() {
               <span className="flex items-center gap-1.5">
                 <Film className="w-3.5 h-3.5 text-[#7B0B1E]" />
                 <span>Video Profil</span>
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveMode("profit")}
+              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-all ${
+                activeMode === "profit"
+                  ? "bg-[#8B0021] text-white border border-[#8B0021] shadow-2xs font-bold"
+                  : "text-gray-700 hover:text-gray-950 hover:bg-rose-50/60"
+              }`}
+            >
+              <span className="flex items-center gap-1.5">
+                <DollarSign className={`w-3.5 h-3.5 ${activeMode === "profit" ? "text-white" : "text-[#7B0B1E]"}`} />
+                <span>📊 Laba Rugi Layanan</span>
               </span>
             </button>
           </div>
@@ -2219,6 +2237,11 @@ function AdminPortalVisual() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* MODE 7: PROFIT & LOSS / MARGIN CALCULATOR */}
+        {activeMode === "profit" && (
+          <ProfitLossManager showToast={showToast} />
         )}
       </div>
 

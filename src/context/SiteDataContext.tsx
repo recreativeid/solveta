@@ -83,11 +83,23 @@ export interface SiteCopyData {
   marqueeLogoMaxWidth?: number; // Global Max width in px (default 240)
 }
 
-export interface ContactData {
-  whatsappNumber: string; // e.g. "6285719663154"
-  whatsappDisplay: string; // e.g. "+62 857-1966-3154"
-  websiteUrl: string; // e.g. "www.solveta.site"
-  email?: string;
+export interface ServiceCostItem {
+  id: string;
+  name: string; // e.g. "Domain .com 1 Tahun", "Hosting & Cloud Server", "Fee Developer"
+  category: "infrastruktur" | "tenaga_kerja" | "lisensi_tools" | "operasional" | "lainnya";
+  amount: number; // in IDR
+  notes?: string;
+}
+
+export interface ServiceProfitAnalysis {
+  id: string;
+  serviceName: string; // e.g. "Paket Website BASIC"
+  tierId?: string; // e.g. "basic", "standard", "premium", "custom"
+  sellingPrice: number; // in IDR
+  laborFee?: number; // Fee tenaga kerja / kompensasi pembuat
+  estimatedMonthlyOrders?: number; // Estimasi jumlah order per bulan
+  costs: ServiceCostItem[];
+  notes?: string;
 }
 
 export interface SiteDataState {
@@ -98,6 +110,7 @@ export interface SiteDataState {
   siteCopy: SiteCopyData;
   categories: string[];
   geminiApiKey?: string;
+  profitAnalysis?: ServiceProfitAnalysis[];
 }
 
 const defaultState: SiteDataState = {
@@ -371,6 +384,72 @@ const defaultState: SiteDataState = {
     marqueeLogoScale: 100,
     marqueeLogoMaxWidth: 350,
   },
+  profitAnalysis: [
+    {
+      id: "profit-basic",
+      serviceName: "Paket Website BASIC",
+      tierId: "basic",
+      sellingPrice: 299000,
+      laborFee: 75000,
+      estimatedMonthlyOrders: 6,
+      costs: [
+        { id: "c-1", name: "Domain .my.id / Subdomain 1 Tahun", category: "infrastruktur", amount: 25000 },
+        { id: "c-2", name: "Hosting Cloud & SSL Deployment", category: "infrastruktur", amount: 30000 },
+        { id: "c-3", name: "Asset & Template Base", category: "lisensi_tools", amount: 20000 },
+        { id: "c-4", name: "Biaya Tenaga Kerja / Setup Dev", category: "tenaga_kerja", amount: 75000 },
+      ],
+      notes: "Paket ekonomis untuk landing page personal & UMKM.",
+    },
+    {
+      id: "profit-standard",
+      serviceName: "Paket Website STANDARD (Popular)",
+      tierId: "standard",
+      sellingPrice: 599000,
+      laborFee: 150000,
+      estimatedMonthlyOrders: 10,
+      costs: [
+        { id: "c-5", name: "Domain .com Resmi 1 Tahun", category: "infrastruktur", amount: 135000 },
+        { id: "c-6", name: "High-Speed Cloud Server & CDN", category: "infrastruktur", amount: 60000 },
+        { id: "c-7", name: "Icon, Font & Graphics Pack", category: "lisensi_tools", amount: 50000 },
+        { id: "c-8", name: "Biaya Tenaga Kerja Frontend Dev", category: "tenaga_kerja", amount: 150000 },
+        { id: "c-9", name: "Buffer Revisi & CS Handling", category: "operasional", amount: 40000 },
+      ],
+      notes: "Paket paling diminati bisnis dan profil perusahaan.",
+    },
+    {
+      id: "profit-premium",
+      serviceName: "Paket Website PREMIUM (Bisnis)",
+      tierId: "premium",
+      sellingPrice: 1499000,
+      laborFee: 450000,
+      estimatedMonthlyOrders: 4,
+      costs: [
+        { id: "c-10", name: "Domain .com Premium + Private DNS", category: "infrastruktur", amount: 175000 },
+        { id: "c-11", name: "Dedicated Cloud Server + DB Setup", category: "infrastruktur", amount: 150000 },
+        { id: "c-12", name: "3D Visual Assets & Animation Suite", category: "lisensi_tools", amount: 120000 },
+        { id: "c-13", name: "Biaya Tenaga Kerja Fullstack Developer", category: "tenaga_kerja", amount: 450000 },
+        { id: "c-14", name: "QA Testing, SEO & Security Hardening", category: "operasional", amount: 100000 },
+        { id: "c-15", name: "Buffer Support 30 Hari", category: "operasional", amount: 100000 },
+      ],
+      notes: "Paket komprehensif dengan animasi 3D dan optimasi performa tinggi.",
+    },
+    {
+      id: "profit-custom",
+      serviceName: "Paket CUSTOM / Enterprise System",
+      tierId: "custom",
+      sellingPrice: 3500000,
+      laborFee: 1200000,
+      estimatedMonthlyOrders: 2,
+      costs: [
+        { id: "c-16", name: "Custom Cloud Architecture & Scalability", category: "infrastruktur", amount: 350000 },
+        { id: "c-17", name: "Database Design & Third-party APIs", category: "infrastruktur", amount: 300000 },
+        { id: "c-18", name: "Tailored UI/UX Design System", category: "lisensi_tools", amount: 400000 },
+        { id: "c-19", name: "Biaya Tenaga Senior Software Engineer", category: "tenaga_kerja", amount: 1200000 },
+        { id: "c-20", name: "End-to-End QA Testing & Deployment", category: "operasional", amount: 250000 },
+      ],
+      notes: "Solusi sistem web & database kustom dengan arsitektur modular.",
+    },
+  ],
 };
 
 interface SiteContextType {
@@ -391,6 +470,13 @@ interface SiteContextType {
   updateSiteCopy: (copy: Partial<SiteCopyData>) => void;
   updateSiteLogo: (logoBase64: string) => void;
   updateProfileVideo: (videoSrc: string) => void;
+  updateProfitAnalysis: (analyses: ServiceProfitAnalysis[]) => void;
+  addServiceProfitItem: (item: Omit<ServiceProfitAnalysis, "id">) => void;
+  editServiceProfitItem: (id: string, updated: Partial<ServiceProfitAnalysis>) => void;
+  deleteServiceProfitItem: (id: string) => void;
+  addCostToService: (serviceId: string, cost: Omit<ServiceCostItem, "id">) => void;
+  removeCostFromService: (serviceId: string, costId: string) => void;
+  editCostInService: (serviceId: string, costId: string, updated: Partial<ServiceCostItem>) => void;
   saveData: (newState: SiteDataState) => void;
   syncWithSupabase: (stateToSync?: SiteDataState) => Promise<boolean>;
   resetToDefaults: () => void;
@@ -674,6 +760,81 @@ export function sanitizeWhatsAppNumber(input?: string): string {
     });
   };
 
+  const updateProfitAnalysis = (analyses: ServiceProfitAnalysis[]) => {
+    saveData({ ...data, profitAnalysis: analyses });
+  };
+
+  const addServiceProfitItem = (item: Omit<ServiceProfitAnalysis, "id">) => {
+    const newItem: ServiceProfitAnalysis = {
+      ...item,
+      id: `profit-${Date.now()}`,
+    };
+    const current = data.profitAnalysis || defaultState.profitAnalysis || [];
+    saveData({ ...data, profitAnalysis: [...current, newItem] });
+  };
+
+  const editServiceProfitItem = (id: string, updated: Partial<ServiceProfitAnalysis>) => {
+    const current = data.profitAnalysis || defaultState.profitAnalysis || [];
+    const newItems = current.map((p) =>
+      p.id === id ? { ...p, ...updated } : p
+    );
+    saveData({ ...data, profitAnalysis: newItems });
+  };
+
+  const deleteServiceProfitItem = (id: string) => {
+    const current = data.profitAnalysis || defaultState.profitAnalysis || [];
+    saveData({
+      ...data,
+      profitAnalysis: current.filter((p) => p.id !== id),
+    });
+  };
+
+  const addCostToService = (serviceId: string, cost: Omit<ServiceCostItem, "id">) => {
+    const current = data.profitAnalysis || defaultState.profitAnalysis || [];
+    const newCost: ServiceCostItem = {
+      ...cost,
+      id: `c-${Date.now()}`,
+    };
+    const newItems = current.map((p) => {
+      if (p.id === serviceId) {
+        return {
+          ...p,
+          costs: [...(p.costs || []), newCost],
+        };
+      }
+      return p;
+    });
+    saveData({ ...data, profitAnalysis: newItems });
+  };
+
+  const removeCostFromService = (serviceId: string, costId: string) => {
+    const current = data.profitAnalysis || defaultState.profitAnalysis || [];
+    const newItems = current.map((p) => {
+      if (p.id === serviceId) {
+        return {
+          ...p,
+          costs: (p.costs || []).filter((c) => c.id !== costId),
+        };
+      }
+      return p;
+    });
+    saveData({ ...data, profitAnalysis: newItems });
+  };
+
+  const editCostInService = (serviceId: string, costId: string, updated: Partial<ServiceCostItem>) => {
+    const current = data.profitAnalysis || defaultState.profitAnalysis || [];
+    const newItems = current.map((p) => {
+      if (p.id === serviceId) {
+        return {
+          ...p,
+          costs: (p.costs || []).map((c) => (c.id === costId ? { ...c, ...updated } : c)),
+        };
+      }
+      return p;
+    });
+    saveData({ ...data, profitAnalysis: newItems });
+  };
+
   const syncWithSupabase = async (stateToSync?: SiteDataState): Promise<boolean> => {
     if (!isSupabaseConfigured()) return false;
     try {
@@ -717,6 +878,13 @@ export function sanitizeWhatsAppNumber(input?: string): string {
         updateSiteCopy,
         updateSiteLogo,
         updateProfileVideo,
+        updateProfitAnalysis,
+        addServiceProfitItem,
+        editServiceProfitItem,
+        deleteServiceProfitItem,
+        addCostToService,
+        removeCostFromService,
+        editCostInService,
         syncWithSupabase,
         resetToDefaults,
       }}
