@@ -17,6 +17,8 @@ import {
   Maximize2,
 } from "lucide-react";
 
+import { getUploadedVideo } from "@/utils/mediaDb";
+
 interface LaptopMockup3DProps {
   videoSrc?: string;
   posterSrc?: string;
@@ -33,17 +35,46 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [activeVideoSrc, setActiveVideoSrc] = useState<string>("");
 
-  // Path resolver for GitHub Pages / base paths
+  // Path resolver for GitHub Pages / base paths (Fallback)
   const resolvedVideoSrc = React.useMemo(() => {
     const raw = videoSrc || "/videos/profile.mp4";
-    if (raw.startsWith("http") || raw.startsWith("data:")) return raw;
+    if (raw.startsWith("http") || raw.startsWith("data:") || raw.startsWith("blob:")) return raw;
     const isProd = process.env.NODE_ENV === "production";
     if (isProd && raw.startsWith("/") && !raw.startsWith("/solveta")) {
       return `/solveta${raw}`;
     }
     return raw;
   }, [videoSrc]);
+
+  // Priority 1: Check for uploaded video in local IndexedDB (up to 100MB, 0 latency)
+  // Priority 2: Fallback to link URL or default /videos/profile.mp4
+  const refreshActiveVideo = React.useCallback(async () => {
+    try {
+      const uploaded = await getUploadedVideo();
+      if (uploaded && uploaded.url) {
+        setActiveVideoSrc(uploaded.url);
+      } else {
+        setActiveVideoSrc(resolvedVideoSrc);
+      }
+    } catch {
+      setActiveVideoSrc(resolvedVideoSrc);
+    }
+  }, [resolvedVideoSrc]);
+
+  useEffect(() => {
+    refreshActiveVideo();
+
+    const handleVideoUpdated = () => {
+      refreshActiveVideo();
+    };
+
+    window.addEventListener("solveta_video_updated", handleVideoUpdated);
+    return () => {
+      window.removeEventListener("solveta_video_updated", handleVideoUpdated);
+    };
+  }, [refreshActiveVideo]);
 
   const userPausedManuallyRef = useRef(false);
 
@@ -61,7 +92,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
   // Initial immediate playback attempt
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !activeVideoSrc) return;
 
     video.muted = true;
     video.playsInline = true;
@@ -73,7 +104,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
           // Autoplay restricted until interaction
         });
     }
-  }, [resolvedVideoSrc]);
+  }, [activeVideoSrc]);
 
   // Smart Viewport Video Control:
   // 1. Plays automatically when scrolled into view (if not manually paused)
@@ -273,7 +304,7 @@ export const LaptopMockup3D: React.FC<LaptopMockup3DProps> = ({
               {/* HTML5 Video Tag */}
               <video
                 ref={videoRef}
-                src={resolvedVideoSrc}
+                src={activeVideoSrc || resolvedVideoSrc}
                 poster={posterSrc}
                 autoPlay
                 loop

@@ -52,6 +52,13 @@ import {
 } from "lucide-react";
 import { ProfitLossManager } from "@/components/ProfitLossManager";
 import {
+  saveUploadedVideo,
+  getUploadedVideo,
+  deleteUploadedVideo,
+  hasUploadedVideo,
+  VideoMetadata,
+} from "@/utils/mediaDb";
+import {
   SiteDataProvider,
   useSiteData,
   SiteDataState,
@@ -133,28 +140,44 @@ function AdminPortalVisual() {
   );
   const [tempLogo, setTempLogo] = useState<string>(data.siteCopy.siteLogo || "");
 
-  // Video Profile Management State
+  // Video Profile Management State (IndexedDB Priority 1 + CDN Fallback Priority 2)
   const [editVideoUrl, setEditVideoUrl] = useState<string>(
     data.siteCopy.profileVideo || "/videos/profile.mp4"
   );
+  const [uploadedVideoMeta, setUploadedVideoMeta] = useState<VideoMetadata | null>(null);
   const [inputVideoLink, setInputVideoLink] = useState<string>("");
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(false);
   const videoFileInputRef = useRef<HTMLInputElement>(null);
 
-  // Synchronize when data loads
+  // Synchronize when data loads or when uploaded video exists
+  const syncVideoFromStorage = useCallback(async () => {
+    try {
+      const up = await getUploadedVideo();
+      if (up) {
+        setUploadedVideoMeta(up.meta);
+        setEditVideoUrl(up.url);
+      } else {
+        setUploadedVideoMeta(null);
+        setEditVideoUrl(data.siteCopy.profileVideo || "/videos/profile.mp4");
+      }
+    } catch {
+      setEditVideoUrl(data.siteCopy.profileVideo || "/videos/profile.mp4");
+    }
+  }, [data.siteCopy.profileVideo]);
+
   useEffect(() => {
     setEditPricingList(data.pricing);
     setEditHeadline(data.siteCopy.heroHeadline);
     setEditSubtitle(data.siteCopy.heroSubtitle);
     setEditPortfolioTitle(data.siteCopy.portfolioTitle);
     setTempLogo(data.siteCopy.siteLogo || "");
-    setEditVideoUrl(data.siteCopy.profileVideo || "/videos/profile.mp4");
     setEditMarqueeSpeed(data.siteCopy.marqueeSpeed || 35);
     setEditMarqueeLogoHeight(data.siteCopy.marqueeLogoHeight || 46);
     setEditMarqueeLogoSpacing(data.siteCopy.marqueeLogoSpacing || 36);
     setEditMarqueeLogoScale(data.siteCopy.marqueeLogoScale || 100);
     setEditMarqueeLogoMaxWidth(data.siteCopy.marqueeLogoMaxWidth || 240);
-  }, [data]);
+    syncVideoFromStorage();
+  }, [data, syncVideoFromStorage]);
 
   // WhatsApp Form
   const [editWaNumber, setEditWaNumber] = useState(data.contact.whatsappNumber);
@@ -365,46 +388,68 @@ function AdminPortalVisual() {
     reader.readAsDataURL(file);
   };
 
-  // Handle profile video file upload (.mp4, .webm, etc.)
-  const handleVideoFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Handle profile video file upload (up to 100MB stored in IndexedDB for 0 lag & immediate playback)
+  const handleVideoFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 30 * 1024 * 1024) {
+    const MAX_SIZE_MB = 100;
+    if (file.size > MAX_SIZE_MB * 1024 * 1024) {
       alert(
-        "Ukuran file video maksimal 30MB untuk upload langsung via browser. Untuk file berukuran lebih besar, Anda bisa meletakkannya langsung di folder: solveta/public/videos/profile.mp4 atau menggunakan link URL CDN."
+        `Ukuran file video (${(file.size / (1024 * 1024)).toFixed(1)} MB) melebihi batas maksimal ${MAX_SIZE_MB}MB. Silakan kompres video atau gunakan resolusi 1080p/720p agar lebih ringan.`
       );
       return;
     }
 
     setIsVideoLoading(true);
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string;
-      setEditVideoUrl(result);
-      updateProfileVideo(result);
+    try {
+      const res = await saveUploadedVideo(file, file.name);
+      const up = await getUploadedVideo();
+      if (up) {
+        setUploadedVideoMeta(up.meta);
+        setEditVideoUrl(up.url);
+      }
+      showToast(`Video "${file.name}" (${res.sizeMb} MB) berhasil diunggah & diprioritaskan utama!`);
+    } catch (err) {
+      console.error("Gagal menyimpan video upload:", err);
+      alert("Gagal menyimpan file video ke memori browser. Silakan coba lagi.");
+    } finally {
       setIsVideoLoading(false);
-      showToast("Video profil berhasil diunggah & disimpan ke website!");
-    };
-    reader.onerror = () => {
-      setIsVideoLoading(false);
-      alert("Gagal membaca file video. Silakan coba lagi.");
-    };
-    reader.readAsDataURL(file);
+      if (videoFileInputRef.current) {
+        videoFileInputRef.current.value = "";
+      }
+    }
   };
 
-  // Handle custom video URL input
+  // Handle remove uploaded video (reverts to CDN URL / default /videos/profile.mp4)
+  const handleRemoveUploadedVideo = async () => {
+    if (confirm("Hapus file video yang diunggah dan beralih menggunakan link URL / video default?")) {
+      await deleteUploadedVideo();
+      setUploadedVideoMeta(null);
+      const fallback = data.siteCopy.profileVideo || "/videos/profile.mp4";
+      setEditVideoUrl(fallback);
+      showToast("Video upload dihapus. Menggunakan link URL / default.");
+    }
+  };
+
+  // Handle custom video URL input (Priority 2: Fallback)
   const handleSaveVideoUrl = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputVideoLink.trim()) return;
-    setEditVideoUrl(inputVideoLink.trim());
     updateProfileVideo(inputVideoLink.trim());
+    if (!uploadedVideoMeta) {
+      setEditVideoUrl(inputVideoLink.trim());
+    }
     setInputVideoLink("");
-    showToast("Link video profil berhasil diperbarui!");
+    showToast("Link URL video profil berhasil diperbarui!");
   };
 
-  // Reset video to default
-  const handleResetVideo = () => {
+  // Reset video link to default
+  const handleResetVideo = async () => {
+    if (uploadedVideoMeta) {
+      await deleteUploadedVideo();
+      setUploadedVideoMeta(null);
+    }
     setEditVideoUrl("/videos/profile.mp4");
     updateProfileVideo("/videos/profile.mp4");
     showToast("Video profil dikembalikan ke default (/videos/profile.mp4)");
@@ -2140,10 +2185,10 @@ function AdminPortalVisual() {
                 </div>
                 <div>
                   <h2 className="text-base font-bold text-gray-900">
-                    Kelola Video Profil (Layar Laptop 3D)
+                    Kelola Video Profil (Layar Laptop 3D Hero)
                   </h2>
                   <p className="text-xs text-gray-500 mt-0.5">
-                    Upload file video atau masukkan link URL untuk diputar otomatis di layar laptop 3D Hero Section.
+                    Upload video lokal (maks. 100 MB) untuk diputar instan tanpa macet, atau masukkan link URL CDN sebagai cadangan.
                   </p>
                 </div>
               </div>
@@ -2162,47 +2207,97 @@ function AdminPortalVisual() {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-              {/* Left Column: Upload Methods */}
+              {/* Left Column: Upload Methods with Priority Ordering */}
               <div className="lg:col-span-7 space-y-6">
-                {/* Method 1: Upload File Video */}
-                <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs space-y-4">
+                {/* PRIORITY 1: UPLOAD FILE VIDEO (MAX 100 MB) */}
+                <div className={`bg-white border rounded-2xl p-6 shadow-xs space-y-4 ${uploadedVideoMeta ? "border-emerald-300 ring-1 ring-emerald-200" : "border-gray-200"}`}>
                   <div className="flex items-center justify-between pb-3 border-b border-gray-100">
                     <div className="flex items-center gap-2">
-                      <UploadCloud className="w-4 h-4 text-[#8B0021]" />
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900">
-                        Metode 1: Upload File Video Langsung
+                      <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-xs font-black">
+                        1
+                      </div>
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
+                        <UploadCloud className="w-4 h-4 text-[#8B0021]" />
+                        <span>Prioritas Utama: Upload File Video</span>
                       </h3>
                     </div>
-                    <span className="text-[10px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-100">
-                      MP4 / WebM (Maks 30MB)
+                    <span className="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                      Maks. 100 MB (Anti Macet)
                     </span>
                   </div>
 
                   <p className="text-xs text-gray-600 leading-relaxed">
-                    Pilih file video dari komputer/laptop Anda. File akan otomatis tersimpan dan aktif di website.
+                    Video yang diupload disimpan langsung di memori browser dengan <strong>0 buffering</strong> sehingga diputar lancar dan tidak macet-macet saat website dibuka.
                   </p>
 
-                  <div
-                    onClick={() => videoFileInputRef.current?.click()}
-                    className="border-2 border-dashed border-gray-300 hover:border-[#8B0021] bg-gray-50/50 hover:bg-rose-50/30 rounded-xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-2 group"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-white border border-gray-200 group-hover:border-rose-300 text-gray-400 group-hover:text-[#8B0021] flex items-center justify-center transition-colors shadow-2xs">
-                      {isVideoLoading ? (
-                        <RefreshCw className="w-5 h-5 animate-spin text-[#8B0021]" />
-                      ) : (
-                        <Upload className="w-5 h-5" />
-                      )}
-                    </div>
+                  {/* ACTIVE UPLOADED VIDEO INFO */}
+                  {uploadedVideoMeta ? (
+                    <div className="p-4 bg-emerald-50/70 border border-emerald-200 rounded-xl space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-9 h-9 rounded-lg bg-emerald-600 text-white flex items-center justify-center shadow-2xs flex-shrink-0">
+                            <Check className="w-5 h-5" />
+                          </div>
+                          <div>
+                            <div className="text-xs font-extrabold text-emerald-950 truncate max-w-[220px] sm:max-w-xs">
+                              {uploadedVideoMeta.name}
+                            </div>
+                            <div className="text-[11px] text-emerald-700 font-mono">
+                              Ukuran: <strong>{uploadedVideoMeta.sizeMb} MB</strong> (dari maks 100 MB)
+                            </div>
+                          </div>
+                        </div>
 
-                    <div className="text-xs font-bold text-gray-800 group-hover:text-[#8B0021]">
-                      {isVideoLoading
-                        ? "Sedang memproses video..."
-                        : "Klik untuk Pilih Video dari Laptop / HP"}
+                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-200/80 px-2 py-0.5 rounded-md uppercase">
+                          Sedang Aktif
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-2 pt-2 border-t border-emerald-200/70">
+                        <button
+                          type="button"
+                          onClick={() => videoFileInputRef.current?.click()}
+                          disabled={isVideoLoading}
+                          className="px-3 py-1.5 bg-white hover:bg-gray-50 text-gray-700 text-xs font-bold rounded-lg border border-gray-300 shadow-2xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Upload className="w-3.5 h-3.5 text-[#8B0021]" />
+                          <span>Ganti Video Lain (Maks. 100MB)</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleRemoveUploadedVideo}
+                          className="px-3 py-1.5 bg-rose-50 hover:bg-rose-100 text-[#8B0021] text-xs font-bold rounded-lg border border-rose-200 transition-colors flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>Hapus Video Upload</span>
+                        </button>
+                      </div>
                     </div>
-                    <div className="text-[10px] text-gray-400">
-                      Mendukung format .mp4, .webm, .mov (Ukuran ideal: 2MB – 15MB)
+                  ) : (
+                    /* UPLOAD DROPZONE */
+                    <div
+                      onClick={() => videoFileInputRef.current?.click()}
+                      className="border-2 border-dashed border-gray-300 hover:border-[#8B0021] bg-gray-50/50 hover:bg-rose-50/30 rounded-xl p-6 text-center cursor-pointer transition-all flex flex-col items-center justify-center space-y-2 group"
+                    >
+                      <div className="w-12 h-12 rounded-full bg-white border border-gray-200 group-hover:border-rose-300 text-gray-400 group-hover:text-[#8B0021] flex items-center justify-center transition-colors shadow-2xs">
+                        {isVideoLoading ? (
+                          <RefreshCw className="w-6 h-6 animate-spin text-[#8B0021]" />
+                        ) : (
+                          <Upload className="w-6 h-6" />
+                        )}
+                      </div>
+
+                      <div className="text-xs font-bold text-gray-800 group-hover:text-[#8B0021]">
+                        {isVideoLoading
+                          ? "Sedang menyimpan video ke penyimpanan browser..."
+                          : "Klik untuk Upload Video dari Laptop / HP"}
+                      </div>
+                      <div className="text-[11px] text-gray-400 font-medium">
+                        Mendukung format .mp4, .webm, .mov (Kapasitas hingga <strong>100 MB</strong>)
+                      </div>
                     </div>
-                  </div>
+                  )}
 
                   <input
                     ref={videoFileInputRef}
@@ -2213,19 +2308,22 @@ function AdminPortalVisual() {
                   />
                 </div>
 
-                {/* Method 2: Insert Video URL */}
+                {/* PRIORITY 2: INSERT VIDEO URL (CADANGAN / FALLBACK) */}
                 <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-xs space-y-4">
                   <div className="flex items-center justify-between pb-3 border-b border-gray-100">
                     <div className="flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-[#8B0021]" />
-                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900">
-                        Metode 2: Gunakan Link URL Video (CDN / Cloud)
+                      <div className="w-6 h-6 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center text-xs font-black">
+                        2
+                      </div>
+                      <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900 flex items-center gap-1.5">
+                        <Globe className="w-4 h-4 text-gray-500" />
+                        <span>Prioritas Cadangan: Link URL Video (CDN / Hosting)</span>
                       </h3>
                     </div>
                   </div>
 
-                  <p className="text-xs text-gray-600 leading-relaxed">
-                    Jika video disimpan di CDN (Cloudinary, Supabase Storage, AWS S3, atau link hosting langsung):
+                  <p className="text-xs text-gray-500 leading-relaxed">
+                    Digunakan secara otomatis jika belum ada file video yang diupload di atas, atau jika file upload dihapus.
                   </p>
 
                   <form onSubmit={handleSaveVideoUrl} className="space-y-3">
@@ -2237,7 +2335,7 @@ function AdminPortalVisual() {
                         type="text"
                         value={inputVideoLink}
                         onChange={(e) => setInputVideoLink(e.target.value)}
-                        placeholder="https://domain.com/videos/profil-solveta.mp4"
+                        placeholder={data.siteCopy.profileVideo || "https://domain.com/videos/profil-solveta.mp4"}
                         className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white font-mono"
                       />
                     </div>
@@ -2246,9 +2344,9 @@ function AdminPortalVisual() {
                       <button
                         type="submit"
                         disabled={!inputVideoLink.trim()}
-                        className="px-4 py-2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] disabled:opacity-50 text-white text-xs font-bold rounded-lg shadow-xs transition-all cursor-pointer"
+                        className="px-4 py-2 bg-gray-900 hover:bg-black disabled:opacity-40 text-white text-xs font-bold rounded-lg shadow-xs transition-all cursor-pointer"
                       >
-                        Terapkan Link Video
+                        Terapkan Link URL Cadangan
                       </button>
 
                       <button
@@ -2258,7 +2356,7 @@ function AdminPortalVisual() {
                         }}
                         className="text-[11px] text-[#8B0021] hover:underline font-medium cursor-pointer"
                       >
-                        Pakai /videos/profile.mp4
+                        Pakai bawaan: /videos/profile.mp4
                       </button>
                     </div>
                   </form>
@@ -2271,7 +2369,7 @@ function AdminPortalVisual() {
                     <span>Panduan Penempatan File Manual di Coding</span>
                   </div>
                   <p className="text-[11px] text-amber-800/90 leading-relaxed">
-                    Anda juga bisa langsung meng-copy file video ke folder proyek berikut:
+                    Anda juga bisa meletakkan file video master di folder:
                   </p>
                   <div className="p-2 bg-white/90 rounded-lg border border-amber-200 text-[10px] font-mono text-gray-800 break-all select-all">
                     solveta/public/videos/profile.mp4
@@ -2292,9 +2390,13 @@ function AdminPortalVisual() {
                         Live Preview Player
                       </h3>
                     </div>
-                    <span className="text-[10px] font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center gap-1">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      <span>Aktif di Web</span>
+                    <span className={`text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full border flex items-center gap-1 ${
+                      uploadedVideoMeta
+                        ? "text-emerald-800 bg-emerald-50 border-emerald-300"
+                        : "text-blue-800 bg-blue-50 border-blue-300"
+                    }`}>
+                      <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${uploadedVideoMeta ? "bg-emerald-500" : "bg-blue-500"}`} />
+                      <span>{uploadedVideoMeta ? "Diputar dari File Upload" : "Diputar dari Link / Default"}</span>
                     </span>
                   </div>
 
@@ -2313,20 +2415,20 @@ function AdminPortalVisual() {
                   </div>
 
                   {/* Video Info Metadata */}
-                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200 space-y-1.5 text-left">
+                  <div className="p-3.5 bg-gray-50 rounded-xl border border-gray-200 space-y-1.5 text-left">
                     <div className="text-[11px] font-bold text-gray-800 flex items-center justify-between">
-                      <span>Sumber Video Saat Ini:</span>
-                      <span className="text-[10px] font-mono text-gray-500">
-                        {editVideoUrl.startsWith("data:")
-                          ? "File Upload (Base64)"
+                      <span>Sumber Video yang Diputar:</span>
+                      <span className="text-[10px] font-mono font-extrabold text-[#8B0021]">
+                        {uploadedVideoMeta
+                          ? "Prioritas 1: File Upload (Lokal)"
                           : editVideoUrl.startsWith("http")
-                          ? "Link External (CDN)"
-                          : "File Lokal"}
+                          ? "Prioritas 2: Link External (CDN)"
+                          : "Prioritas 2: File Bawaan"}
                       </span>
                     </div>
                     <div className="text-[10px] text-gray-500 font-mono break-all truncate">
-                      {editVideoUrl.startsWith("data:")
-                        ? `${editVideoUrl.substring(0, 45)}... (Tersimpan di Data Web)`
+                      {uploadedVideoMeta
+                        ? `${uploadedVideoMeta.name} (${uploadedVideoMeta.sizeMb} MB - Lancar Tanpa Buffering)`
                         : editVideoUrl}
                     </div>
                   </div>
