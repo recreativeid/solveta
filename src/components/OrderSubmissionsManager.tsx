@@ -187,11 +187,20 @@ export const OrderSubmissionsManager: React.FC<{
     showToast("Rekap formulir order berhasil diunduh ke Excel!");
   };
 
+  const getFormUrl = () => {
+    if (typeof window !== "undefined") {
+      const isGitHubPages = window.location.pathname.includes("/solveta");
+      const base = isGitHubPages ? "/solveta" : "";
+      return `${window.location.origin}${base}/formulir/`;
+    }
+    return "/formulir/";
+  };
+
   const copyFormLink = () => {
     if (typeof window !== "undefined") {
-      const formUrl = `${window.location.origin}/formulir`;
+      const formUrl = getFormUrl();
       navigator.clipboard.writeText(formUrl);
-      showToast("Link Formulir Customer disalin!");
+      showToast("Link Formulir Customer berhasil disalin!");
     }
   };
 
@@ -220,21 +229,22 @@ export const OrderSubmissionsManager: React.FC<{
           </button>
 
           <a
-            href="/formulir"
+            href={getFormUrl()}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-3 py-1.5 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="px-3.5 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs"
+            title="Buka Formulir Kebutuhan Customer di tab baru"
           >
-            <ExternalLink className="w-3.5 h-3.5 text-gray-500" />
+            <ExternalLink className="w-3.5 h-3.5" />
             <span>Buka Form</span>
           </a>
 
           <button
             type="button"
             onClick={handleExportExcel}
-            className="px-3.5 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
+            className="px-3 py-1.5 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-3.5 h-3.5 text-gray-500" />
             <span>Unduh Excel (.csv)</span>
           </button>
         </div>

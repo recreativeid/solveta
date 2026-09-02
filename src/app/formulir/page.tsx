@@ -14,7 +14,7 @@ import { useSiteData } from "@/context/SiteDataContext";
 import { getWhatsAppUrl } from "@/utils/whatsapp";
 
 export default function CustomerBriefFormPage() {
-  const { data, addOrderSubmission } = useSiteData();
+  const { data, addOrderSubmission, addProjectTransaction } = useSiteData();
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -93,11 +93,21 @@ export default function CustomerBriefFormPage() {
         ? customWebsiteType.trim()
         : websiteType;
 
+    const cleanFullName = fullName.trim();
+    const cleanBrandName = brandName.trim();
+    const cleanWhatsapp = whatsappNumber.trim();
+    const cleanWebName = websiteAndDomainName.trim() || `${cleanBrandName.toLowerCase().replace(/\s+/g, "")}.com`;
+    const cleanWebLink = cleanWebName.startsWith("http") ? cleanWebName : `https://${cleanWebName}`;
+    const dateToday = new Date().toISOString().slice(0, 10);
+    const dateFormatted = dateToday.replace(/-/g, "");
+    const randomSuffix = Math.floor(100 + Math.random() * 900);
+    const generatedInvoiceNumber = `INV-${dateFormatted}-${randomSuffix}`;
+
     // Add submission to context & storage
     addOrderSubmission({
-      fullName: fullName.trim(),
-      whatsappNumber: whatsappNumber.trim(),
-      brandName: brandName.trim(),
+      fullName: cleanFullName,
+      whatsappNumber: cleanWhatsapp,
+      brandName: cleanBrandName,
       businessDescription: businessDescription.trim(),
       selectedPackage,
       websiteType: finalWebsiteType,
@@ -108,9 +118,23 @@ export default function CustomerBriefFormPage() {
       productPhotos: productPhotos.trim() || "Tidak ada foto khusus (gunakan ilustrasi/stok foto profesional)",
       exampleWebsites: exampleWebsites.trim() || "-",
       specialNotes: specialNotes.trim() || "-",
-      websiteAndDomainName: websiteAndDomainName.trim() || `${brandName.toLowerCase().replace(/\s+/g, "")}.com`,
+      websiteAndDomainName: cleanWebName,
       businessProfile: businessProfile.trim() || "-",
       status: "Baru",
+    });
+
+    // Otomatis catat ke menu Pencatatan Proyek khusus untuk customer yang bersangkutan,
+    // TETAPI harga layanan dibiarkan KOSONG (0) agar developer yang mengisi sendiri dan memperhitungkan!
+    addProjectTransaction({
+      date: dateToday,
+      customerName: `${cleanFullName} (${cleanBrandName})`,
+      phoneNumber: cleanWhatsapp,
+      servicePrice: 0, // Dibiarkan kosong/0 untuk diisi & dihitung manual oleh developer
+      websiteName: cleanWebName,
+      websiteLink: cleanWebLink,
+      status: "Progress",
+      notes: `[Formulir Customer] Paket: ${selectedPackage} | Kebutuhan: ${finalWebsiteType} (${finalPages.slice(0, 3).join(", ")})`,
+      invoiceNumber: generatedInvoiceNumber,
     });
 
     setTimeout(() => {

@@ -120,6 +120,7 @@ function AdminPortalVisual() {
 
   // Edit Modal State for Portfolio Item
   const [editingPortfolio, setEditingPortfolio] = useState<PortfolioItemData | null>(null);
+  const [editPortCategory, setEditPortCategory] = useState("");
   const [editPortTags, setEditPortTags] = useState("");
   const [editPortLiveUrl, setEditPortLiveUrl] = useState("");
 
@@ -550,13 +551,15 @@ function AdminPortalVisual() {
     showToast("Portofolio baru berhasil ditambahkan!");
   };
 
-  const handleUpdatePortfolio = (e: React.FormEvent) => {
+  const handleUpdatePortfolio = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingPortfolio) return;
 
-    const tagsArray = editPortTags
-      .split(",")
-      .map((t) => t.trim().replace(/^#/, ""))
+    const rawTokens = editPortTags.includes(",")
+      ? editPortTags.split(",")
+      : editPortTags.split(/[\s,]+/);
+    const tagsArray = rawTokens
+      .map((t) => t.trim().replace(/^#+/, ""))
       .filter((t) => t.length > 0);
 
     const formattedLiveUrl = editPortLiveUrl.trim()
@@ -565,21 +568,24 @@ function AdminPortalVisual() {
         : `https://${editPortLiveUrl.trim()}`
       : editingPortfolio.liveUrl || "https://www.solveta.site";
 
+    const finalCategory = editPortCategory.trim();
+
     editPortfolioItem(editingPortfolio.id, {
       title: editingPortfolio.title,
-      category: editingPortfolio.category,
+      category: finalCategory,
       description: editingPortfolio.description,
       image: editingPortfolio.image,
-      tags: tagsArray.length > 0 ? tagsArray : editingPortfolio.tags,
+      tags: tagsArray,
       liveUrl: formattedLiveUrl,
     });
 
-    if (editingPortfolio.category) {
-      addCategory(editingPortfolio.category);
+    if (finalCategory) {
+      addCategory(finalCategory);
     }
 
     setEditingPortfolio(null);
-    showToast("Portofolio & Tagar berhasil diperbarui!");
+    await syncWithSupabase();
+    showToast("Portofolio, Kategori & Tagar berhasil diperbarui!");
   };
 
   const handleDeletePortfolio = (id: string, title: string) => {
@@ -1624,6 +1630,7 @@ function AdminPortalVisual() {
                       <button
                         onClick={() => {
                           setEditingPortfolio(item);
+                          setEditPortCategory(item.category || "");
                           setEditPortTags((item.tags || []).join(", "));
                           setEditPortLiveUrl(item.liveUrl || "");
                         }}
@@ -2956,35 +2963,73 @@ function AdminPortalVisual() {
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="space-y-3">
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Kategori
+                      Kategori Portofolio
                     </label>
                     <input
                       type="text"
-                      value={editingPortfolio.category || ""}
-                      onChange={(e) =>
-                        setEditingPortfolio({
-                          ...editingPortfolio,
-                          category: e.target.value,
-                        })
-                      }
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                      value={editPortCategory}
+                      onChange={(e) => setEditPortCategory(e.target.value)}
+                      placeholder="Pilih kategori di bawah atau ketik manual..."
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-gray-900 outline-none bg-white font-medium text-gray-900"
                     />
+                    {/* Quick Category Chips */}
+                    <div className="flex flex-wrap items-center gap-1.5 mt-2">
+                      <span className="text-[10px] text-gray-400 font-medium">Pilih Cepat:</span>
+                      {data.categories.map((cat) => (
+                        <button
+                          type="button"
+                          key={cat}
+                          onClick={() => setEditPortCategory(cat)}
+                          className={`text-[10px] px-2.5 py-0.5 rounded-full font-medium transition-all cursor-pointer ${
+                            editPortCategory === cat
+                              ? "bg-gray-900 text-white shadow-xs"
+                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          }`}
+                        >
+                          {cat}
+                        </button>
+                      ))}
+                      {editPortCategory && (
+                        <button
+                          type="button"
+                          onClick={() => setEditPortCategory("")}
+                          className="text-[10px] px-2 py-0.5 rounded-full border border-dashed border-gray-300 text-gray-400 hover:text-gray-600 cursor-pointer"
+                        >
+                          ✕ Kosongkan
+                        </button>
+                      )}
+                    </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Tags / Tagar (Pisahkan dengan koma)
+                      Tags / Tagar (Pisahkan dengan koma atau spasi)
                     </label>
                     <input
                       type="text"
                       value={editPortTags}
                       onChange={(e) => setEditPortTags(e.target.value)}
                       placeholder="Contoh: Real Estate, Search Filter, Direct WA"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-gray-900 outline-none bg-white"
                     />
+                    {/* Live Tag Badges Preview */}
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {editPortTags
+                        .split(/[,\s]+/)
+                        .map((t) => t.trim().replace(/^#+/, ""))
+                        .filter((t) => t.length > 0)
+                        .map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="text-[10px] bg-rose-50 text-[#8B0021] border border-rose-100 font-semibold px-2 py-0.5 rounded-md"
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                    </div>
                   </div>
                 </div>
 

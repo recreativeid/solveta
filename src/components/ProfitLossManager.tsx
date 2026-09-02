@@ -88,7 +88,6 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
   const [newServiceName, setNewServiceName] = useState("");
   const [newSellingPrice, setNewSellingPrice] = useState<number>(999000);
   const [newLaborFee, setNewLaborFee] = useState<number>(250000);
-  const [newEstimatedOrders, setNewEstimatedOrders] = useState<number>(5);
   const [newServiceNotes, setNewServiceNotes] = useState("");
 
   // Formatting Helpers
@@ -100,7 +99,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
     }).format(val || 0);
   };
 
-  // Calculations for an individual service
+  // Calculations for an individual service: Harga Jual mencakup komponen beban, sisa masuk ke margin
   const calculateServiceMetrics = (service: ServiceProfitAnalysis) => {
     const totalCosts = (service.costs || []).reduce((acc, c) => acc + (c.amount || 0), 0);
     const netProfit = (service.sellingPrice || 0) - totalCosts;
@@ -108,19 +107,11 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
       service.sellingPrice > 0
         ? Math.round((netProfit / service.sellingPrice) * 100)
         : 0;
-    const monthlyOrders = service.estimatedMonthlyOrders || 1;
-    const monthlyRevenue = (service.sellingPrice || 0) * monthlyOrders;
-    const monthlyCosts = totalCosts * monthlyOrders;
-    const monthlyNetProfit = netProfit * monthlyOrders;
 
     return {
       totalCosts,
       netProfit,
       marginPercent,
-      monthlyOrders,
-      monthlyRevenue,
-      monthlyCosts,
-      monthlyNetProfit,
     };
   };
 
@@ -128,18 +119,18 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
   const summary = analyses.reduce(
     (acc, curr) => {
       const metrics = calculateServiceMetrics(curr);
-      acc.totalMonthlyRevenue += metrics.monthlyRevenue;
-      acc.totalMonthlyCosts += metrics.monthlyCosts;
-      acc.totalMonthlyNetProfit += metrics.monthlyNetProfit;
+      acc.totalSellingPrice += curr.sellingPrice || 0;
+      acc.totalCosts += metrics.totalCosts;
+      acc.totalNetProfit += metrics.netProfit;
       return acc;
     },
-    { totalMonthlyRevenue: 0, totalMonthlyCosts: 0, totalMonthlyNetProfit: 0 }
+    { totalSellingPrice: 0, totalCosts: 0, totalNetProfit: 0 }
   );
 
   const averageMargin =
-    summary.totalMonthlyRevenue > 0
+    summary.totalSellingPrice > 0
       ? Math.round(
-          (summary.totalMonthlyNetProfit / summary.totalMonthlyRevenue) * 100
+          (summary.totalNetProfit / summary.totalSellingPrice) * 100
         )
       : 0;
 
@@ -199,7 +190,6 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
       serviceName: newServiceName.trim(),
       sellingPrice: Number(newSellingPrice) || 0,
       laborFee: Number(newLaborFee) || 0,
-      estimatedMonthlyOrders: Number(newEstimatedOrders) || 1,
       notes: newServiceNotes.trim() || undefined,
       costs: [
         {
@@ -230,22 +220,21 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
       "Nama Layanan",
       "Harga Jual (Rp)",
       "Total Beban HPP (Rp)",
-      "Laba Bersih (Rp)",
+      "Sisa Masuk Margin (Rp)",
       "Margin (%)",
-      "Estimasi Order/Bulan",
-      "Proyeksi Laba Bulanan (Rp)",
+      "Komponen Beban (HPP)",
     ];
 
     const rows = analyses.map((s) => {
       const m = calculateServiceMetrics(s);
+      const costList = (s.costs || []).map((c) => `${c.name}: Rp${c.amount}`).join("; ");
       return [
         `"${s.serviceName}"`,
         s.sellingPrice,
         m.totalCosts,
         m.netProfit,
         `${m.marginPercent}%`,
-        m.monthlyOrders,
-        m.monthlyNetProfit,
+        `"${costList}"`,
       ].join(",");
     });
 
@@ -253,11 +242,11 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Laporan_Laba_Rugi_Solveta_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.setAttribute("download", `Laporan_HPP_Margin_Solveta_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    showToast("Laporan Laba Rugi berhasil diekspor ke CSV!");
+    showToast("Laporan HPP & Margin berhasil diekspor ke CSV!");
   };
 
   const handleSaveAddon = (e: React.FormEvent) => {
@@ -291,44 +280,44 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
 
   return (
     <div className="space-y-6 bg-white font-sans text-left">
-      {/* 1. FINANCIAL EXECUTIVE SUMMARY CARDS (CLEAN MINIMALIST SAAS) */}
+      {/* 1. FINANCIAL SUMMARY CARDS: NILAI LAYANAN, BEBAN HPP & SISA MARGIN */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Metric 1: Estimasi Omset Bulanan */}
+        {/* Metric 1: Total Nilai Layanan */}
         <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
           <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
-            Estimasi Omset / Bulan
+            Total Nilai Seluruh Paket
           </div>
           <div className="text-2xl font-semibold text-gray-900 tracking-tight">
-            {formatIDR(summary.totalMonthlyRevenue)}
+            {formatIDR(summary.totalSellingPrice)}
           </div>
           <p className="text-[11px] text-gray-400 mt-1">
-            Akumulasi target seluruh paket layanan
+            Akumulasi harga jual seluruh paket aktif
           </p>
         </div>
 
-        {/* Metric 2: Total Beban Pokok & Operasional */}
+        {/* Metric 2: Total Beban Pokok & HPP */}
         <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
           <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
-            Total Beban / HPP Bulan Ini
+            Total Komponen Beban (HPP)
           </div>
           <div className="text-2xl font-semibold text-gray-900 tracking-tight">
-            {formatIDR(summary.totalMonthlyCosts)}
+            {formatIDR(summary.totalCosts)}
           </div>
           <p className="text-[11px] text-gray-400 mt-1">
-            Domain, server, tools &amp; tenaga kerja
+            Total biaya hosting, domain, CS, dev &amp; iklan
           </p>
         </div>
 
-        {/* Metric 3: Total Laba Bersih Bulanan */}
+        {/* Metric 3: Total Sisa Margin Keuntungan */}
         <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
           <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
-            Proyeksi Laba Bersih
+            Total Sisa Masuk Margin
           </div>
-          <div className="text-2xl font-semibold text-gray-900 tracking-tight">
-            {formatIDR(summary.totalMonthlyNetProfit)}
+          <div className="text-2xl font-semibold text-emerald-600 tracking-tight">
+            {formatIDR(summary.totalNetProfit)}
           </div>
           <p className="text-[11px] text-gray-400 mt-1">
-            Estimasi laba bersih masuk kas bisnis
+            Sisa keuntungan bersih masuk kas bisnis
           </p>
         </div>
 
@@ -339,12 +328,12 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
           </div>
           <div className="text-2xl font-semibold text-gray-900 tracking-tight flex items-center gap-2">
             <span>{averageMargin}%</span>
-            <span className="text-[11px] font-medium text-gray-500 bg-gray-100 px-2 py-0.5 rounded">
-              {averageMargin >= 40 ? "Sehat" : averageMargin >= 20 ? "Normal" : "Rendah"}
+            <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+              {averageMargin >= 40 ? "Sangat Sehat" : averageMargin >= 20 ? "Normal" : "Rendah"}
             </span>
           </div>
           <p className="text-[11px] text-gray-400 mt-1">
-            Persentase keuntungan bersih rata-rata
+            Persentase sisa keuntungan rata-rata
           </p>
         </div>
       </div>
@@ -391,10 +380,8 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                 <th className="py-3 px-4">Nama Layanan</th>
                 <th className="py-3 px-4 text-right">Harga Jual</th>
                 <th className="py-3 px-4 text-right">Total Beban (HPP)</th>
-                <th className="py-3 px-4 text-right">Laba Bersih</th>
-                <th className="py-3 px-4 text-center">Margin</th>
-                <th className="py-3 px-4 text-center">Estimasi Order/Bln</th>
-                <th className="py-3 px-4 text-right">Proyeksi Laba/Bln</th>
+                <th className="py-3 px-4 text-right">Sisa Masuk Margin</th>
+                <th className="py-3 px-4 text-center">Persentase Margin</th>
                 <th className="py-3 px-4 text-center">Rincian</th>
               </tr>
             </thead>
@@ -428,38 +415,28 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                       </td>
 
                       {/* 2. Harga Jual */}
-                      <td className="py-3.5 px-4 text-right font-medium text-gray-900">
+                      <td className="py-3.5 px-4 text-right font-medium text-gray-900 font-mono">
                         {formatIDR(service.sellingPrice)}
                       </td>
 
                       {/* 3. Total Beban HPP */}
-                      <td className="py-3.5 px-4 text-right text-gray-600 font-medium">
+                      <td className="py-3.5 px-4 text-right text-gray-600 font-medium font-mono">
                         {formatIDR(metrics.totalCosts)}
                       </td>
 
-                      {/* 4. Laba Bersih */}
-                      <td className="py-3.5 px-4 text-right font-semibold text-gray-900">
-                        {formatIDR(metrics.netProfit)}
+                      {/* 4. Sisa Masuk Margin */}
+                      <td className="py-3.5 px-4 text-right font-semibold text-emerald-600 font-mono">
+                        + {formatIDR(metrics.netProfit)}
                       </td>
 
                       {/* 5. Margin Badge */}
                       <td className="py-3.5 px-4 text-center">
-                        <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-700">
+                        <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-100">
                           {metrics.marginPercent}%
                         </span>
                       </td>
 
-                      {/* 6. Estimasi Order / Bulan */}
-                      <td className="py-3.5 px-4 text-center text-gray-600">
-                        {metrics.monthlyOrders} proyek
-                      </td>
-
-                      {/* 7. Proyeksi Laba Bulanan */}
-                      <td className="py-3.5 px-4 text-right font-semibold text-gray-900">
-                        {formatIDR(metrics.monthlyNetProfit)}
-                      </td>
-
-                      {/* 8. Accordion Toggle */}
+                      {/* 6. Accordion Toggle */}
                       <td className="py-3.5 px-4 text-center">
                         <button
                           type="button"
@@ -477,15 +454,16 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                     {/* EXPANDED ACCORDION: DETAIL KOMPONEN BEBAN & EDITING */}
                     {isExpanded && (
                       <tr className="bg-gray-50/40 border-b border-gray-100">
-                        <td colSpan={8} className="p-5">
-                          <div className="space-y-4 max-w-4xl">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200/60 pb-3">
+                        <td colSpan={6} className="p-5">
+                          <div className="space-y-4 max-w-3xl">
+                            {/* Accordion Header */}
+                            <div className="flex items-center justify-between pb-3 border-b border-gray-200/80">
                               <div>
-                                <h3 className="text-xs font-semibold text-gray-900">
+                                <h3 className="text-xs font-bold text-gray-900">
                                   Komponen Beban: {service.serviceName}
                                 </h3>
-                                <p className="text-[11px] text-gray-400 mt-0.5">
-                                  Kelola rincian biaya infrastruktur, lisensi, dan fee tenaga kerja.
+                                <p className="text-[11px] text-gray-400">
+                                  Kelola rincian biaya yang tercakup dalam harga jual layanan ini.
                                 </p>
                               </div>
 
@@ -493,7 +471,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                                 <button
                                   type="button"
                                   onClick={() => handleOpenAddCost(service.id)}
-                                  className="px-3 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
+                                  className="px-3 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
                                 >
                                   <Plus className="w-3.5 h-3.5" />
                                   <span>Tambah Biaya</span>
@@ -515,41 +493,21 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                               </div>
                             </div>
 
-                            {/* Quick Editor for Selling Price & Monthly Target */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-white p-4 rounded-xl border border-gray-200/70">
-                              <div>
-                                <label className="block text-[11px] font-medium text-gray-600 mb-1">
-                                  Harga Jual Layanan (Rp)
-                                </label>
-                                <input
-                                  type="number"
-                                  value={service.sellingPrice}
-                                  onChange={(e) =>
-                                    editServiceProfitItem(service.id, {
-                                      sellingPrice: Number(e.target.value) || 0,
-                                    })
-                                  }
-                                  className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
-                                />
-                              </div>
-
-                              <div>
-                                <label className="block text-[11px] font-medium text-gray-600 mb-1">
-                                  Estimasi Order per Bulan (Proyek)
-                                </label>
-                                <input
-                                  type="number"
-                                  min="1"
-                                  max="100"
-                                  value={service.estimatedMonthlyOrders || 1}
-                                  onChange={(e) =>
-                                    editServiceProfitItem(service.id, {
-                                      estimatedMonthlyOrders: Number(e.target.value) || 1,
-                                    })
-                                  }
-                                  className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
-                                />
-                              </div>
+                            {/* Quick Editor for Selling Price (No monthly estimate) */}
+                            <div className="bg-white p-4 rounded-xl border border-gray-200/70 max-w-sm">
+                              <label className="block text-[11px] font-medium text-gray-600 mb-1">
+                                Harga Jual Layanan (Rp)
+                              </label>
+                              <input
+                                type="number"
+                                value={service.sellingPrice}
+                                onChange={(e) =>
+                                  editServiceProfitItem(service.id, {
+                                    sellingPrice: Number(e.target.value) || 0,
+                                  })
+                                }
+                                className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-mono"
+                              />
                             </div>
 
                             {/* List of Cost Items */}
@@ -578,7 +536,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                                     </div>
 
                                     <div className="flex items-center gap-4">
-                                      <span className="font-medium text-xs text-gray-800">
+                                      <span className="font-medium text-xs text-gray-800 font-mono">
                                         {formatIDR(cost.amount)}
                                       </span>
 
@@ -603,17 +561,17 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                             <div className="p-3.5 bg-rose-50/70 border border-rose-100 rounded-xl flex items-center justify-between text-xs">
                               <div>
                                 <span className="font-bold text-[#8B0021] block">
-                                  💡 Ringkasan Margin Paket Ini:
+                                  💡 Rincian Margin Layanan Ini:
                                 </span>
                                 <span className="text-[11px] text-gray-600">
-                                  Harga: <strong>{formatIDR(service.sellingPrice)}</strong> - Total Beban: <strong>{formatIDR(metrics.totalCosts)}</strong>
+                                  Harga: <strong>{formatIDR(service.sellingPrice)}</strong> — Total Beban: <strong>{formatIDR(metrics.totalCosts)}</strong>
                                 </span>
                               </div>
                               <div className="text-right font-black">
-                                <span className="text-emerald-700 text-sm block">
-                                  + {formatIDR(metrics.netProfit)} / Proyek
+                                <span className="text-emerald-700 text-sm block font-mono">
+                                  + {formatIDR(metrics.netProfit)} (Sisa Margin)
                                 </span>
-                                <span className="text-[11px] text-gray-500 font-mono">
+                                <span className="text-[11px] text-gray-500">
                                   Margin Keuntungan Bersih: <strong>{metrics.marginPercent}%</strong>
                                 </span>
                               </div>
@@ -852,35 +810,19 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block font-medium text-gray-700 mb-1">
-                      Harga Jual (Rp)
-                    </label>
-                    <input
-                      type="number"
-                      required
-                      min="0"
-                      step="10000"
-                      value={newSellingPrice}
-                      onChange={(e) => setNewSellingPrice(Number(e.target.value))}
-                      className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block font-medium text-gray-700 mb-1">
-                      Target Order / Bln
-                    </label>
-                    <input
-                      type="number"
-                      min="1"
-                      max="100"
-                      value={newEstimatedOrders}
-                      onChange={(e) => setNewEstimatedOrders(Number(e.target.value))}
-                      className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
-                    />
-                  </div>
+                <div>
+                  <label className="block font-medium text-gray-700 mb-1">
+                    Harga Jual Layanan (Rp)
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    step="10000"
+                    value={newSellingPrice}
+                    onChange={(e) => setNewSellingPrice(Number(e.target.value))}
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-mono"
+                  />
                 </div>
 
                 <div>
@@ -894,7 +836,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                     value={newLaborFee}
                     onChange={(e) => setNewLaborFee(Number(e.target.value))}
                     placeholder="Contoh: 300000"
-                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-mono"
                   />
                 </div>
 
