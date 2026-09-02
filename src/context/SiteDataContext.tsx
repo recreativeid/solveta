@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { getSupabaseClient, isSupabaseConfigured } from "@/lib/supabase";
+import { cleanWhatsAppNumber } from "@/utils/whatsapp";
 
 export interface ChecklistItemData {
   text: string;
@@ -100,6 +101,14 @@ export interface ServiceProfitAnalysis {
   estimatedMonthlyOrders?: number; // Estimasi jumlah order per bulan
   costs: ServiceCostItem[];
   notes?: string;
+}
+
+export interface ContactData {
+  whatsappNumber: string;
+  whatsappDisplay: string;
+  websiteUrl: string;
+  email?: string;
+  address?: string;
 }
 
 export interface SiteDataState {
@@ -713,21 +722,10 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     saveData({ ...data, categories });
   };
 
-export function sanitizeWhatsAppNumber(input?: string): string {
-  if (!input) return "6285719663154";
-  let cleaned = input.replace(/[^0-9]/g, "");
-  if (cleaned.startsWith("0")) {
-    cleaned = "62" + cleaned.substring(1);
-  } else if (cleaned.startsWith("8")) {
-    cleaned = "62" + cleaned;
-  }
-  return cleaned || "6285719663154";
-}
-
   const updateContact = (contactUpdate: Partial<ContactData>) => {
     let cleanNum = contactUpdate.whatsappNumber;
     if (cleanNum) {
-      cleanNum = sanitizeWhatsAppNumber(cleanNum);
+      cleanNum = cleanWhatsAppNumber(cleanNum);
     }
     saveData({
       ...data,

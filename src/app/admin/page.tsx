@@ -59,6 +59,7 @@ import {
   VideoMetadata,
 } from "@/utils/mediaDb";
 import { cleanWhatsAppNumber, getWhatsAppUrl } from "@/utils/whatsapp";
+import { getAssetPath } from "@/utils/asset";
 import {
   SiteDataProvider,
   useSiteData,
@@ -631,54 +632,6 @@ function AdminPortalVisual() {
     showToast("Kategori baru berhasil ditambahkan!");
   };
 
-  const saveVisualChanges = async () => {
-    const updatedState: SiteDataState = {
-      ...data,
-      siteCopy: {
-        ...data.siteCopy,
-        heroHeadline: editHeadline,
-        heroSubtitle: editSubtitle,
-        portfolioTitle: editPortfolioTitle,
-        consultationTitle: editConsultationTitle,
-        consultationDesc: editConsultationDesc,
-        marqueeSpeed: editMarqueeSpeed,
-        marqueeLogoHeight: editMarqueeLogoHeight,
-        marqueeLogoSpacing: editMarqueeLogoSpacing,
-        marqueeLogoScale: editMarqueeLogoScale,
-        marqueeLogoMaxWidth: editMarqueeLogoMaxWidth,
-      },
-      pricing: editPricingList,
-    };
-    saveData(updatedState);
-    showToast("Semua perubahan teks, harga & ukuran logo berhasil disimpan!");
-  };
-
-  const saveWhatsApp = async () => {
-    let cleanNumber = editWaNumber.replace(/[^0-9]/g, "");
-    if (cleanNumber.startsWith("0")) {
-      cleanNumber = "62" + cleanNumber.substring(1);
-    } else if (cleanNumber.startsWith("8")) {
-      cleanNumber = "62" + cleanNumber;
-    }
-
-    const display = editWaDisplay.trim() || (
-      cleanNumber.startsWith("62")
-        ? `+62 ${cleanNumber.substring(2, 5)}-${cleanNumber.substring(5, 9)}-${cleanNumber.substring(9)}`
-        : editWaNumber
-    );
-
-    const updatedState: SiteDataState = {
-      ...data,
-      contact: {
-        ...data.contact,
-        whatsappNumber: cleanNumber || "6285719663154",
-        whatsappDisplay: display,
-      },
-    };
-    saveData(updatedState);
-    showToast("Nomor WhatsApp berhasil diperbarui & disimpan di website!");
-  };
-
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center p-4">
@@ -755,10 +708,9 @@ function AdminPortalVisual() {
     );
   }
 
-  const currentLogoSrc =
-    tempLogo ||
-    data.siteCopy.siteLogo ||
-    "/solveta-logo.jpg";
+  const currentLogoSrc = getAssetPath(
+    tempLogo || data.siteCopy.siteLogo || "/solveta-logo.png"
+  );
 
   return (
     <div className="min-h-screen bg-[#F8F9FA] flex flex-col md:flex-row font-sans">

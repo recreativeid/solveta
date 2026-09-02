@@ -7,6 +7,7 @@ import { Search, User, Sun, Moon } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
 import { useTheme } from "@/context/ThemeContext";
 import { getWhatsAppUrl } from "@/utils/whatsapp";
+import { getAssetPath } from "@/utils/asset";
 
 interface NavbarProps {
   onOpenSearch?: () => void;
@@ -26,7 +27,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const logoSrc = data.siteCopy.siteLogo || "./solveta-logo.png";
+  const logoSrc = getAssetPath(data.siteCopy.siteLogo || "/solveta-logo.png");
   const isDark = theme === "dark";
 
   return (

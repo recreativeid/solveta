@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Phone, Globe, Lock } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
 import { getWhatsAppUrl } from "@/utils/whatsapp";
+import { getAssetPath } from "@/utils/asset";
 
 export const Footer: React.FC = () => {
   const { data } = useSiteData();
@@ -20,9 +21,9 @@ export const Footer: React.FC = () => {
     }
   };
 
-  const currentLogo =
-    data.siteCopy.siteLogo ||
-    "/solveta-logo.jpg";
+  const currentLogo = getAssetPath(
+    data.siteCopy.siteLogo || "/solveta-logo.png"
+  );
 
   return (
     <footer className="border-t border-gray-200 dark:border-gray-800 pt-16 pb-10 bg-white dark:bg-[#07080E] text-gray-700 dark:text-gray-300 relative transition-colors duration-200">
