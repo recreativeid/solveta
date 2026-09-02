@@ -58,6 +58,7 @@ import {
   hasUploadedVideo,
   VideoMetadata,
 } from "@/utils/mediaDb";
+import { cleanWhatsAppNumber, getWhatsAppUrl } from "@/utils/whatsapp";
 import {
   SiteDataProvider,
   useSiteData,
@@ -318,6 +319,50 @@ function AdminPortalVisual() {
     } else {
       setLoginError(true);
     }
+  };
+
+  // Save WhatsApp Contact settings with instant formatting & validation
+  const saveWhatsApp = () => {
+    const cleanedNumber = cleanWhatsAppNumber(editWaNumber);
+    const formattedDisplay =
+      editWaDisplay.trim() ||
+      `+${cleanedNumber.slice(0, 2)} ${cleanedNumber.slice(2, 5)}-${cleanedNumber.slice(5, 9)}-${cleanedNumber.slice(9)}`;
+
+    updateContact({
+      whatsappNumber: cleanedNumber,
+      whatsappDisplay: formattedDisplay,
+    });
+    setEditWaNumber(cleanedNumber);
+    setEditWaDisplay(formattedDisplay);
+    showToast("Nomor WhatsApp berhasil disimpan & disinkronkan ke seluruh website!");
+  };
+
+  // Global Save All Visual, WhatsApp, and Pricing Changes
+  const saveVisualChanges = async () => {
+    const cleanedNumber = cleanWhatsAppNumber(editWaNumber);
+    const formattedDisplay =
+      editWaDisplay.trim() ||
+      `+${cleanedNumber.slice(0, 2)} ${cleanedNumber.slice(2, 5)}-${cleanedNumber.slice(5, 9)}-${cleanedNumber.slice(9)}`;
+
+    updateContact({
+      whatsappNumber: cleanedNumber,
+      whatsappDisplay: formattedDisplay,
+    });
+    updateSiteCopy({
+      heroHeadline: editHeadline,
+      heroSubtitle: editSubtitle,
+      portfolioTitle: editPortfolioTitle,
+      consultationTitle: editConsultationTitle,
+      consultationDesc: editConsultationDesc,
+      marqueeSpeed: Number(editMarqueeSpeed) || 35,
+      marqueeLogoHeight: Number(editMarqueeLogoHeight) || 46,
+      marqueeLogoSpacing: Number(editMarqueeLogoSpacing) || 36,
+      marqueeLogoScale: Number(editMarqueeLogoScale) || 100,
+      marqueeLogoMaxWidth: Number(editMarqueeLogoMaxWidth) || 240,
+    });
+    updatePricing(editPricingList);
+    await syncWithSupabase();
+    showToast("Semua data berhasil disimpan & disinkronkan ke cloud!");
   };
 
   // Handle local portfolio image file upload
@@ -2135,23 +2180,23 @@ function AdminPortalVisual() {
             <div className="space-y-4">
               <div>
                 <label className="block text-xs font-bold text-gray-800 mb-1.5">
-                  Nomor WhatsApp (Format Internasional Tanpa +)
+                  Nomor WhatsApp Admin / Sales
                 </label>
                 <input
                   type="text"
                   value={editWaNumber}
                   onChange={(e) => setEditWaNumber(e.target.value)}
-                  placeholder="Contoh: 6285719663154"
+                  placeholder="Contoh: 085719663154 atau 6285719663154"
                   className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none font-mono bg-white shadow-xs"
                 />
                 <p className="text-[11px] text-gray-500 mt-1">
-                  Gunakan kode negara 62 di depan (misal: 6285719663154).
+                  * Otomatis dibersihkan &amp; diformat valid ke format internasional (misal: <code>0857...</code> otomatis menjadi <code>62857...</code>).
                 </p>
               </div>
 
               <div>
                 <label className="block text-xs font-bold text-gray-800 mb-1.5">
-                  Teks Tampilan WhatsApp di Footer / Kontak
+                  Teks Tampilan WhatsApp di Footer / Web (Label Visual)
                 </label>
                 <input
                   type="text"
@@ -2160,6 +2205,25 @@ function AdminPortalVisual() {
                   placeholder="Contoh: +62 857-1966-3154"
                   className="w-full text-sm font-bold text-gray-950 placeholder:text-gray-400 p-3 rounded-xl border border-gray-300 focus:border-[#7B0B1E] focus:ring-2 focus:ring-[#7B0B1E]/10 outline-none bg-white shadow-xs"
                 />
+              </div>
+
+              {/* Live Preview Box & Test Button */}
+              <div className="p-4 bg-rose-50/60 border border-rose-200 rounded-xl space-y-2">
+                <div className="text-xs font-bold text-gray-800 flex items-center justify-between">
+                  <span>Pratinjau Link WhatsApp Valid:</span>
+                  <span className="font-mono text-[11px] text-[#8B0021] font-extrabold">
+                    wa.me/{cleanWhatsAppNumber(editWaNumber)}
+                  </span>
+                </div>
+                <a
+                  href={getWhatsAppUrl(editWaNumber, "Halo SOLVETA, ini adalah uji coba pesan WhatsApp dari admin.")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-2xs transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <Phone className="w-3.5 h-3.5" />
+                  <span>📲 Test Buka Link WhatsApp Sekarang</span>
+                </a>
               </div>
 
               <button

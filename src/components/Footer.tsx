@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Phone, Globe, Lock } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
+import { getWhatsAppUrl } from "@/utils/whatsapp";
 
 export const Footer: React.FC = () => {
   const { data } = useSiteData();
@@ -19,44 +20,42 @@ export const Footer: React.FC = () => {
     }
   };
 
+  const currentLogo =
+    data.siteCopy.siteLogo ||
+    "/solveta-logo.jpg";
+
   return (
     <footer className="border-t border-gray-200 dark:border-gray-800 pt-16 pb-10 bg-white dark:bg-[#07080E] text-gray-700 dark:text-gray-300 relative transition-colors duration-200">
       <div className="max-w-[1160px] mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
           {/* Col 1: Brand & Contact */}
           <div className="flex flex-col gap-2.5">
-            <div className="flex items-center gap-2">
-              <div className="w-6 h-6 rounded-md bg-[#8B0021] flex items-center justify-center text-white">
-                <svg
-                  className="w-4 h-4"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                  <polyline points="2 17 12 22 22 17"></polyline>
-                  <polyline points="2 12 12 17 22 12"></polyline>
-                </svg>
+            <div className="flex items-center gap-2.5">
+              <div className="h-9 w-9 rounded-xl overflow-hidden flex items-center justify-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-2xs flex-shrink-0">
+                <img
+                  src={currentLogo}
+                  alt="SOLVETA Logo"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <span className="font-extrabold text-base tracking-tight text-gray-900 dark:text-white">
-                SOLVETA
-              </span>
+              <div>
+                <span className="font-extrabold text-base tracking-tight text-gray-900 dark:text-white block">
+                  SOLVETA
+                </span>
+                <span className="text-[10px] text-gray-400 font-mono block">
+                  Solve Technology Agency
+                </span>
+              </div>
             </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
-              Solve Technology Agency
-            </div>
-            <div className="flex flex-col gap-1.5 text-xs text-gray-600 dark:text-gray-400">
+            <div className="flex flex-col gap-1.5 text-xs text-gray-600 dark:text-gray-400 mt-2">
               <a
-                href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}`}
+                href={getWhatsAppUrl(data.contact?.whatsappNumber, "Halo SOLVETA, saya ingin berkonsultasi mengenai pembuatan website.")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 hover:text-[#8B0021] dark:hover:text-rose-400 transition-colors"
               >
-                <Phone className="w-3.5 h-3.5 text-gray-400" />
-                <span>{data.contact?.whatsappDisplay || "+62 857-1966-3154"}</span>
+                <Phone className="w-3.5 h-3.5 text-gray-400 text-rose-600" />
+                <span>{data.contact?.whatsappDisplay || data.contact?.whatsappNumber || "+62 857-1966-3154"}</span>
               </a>
               <a
                 href={`https://${data.contact.websiteUrl}`}

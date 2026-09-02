@@ -3,6 +3,7 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useSiteData } from "@/context/SiteDataContext";
+import { getWhatsAppUrl } from "@/utils/whatsapp";
 
 export const ConsultationCTA: React.FC = () => {
   const { data } = useSiteData();
@@ -33,9 +34,10 @@ export const ConsultationCTA: React.FC = () => {
           <motion.a
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.97 }}
-            href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
+            href={getWhatsAppUrl(
+              data.contact?.whatsappNumber,
               "Halo SOLVETA, saya ingin konsultasi gratis mengenai solusi digital bisnis saya."
-            )}`}
+            )}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center px-6 py-3 text-xs sm:text-sm font-semibold text-white bg-[#8B0021] hover:bg-[#750019] rounded-lg shadow-sm transition-all mb-10"

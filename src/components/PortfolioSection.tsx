@@ -6,6 +6,7 @@ import { Sparkles, Layers, ArrowRight } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
 import { useTheme } from "@/context/ThemeContext";
 import { CoverFlowCarousel, CarouselItem } from "@/components/ui/3-d-coverflow-carousel";
+import { getWhatsAppUrl } from "@/utils/whatsapp";
 
 export const PortfolioSection: React.FC = () => {
   const { data } = useSiteData();
@@ -59,9 +60,10 @@ export const PortfolioSection: React.FC = () => {
       ? p.liveUrl!.startsWith("http")
         ? p.liveUrl!
         : `https://${p.liveUrl!}`
-      : `https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
+      : getWhatsAppUrl(
+          data.contact?.whatsappNumber,
           `Halo SOLVETA, saya ingin melihat detail dan konsultasi mengenai portofolio: ${p.title}`
-        )}`;
+        );
 
     return {
       id: p.id,
@@ -144,9 +146,10 @@ export const PortfolioSection: React.FC = () => {
       {/* Bottom Consultation Link */}
       <div className="mt-8 text-center max-w-[1240px] mx-auto px-4 sm:px-6">
         <a
-          href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
+          href={getWhatsAppUrl(
+            data.contact?.whatsappNumber,
             "Halo SOLVETA, saya ingin konsultasi mengenai pembuatan sistem atau website custom."
-          )}`}
+          )}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-xs font-bold font-sans text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200/80 dark:border-rose-800/80 px-5 py-2.5 rounded-full transition-colors shadow-2xs"

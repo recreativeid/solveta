@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
+import { getWhatsAppUrl } from "@/utils/whatsapp";
 
 export const PhilosophySection: React.FC = () => {
   const { data } = useSiteData();
@@ -36,9 +37,10 @@ export const PhilosophySection: React.FC = () => {
             <motion.a
               whileHover={{ scale: 1.04, y: -2 }}
               whileTap={{ scale: 0.97 }}
-              href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
+              href={getWhatsAppUrl(
+                data.contact?.whatsappNumber,
                 "Halo SOLVETA, saya ingin berkonsultasi mengenai kebutuhan solusi digital dan teknologi untuk bisnis saya."
-              )}`}
+              )}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md hover:shadow-xl transition-all duration-300"

@@ -6,6 +6,7 @@ import { ArrowRight, ArrowDown, MessageCircle, Sparkles } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
 import { useTheme } from "@/context/ThemeContext";
 import { LaptopMockup3D } from "@/components/LaptopMockup3D";
+import { getWhatsAppUrl } from "@/utils/whatsapp";
 
 export const Hero: React.FC = () => {
   const { data } = useSiteData();
@@ -13,10 +14,11 @@ export const Hero: React.FC = () => {
   const isDark = theme === "dark";
 
   const handleOrderWhatsApp = () => {
-    const waText = encodeURIComponent(
+    const url = getWhatsAppUrl(
+      data.contact?.whatsappNumber,
       "Halo SOLVETA, saya ingin memesan pembuatan website / konsultasi solusi digital untuk bisnis saya."
     );
-    window.open(`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${waText}`, "_blank");
+    window.open(url, "_blank", "noopener,noreferrer");
   };
 
   const handleScrollToDetails = () => {

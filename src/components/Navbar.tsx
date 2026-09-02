@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Search, User, Sun, Moon } from "lucide-react";
 import { useSiteData } from "@/context/SiteDataContext";
 import { useTheme } from "@/context/ThemeContext";
+import { getWhatsAppUrl } from "@/utils/whatsapp";
 
 interface NavbarProps {
   onOpenSearch?: () => void;
@@ -120,9 +121,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch }) => {
           <motion.a
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 0.96 }}
-            href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
+            href={getWhatsAppUrl(
+              data.contact?.whatsappNumber,
               "Halo SOLVETA, saya ingin berkonsultasi mengenai solusi digital dan pembuatan website."
-            )}`}
+            )}
             target="_blank"
             rel="noopener noreferrer"
             className="px-3.5 sm:px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] rounded-lg transition-all shadow-xs flex items-center justify-center"

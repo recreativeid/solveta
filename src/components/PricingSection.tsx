@@ -14,6 +14,7 @@ import {
   Info,
 } from "lucide-react";
 import { useSiteData, ChecklistItemData } from "@/context/SiteDataContext";
+import { getWhatsAppUrl } from "@/utils/whatsapp";
 
 export const PricingSection: React.FC = () => {
   const { data } = useSiteData();
@@ -199,9 +200,7 @@ export const PricingSection: React.FC = () => {
                       <motion.a
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
-                        href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
-                          pkg.waMessage
-                        )}`}
+                        href={getWhatsAppUrl(data.contact?.whatsappNumber, pkg.waMessage)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className={`w-full py-3.5 px-5 text-xs sm:text-sm font-bold rounded-xl flex items-center justify-center gap-2 transition-all shadow-xs ${
@@ -387,9 +386,10 @@ export const PricingSection: React.FC = () => {
           <motion.a
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
-            href={`https://wa.me/${data.contact?.whatsappNumber || "6285719663154"}?text=${encodeURIComponent(
+            href={getWhatsAppUrl(
+              data.contact?.whatsappNumber,
               "Halo SOLVETA, saya ingin konsultasi mengenai pilihan paket website."
-            )}`}
+            )}
             target="_blank"
             rel="noopener noreferrer"
             className="flex-shrink-0 px-5 py-2.5 bg-[#8B0021] hover:bg-[#750019] text-white text-xs font-bold rounded-xl transition-all flex items-center gap-2 shadow-xs"
