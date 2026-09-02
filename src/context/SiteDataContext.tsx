@@ -366,10 +366,10 @@ const defaultState: SiteDataState = {
     portfolioSubtitle: "",
     marqueeTitle: "DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG",
     marqueeSpeed: 35,
-    marqueeLogoHeight: 46,
-    marqueeLogoSpacing: 36,
+    marqueeLogoHeight: 65,
+    marqueeLogoSpacing: 40,
     marqueeLogoScale: 100,
-    marqueeLogoMaxWidth: 240,
+    marqueeLogoMaxWidth: 350,
   },
 };
 
