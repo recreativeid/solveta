@@ -312,9 +312,11 @@ function AdminPortalVisual() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
+    const u = username.trim().toLowerCase();
+    const p = password.trim();
     if (
-      username.trim().toLowerCase() === "developer" &&
-      password.trim() === "developer123"
+      (u === "developer" && p === "developer123") ||
+      (u === "admin" && (p === "admin" || p === "solveta" || p === "developer123"))
     ) {
       setIsAuthenticated(true);
       setLoginError(false);
@@ -635,25 +637,25 @@ function AdminPortalVisual() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center p-4">
+      <div className="min-h-screen bg-white flex items-center justify-center p-4 font-sans text-left">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white border border-gray-200 rounded-2xl p-8 max-w-sm w-full shadow-lg text-center"
+          className="bg-white border border-gray-200/80 rounded-xl p-6 sm:p-8 max-w-sm w-full shadow-none text-left"
         >
-          <div className="w-12 h-12 rounded-xl bg-rose-50 border border-rose-100 text-[#7B0B1E] flex items-center justify-center mx-auto mb-4">
-            <Lock className="w-6 h-6" />
+          <div className="w-9 h-9 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center mb-4">
+            <Lock className="w-4 h-4" />
           </div>
-          <h1 className="text-lg font-bold text-gray-900 mb-1">
-            SOLVETA Developer Portal
+          <h1 className="text-base font-semibold text-gray-900 mb-1">
+            SOLVETA Developer
           </h1>
-          <p className="text-xs text-gray-500 mb-6">
-            Silakan masukkan akun developer untuk mengedit isi website secara visual.
+          <p className="text-xs text-gray-400 mb-6">
+            Masuk untuk mengelola konten, harga, dan HPP.
           </p>
 
           <form onSubmit={handleLogin} className="space-y-3.5 text-left">
             <div>
-              <label className="block text-[11px] font-semibold text-gray-600 mb-1">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
                 Username
               </label>
               <input
@@ -661,14 +663,14 @@ function AdminPortalVisual() {
                 required
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Masukkan username..."
-                className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                placeholder="developer / admin"
+                className="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-medium text-gray-900"
                 autoFocus
               />
             </div>
 
             <div>
-              <label className="block text-[11px] font-semibold text-gray-600 mb-1">
+              <label className="block text-xs font-medium text-gray-700 mb-1">
                 Password
               </label>
               <input
@@ -676,32 +678,32 @@ function AdminPortalVisual() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="Masukkan password..."
-                className="w-full text-xs px-3.5 py-2.5 rounded-lg border border-gray-300 focus:border-[#7B0B1E] outline-none bg-white"
+                placeholder="developer123 / admin"
+                className="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-medium text-gray-900"
               />
             </div>
 
             {loginError && (
               <p className="text-[11px] text-red-600 font-medium">
-                Username atau password tidak sesuai. Silakan coba lagi.
+                Username atau password tidak sesuai.
               </p>
             )}
 
             <button
               type="submit"
-              className="w-full mt-2 py-2.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white font-semibold text-xs rounded-lg transition-all shadow-xs"
+              className="w-full mt-2 py-2 bg-gray-900 hover:bg-black text-white font-medium text-xs rounded-lg transition-colors cursor-pointer"
             >
-              Masuk Portal Developer
+              Masuk
             </button>
           </form>
 
-          <div className="mt-6 pt-4 border-t border-gray-100">
+          <div className="mt-6 pt-4 border-t border-gray-100 text-center">
             <Link
               href="/"
-              className="inline-flex items-center gap-1.5 text-xs text-gray-500 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-900 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Kembali ke Website Utama</span>
+              <span>Kembali ke Website</span>
             </Link>
           </div>
         </motion.div>
