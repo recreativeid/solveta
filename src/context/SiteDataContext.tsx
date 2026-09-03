@@ -787,8 +787,21 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       if (typeof window !== "undefined") {
         window.dispatchEvent(new Event("storage"));
       }
-    } catch (e) {
-      console.error("Failed to save to localStorage", e);
+    } catch (e: any) {
+      console.warn("Failed to save to localStorage, attempting storage cleanup:", e);
+      if (typeof window !== "undefined" && window.localStorage) {
+        try {
+          for (let i = localStorage.length - 1; i >= 0; i--) {
+            const k = localStorage.key(i);
+            if (k && k !== STORAGE_KEY) {
+              localStorage.removeItem(k);
+            }
+          }
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(newState));
+        } catch (retryErr) {
+          console.error("Storage still full after cleanup:", retryErr);
+        }
+      }
     }
 
     if (isSupabaseConfigured()) {
@@ -1023,16 +1036,43 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   // Customer order submissions actions
   const addOrderSubmission = (submission: Omit<CustomerOrderSubmission, "id" | "timestamp">) => {
-    const current = data.orderSubmissions || defaultState.orderSubmissions || [];
+    const currentOrders = data.orderSubmissions || defaultState.orderSubmissions || [];
+    const currentProjects = data.projectTransactions || defaultState.projectTransactions || [];
     const now = new Date();
-    const formattedDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+    const formattedTimestamp = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+    const dateOnly = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const randomSuffix = Math.floor(100 + Math.random() * 900);
+    const generatedInvoiceNumber = `INV-${dateOnly.replace(/-/g, "")}-${randomSuffix}`;
+
     const newSubmission: CustomerOrderSubmission = {
       ...submission,
       id: `sub-${Date.now()}`,
-      timestamp: formattedDate,
+      timestamp: formattedTimestamp,
       status: submission.status || "Baru",
     };
-    saveData({ ...data, orderSubmissions: [newSubmission, ...current] });
+
+    // User requirement: otomatis juga terisi di menu pencatatan proyek & invoice
+    // hanya seputar: Tanggal, Pelanggan, Nama Website.
+    // Yang lain (Harga Layanan, Link Website, Tanda Status, Keterangan) developer isi manual sendiri.
+    const newProjectRecord: ProjectTransactionRecord = {
+      id: `proj-${Date.now()}`,
+      date: dateOnly,
+      customerName: submission.fullName?.trim() || "Pelanggan Baru",
+      phoneNumber: submission.whatsappNumber?.trim() || "",
+      servicePrice: 0, // Developer isi manual sendiri
+      websiteName: submission.brandName?.trim() || submission.websiteAndDomainName?.trim() || "Website Baru",
+      websiteLink: "", // Developer isi manual sendiri
+      status: "Progress", // Tanda Status default
+      notes: "", // Keterangan awal belum ada perubahan (developer isi manual)
+      invoiceNumber: generatedInvoiceNumber,
+      costComponents: [],
+    };
+
+    saveData({
+      ...data,
+      orderSubmissions: [newSubmission, ...currentOrders],
+      projectTransactions: [newProjectRecord, ...currentProjects],
+    });
   };
 
   const deleteOrderSubmission = (id: string) => {

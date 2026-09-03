@@ -175,46 +175,40 @@ export const ProjectTransactionsManager: React.FC<{
     const sub = (data.orderSubmissions || []).find((s) => s.id === submissionId);
     if (!sub) return;
 
+    // User requirement: otomatis terisi hanya seputar Tanggal, Pelanggan, Nama Website.
+    // Yang lain developer isi manual sendiri, Tanda Status default Progress, Keterangan belum ada perubahan.
+    setFormDate(sub.timestamp ? sub.timestamp.slice(0, 10) : new Date().toISOString().slice(0, 10));
     setFormCustomerName(sub.fullName || "");
     setFormPhoneNumber(sub.whatsappNumber || "");
-    setFormWebsiteName(sub.brandName || "");
-    setFormWebsiteLink(
-      sub.exampleWebsites?.startsWith("http")
-        ? sub.exampleWebsites
-        : `https://${(sub.brandName || "proyek").toLowerCase().replace(/\s+/g, "")}.solveta.site`
-    );
-    setFormStatus("Progress");
-    setFormNotes(
-      `Paket: ${sub.selectedPackage || "-"}\nTipe Web: ${sub.websiteType || "-"}\nKebutuhan Halaman: ${sub.pagesNeeded || "-"}\nCatatan Khusus: ${sub.specialNotes || "-"}`
-    );
-    // User request: Harga layanan dikosongkan agar developer mengisi & memperhitungkan sendiri
-    setFormServicePrice("");
-    showToast(`Data formulir ${sub.fullName} dimuat! Silakan tentukan harga layanan.`);
+    setFormWebsiteName(sub.brandName || sub.websiteAndDomainName || "");
+    setFormWebsiteLink(""); // Developer isi manual sendiri
+    setFormServicePrice(""); // Developer isi manual sendiri
+    setFormStatus("Progress"); // Tanda Status default
+    setFormNotes(""); // Keterangan awal belum ada perubahan (developer isi manual)
+    setFormCostComponents([]);
+    showToast(`Data formulir ${sub.fullName} dimuat! Tanggal, Pelanggan, & Nama Website terisi.`);
   };
 
   // React to initialSubmission passed from outside (e.g. OrderSubmissionsManager)
   React.useEffect(() => {
     if (initialSubmission) {
       setEditingTxId(null);
-      setFormDate(new Date().toISOString().slice(0, 10));
+      setFormDate(
+        initialSubmission.timestamp
+          ? initialSubmission.timestamp.slice(0, 10)
+          : new Date().toISOString().slice(0, 10)
+      );
       setFormCustomerName(initialSubmission.fullName || "");
       setFormPhoneNumber(initialSubmission.whatsappNumber || "");
-      setFormWebsiteName(initialSubmission.brandName || "");
-      setFormWebsiteLink(
-        initialSubmission.exampleWebsites?.startsWith("http")
-          ? initialSubmission.exampleWebsites
-          : `https://${(initialSubmission.brandName || "proyek").toLowerCase().replace(/\s+/g, "")}.solveta.site`
-      );
-      setFormStatus("Progress");
-      setFormNotes(
-        `Paket: ${initialSubmission.selectedPackage || "-"}\nTipe Web: ${initialSubmission.websiteType || "-"}\nKebutuhan Halaman: ${initialSubmission.pagesNeeded || "-"}\nCatatan Khusus: ${initialSubmission.specialNotes || "-"}`
-      );
-      // User request: Harga layanan dikosongkan agar developer mengisi & memperhitungkan sendiri
-      setFormServicePrice("");
+      setFormWebsiteName(initialSubmission.brandName || initialSubmission.websiteAndDomainName || "");
+      setFormWebsiteLink(""); // Developer isi manual sendiri
+      setFormServicePrice(""); // Developer isi manual sendiri
+      setFormStatus("Progress"); // Tanda Status default
+      setFormNotes(""); // Keterangan awal belum ada perubahan (developer isi manual)
       setFormCostComponents([]);
       setTxModalOpen(true);
       if (onClearInitialSubmission) onClearInitialSubmission();
-      showToast(`Data formulir ${initialSubmission.fullName} berhasil ditarik ke pencatatan proyek!`);
+      showToast(`Data ${initialSubmission.fullName} ditarik! Silakan lengkapi harga layanan & keterangan.`);
     }
   }, [initialSubmission, onClearInitialSubmission, showToast]);
 
@@ -595,7 +589,19 @@ export const ProjectTransactionsManager: React.FC<{
                       )}
                     </td>
                     <td className="py-3 px-4 font-semibold text-gray-900 whitespace-nowrap">
-                      {formatIDR(tx.servicePrice)}
+                      {tx.servicePrice > 0 ? (
+                        formatIDR(tx.servicePrice)
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEdit(tx)}
+                          className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2 py-0.5 rounded cursor-pointer transition-colors"
+                          title="Klik untuk mengisi harga layanan manual"
+                        >
+                          <span>Rp 0 (Isi Manual)</span>
+                          <Edit className="w-2.5 h-2.5 text-amber-600" />
+                        </button>
+                      )}
                     </td>
                     <td className="py-3 px-4 whitespace-nowrap">
                       <select
@@ -622,7 +628,11 @@ export const ProjectTransactionsManager: React.FC<{
                       </select>
                     </td>
                     <td className="py-3 px-4 text-gray-500 max-w-[200px] truncate text-[11px]">
-                      {tx.notes || "-"}
+                      {tx.notes ? (
+                        <span title={tx.notes}>{tx.notes}</span>
+                      ) : (
+                        <span className="text-gray-400 italic">Belum ada keterangan</span>
+                      )}
                     </td>
                     <td className="py-3 px-4 text-right whitespace-nowrap">
                       <div className="flex items-center justify-end gap-1.5">

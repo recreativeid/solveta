@@ -251,10 +251,10 @@ export default function CustomerBriefFormPage() {
           {/* 1. Nama Lengkap */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              1. Nama Lengkap Penanggung Jawab <span className="text-red-500">*</span>
+              1. Nama Lengkap <span className="text-red-500">*</span>
             </label>
             <p className="text-[11px] text-gray-400">
-              Nama Anda atau perwakilan bisnis yang dapat dihubungi.
+              Nama lengkap penanggung jawab / pemilik usaha yang dapat dihubungi.
             </p>
             <input
               type="text"
@@ -266,13 +266,13 @@ export default function CustomerBriefFormPage() {
             />
           </div>
 
-          {/* 2. Nomor WhatsApp */}
+          {/* 2. Nomor WhatsApp yang akan ditampilkan (jika ada) */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              2. Nomor WhatsApp Aktif (yang akan ditampilkan di web) <span className="text-red-500">*</span>
+              2. Nomor WhatsApp yang akan ditampilkan (jika ada) <span className="text-red-500">*</span>
             </label>
             <p className="text-[11px] text-gray-400">
-              Nomor ini akan dihubungkan ke tombol chat konsultasi &amp; pemesanan.
+              Nomor WhatsApp aktif yang akan dihubungkan ke tombol chat konsultasi &amp; pemesanan di website.
             </p>
             <input
               type="text"
@@ -287,10 +287,10 @@ export default function CustomerBriefFormPage() {
           {/* 3. Nama Usaha / Brand */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              3. Nama Usaha / Brand / Perusahaan <span className="text-red-500">*</span>
+              3. Nama Usaha / Brand <span className="text-red-500">*</span>
             </label>
             <p className="text-[11px] text-gray-400">
-              Nama merek yang akan menjadi identitas utama di website.
+              Nama merek atau brand yang akan menjadi identitas utama di website.
             </p>
             <input
               type="text"
@@ -302,7 +302,7 @@ export default function CustomerBriefFormPage() {
             />
           </div>
 
-          {/* 4. Deskripsi Usaha */}
+          {/* 4. Deskripsi Singkat Usaha / Kegiatan */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
               4. Deskripsi Singkat Usaha / Kegiatan <span className="text-red-500">*</span>
@@ -320,47 +320,10 @@ export default function CustomerBriefFormPage() {
             />
           </div>
 
-          {/* 5. Paket Yang Dipilih */}
+          {/* 5. Jenis Website yang diinginkan: */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-3">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              5. Paket Yang Dipilih / Diinginkan <span className="text-red-500">*</span>
-            </label>
-            <div className="space-y-2">
-              {[
-                { label: "Basic — 299k", desc: "Landing page personal / UMKM hemat (1 Halaman, Free Domain)" },
-                { label: "Standard — 549k", desc: "Bisnis berkembang & profile produk (Hingga 5 Halaman, Paling Diminati)" },
-                { label: "Premium — 849k", desc: "Company profile profesional & produk lengkap (Hingga 7 Halaman, Speed 3x)" },
-                { label: "Platinum — Custom", desc: "Sistem aplikasi web, database & fitur kustom sesuai kebutuhan" },
-                { label: "Belum Yakin (Ingin Konsultasi Dulu)", desc: "Tim SOLVETA akan memberikan rekomendasi terbaik" },
-              ].map((pkt) => (
-                <label
-                  key={pkt.label}
-                  className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
-                    selectedPackage === pkt.label
-                      ? "border-gray-900 bg-gray-50/80"
-                      : "border-gray-200 hover:bg-gray-50/40"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="selectedPackage"
-                    checked={selectedPackage === pkt.label}
-                    onChange={() => setSelectedPackage(pkt.label)}
-                    className="mt-0.5"
-                  />
-                  <div>
-                    <div className="font-semibold text-gray-900">{pkt.label}</div>
-                    <div className="text-[11px] text-gray-400">{pkt.desc}</div>
-                  </div>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          {/* 6. Jenis Website */}
-          <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-3">
-            <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              6. Jenis Website yang Diinginkan
+              5. Jenis Website yang diinginkan:
             </label>
             <div className="space-y-2">
               {[
@@ -400,10 +363,10 @@ export default function CustomerBriefFormPage() {
             )}
           </div>
 
-          {/* 7. Halaman yang ingin ditampilkan */}
+          {/* 6. Halaman yang ingin ditampilkan */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-3">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              7. Halaman / Bagian yang Ingin Ditampilkan
+              6. Halaman yang ingin ditampilkan
             </label>
             <p className="text-[11px] text-gray-400">
               Pilih semua halaman yang diperlukan di website Anda.
@@ -436,10 +399,10 @@ export default function CustomerBriefFormPage() {
             />
           </div>
 
-          {/* 8. Warna & Nuansa Desain */}
+          {/* 7. Warna / Nuansa Desain yang Diinginkan */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              8. Warna / Nuansa Desain yang Diinginkan
+              7. Warna / Nuansa Desain yang Diinginkan
             </label>
             <p className="text-[11px] text-gray-400">
               Misal: Clean White &amp; Biru Laut, Hitam Elegan (Dark Mode), Earth Tone Hangat, atau sesuai warna logo.
@@ -453,10 +416,10 @@ export default function CustomerBriefFormPage() {
             />
           </div>
 
-          {/* 9. Domain Status */}
+          {/* 8. Apakah sudah punya domain? */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-3">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              9. Apakah Sudah Punya Domain Sendiri?
+              8. Apakah sudah punya domain?
             </label>
             <div className="space-y-2">
               {[
@@ -484,10 +447,10 @@ export default function CustomerBriefFormPage() {
             </div>
           </div>
 
-          {/* 10. Logo Status */}
+          {/* 9. Apakah sudah punya logo? */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-3">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              10. Apakah Sudah Memiliki Logo Usaha?
+              9. Apakah sudah punya logo?
             </label>
             <div className="space-y-2">
               {[
@@ -515,10 +478,10 @@ export default function CustomerBriefFormPage() {
             </div>
           </div>
 
-          {/* 11. Foto Produk / Usaha */}
+          {/* 10. Foto produk / usaha (jika ada) */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              11. Foto Produk / Usaha (Jika Ada)
+              10. Foto produk / usaha (jika ada)
             </label>
             <p className="text-[11px] text-gray-400">
               Unggah file foto produk Anda atau cantumkan link Google Drive / Dropbox jika banyak.
@@ -547,10 +510,10 @@ export default function CustomerBriefFormPage() {
             </div>
           </div>
 
-          {/* 12. Contoh Website yang Disukai */}
+          {/* 11. Apakah ada contoh website yang disukai? */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              12. Apakah Ada Contoh Website Referensi yang Disukai?
+              11. Apakah ada contoh website yang disukai?
             </label>
             <p className="text-[11px] text-gray-400">
               Boleh berupa URL website kompetitor atau website dengan gaya visual yang Anda kagumi.
@@ -564,10 +527,10 @@ export default function CustomerBriefFormPage() {
             />
           </div>
 
-          {/* 13. Catatan Tambahan / Permintaan Khusus */}
+          {/* 12. Catatan Tambahan / Permintaan Khusus */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              13. Catatan Tambahan / Permintaan Khusus
+              12. Catatan Tambahan / Permintaan Khusus
             </label>
             <p className="text-[11px] text-gray-400">
               Sampaikan fitur spesifik, integrasi khusus, atau batas waktu peluncuran jika ada.
@@ -581,10 +544,10 @@ export default function CustomerBriefFormPage() {
             />
           </div>
 
-          {/* 14. Nama Website & Domain */}
+          {/* 13. Nama Website Dan Domain */}
           <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              14. Nama Website Dan Domain yang Diharapkan
+              13. Nama Website Dan Domain
             </label>
             <p className="text-[11px] text-gray-400">
               Contoh: namausaha.com, brandanda.id, atau tokokamu.site.
@@ -598,13 +561,53 @@ export default function CustomerBriefFormPage() {
             />
           </div>
 
-          {/* 15. Profil Usaha Jika Ada */}
-          <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
+          {/* 14. Paket Yang Dipilih */}
+          <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-3">
             <label className="block text-xs sm:text-sm font-semibold text-gray-900">
-              15. Profil Usaha (Visi, Misi, Sejarah Singkat, atau Dokumen Company Profile)
+              14. Paket Yang Dipilih <span className="text-red-500">*</span>
             </label>
             <p className="text-[11px] text-gray-400">
-              Masukkan ringkasan latar belakang usaha untuk ditampilkan pada halaman &quot;Tentang Kami&quot;.
+              Pilih salah satu paket layanan yang paling sesuai dengan kebutuhan Anda.
+            </p>
+            <div className="space-y-2">
+              {[
+                { label: "Basic — 299k", desc: "Landing page personal / UMKM hemat (1 Halaman, Free Domain)" },
+                { label: "Standard — 549k", desc: "Bisnis berkembang & profile produk (Hingga 5 Halaman, Paling Diminati)" },
+                { label: "Premium — 849k", desc: "Company profile profesional & produk lengkap (Hingga 7 Halaman, Speed 3x)" },
+                { label: "Platinum — Custom", desc: "Sistem aplikasi web, database & fitur kustom sesuai kebutuhan" },
+                { label: "Belum Yakin (Ingin Konsultasi Dulu)", desc: "Tim SOLVETA akan memberikan rekomendasi terbaik" },
+              ].map((pkt) => (
+                <label
+                  key={pkt.label}
+                  className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
+                    selectedPackage === pkt.label
+                      ? "border-gray-900 bg-gray-50/80"
+                      : "border-gray-200 hover:bg-gray-50/40"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="selectedPackage"
+                    checked={selectedPackage === pkt.label}
+                    onChange={() => setSelectedPackage(pkt.label)}
+                    className="mt-0.5"
+                  />
+                  <div>
+                    <div className="font-semibold text-gray-900">{pkt.label}</div>
+                    <div className="text-[11px] text-gray-400">{pkt.desc}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* 15. Profil Usaha Jika ada. */}
+          <div className="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-2">
+            <label className="block text-xs sm:text-sm font-semibold text-gray-900">
+              15. Profil Usaha Jika ada.
+            </label>
+            <p className="text-[11px] text-gray-400">
+              Masukkan ringkasan latar belakang usaha (Visi, Misi, Sejarah Singkat) untuk ditampilkan pada halaman &quot;Tentang Kami&quot;.
             </p>
             <textarea
               rows={3}

@@ -126,24 +126,26 @@ export const OrderSubmissionsManager: React.FC<{
       "No",
       "Timestamp",
       "Nama Lengkap",
-      "Nomor WhatsApp",
-      "Nama Brand / Usaha",
-      "Paket Dipilih",
-      "Tipe Website",
-      "Kebutuhan Halaman",
-      "Tema Warna & Desain",
-      "Sudah Punya Domain",
-      "Sudah Punya Logo",
-      "Foto Produk / Portofolio",
-      "Website Referensi",
-      "Catatan Khusus",
-      "Profil Singkat Bisnis",
+      "Nomor WhatsApp yang akan ditampilkan (jika ada)",
+      "Nama Usaha / Brand",
+      "Deskripsi Singkat Usaha / Kegiatan",
+      "Jenis Website yang diinginkan:",
+      "Halaman yang ingin ditampilkan",
+      "Warna / Nuansa Desain yang Diinginkan",
+      "Apakah sudah punya domain?",
+      "Apakah sudah punya logo?",
+      "Foto produk / usaha (jika ada)",
+      "Apakah ada contoh website yang disukai?",
+      "Catatan Tambahan / Permintaan Khusus",
+      "Nama Website Dan Domain",
+      "Paket Yang Dipilih",
+      "Profil Usaha Jika ada.",
       "Status",
     ];
 
     const escapeCsv = (str?: string) => {
       if (!str) return '""';
-      const clean = str.replace(/"/g, '""');
+      const clean = String(str).replace(/"/g, '""').replace(/\r?\n/g, " ");
       return `"${clean}"`;
     };
 
@@ -153,7 +155,7 @@ export const OrderSubmissionsManager: React.FC<{
       escapeCsv(s.fullName),
       escapeCsv(`'${s.whatsappNumber}`),
       escapeCsv(s.brandName),
-      escapeCsv(s.selectedPackage),
+      escapeCsv(s.businessDescription),
       escapeCsv(s.websiteType),
       escapeCsv(s.pagesNeeded),
       escapeCsv(s.designColorTheme),
@@ -162,7 +164,9 @@ export const OrderSubmissionsManager: React.FC<{
       escapeCsv(s.productPhotos),
       escapeCsv(s.exampleWebsites),
       escapeCsv(s.specialNotes),
-      escapeCsv(s.businessProfile || s.businessDescription),
+      escapeCsv(s.websiteAndDomainName),
+      escapeCsv(s.selectedPackage),
+      escapeCsv(s.businessProfile),
       escapeCsv(s.status || "Baru"),
     ]);
 
@@ -401,6 +405,7 @@ export const OrderSubmissionsManager: React.FC<{
                 <th className="py-3 px-4">Waktu</th>
                 <th className="py-3 px-4">Pelanggan</th>
                 <th className="py-3 px-4">Brand / Usaha</th>
+                <th className="py-3 px-4">Nama Website &amp; Domain</th>
                 <th className="py-3 px-4">WhatsApp</th>
                 <th className="py-3 px-4">Paket</th>
                 <th className="py-3 px-4">Status</th>
@@ -410,7 +415,7 @@ export const OrderSubmissionsManager: React.FC<{
             <tbody className="divide-y divide-gray-100">
               {filteredSubmissions.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-10 text-center text-gray-400">
+                  <td colSpan={8} className="py-10 text-center text-gray-400">
                     Belum ada formulir brief customer yang sesuai dengan filter.
                   </td>
                 </tr>
@@ -428,6 +433,9 @@ export const OrderSubmissionsManager: React.FC<{
                     </td>
                     <td className="py-3 px-4 font-medium text-gray-700">
                       {sub.brandName}
+                    </td>
+                    <td className="py-3 px-4 font-mono text-gray-700 text-[11px]">
+                      {sub.websiteAndDomainName || `${sub.brandName.toLowerCase().replace(/\s+/g, "")}.com`}
                     </td>
                     <td className="py-3 px-4 font-mono text-gray-600">
                       <a
@@ -527,7 +535,7 @@ export const OrderSubmissionsManager: React.FC<{
               <div className="flex items-start justify-between pb-3 border-b border-gray-100">
                 <div>
                   <div className="text-[11px] text-gray-400 font-mono">
-                    Waktu Kirim: {activeSubmission.timestamp}
+                    Timestamp (Waktu Kirim): {activeSubmission.timestamp}
                   </div>
                   <h3 className="text-base font-semibold text-gray-900 mt-0.5">
                     {activeSubmission.brandName} — {activeSubmission.fullName}
@@ -547,119 +555,139 @@ export const OrderSubmissionsManager: React.FC<{
                 </span>
               </div>
 
-              {/* 16 Fields Breakdown */}
+              {/* 16 Fields Breakdown Sesuai Permintaan */}
               <div className="space-y-3 text-xs">
+                {/* 1. Timestamp */}
+                <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
+                  <div className="text-[11px] text-gray-400 font-medium">1. Timestamp</div>
+                  <div className="font-semibold text-gray-900 mt-0.5 font-mono">
+                    {activeSubmission.timestamp}
+                  </div>
+                </div>
+
+                {/* 2 & 3: Nama Lengkap & Nomor WhatsApp */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">1. Nama Lengkap</div>
+                    <div className="text-[11px] text-gray-400 font-medium">2. Nama Lengkap</div>
                     <div className="font-semibold text-gray-900 mt-0.5">
                       {activeSubmission.fullName}
                     </div>
                   </div>
 
                   <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">2. Nomor WhatsApp</div>
+                    <div className="text-[11px] text-gray-400 font-medium">
+                      3. Nomor WhatsApp yang akan ditampilkan (jika ada)
+                    </div>
                     <div className="font-semibold text-gray-900 mt-0.5 font-mono">
                       {activeSubmission.whatsappNumber}
                     </div>
                   </div>
                 </div>
 
+                {/* 4. Nama Usaha / Brand & 14. Nama Website Dan Domain */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">3. Nama Usaha / Brand</div>
+                    <div className="text-[11px] text-gray-400 font-medium">4. Nama Usaha / Brand</div>
                     <div className="font-semibold text-gray-900 mt-0.5">
                       {activeSubmission.brandName}
                     </div>
                   </div>
 
                   <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">14. Nama Website &amp; Domain</div>
+                    <div className="text-[11px] text-gray-400 font-medium">14. Nama Website Dan Domain</div>
                     <div className="font-semibold text-gray-900 mt-0.5 font-mono">
                       {activeSubmission.websiteAndDomainName || "-"}
                     </div>
                   </div>
                 </div>
 
+                {/* 5. Deskripsi Singkat Usaha / Kegiatan */}
                 <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                  <div className="text-[11px] text-gray-400">4. Deskripsi Singkat Usaha / Kegiatan</div>
-                  <div className="text-gray-800 mt-1 leading-relaxed">
+                  <div className="text-[11px] text-gray-400 font-medium">5. Deskripsi Singkat Usaha / Kegiatan</div>
+                  <div className="text-gray-800 mt-1 leading-relaxed whitespace-pre-line">
                     {activeSubmission.businessDescription}
                   </div>
                 </div>
 
+                {/* 6. Jenis Website & 15. Paket Yang Dipilih */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">15. Paket Yang Dipilih</div>
-                    <div className="font-semibold text-gray-900 mt-0.5">
-                      {activeSubmission.selectedPackage}
-                    </div>
-                  </div>
-
-                  <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">6. Jenis Website</div>
+                    <div className="text-[11px] text-gray-400 font-medium">6. Jenis Website yang diinginkan:</div>
                     <div className="font-semibold text-gray-900 mt-0.5">
                       {activeSubmission.websiteType}
                     </div>
                   </div>
+
+                  <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
+                    <div className="text-[11px] text-gray-400 font-medium">15. Paket Yang Dipilih</div>
+                    <div className="font-semibold text-gray-900 mt-0.5">
+                      {activeSubmission.selectedPackage}
+                    </div>
+                  </div>
                 </div>
 
+                {/* 7. Halaman yang ingin ditampilkan */}
                 <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                  <div className="text-[11px] text-gray-400">7. Halaman yang Ingin Ditampilkan</div>
+                  <div className="text-[11px] text-gray-400 font-medium">7. Halaman yang ingin ditampilkan</div>
                   <div className="font-medium text-gray-800 mt-1">
                     {activeSubmission.pagesNeeded}
                   </div>
                 </div>
 
+                {/* 8. Warna & 9. Domain Status */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">8. Warna / Nuansa Desain</div>
+                    <div className="text-[11px] text-gray-400 font-medium">8. Warna / Nuansa Desain yang Diinginkan</div>
                     <div className="font-medium text-gray-800 mt-0.5">
                       {activeSubmission.designColorTheme}
                     </div>
                   </div>
 
                   <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">9. Status Domain</div>
+                    <div className="text-[11px] text-gray-400 font-medium">9. Apakah sudah punya domain?</div>
                     <div className="font-medium text-gray-800 mt-0.5">
                       {activeSubmission.hasDomain}
                     </div>
                   </div>
                 </div>
 
+                {/* 10. Logo & 11. Foto Produk */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">10. Status Logo</div>
+                    <div className="text-[11px] text-gray-400 font-medium">10. Apakah sudah punya logo?</div>
                     <div className="font-medium text-gray-800 mt-0.5">
                       {activeSubmission.hasLogo}
                     </div>
                   </div>
 
                   <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                    <div className="text-[11px] text-gray-400">11. Foto Produk / Usaha</div>
+                    <div className="text-[11px] text-gray-400 font-medium">11. Foto produk / usaha (jika ada)</div>
                     <div className="font-medium text-gray-800 mt-0.5 truncate">
                       {activeSubmission.productPhotos}
                     </div>
                   </div>
                 </div>
 
+                {/* 12. Contoh Website yang Disukai */}
                 <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                  <div className="text-[11px] text-gray-400">12. Contoh Website yang Disukai</div>
+                  <div className="text-[11px] text-gray-400 font-medium">12. Apakah ada contoh website yang disukai?</div>
                   <div className="font-medium text-gray-800 mt-1 font-mono">
                     {activeSubmission.exampleWebsites}
                   </div>
                 </div>
 
+                {/* 13. Catatan Tambahan / Permintaan Khusus */}
                 <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                  <div className="text-[11px] text-gray-400">13. Catatan Tambahan / Permintaan Khusus</div>
-                  <div className="text-gray-800 mt-1 leading-relaxed">
+                  <div className="text-[11px] text-gray-400 font-medium">13. Catatan Tambahan / Permintaan Khusus</div>
+                  <div className="text-gray-800 mt-1 leading-relaxed whitespace-pre-line">
                     {activeSubmission.specialNotes}
                   </div>
                 </div>
 
+                {/* 16. Profil Usaha Jika ada. */}
                 <div className="p-3 bg-gray-50/70 rounded-lg border border-gray-100">
-                  <div className="text-[11px] text-gray-400">16. Profil Usaha / Dokumen</div>
-                  <div className="text-gray-800 mt-1 leading-relaxed">
+                  <div className="text-[11px] text-gray-400 font-medium">16. Profil Usaha Jika ada.</div>
+                  <div className="text-gray-800 mt-1 leading-relaxed whitespace-pre-line">
                     {activeSubmission.businessProfile}
                   </div>
                 </div>

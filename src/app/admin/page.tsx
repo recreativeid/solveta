@@ -323,8 +323,8 @@ function AdminPortalVisual() {
     const u = username.trim().toLowerCase();
     const p = password.trim();
     if (
-      (u === "developer" && p === "developer123") ||
-      (u === "admin" && (p === "admin" || p === "solveta" || p === "developer123"))
+      (u === "developer" && (p === "developer123" || p === "solveta2025")) ||
+      (u === "admin" && (p === "admin" || p === "solveta" || p === "solveta2025" || p === "developer123"))
     ) {
       setIsAuthenticated(true);
       setLoginError(false);
