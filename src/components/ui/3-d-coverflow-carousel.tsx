@@ -480,6 +480,20 @@ export function CoverFlowCarousel({
                           {item.desc}
                         </p>
                       )}
+
+                      {/* Tags / Tagar Pills */}
+                      {item.tags && item.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-1 pt-1">
+                          {item.tags.map((tag, idx) => (
+                            <span
+                              key={idx}
+                              className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-rose-200 border border-white/10 backdrop-blur-xs"
+                            >
+                              #{tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
                     {/* CTA Button: "Kunjungi Website →" / "Konsultasi Proyek →" */}

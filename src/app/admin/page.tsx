@@ -76,6 +76,7 @@ import {
   ChecklistItemData,
   DomainAddonData,
   EmailAddonData,
+  CustomerOrderSubmission,
 } from "@/context/SiteDataContext";
 
 function AdminPortalVisual() {
@@ -123,7 +124,8 @@ function AdminPortalVisual() {
   const [editPortCategory, setEditPortCategory] = useState("");
   const [editPortTags, setEditPortTags] = useState("");
   const [editPortLiveUrl, setEditPortLiveUrl] = useState("");
-
+  // Bridge state between customer submissions & project transactions
+  const [selectedSubmissionForProject, setSelectedSubmissionForProject] = useState<CustomerOrderSubmission | null>(null);
   // Edit Modal State for Client Brand
   const [editingBrand, setEditingBrand] = useState<ClientBrandItem | null>(null);
 
@@ -551,15 +553,13 @@ function AdminPortalVisual() {
     showToast("Portofolio baru berhasil ditambahkan!");
   };
 
-  const handleUpdatePortfolio = async (e: React.FormEvent) => {
+  const handleUpdatePortfolio = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingPortfolio) return;
 
-    const rawTokens = editPortTags.includes(",")
-      ? editPortTags.split(",")
-      : editPortTags.split(/[\s,]+/);
-    const tagsArray = rawTokens
-      .map((t) => t.trim().replace(/^#+/, ""))
+    const tagsArray = editPortTags
+      .split(",")
+      .map((t) => t.trim().replace(/^#/, ""))
       .filter((t) => t.length > 0);
 
     const formattedLiveUrl = editPortLiveUrl.trim()
@@ -568,24 +568,23 @@ function AdminPortalVisual() {
         : `https://${editPortLiveUrl.trim()}`
       : editingPortfolio.liveUrl || "https://www.solveta.site";
 
-    const finalCategory = editPortCategory.trim();
+    const cleanCategory = editPortCategory.trim();
 
     editPortfolioItem(editingPortfolio.id, {
-      title: editingPortfolio.title,
-      category: finalCategory,
-      description: editingPortfolio.description,
+      title: editingPortfolio.title.trim(),
+      category: cleanCategory,
+      description: editingPortfolio.description?.trim() || "",
       image: editingPortfolio.image,
       tags: tagsArray,
       liveUrl: formattedLiveUrl,
     });
 
-    if (finalCategory) {
-      addCategory(finalCategory);
+    if (cleanCategory) {
+      addCategory(cleanCategory);
     }
 
     setEditingPortfolio(null);
-    await syncWithSupabase();
-    showToast("Portofolio, Kategori & Tagar berhasil diperbarui!");
+    showToast("Portofolio, kategori & tagar berhasil diperbarui!");
   };
 
   const handleDeletePortfolio = (id: string, title: string) => {
@@ -2444,12 +2443,22 @@ function AdminPortalVisual() {
 
         {/* MODE 8: REKAP FORMULIR ORDER CUSTOMER */}
         {activeMode === "orders" && (
-          <OrderSubmissionsManager showToast={showToast} />
+          <OrderSubmissionsManager
+            showToast={showToast}
+            onConvertToProject={(sub) => {
+              setSelectedSubmissionForProject(sub);
+              setActiveMode("projects");
+            }}
+          />
         )}
 
         {/* MODE 9: PENCATATAN PROYEK & INVOICE */}
         {activeMode === "projects" && (
-          <ProjectTransactionsManager showToast={showToast} />
+          <ProjectTransactionsManager
+            showToast={showToast}
+            initialSubmission={selectedSubmissionForProject}
+            onClearInitialSubmission={() => setSelectedSubmissionForProject(null)}
+          />
         )}
         </div>
       </main>
@@ -2972,64 +2981,71 @@ function AdminPortalVisual() {
                       type="text"
                       value={editPortCategory}
                       onChange={(e) => setEditPortCategory(e.target.value)}
-                      placeholder="Pilih kategori di bawah atau ketik manual..."
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-gray-900 outline-none bg-white font-medium text-gray-900"
+                      placeholder="Pilih dari tombol di bawah atau ketik kategori baru"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white font-medium text-gray-900"
                     />
-                    {/* Quick Category Chips */}
+
+                    {/* Clickable Category Chips */}
                     <div className="flex flex-wrap items-center gap-1.5 mt-2">
-                      <span className="text-[10px] text-gray-400 font-medium">Pilih Cepat:</span>
+                      <span className="text-[10px] text-gray-400 font-medium mr-1">
+                        Pilihan Kategori:
+                      </span>
                       {data.categories.map((cat) => (
                         <button
                           type="button"
                           key={cat}
                           onClick={() => setEditPortCategory(cat)}
-                          className={`text-[10px] px-2.5 py-0.5 rounded-full font-medium transition-all cursor-pointer ${
-                            editPortCategory === cat
-                              ? "bg-gray-900 text-white shadow-xs"
-                              : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                          className={`text-[11px] px-2.5 py-0.5 rounded-full font-medium transition-all flex items-center gap-1 cursor-pointer ${
+                            editPortCategory.toLowerCase() === cat.toLowerCase()
+                              ? "bg-gray-900 text-white"
+                              : "bg-gray-100 text-gray-700 hover:bg-gray-200 border border-gray-200"
                           }`}
                         >
-                          {cat}
+                          {editPortCategory.toLowerCase() === cat.toLowerCase() && (
+                            <Check className="w-3 h-3" />
+                          )}
+                          <span>{cat}</span>
                         </button>
                       ))}
-                      {editPortCategory && (
-                        <button
-                          type="button"
-                          onClick={() => setEditPortCategory("")}
-                          className="text-[10px] px-2 py-0.5 rounded-full border border-dashed border-gray-300 text-gray-400 hover:text-gray-600 cursor-pointer"
-                        >
-                          ✕ Kosongkan
-                        </button>
-                      )}
+
+                      <button
+                        type="button"
+                        onClick={() => setEditPortCategory("")}
+                        className="text-[10px] px-2 py-0.5 rounded-full border border-dashed border-gray-300 text-gray-400 hover:text-gray-600 hover:border-gray-400 cursor-pointer"
+                      >
+                        Kosongkan
+                      </button>
                     </div>
                   </div>
 
                   <div>
                     <label className="block text-xs font-semibold text-gray-700 mb-1">
-                      Tags / Tagar (Pisahkan dengan koma atau spasi)
+                      Tags / Tagar (Pisahkan dengan koma)
                     </label>
                     <input
                       type="text"
                       value={editPortTags}
                       onChange={(e) => setEditPortTags(e.target.value)}
                       placeholder="Contoh: Real Estate, Search Filter, Direct WA"
-                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 focus:border-gray-900 outline-none bg-white"
+                      className="w-full text-xs p-2.5 rounded-lg border border-gray-300 bg-white"
                     />
-                    {/* Live Tag Badges Preview */}
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {editPortTags
-                        .split(/[,\s]+/)
-                        .map((t) => t.trim().replace(/^#+/, ""))
-                        .filter((t) => t.length > 0)
-                        .map((tag, idx) => (
-                          <span
-                            key={idx}
-                            className="text-[10px] bg-rose-50 text-[#8B0021] border border-rose-100 font-semibold px-2 py-0.5 rounded-md"
-                          >
-                            #{tag}
-                          </span>
-                        ))}
-                    </div>
+                    {/* Real-time Tag Preview Chips */}
+                    {editPortTags.trim().length > 0 && (
+                      <div className="flex flex-wrap gap-1 mt-1.5">
+                        {editPortTags
+                          .split(",")
+                          .map((t) => t.trim().replace(/^#/, ""))
+                          .filter((t) => t.length > 0)
+                          .map((t, idx) => (
+                            <span
+                              key={idx}
+                              className="text-[10px] bg-rose-50 text-[#8B0021] border border-rose-100 font-semibold px-2 py-0.5 rounded"
+                            >
+                              #{t}
+                            </span>
+                          ))}
+                      </div>
+                    )}
                   </div>
                 </div>
 

@@ -135,9 +135,9 @@ export interface CustomerOrderSubmission {
 
 export interface ProjectCostComponent {
   id: string;
-  name: string; // misal: "Hosting Cloud NVMe 1 Tahun", "Domain .com", "Setup UI/UX & Coding"
-  amount?: number; // nominal jika ada, atau 0/undefined jika include
-  notes?: string; // keterangan opsional
+  name: string;
+  cost?: number; // Biaya nominal opsional
+  note?: string; // Catatan tambahan (misal: "Termasuk", "1 Tahun", dll)
 }
 
 export interface ProjectTransactionRecord {
@@ -151,8 +151,7 @@ export interface ProjectTransactionRecord {
   status: "Terlaksana" | "Progress" | "Batal";
   notes: string;
   invoiceNumber: string;
-  submissionId?: string; // id formulir customer yang bersangkutan (jika ada)
-  costComponents?: ProjectCostComponent[]; // Rincian Komponen Biaya (Opsional untuk nota)
+  costComponents?: ProjectCostComponent[];
 }
 
 export interface ContactData {
@@ -581,12 +580,6 @@ const defaultState: SiteDataState = {
       status: "Progress",
       notes: "Tahap perakitan katalog produk dan integrasi tombol checkout WA.",
       invoiceNumber: "INV-20260902-001",
-      costComponents: [
-        { id: "c-1", name: "Hosting NVMe Cloud 1 Tahun", amount: 100000, notes: "Akses dashboard lancar" },
-        { id: "c-2", name: "Domain .com Resmi 1 Tahun", amount: 50000, notes: "Aktivasi DNS instan" },
-        { id: "c-3", name: "Setup UI/UX Katalog & WA Checkout", amount: 199000, notes: "Responsive mobile" },
-        { id: "c-4", name: "Customer Service & Support Teknis", amount: 20000, notes: "Pendampingan 1 tahun" },
-      ],
     },
     {
       id: "proj-2",
@@ -599,12 +592,6 @@ const defaultState: SiteDataState = {
       status: "Terlaksana",
       notes: "Website selesai 100%, domain aktif, serah terima akun selesai.",
       invoiceNumber: "INV-20260828-002",
-      costComponents: [
-        { id: "c-5", name: "Cloud Server Enterprise 1 Tahun", amount: 150000 },
-        { id: "c-6", name: "Domain .id Resmi", amount: 50000 },
-        { id: "c-7", name: "Pengembangan Sistem Reservasi & UI/UX Dokter", amount: 405000 },
-        { id: "c-8", name: "SSL Certificate & Keamanan Data Pasien", amount: 25000 },
-      ],
     },
     {
       id: "proj-3",

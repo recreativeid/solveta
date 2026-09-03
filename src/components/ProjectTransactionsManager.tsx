@@ -26,12 +26,15 @@ import {
   useSiteData,
   ProjectTransactionRecord,
   ProjectCostComponent,
+  CustomerOrderSubmission,
 } from "@/context/SiteDataContext";
 import { getWhatsAppUrl } from "@/utils/whatsapp";
 
 export const ProjectTransactionsManager: React.FC<{
   showToast: (msg: string) => void;
-}> = ({ showToast }) => {
+  initialSubmission?: CustomerOrderSubmission | null;
+  onClearInitialSubmission?: () => void;
+}> = ({ showToast, initialSubmission, onClearInitialSubmission }) => {
   const {
     data,
     addProjectTransaction,
@@ -40,6 +43,7 @@ export const ProjectTransactionsManager: React.FC<{
   } = useSiteData();
 
   const transactions = data.projectTransactions || [];
+  const logoSrc = data.siteCopy?.siteLogo || "/images/logo.png";
 
   // Filter & Search states
   const [searchQuery, setSearchQuery] = useState("");
@@ -54,12 +58,11 @@ export const ProjectTransactionsManager: React.FC<{
   const [formDate, setFormDate] = useState(new Date().toISOString().slice(0, 10));
   const [formCustomerName, setFormCustomerName] = useState("");
   const [formPhoneNumber, setFormPhoneNumber] = useState("");
-  const [formServicePrice, setFormServicePrice] = useState<number>(0);
+  const [formServicePrice, setFormServicePrice] = useState<number | string>("");
   const [formWebsiteName, setFormWebsiteName] = useState("");
   const [formWebsiteLink, setFormWebsiteLink] = useState("");
   const [formStatus, setFormStatus] = useState<"Terlaksana" | "Progress" | "Batal">("Progress");
   const [formNotes, setFormNotes] = useState("");
-  const [selectedSubmissionId, setSelectedSubmissionId] = useState<string>("");
   const [formCostComponents, setFormCostComponents] = useState<ProjectCostComponent[]>([]);
 
   // Invoice Modal State
@@ -167,75 +170,53 @@ export const ProjectTransactionsManager: React.FC<{
     return { totalDoneRevenue, countDone, countProgress, countBatal };
   }, [transactions]);
 
-  // Select customer brief submission to auto-fill project transaction
-  const handleSelectCustomerSubmission = (subId: string) => {
-    setSelectedSubmissionId(subId);
-    if (!subId) return;
-
-    const sub = (data.orderSubmissions || []).find((s) => s.id === subId);
+  // Handle auto-populate from a selected customer order submission
+  const handleSelectCustomerSubmission = (submissionId: string) => {
+    const sub = (data.orderSubmissions || []).find((s) => s.id === submissionId);
     if (!sub) return;
 
-    setFormCustomerName(`${sub.fullName} (${sub.brandName})`);
-    setFormPhoneNumber(sub.whatsappNumber);
-    const domainOrBrand = sub.websiteAndDomainName || sub.brandName;
-    setFormWebsiteName(domainOrBrand);
-    const link = domainOrBrand.startsWith("http")
-      ? domainOrBrand
-      : `https://${domainOrBrand.toLowerCase().replace(/\s+/g, "")}`;
-    setFormWebsiteLink(link);
-    setFormNotes(`[Formulir Customer] Paket: ${sub.selectedPackage} | Kebutuhan: ${sub.websiteType} (${sub.pagesNeeded})`);
-    
-    // Sesuai permintaan user: harga layanan dibiarkan kosong (0) agar developer sendiri yang mengisi & memerhitungkan!
-    setFormServicePrice(0);
-    showToast(`Data ${sub.fullName} berhasil ditarik. Silakan tentukan harga layanan.`);
+    setFormCustomerName(sub.fullName || "");
+    setFormPhoneNumber(sub.whatsappNumber || "");
+    setFormWebsiteName(sub.brandName || "");
+    setFormWebsiteLink(
+      sub.exampleWebsites?.startsWith("http")
+        ? sub.exampleWebsites
+        : `https://${(sub.brandName || "proyek").toLowerCase().replace(/\s+/g, "")}.solveta.site`
+    );
+    setFormStatus("Progress");
+    setFormNotes(
+      `Paket: ${sub.selectedPackage || "-"}\nTipe Web: ${sub.websiteType || "-"}\nKebutuhan Halaman: ${sub.pagesNeeded || "-"}\nCatatan Khusus: ${sub.specialNotes || "-"}`
+    );
+    // User request: Harga layanan dikosongkan agar developer mengisi & memperhitungkan sendiri
+    setFormServicePrice("");
+    showToast(`Data formulir ${sub.fullName} dimuat! Silakan tentukan harga layanan.`);
   };
 
-  // Cost component helpers
-  const handleAddCostComponentRow = () => {
-    setFormCostComponents((prev) => [
-      ...prev,
-      { id: `comp-${Date.now()}`, name: "", amount: 0, notes: "" },
-    ]);
-  };
-
-  const handleUpdateCostComponent = (index: number, field: keyof ProjectCostComponent, value: any) => {
-    setFormCostComponents((prev) => {
-      const updated = [...prev];
-      updated[index] = { ...updated[index], [field]: value };
-      return updated;
-    });
-  };
-
-  const handleRemoveCostComponentRow = (index: number) => {
-    setFormCostComponents((prev) => prev.filter((_, i) => i !== index));
-  };
-
-  const applyCostTemplate = (pkg: "basic" | "standard" | "premium") => {
-    if (pkg === "basic") {
-      setFormCostComponents([
-        { id: `c-${Date.now()}-1`, name: "Domain .my.id / Subdomain 1 Tahun", amount: 30000, notes: "DNS Aktif" },
-        { id: `c-${Date.now()}-2`, name: "Hosting Server Cloud 1 Tahun", amount: 60000, notes: "SSD NVMe + SSL" },
-        { id: `c-${Date.now()}-3`, name: "Jasa Pembuatan Landing Page & Mobile Responsive", amount: 75000, notes: "1 Halaman" },
-        { id: `c-${Date.now()}-4`, name: "Support Teknis & Integrasi WhatsApp", amount: 15000 },
-      ]);
-    } else if (pkg === "standard") {
-      setFormCostComponents([
-        { id: `c-${Date.now()}-1`, name: "Domain .com / .id Resmi 1 Tahun", amount: 50000, notes: "Full Control" },
-        { id: `c-${Date.now()}-2`, name: "Cloud Server Hosting Dedicated 1 Tahun", amount: 100000, notes: "High Speed SSD" },
-        { id: `c-${Date.now()}-3`, name: "Pengembangan Website Hingga 5 Halaman & SEO", amount: 199000 },
-        { id: `c-${Date.now()}-4`, name: "1 Akun Email Bisnis (nama@domain.com)", amount: 20000 },
-        { id: `c-${Date.now()}-5`, name: "Customer Service & Pendampingan Konten", amount: 20000 },
-      ]);
-    } else if (pkg === "premium") {
-      setFormCostComponents([
-        { id: `c-${Date.now()}-1`, name: "Domain Internasional / Nasional TLD 1 Tahun", amount: 50000 },
-        { id: `c-${Date.now()}-2`, name: "Cloud VPS Server High Traffic 1 Tahun", amount: 150000 },
-        { id: `c-${Date.now()}-3`, name: "Pengembangan Website Kompleks / Custom Web Apps", amount: 405000 },
-        { id: `c-${Date.now()}-4`, name: "Optimasi Kecepatan 3x & Integrasi API WhatsApp", amount: 25000 },
-        { id: `c-${Date.now()}-5`, name: "Full Garansi Pemeliharaan & Backup Mingguan", amount: 50000 },
-      ]);
+  // React to initialSubmission passed from outside (e.g. OrderSubmissionsManager)
+  React.useEffect(() => {
+    if (initialSubmission) {
+      setEditingTxId(null);
+      setFormDate(new Date().toISOString().slice(0, 10));
+      setFormCustomerName(initialSubmission.fullName || "");
+      setFormPhoneNumber(initialSubmission.whatsappNumber || "");
+      setFormWebsiteName(initialSubmission.brandName || "");
+      setFormWebsiteLink(
+        initialSubmission.exampleWebsites?.startsWith("http")
+          ? initialSubmission.exampleWebsites
+          : `https://${(initialSubmission.brandName || "proyek").toLowerCase().replace(/\s+/g, "")}.solveta.site`
+      );
+      setFormStatus("Progress");
+      setFormNotes(
+        `Paket: ${initialSubmission.selectedPackage || "-"}\nTipe Web: ${initialSubmission.websiteType || "-"}\nKebutuhan Halaman: ${initialSubmission.pagesNeeded || "-"}\nCatatan Khusus: ${initialSubmission.specialNotes || "-"}`
+      );
+      // User request: Harga layanan dikosongkan agar developer mengisi & memperhitungkan sendiri
+      setFormServicePrice("");
+      setFormCostComponents([]);
+      setTxModalOpen(true);
+      if (onClearInitialSubmission) onClearInitialSubmission();
+      showToast(`Data formulir ${initialSubmission.fullName} berhasil ditarik ke pencatatan proyek!`);
     }
-  };
+  }, [initialSubmission, onClearInitialSubmission, showToast]);
 
   // Open Create Modal
   const handleOpenCreate = () => {
@@ -243,12 +224,11 @@ export const ProjectTransactionsManager: React.FC<{
     setFormDate(new Date().toISOString().slice(0, 10));
     setFormCustomerName("");
     setFormPhoneNumber("");
-    setFormServicePrice(0); // Kosong / 0 agar developer mengisi sendiri!
+    setFormServicePrice(""); // Dikosongkan agar developer mengisi sendiri
     setFormWebsiteName("");
     setFormWebsiteLink("");
     setFormStatus("Progress");
     setFormNotes("");
-    setSelectedSubmissionId("");
     setFormCostComponents([]);
     setTxModalOpen(true);
   };
@@ -259,12 +239,11 @@ export const ProjectTransactionsManager: React.FC<{
     setFormDate(t.date);
     setFormCustomerName(t.customerName);
     setFormPhoneNumber(t.phoneNumber);
-    setFormServicePrice(t.servicePrice || 0);
+    setFormServicePrice(t.servicePrice);
     setFormWebsiteName(t.websiteName);
     setFormWebsiteLink(t.websiteLink);
     setFormStatus(t.status);
     setFormNotes(t.notes || "");
-    setSelectedSubmissionId(t.submissionId || "");
     setFormCostComponents(t.costComponents || []);
     setTxModalOpen(true);
   };
@@ -280,22 +259,29 @@ export const ProjectTransactionsManager: React.FC<{
     const dateFormatted = formDate.replace(/-/g, "");
     const randomSuffix = Math.floor(100 + Math.random() * 900);
     const generatedInvoiceNumber = `INV-${dateFormatted}-${randomSuffix}`;
+    const parsedPrice = typeof formServicePrice === "number" ? formServicePrice : Number(formServicePrice) || 0;
 
-    // Filter cost components with valid name
-    const validCostComponents = formCostComponents.filter((c) => c.name.trim().length > 0);
+    // Filter cost components
+    const validCostComponents: ProjectCostComponent[] = formCostComponents
+      .filter((c) => c.name.trim().length > 0)
+      .map((c) => ({
+        id: c.id || `c-${Date.now()}-${Math.random()}`,
+        name: c.name.trim(),
+        cost: c.cost ? Number(c.cost) : undefined,
+        note: c.note?.trim() || undefined,
+      }));
 
     if (editingTxId) {
       editProjectTransaction(editingTxId, {
         date: formDate,
         customerName: formCustomerName.trim(),
         phoneNumber: formPhoneNumber.trim(),
-        servicePrice: Number(formServicePrice) || 0,
+        servicePrice: parsedPrice,
         websiteName: formWebsiteName.trim(),
         websiteLink: formWebsiteLink.trim(),
         status: formStatus,
         notes: formNotes.trim(),
         costComponents: validCostComponents,
-        submissionId: selectedSubmissionId || undefined,
       });
       showToast("Data proyek berhasil diperbarui!");
     } else {
@@ -303,14 +289,13 @@ export const ProjectTransactionsManager: React.FC<{
         date: formDate,
         customerName: formCustomerName.trim(),
         phoneNumber: formPhoneNumber.trim(),
-        servicePrice: Number(formServicePrice) || 0,
+        servicePrice: parsedPrice,
         websiteName: formWebsiteName.trim(),
         websiteLink: formWebsiteLink.trim() || `https://${formWebsiteName.toLowerCase().replace(/\s+/g, "")}.solveta.site`,
         status: formStatus,
         notes: formNotes.trim(),
         invoiceNumber: generatedInvoiceNumber,
         costComponents: validCostComponents,
-        submissionId: selectedSubmissionId || undefined,
       });
       showToast("Transaksi proyek baru berhasil dicatat!");
     }
@@ -378,8 +363,6 @@ export const ProjectTransactionsManager: React.FC<{
   const handlePrintInvoice = () => {
     window.print();
   };
-
-  const logoSrc = data.siteCopy.siteLogo || "/images/logo.png";
 
   return (
     <div className="space-y-6 bg-white font-sans text-left">
@@ -611,29 +594,8 @@ export const ProjectTransactionsManager: React.FC<{
                         </a>
                       )}
                     </td>
-                    <td className="py-3 px-4 whitespace-nowrap">
-                      {tx.servicePrice > 0 ? (
-                        <div>
-                          <span className="font-semibold text-gray-900 font-mono">
-                            {formatIDR(tx.servicePrice)}
-                          </span>
-                          {tx.costComponents && tx.costComponents.length > 0 && (
-                            <span className="block text-[10px] text-gray-400 font-normal">
-                              {tx.costComponents.length} rincian komponen
-                            </span>
-                          )}
-                        </div>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => handleOpenEdit(tx)}
-                          className="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100 transition-colors flex items-center gap-1 cursor-pointer"
-                          title="Klik untuk mengisi harga layanan & rincian biaya"
-                        >
-                          <Edit className="w-2.5 h-2.5" />
-                          <span>Isi Harga (Rp 0)</span>
-                        </button>
-                      )}
+                    <td className="py-3 px-4 font-semibold text-gray-900 whitespace-nowrap">
+                      {formatIDR(tx.servicePrice)}
                     </td>
                     <td className="py-3 px-4 whitespace-nowrap">
                       <select
@@ -654,8 +616,8 @@ export const ProjectTransactionsManager: React.FC<{
                             : "bg-gray-100 text-gray-600 border-gray-200"
                         }`}
                       >
-                        <option value="Progress">Progress</option>
                         <option value="Terlaksana">Terlaksana</option>
+                        <option value="Progress">Progress</option>
                         <option value="Batal">Batal</option>
                       </select>
                     </td>
@@ -714,36 +676,39 @@ export const ProjectTransactionsManager: React.FC<{
               initial={{ opacity: 0, scale: 0.96, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.96, y: 10 }}
-              className="bg-white rounded-xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-xl border border-gray-200/80 font-sans"
+              className="bg-white rounded-2xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-200 font-sans"
             >
               <h3 className="text-sm font-semibold text-gray-900 mb-0.5">
                 {editingTxId ? "Edit Transaksi Proyek" : "Catat Transaksi Proyek Baru"}
               </h3>
               <p className="text-xs text-gray-400 mb-4">
-                Lengkapi rincian tanggal, nama pelanggan, website, harga layanan, dan rincian komponen biaya.
+                Lengkapi rincian tanggal, nama pelanggan, website, dan harga layanan.
               </p>
 
-              <form onSubmit={handleSaveTx} className="space-y-3.5 text-xs">
-                {/* 1. Tarik Otomatis dari Formulir Customer */}
-                {(data.orderSubmissions || []).length > 0 && !editingTxId && (
-                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-200/80 space-y-1.5">
-                    <label className="block text-[11px] font-semibold text-gray-700">
-                      Tarik Otomatis dari Formulir Customer (Khusus Pelanggan Terkait)
+              <form onSubmit={handleSaveTx} className="space-y-3 text-xs">
+                {/* Auto-fill from Customer Submission */}
+                {!editingTxId && (
+                  <div className="p-3 bg-gray-50 rounded-xl border border-gray-200/80 mb-2">
+                    <label className="block text-[11px] font-semibold text-gray-800 mb-1 flex items-center gap-1.5">
+                      <ClipboardList className="w-3.5 h-3.5 text-gray-600" />
+                      <span>Tarik Data Otomatis dari Formulir Customer (Opsional):</span>
                     </label>
                     <select
-                      value={selectedSubmissionId}
-                      onChange={(e) => handleSelectCustomerSubmission(e.target.value)}
-                      className="w-full text-xs p-2 rounded-md border border-gray-200 bg-white font-medium text-gray-900 outline-none"
+                      onChange={(e) => {
+                        if (e.target.value) handleSelectCustomerSubmission(e.target.value);
+                      }}
+                      defaultValue=""
+                      className="w-full text-xs font-medium text-gray-900 p-2 rounded-lg border border-gray-300 bg-white cursor-pointer"
                     >
-                      <option value="">-- Pilih Data Formulir Customer (Opsional) --</option>
+                      <option value="">-- Pilih Formulir Orderan Pelanggan --</option>
                       {(data.orderSubmissions || []).map((s) => (
                         <option key={s.id} value={s.id}>
-                          {s.fullName} — {s.brandName} ({s.selectedPackage})
+                          {s.fullName} — {s.brandName} ({s.selectedPackage} | {s.timestamp.slice(0, 10)})
                         </option>
                       ))}
                     </select>
-                    <p className="text-[10px] text-gray-400">
-                      * Identitas &amp; nama web terisi otomatis. Harga layanan sengaja dikosongkan agar Anda dapat mengisi sendiri.
+                    <p className="text-[10px] text-gray-400 mt-1">
+                      Nama, nomor WhatsApp, brand, dan detail paket terisi otomatis. Harga layanan dikosongkan agar developer dapat menentukan sendiri.
                     </p>
                   </div>
                 )}
@@ -804,7 +769,7 @@ export const ProjectTransactionsManager: React.FC<{
                       value={formPhoneNumber}
                       onChange={(e) => setFormPhoneNumber(e.target.value)}
                       placeholder="Contoh: 081234567890"
-                      className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-mono"
+                      className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                     />
                   </div>
 
@@ -814,16 +779,17 @@ export const ProjectTransactionsManager: React.FC<{
                     </label>
                     <input
                       type="number"
-                      min="0"
+                      required
                       step="1000"
-                      value={formServicePrice === 0 ? "" : formServicePrice}
-                      onChange={(e) => setFormServicePrice(Number(e.target.value) || 0)}
-                      placeholder="0 (Diisi oleh developer)"
+                      placeholder="Tentukan harga layanan..."
+                      value={formServicePrice === "" ? "" : formServicePrice}
+                      onChange={(e) =>
+                        setFormServicePrice(
+                          e.target.value === "" ? "" : Number(e.target.value)
+                        )
+                      }
                       className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-mono"
                     />
-                    <span className="text-[10px] text-gray-400 block mt-0.5">
-                      {formServicePrice > 0 ? formatIDR(formServicePrice) : "Kosongkan/0 jika belum fix"}
-                    </span>
                   </div>
                 </div>
 
@@ -867,81 +833,88 @@ export const ProjectTransactionsManager: React.FC<{
                   />
                 </div>
 
-                {/* 2. RINCIAN KOMPONEN BIAYA (OPSIONAL UNTUK NOTA / INVOICE) */}
-                <div className="pt-3 border-t border-gray-100 space-y-2.5">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
+                {/* Rincian Komponen Biaya (Opsional) */}
+                <div className="pt-3 border-t border-gray-100 space-y-2">
+                  <div className="flex items-center justify-between">
                     <div>
-                      <div className="font-semibold text-gray-900 text-xs">
-                        Rincian Komponen Biaya (Opsional)
-                      </div>
+                      <label className="text-xs font-semibold text-gray-800 block">
+                        Rincian Komponen Biaya (Opsional untuk Nota)
+                      </label>
                       <p className="text-[10px] text-gray-400">
-                        Isi manual rincian biaya yang include agar di nota pelanggan tahu mencakup apa saja. Boleh dikosongkan.
+                        Boleh dikosongkan. Rincikan deliverable agar pada invoice klien dapat melihat apa saja yang dicakup.
                       </p>
                     </div>
                     <button
                       type="button"
-                      onClick={handleAddCostComponentRow}
-                      className="px-2.5 py-1 bg-white hover:bg-gray-50 border border-gray-200 text-gray-700 text-xs font-medium rounded-md transition-colors flex items-center gap-1 cursor-pointer flex-shrink-0 self-start sm:self-auto"
+                      onClick={() =>
+                        setFormCostComponents([
+                          ...formCostComponents,
+                          {
+                            id: `comp-${Date.now()}-${Math.random()}`,
+                            name: "",
+                            cost: undefined,
+                            note: "Termasuk",
+                          },
+                        ])
+                      }
+                      className="px-2.5 py-1 text-[11px] font-medium bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
                     >
                       <Plus className="w-3 h-3" />
-                      <span>+ Tambah Biaya</span>
+                      <span>Tambah Item Biaya</span>
                     </button>
                   </div>
 
-                  {/* Template Cepat */}
-                  <div className="flex flex-wrap items-center gap-1.5 text-[10px] bg-gray-50 p-2 rounded-lg border border-gray-100">
-                    <span className="text-gray-500 font-medium">Template Cepat:</span>
-                    <button
-                      type="button"
-                      onClick={() => applyCostTemplate("basic")}
-                      className="px-2 py-0.5 bg-white border border-gray-200 hover:border-gray-900 text-gray-700 rounded transition-colors cursor-pointer"
-                    >
-                      Paket Basic
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => applyCostTemplate("standard")}
-                      className="px-2 py-0.5 bg-white border border-gray-200 hover:border-gray-900 text-gray-700 rounded transition-colors cursor-pointer"
-                    >
-                      Paket Standard
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => applyCostTemplate("premium")}
-                      className="px-2 py-0.5 bg-white border border-gray-200 hover:border-gray-900 text-gray-700 rounded transition-colors cursor-pointer"
-                    >
-                      Paket Premium
-                    </button>
-                  </div>
-
-                  {/* Component Rows */}
-                  {formCostComponents.length === 0 ? (
-                    <div className="p-2.5 text-center text-gray-400 border border-dashed border-gray-200 rounded-lg text-[11px]">
-                      Belum ada rincian komponen biaya. (Dikosongi pun tidak apa-apa, nota akan menampilkan ringkasan all-in).
-                    </div>
-                  ) : (
-                    <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
+                  {formCostComponents.length > 0 && (
+                    <div className="space-y-2 mt-2">
                       {formCostComponents.map((comp, idx) => (
-                        <div key={comp.id || idx} className="flex items-center gap-2">
+                        <div
+                          key={comp.id || idx}
+                          className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200 text-xs"
+                        >
                           <input
                             type="text"
+                            placeholder="Komponen (mis: Cloud Hosting 1 Tahun, Setup Domain)"
                             value={comp.name}
-                            onChange={(e) => handleUpdateCostComponent(idx, "name", e.target.value)}
-                            placeholder="Komponen (cth: Hosting Cloud NVMe 1 Th)"
-                            className="flex-1 text-xs p-2 rounded-lg border border-gray-200 bg-white"
+                            onChange={(e) => {
+                              const updated = [...formCostComponents];
+                              updated[idx].name = e.target.value;
+                              setFormCostComponents(updated);
+                            }}
+                            className="flex-1 p-1.5 bg-white border border-gray-200 rounded text-xs"
                           />
                           <input
-                            type="number"
-                            value={comp.amount ? comp.amount : ""}
-                            onChange={(e) => handleUpdateCostComponent(idx, "amount", Number(e.target.value) || 0)}
-                            placeholder="Biaya Rp (opsional)"
-                            className="w-28 text-xs p-2 rounded-lg border border-gray-200 bg-white font-mono"
+                            type="text"
+                            placeholder="Keterangan / Biaya (mis: Termasuk)"
+                            value={
+                              comp.note !== undefined
+                                ? comp.note
+                                : comp.cost !== undefined
+                                ? String(comp.cost)
+                                : ""
+                            }
+                            onChange={(e) => {
+                              const updated = [...formCostComponents];
+                              const val = e.target.value;
+                              if (/^\d+$/.test(val)) {
+                                updated[idx].cost = Number(val);
+                                updated[idx].note = undefined;
+                              } else {
+                                updated[idx].note = val;
+                                updated[idx].cost = undefined;
+                              }
+                              setFormCostComponents(updated);
+                            }}
+                            className="w-36 p-1.5 bg-white border border-gray-200 rounded text-xs font-mono"
                           />
                           <button
                             type="button"
-                            onClick={() => handleRemoveCostComponentRow(idx)}
-                            className="p-1.5 text-gray-400 hover:text-red-600 rounded hover:bg-red-50 transition-colors cursor-pointer"
-                            title="Hapus baris"
+                            onClick={() =>
+                              setFormCostComponents(
+                                formCostComponents.filter((_, i) => i !== idx)
+                              )
+                            }
+                            className="p-1 text-gray-400 hover:text-red-600 rounded transition-colors"
+                            title="Hapus item biaya"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
                           </button>
@@ -1073,7 +1046,7 @@ export const ProjectTransactionsManager: React.FC<{
                   <thead>
                     <tr className="bg-gray-50 border-b border-gray-200 text-gray-500 font-semibold uppercase text-[10px] tracking-wider">
                       <th className="py-2.5 px-4">Deskripsi Layanan &amp; Deliverables</th>
-                      <th className="py-2.5 px-4 text-center">Durasi / Status</th>
+                      <th className="py-2.5 px-4 text-center">Durasi</th>
                       <th className="py-2.5 px-4 text-right">Jumlah (IDR)</th>
                     </tr>
                   </thead>
@@ -1090,41 +1063,28 @@ export const ProjectTransactionsManager: React.FC<{
                       <td className="py-3 px-4 text-center text-gray-600">
                         1 Tahun
                       </td>
-                      <td className="py-3 px-4 text-right font-bold text-gray-900 font-mono">
-                        {invoiceTx.servicePrice > 0 ? formatIDR(invoiceTx.servicePrice) : "Sesuai Kesepakatan"}
+                      <td className="py-3 px-4 text-right font-bold text-gray-900">
+                        {formatIDR(invoiceTx.servicePrice)}
                       </td>
                     </tr>
 
-                    {/* Rincian Komponen Biaya (Jika diisi oleh developer) */}
                     {invoiceTx.costComponents && invoiceTx.costComponents.length > 0 ? (
-                      <>
-                        <tr className="bg-gray-50/70">
-                          <td colSpan={3} className="py-2 px-4 text-[10px] font-bold text-gray-600 uppercase tracking-wider">
-                            Rincian Komponen Biaya yang Termasuk (Include dalam Layanan):
+                      invoiceTx.costComponents.map((comp, idx) => (
+                        <tr key={comp.id || idx}>
+                          <td className="py-2.5 px-4 text-gray-700">
+                            <span className="font-medium">{comp.name}</span>
+                            {comp.note && comp.note !== "Termasuk" && (
+                              <span className="text-[10px] text-gray-400 block">{comp.note}</span>
+                            )}
+                          </td>
+                          <td className="py-2.5 px-4 text-center text-gray-600">
+                            {comp.note && comp.note !== "Termasuk" ? comp.note : "Termasuk"}
+                          </td>
+                          <td className="py-2.5 px-4 text-right text-emerald-600 font-medium font-mono">
+                            {comp.cost && comp.cost > 0 ? formatIDR(comp.cost) : "Termasuk"}
                           </td>
                         </tr>
-                        {invoiceTx.costComponents.map((comp, cIdx) => (
-                          <tr key={comp.id || cIdx} className="text-gray-700 bg-white">
-                            <td className="py-2.5 px-4 pl-6">
-                              <div className="flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></span>
-                                <span className="font-medium text-gray-800">{comp.name}</span>
-                              </div>
-                              {comp.notes && (
-                                <div className="text-[10px] text-gray-400 pl-3.5 mt-0.5">
-                                  {comp.notes}
-                                </div>
-                              )}
-                            </td>
-                            <td className="py-2.5 px-4 text-center text-emerald-600 font-medium text-[11px]">
-                              Termasuk
-                            </td>
-                            <td className="py-2.5 px-4 text-right font-mono text-gray-600 text-xs">
-                              {comp.amount && comp.amount > 0 ? formatIDR(comp.amount) : "Include"}
-                            </td>
-                          </tr>
-                        ))}
-                      </>
+                      ))
                     ) : (
                       <>
                         <tr>
@@ -1158,7 +1118,7 @@ export const ProjectTransactionsManager: React.FC<{
                         Total Pembayaran Resmi
                       </td>
                       <td className="py-3 px-4 text-right text-gray-950 text-sm font-mono font-extrabold">
-                        {invoiceTx.servicePrice > 0 ? formatIDR(invoiceTx.servicePrice) : "Sesuai Kesepakatan"}
+                        {formatIDR(invoiceTx.servicePrice)}
                       </td>
                     </tr>
                   </tfoot>

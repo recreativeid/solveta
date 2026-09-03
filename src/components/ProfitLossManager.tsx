@@ -99,7 +99,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
     }).format(val || 0);
   };
 
-  // Calculations for an individual service: Harga Jual mencakup komponen beban, sisa masuk ke margin
+  // Calculations for an individual service: Harga Jual - Total Beban = Margin Bersih
   const calculateServiceMetrics = (service: ServiceProfitAnalysis) => {
     const totalCosts = (service.costs || []).reduce((acc, c) => acc + (c.amount || 0), 0);
     const netProfit = (service.sellingPrice || 0) - totalCosts;
@@ -116,23 +116,20 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
   };
 
   // Global Executive Summary Totals
-  const summary = analyses.reduce(
-    (acc, curr) => {
-      const metrics = calculateServiceMetrics(curr);
-      acc.totalSellingPrice += curr.sellingPrice || 0;
-      acc.totalCosts += metrics.totalCosts;
-      acc.totalNetProfit += metrics.netProfit;
-      return acc;
-    },
-    { totalSellingPrice: 0, totalCosts: 0, totalNetProfit: 0 }
+  const totalCostItemsCount = analyses.reduce(
+    (acc, curr) => acc + (curr.costs?.length || 0),
+    0
   );
 
-  const averageMargin =
-    summary.totalSellingPrice > 0
-      ? Math.round(
-          (summary.totalNetProfit / summary.totalSellingPrice) * 100
-        )
-      : 0;
+  const averageMargin = useMemo(() => {
+    const validAnalyses = analyses.filter((a) => a.sellingPrice > 0);
+    if (validAnalyses.length === 0) return 0;
+    const totalMargin = validAnalyses.reduce((acc, a) => {
+      const m = calculateServiceMetrics(a);
+      return acc + m.marginPercent;
+    }, 0);
+    return Math.round(totalMargin / validAnalyses.length);
+  }, [analyses]);
 
   // Category Icon & Label Helper
   const getCategoryInfo = (cat: ServiceCostItem["category"]) => {
@@ -220,21 +217,18 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
       "Nama Layanan",
       "Harga Jual (Rp)",
       "Total Beban HPP (Rp)",
-      "Sisa Masuk Margin (Rp)",
+      "Margin Keuntungan Bersih (Rp)",
       "Margin (%)",
-      "Komponen Beban (HPP)",
     ];
 
     const rows = analyses.map((s) => {
       const m = calculateServiceMetrics(s);
-      const costList = (s.costs || []).map((c) => `${c.name}: Rp${c.amount}`).join("; ");
       return [
         `"${s.serviceName}"`,
         s.sellingPrice,
         m.totalCosts,
         m.netProfit,
         `${m.marginPercent}%`,
-        `"${costList}"`,
       ].join(",");
     });
 
@@ -280,60 +274,60 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
 
   return (
     <div className="space-y-6 bg-white font-sans text-left">
-      {/* 1. FINANCIAL SUMMARY CARDS: NILAI LAYANAN, BEBAN HPP & SISA MARGIN */}
+      {/* 1. FINANCIAL EXECUTIVE SUMMARY CARDS (CLEAN MINIMALIST SAAS) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Metric 1: Total Nilai Layanan */}
+        {/* Metric 1: Total Paket Layanan */}
         <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
           <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
-            Total Nilai Seluruh Paket
+            Total Paket Layanan
           </div>
           <div className="text-2xl font-semibold text-gray-900 tracking-tight">
-            {formatIDR(summary.totalSellingPrice)}
+            {analyses.length} Paket
           </div>
           <p className="text-[11px] text-gray-400 mt-1">
-            Akumulasi harga jual seluruh paket aktif
+            Paket website aktif &amp; terdaftar
           </p>
         </div>
 
-        {/* Metric 2: Total Beban Pokok & HPP */}
+        {/* Metric 2: Total Komponen Beban Biaya */}
         <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
           <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
-            Total Komponen Beban (HPP)
+            Total Komponen Beban
           </div>
           <div className="text-2xl font-semibold text-gray-900 tracking-tight">
-            {formatIDR(summary.totalCosts)}
+            {totalCostItemsCount} Item Biaya
           </div>
           <p className="text-[11px] text-gray-400 mt-1">
-            Total biaya hosting, domain, CS, dev &amp; iklan
+            Domain, hosting, tools &amp; tenaga kerja
           </p>
         </div>
 
-        {/* Metric 3: Total Sisa Margin Keuntungan */}
-        <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
-          <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
-            Total Sisa Masuk Margin
-          </div>
-          <div className="text-2xl font-semibold text-emerald-600 tracking-tight">
-            {formatIDR(summary.totalNetProfit)}
-          </div>
-          <p className="text-[11px] text-gray-400 mt-1">
-            Sisa keuntungan bersih masuk kas bisnis
-          </p>
-        </div>
-
-        {/* Metric 4: Rata-Rata Margin Keuntungan */}
+        {/* Metric 3: Rata-Rata Margin Keuntungan */}
         <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
           <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
             Rata-rata Margin Bersih
           </div>
           <div className="text-2xl font-semibold text-gray-900 tracking-tight flex items-center gap-2">
             <span>{averageMargin}%</span>
-            <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+            <span className="text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
               {averageMargin >= 40 ? "Sangat Sehat" : averageMargin >= 20 ? "Normal" : "Rendah"}
             </span>
           </div>
           <p className="text-[11px] text-gray-400 mt-1">
-            Persentase sisa keuntungan rata-rata
+            Sisa keuntungan bersih dari harga jual
+          </p>
+        </div>
+
+        {/* Metric 4: Layanan Tambahan (Addons) */}
+        <div className="p-5 bg-white rounded-xl border border-gray-200/80 shadow-none hover:border-gray-300 transition-colors">
+          <div className="text-[11px] font-medium uppercase tracking-wider text-gray-500 mb-1.5">
+            Layanan Tambahan (Add-on)
+          </div>
+          <div className="text-2xl font-semibold text-gray-900 tracking-tight">
+            {(data.addonServices || []).length} Layanan
+          </div>
+          <p className="text-[11px] text-gray-400 mt-1">
+            Revisi, WhatsApp API, Maps, dsb.
           </p>
         </div>
       </div>
@@ -380,8 +374,8 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                 <th className="py-3 px-4">Nama Layanan</th>
                 <th className="py-3 px-4 text-right">Harga Jual</th>
                 <th className="py-3 px-4 text-right">Total Beban (HPP)</th>
-                <th className="py-3 px-4 text-right">Sisa Masuk Margin</th>
-                <th className="py-3 px-4 text-center">Persentase Margin</th>
+                <th className="py-3 px-4 text-right">Margin Bersih</th>
+                <th className="py-3 px-4 text-center">Margin</th>
                 <th className="py-3 px-4 text-center">Rincian</th>
               </tr>
             </thead>
@@ -415,23 +409,23 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                       </td>
 
                       {/* 2. Harga Jual */}
-                      <td className="py-3.5 px-4 text-right font-medium text-gray-900 font-mono">
+                      <td className="py-3.5 px-4 text-right font-medium text-gray-900">
                         {formatIDR(service.sellingPrice)}
                       </td>
 
                       {/* 3. Total Beban HPP */}
-                      <td className="py-3.5 px-4 text-right text-gray-600 font-medium font-mono">
+                      <td className="py-3.5 px-4 text-right text-gray-600 font-medium">
                         {formatIDR(metrics.totalCosts)}
                       </td>
 
-                      {/* 4. Sisa Masuk Margin */}
-                      <td className="py-3.5 px-4 text-right font-semibold text-emerald-600 font-mono">
-                        + {formatIDR(metrics.netProfit)}
+                      {/* 4. Margin Bersih */}
+                      <td className="py-3.5 px-4 text-right font-semibold text-gray-900">
+                        {formatIDR(metrics.netProfit)}
                       </td>
 
                       {/* 5. Margin Badge */}
                       <td className="py-3.5 px-4 text-center">
-                        <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-800 border border-emerald-100">
+                        <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-gray-100 text-gray-700">
                           {metrics.marginPercent}%
                         </span>
                       </td>
@@ -455,15 +449,14 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                     {isExpanded && (
                       <tr className="bg-gray-50/40 border-b border-gray-100">
                         <td colSpan={6} className="p-5">
-                          <div className="space-y-4 max-w-3xl">
-                            {/* Accordion Header */}
-                            <div className="flex items-center justify-between pb-3 border-b border-gray-200/80">
+                          <div className="space-y-4 max-w-4xl">
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-200/60 pb-3">
                               <div>
-                                <h3 className="text-xs font-bold text-gray-900">
+                                <h3 className="text-xs font-semibold text-gray-900">
                                   Komponen Beban: {service.serviceName}
                                 </h3>
-                                <p className="text-[11px] text-gray-400">
-                                  Kelola rincian biaya yang tercakup dalam harga jual layanan ini.
+                                <p className="text-[11px] text-gray-400 mt-0.5">
+                                  Kelola rincian biaya infrastruktur, lisensi, dan fee tenaga kerja.
                                 </p>
                               </div>
 
@@ -471,7 +464,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                                 <button
                                   type="button"
                                   onClick={() => handleOpenAddCost(service.id)}
-                                  className="px-3 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
+                                  className="px-3 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg flex items-center gap-1 transition-colors cursor-pointer"
                                 >
                                   <Plus className="w-3.5 h-3.5" />
                                   <span>Tambah Biaya</span>
@@ -493,8 +486,8 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                               </div>
                             </div>
 
-                            {/* Quick Editor for Selling Price (No monthly estimate) */}
-                            <div className="bg-white p-4 rounded-xl border border-gray-200/70 max-w-sm">
+                            {/* Quick Editor for Selling Price */}
+                            <div className="bg-white p-4 rounded-xl border border-gray-200/70 max-w-md">
                               <label className="block text-[11px] font-medium text-gray-600 mb-1">
                                 Harga Jual Layanan (Rp)
                               </label>
@@ -536,7 +529,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                                     </div>
 
                                     <div className="flex items-center gap-4">
-                                      <span className="font-medium text-xs text-gray-800 font-mono">
+                                      <span className="font-medium text-xs text-gray-800">
                                         {formatIDR(cost.amount)}
                                       </span>
 
@@ -561,17 +554,17 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                             <div className="p-3.5 bg-rose-50/70 border border-rose-100 rounded-xl flex items-center justify-between text-xs">
                               <div>
                                 <span className="font-bold text-[#8B0021] block">
-                                  💡 Rincian Margin Layanan Ini:
+                                  💡 Ringkasan Margin Paket Ini:
                                 </span>
                                 <span className="text-[11px] text-gray-600">
-                                  Harga: <strong>{formatIDR(service.sellingPrice)}</strong> — Total Beban: <strong>{formatIDR(metrics.totalCosts)}</strong>
+                                  Harga: <strong>{formatIDR(service.sellingPrice)}</strong> - Total Beban: <strong>{formatIDR(metrics.totalCosts)}</strong>
                                 </span>
                               </div>
                               <div className="text-right font-black">
-                                <span className="text-emerald-700 text-sm block font-mono">
-                                  + {formatIDR(metrics.netProfit)} (Sisa Margin)
+                                <span className="text-emerald-700 text-sm block">
+                                  + {formatIDR(metrics.netProfit)} / Proyek
                                 </span>
-                                <span className="text-[11px] text-gray-500">
+                                <span className="text-[11px] text-gray-500 font-mono">
                                   Margin Keuntungan Bersih: <strong>{metrics.marginPercent}%</strong>
                                 </span>
                               </div>
@@ -836,7 +829,7 @@ export const ProfitLossManager: React.FC<{ showToast: (msg: string) => void }> =
                     value={newLaborFee}
                     onChange={(e) => setNewLaborFee(Number(e.target.value))}
                     placeholder="Contoh: 300000"
-                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-mono"
+                    className="w-full text-xs font-medium text-gray-900 p-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white"
                   />
                 </div>
 
