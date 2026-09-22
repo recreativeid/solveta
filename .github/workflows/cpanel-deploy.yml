@@ -1,0 +1,54 @@
+name: Auto Deploy to cPanel (solveta.asia)
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: "cpanel-deploy"
+  cancel-in-progress: true
+
+jobs:
+  deploy-to-cpanel:
+    runs-on: ubuntu-latest
+    # Hanya berjalan jika Secret FTP sudah diatur di GitHub
+    if: ${{ secrets.CPANEL_FTP_SERVER != '' && secrets.CPANEL_FTP_USERNAME != '' }}
+    steps:
+      - name: 🚚 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: 📦 Install Dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: 🔨 Build Next.js Static Site
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://ymaqdrsomailsnqkgmag.supabase.co' }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_6MVHJX_Yy2romiVJ13pnEQ_hSr92REe' }}
+        run: npm run build
+
+      - name: 📋 Ensure .htaccess is in out directory
+        run: |
+          if [ -f public/.htaccess ]; then
+            cp -f public/.htaccess out/.htaccess
+          fi
+
+      - name: 🚀 Sync & Deploy to cPanel public_html via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.CPANEL_FTP_SERVER }}
+          username: ${{ secrets.CPANEL_FTP_USERNAME }}
+          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./out/
+          server-dir: ./public_html/
+          dangerous-clean-slate: false
