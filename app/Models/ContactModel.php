@@ -19,6 +19,10 @@ class ContactModel extends Model
 
     public function getContact(): array
     {
+        if (! is_mysql_alive()) {
+            return $this->getDefaultContact();
+        }
+
         try {
             $row = $this->first();
             if ($row) {
@@ -28,6 +32,11 @@ class ContactModel extends Model
             log_message('error', 'ContactModel error: ' . $e->getMessage());
         }
 
+        return $this->getDefaultContact();
+    }
+
+    public function getDefaultContact(): array
+    {
         return [
             'id' => 1,
             'whatsapp_number' => '6285719663154',

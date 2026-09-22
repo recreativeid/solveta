@@ -35,6 +35,10 @@ class PricingModel extends Model
 
     public function getTiers(): array
     {
+        if (! is_mysql_alive()) {
+            return $this->getDefaultTiers();
+        }
+
         try {
             $rows = $this->orderBy('sort_order', 'ASC')->findAll();
             if (!empty($rows)) {
@@ -55,6 +59,11 @@ class PricingModel extends Model
         }
 
         // Default Fallback
+        return $this->getDefaultTiers();
+    }
+
+    public function getDefaultTiers(): array
+    {
         return [
             [
                 'id' => 'basic',

@@ -30,6 +30,10 @@ class SiteCopyModel extends Model
 
     public function getCopy(): array
     {
+        if (! is_mysql_alive()) {
+            return $this->getDefaultCopy();
+        }
+
         try {
             $row = $this->first();
             if ($row) {
@@ -39,6 +43,11 @@ class SiteCopyModel extends Model
             log_message('error', 'SiteCopyModel error: ' . $e->getMessage());
         }
 
+        return $this->getDefaultCopy();
+    }
+
+    public function getDefaultCopy(): array
+    {
         return [
             'id' => 1,
             'hero_eyebrow' => 'SOLVE TECHNOLOGY AGENCY',

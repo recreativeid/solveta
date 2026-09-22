@@ -1,37 +1,50 @@
 @charset "UTF-8";
 
 /* ==============================================================================
- * SOLVETA.ASIA — CYBER DARK LUXURY DESIGN SYSTEM
+ * SOLVETA — Authentic Design System (Replicated 1:1 from Next.js)
  * ============================================================================== */
-
-:root {
-  --bg-primary: #09090b;
-  --bg-secondary: #0f0f14;
-  --bg-card: rgba(22, 22, 29, 0.75);
-  --bg-card-hover: rgba(30, 30, 40, 0.9);
-  --border-color: rgba(255, 255, 255, 0.08);
-  --border-glow: rgba(220, 38, 38, 0.35);
-  --primary-red: #dc2626;
-  --primary-red-glow: rgba(220, 38, 38, 0.45);
-  --text-main: #f4f4f5;
-  --text-muted: #a1a1aa;
-}
-
-* {
-  box-sizing: border-box;
-}
 
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-main);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  overflow-x: hidden;
-  margin: 0;
-  padding: 0;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Glass & Spotlight Utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(229, 231, 235, 0.8);
+}
+
+.dark .glass-card {
+  background: rgba(18, 19, 28, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.spotlight-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(220, 38, 38, 0.06), transparent 80%);
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.dark .spotlight-card::before {
+  background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(220, 38, 38, 0.18), transparent 80%);
 }
 
 /* Custom Scrollbar */
@@ -40,126 +53,90 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: rgba(156, 163, 175, 0.4);
   border-radius: 4px;
 }
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(75, 85, 99, 0.4);
+}
 ::-webkit-scrollbar-thumb:hover {
-  background: #dc2626;
+  background: #8B0021;
 }
 
-/* Typography Headings */
-h1, h2, h3, h4, .font-heading {
-  font-family: 'Outfit', sans-serif;
-  letter-spacing: -0.02em;
+/* Infinite Marquee Animations */
+@keyframes marqueeFlowRight {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
 }
 
-/* Glow & Glass Utilities */
-.glow-red {
-  box-shadow: 0 0 35px -5px rgba(220, 38, 38, 0.4);
-}
-.glow-red-lg {
-  box-shadow: 0 0 70px -10px rgba(220, 38, 38, 0.35);
-}
-.glow-text {
-  text-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
-}
-
-.glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-color);
-}
-.glass-panel-hover {
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.glass-panel-hover:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-glow);
-  transform: translateY(-4px);
-  box-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.5), 0 0 30px -8px rgba(220, 38, 38, 0.2);
-}
-
-/* Background Gradients & Grids */
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-}
-
-.hero-radial-glow {
-  background: radial-gradient(circle at 50% 30%, rgba(220, 38, 38, 0.15) 0%, transparent 65%);
-}
-
-/* Infinite Marquee */
-@keyframes marquee {
+@keyframes marqueeFlowLeft {
   0% { transform: translateX(0%); }
   100% { transform: translateX(-50%); }
 }
 
-.animate-marquee {
+.marquee-row-right {
   display: flex;
   width: max-content;
-  animation: marquee var(--marquee-speed, 35s) linear infinite;
+  animation: marqueeFlowRight var(--marquee-speed, 35s) linear infinite;
 }
-.animate-marquee:hover {
+
+.marquee-row-left {
+  display: flex;
+  width: max-content;
+  animation: marqueeFlowLeft var(--marquee-speed, 35s) linear infinite;
+}
+
+.marquee-row-right:hover,
+.marquee-row-left:hover {
   animation-play-state: paused;
 }
 
-/* 3D Laptop Mockup */
-.laptop-perspective {
-  perspective: 1200px;
-}
-.laptop-chassis {
-  transform: rotateX(12deg) rotateY(-4deg) rotateZ(1deg);
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 30px 60px -15px rgba(0,0,0,0.8), 0 0 50px -10px rgba(220,38,38,0.25);
-}
-.laptop-chassis:hover {
-  transform: rotateX(5deg) rotateY(0deg) rotateZ(0deg) translateY(-8px);
+/* 3D Coverflow Container & Card Styles */
+.coverflow-container {
+  perspective: 1600px;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
-/* Pulsing Badge & Floating elements */
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.85; transform: scale(1.03); }
-}
-.animate-pulse-subtle {
-  animation: pulse-subtle 3s ease-in-out infinite;
+.coverflow-ring {
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
-/* Floating WhatsApp Button */
-.wa-float-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 999;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.wa-float-btn:hover {
-  transform: scale(1.08) translateY(-3px);
-  box-shadow: 0 10px 25px -5px rgba(37, 211, 102, 0.5);
+.coverflow-card {
+  position: absolute;
+  left: 50%;
+  width: min(560px, 70vw);
+  height: min(340px, 42vw);
+  min-height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  background-color: #0d0e14;
+  border-width: 2.5px;
+  border-style: solid;
+  transform-origin: center center;
+  will-change: transform, opacity;
+  transition: box-shadow 300ms ease, border-color 300ms ease;
 }
 
-/* Print Invoice Styles */
-@media print {
-  body {
-    background: #ffffff !important;
-    color: #000000 !important;
-  }
-  .no-print {
-    display: none !important;
-  }
-  .print-only {
-    display: block !important;
-  }
-  .invoice-card {
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-  }
+/* Opening Screen Transition Styles */
+#opening-screen.opening-fade-out {
+  opacity: 0;
+  transform: scale(1.04);
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+#opening-screen.opening-hidden {
+  display: none !important;
+}
+
+#opening-content.opening-content-fade-out {
+  opacity: 0;
+  transform: translateY(-18px) scale(0.96);
+  filter: blur(14px);
 }

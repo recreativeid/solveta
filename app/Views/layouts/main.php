@@ -1,17 +1,36 @@
 <!DOCTYPE html>
-<html lang="id" class="dark scroll-smooth">
+<html lang="id" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($title ?? 'SOLVETA — Mengubah Tantangan Bisnis Menjadi Solusi Digital') ?></title>
-    <meta name="description" content="Jasa pembuatan website profesional, sistem kustom, web app, dan otomasi digital bisnis. Solusi teknologi efisien oleh SOLVETA Agency.">
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <title><?= esc($title ?? 'SOLVETA — Solve Technology Agency | Mengubah Tantangan Bisnis Menjadi Solusi Digital') ?></title>
+    <meta name="description" content="SOLVETA — Solve Technology Agency. Mengubah Tantangan Bisnis Menjadi Solusi Digital melalui website, otomasi, sistem digital, dan integrasi data.">
+    <meta name="keywords" content="technology agency, digital solution, website development, otomasi bisnis, solveta">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <link rel="icon" type="image/png" href="/solveta-logo.png">
     <link rel="apple-touch-icon" href="/solveta-logo.png">
 
-    <!-- Google Fonts: Inter & Outfit -->
+    <!-- Google Fonts: Poppins & JetBrains Mono (Identical to Next.js) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Early Theme Detection (Prevents FOUC) -->
+    <script>
+        (function() {
+            try {
+                const savedTheme = localStorage.getItem("solveta_theme");
+                if (savedTheme === "dark") {
+                    document.documentElement.classList.add("dark");
+                } else {
+                    document.documentElement.classList.remove("dark");
+                }
+            } catch (e) {}
+        })();
+    </script>
 
     <!-- Tailwind CSS (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -22,22 +41,43 @@
                 extend: {
                     colors: {
                         brand: {
-                            50: '#fef2f2',
-                            100: '#fee2e2',
-                            500: '#ef4444',
-                            600: '#dc2626',
-                            700: '#b91c1c',
-                            900: '#7f1d1d',
-                            950: '#450a0a',
-                        }
+                            50: "#FEF2F2",
+                            100: "#FEE2E2",
+                            200: "#FECACA",
+                            300: "#FCA5A5",
+                            400: "#F87171",
+                            500: "#EF4444",
+                            600: "#DC2626",
+                            700: "#B91C1C",
+                            800: "#991B1B",
+                            900: "#7F1D1D",
+                            950: "#450A0A",
+                        },
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Outfit', 'sans-serif'],
-                    }
+                        sans: ["Poppins", "sans-serif"],
+                        mono: ["JetBrains Mono", "monospace"],
+                    },
+                    boxShadow: {
+                        "glass": "0 8px 32px 0 rgba(0, 0, 0, 0.04)",
+                        "glass-hover": "0 16px 40px 0 rgba(220, 38, 38, 0.08)",
+                        "red-glow": "0 0 20px rgba(220, 38, 38, 0.35)",
+                        "2xs": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                    },
+                    animation: {
+                        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                        "float": "float 6s ease-in-out infinite",
+                        "spin-slow": "spin 8s linear infinite",
+                    },
+                    keyframes: {
+                        float: {
+                            "0%, 100%": { transform: "translateY(0px)" },
+                            "50%": { transform: "translateY(-8px)" },
+                        },
+                    },
                 }
             }
-        }
+        };
     </script>
 
     <!-- Lucide Icons -->
@@ -46,188 +86,237 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
-<body class="bg-[#09090b] text-zinc-100 min-h-screen flex flex-col relative selection:bg-red-600 selection:text-white">
+<body class="font-sans antialiased bg-[#FDFBF9] dark:bg-[#07080E] text-gray-700 dark:text-gray-200 min-h-screen relative overflow-x-hidden selection:bg-rose-100 dark:selection:bg-rose-950 selection:text-rose-900 dark:selection:text-rose-200 transition-colors duration-200">
 
-    <!-- Ambient Grid & Radial Background -->
-    <div class="fixed inset-0 bg-grid-pattern opacity-40 pointer-events-none z-0"></div>
-    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[500px] hero-radial-glow pointer-events-none z-0"></div>
+    <?php 
+        $siteLogo = !empty($copy['site_logo']) ? $copy['site_logo'] : '/solveta-logo.png';
+        $waClean = preg_replace('/[^0-9]/', '', $contact['whatsapp_number'] ?? '6285719663154');
+        if (substr($waClean, 0, 1) === '0') $waClean = '62' . substr($waClean, 1);
+        $waHomeUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo SOLVETA, saya ingin berkonsultasi mengenai solusi digital dan pembuatan website.");
+    ?>
 
-    <!-- Top Sticky Glass Navbar -->
-    <header class="sticky top-0 z-50 w-full backdrop-blur-xl bg-[#09090b]/80 border-b border-white/[0.08] transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Brand Logo -->
-            <a href="/" class="flex items-center gap-3 group">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-red-950 p-[1px] shadow-lg shadow-red-900/30 group-hover:shadow-red-600/40 transition-all duration-300">
-                    <div class="w-full h-full bg-[#09090b] rounded-[11px] flex items-center justify-center overflow-hidden">
-                        <?php if (!empty($copy['site_logo'])): ?>
-                            <img src="<?= esc($copy['site_logo']) ?>" alt="SOLVETA Logo" class="w-7 h-7 object-contain">
-                        <?php else: ?>
-                            <span class="font-heading font-black text-xl text-red-500">S</span>
-                        <?php endif; ?>
-                    </div>
+    <!-- ========================================================================= -->
+    <!-- 1. OPENING SCREEN (Identical to Next.js OpeningScreen.tsx)               -->
+    <!-- ========================================================================= -->
+    <div id="opening-screen" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 select-none overflow-hidden font-sans transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]">
+        <div id="opening-content" class="flex flex-col items-center max-w-lg w-full text-center relative z-10 transition-all duration-700">
+            <!-- Logo Image - 100% Pure White Seamless Blend without Box -->
+            <div class="mb-4 flex items-center justify-center bg-transparent">
+                <img src="<?= esc($siteLogo) ?>" alt="SOLVETA" class="w-64 sm:w-80 md:w-96 h-auto object-contain bg-transparent">
+            </div>
+
+            <!-- Loading Progress Bar -->
+            <div class="w-full max-w-[280px] sm:max-w-[340px] space-y-2.5 font-sans mt-2">
+                <div class="h-1.5 sm:h-2 w-full bg-gray-100 rounded-full overflow-hidden p-0.5 border border-gray-200 shadow-inner">
+                    <div id="opening-progress-bar" class="h-full bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] rounded-full shadow-sm transition-all duration-75" style="width: 0%;"></div>
+                </div>
+
+                <!-- Status and Percentage -->
+                <div class="flex items-center justify-between text-xs font-semibold text-gray-500 px-1">
+                    <span class="tracking-wider uppercase text-[10px] sm:text-[11px] text-gray-400 font-medium flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#8B0021] animate-ping"></span>
+                        <span>MEMUAT SISTEM</span>
+                    </span>
+                    <span id="opening-percentage" class="font-bold text-[#8B0021] text-xs font-mono">0%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================= -->
+    <!-- 2. STICKY GLASS NAVBAR (Identical to Next.js Navbar.tsx)                 -->
+    <!-- ========================================================================= -->
+    <header id="main-navbar" class="sticky top-0 left-0 right-0 z-50 transition-all duration-300 py-4 bg-white/80 dark:bg-[#07080E]/80 backdrop-blur-sm border-b border-gray-200/40 dark:border-gray-800/60 font-sans">
+        <div class="max-w-[1160px] mx-auto px-6 flex items-center justify-between gap-4">
+            
+            <!-- Brand Logo in Top-Left Navbar -->
+            <a href="/#hero" class="flex items-center gap-2.5 group">
+                <div class="h-9 w-9 rounded-xl overflow-hidden flex items-center justify-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-2xs group-hover:border-rose-300 dark:group-hover:border-rose-500 transition-all">
+                    <img src="<?= esc($siteLogo) ?>" alt="SOLVETA Logo" class="h-full w-full object-cover">
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-heading font-bold text-xl tracking-tight text-white flex items-center gap-1">
-                        SOLVETA<span class="text-red-500">.</span>
+                    <span class="font-extrabold text-base tracking-tight text-gray-950 dark:text-white group-hover:text-[#7B0B1E] dark:group-hover:text-rose-400 transition-colors leading-none">
+                        SOLVETA
                     </span>
-                    <span class="text-[10px] tracking-widest text-zinc-400 font-semibold uppercase -mt-1">
-                        Technology Agency
+                    <span class="text-[9px] font-mono text-gray-400 dark:text-gray-500 font-semibold tracking-wider uppercase mt-0.5">
+                        SOLUTIONS
                     </span>
                 </div>
             </a>
 
-            <!-- Desktop Nav Links -->
-            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-300">
-                <a href="/#services" class="hover:text-red-400 transition-colors">Layanan</a>
-                <a href="/#pricing" class="hover:text-red-400 transition-colors">Paket & Harga</a>
-                <a href="/#portfolio" class="hover:text-red-400 transition-colors">Portofolio</a>
-                <a href="/#process" class="hover:text-red-400 transition-colors">Alur Kerja</a>
-                <a href="/formulir" class="text-zinc-200 hover:text-white flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700/50 transition-all">
-                    <i data-lucide="file-text" class="w-4 h-4 text-red-500"></i>
-                    <span>Formulir Brief</span>
-                </a>
-            </nav>
+            <!-- Center Search Bar with keyboard shortcut -->
+            <div id="nav-search-trigger" class="hidden md:flex items-center gap-2.5 bg-gray-50/80 dark:bg-gray-900/80 hover:bg-gray-100 dark:hover:bg-gray-850 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 rounded-full px-3.5 py-1.5 w-full max-w-[300px] cursor-pointer transition-all duration-200">
+                <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400"></i>
+                <span class="text-xs text-gray-400 dark:text-gray-500 font-normal flex-grow">
+                    Search solutions...
+                </span>
+                <span class="font-mono text-[10px] font-semibold text-gray-400 dark:text-gray-500 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-1.5 py-0.5 rounded">
+                    ⌘ K
+                </span>
+            </div>
 
-            <!-- Right CTA & Mobile Toggle -->
-            <div class="flex items-center gap-4">
-                <?php 
-                    $waClean = preg_replace('/[^0-9]/', '', $contact['whatsapp_number'] ?? '6285719663154');
-                    if (substr($waClean, 0, 1) === '0') $waClean = '62' . substr($waClean, 1);
-                    $waHomeUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo SOLVETA, saya ingin berkonsultasi mengenai pembuatan website untuk bisnis saya.");
-                ?>
-                <a href="<?= $waHomeUrl ?>" target="_blank" rel="noopener noreferrer" 
-                   class="hidden sm:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-600 to-red-700 hover:from-red-500 hover:to-red-600 text-white text-sm font-semibold shadow-lg shadow-red-700/30 hover:shadow-red-600/50 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200">
-                    <i data-lucide="message-circle" class="w-4 h-4"></i>
-                    <span>Konsultasi Gratis</span>
-                </a>
+            <!-- Right Links & Actions -->
+            <div class="flex items-center gap-3 sm:gap-4">
+                <nav class="hidden lg:flex items-center gap-5 text-xs font-semibold text-gray-600 dark:text-gray-300">
+                    <a href="/#services" class="hover:text-[#7B0B1E] dark:hover:text-rose-400 transition-colors">Services</a>
+                    <a href="/#pricing" class="hover:text-[#7B0B1E] dark:hover:text-rose-400 transition-colors">Pricing</a>
+                    <a href="/#portfolio" class="hover:text-[#7B0B1E] dark:hover:text-rose-400 transition-colors">Portofolio</a>
+                </nav>
 
-                <!-- Mobile Menu Button -->
-                <button id="mobile-menu-btn" class="md:hidden p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white" aria-label="Buka Menu">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
+                <!-- Theme Toggle Button (Light / Dark Mode Switcher) -->
+                <button id="theme-toggle-btn" type="button" aria-label="Ganti Tema" title="Ganti Mode Terang / Gelap"
+                        class="p-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-700 dark:text-amber-300 hover:bg-rose-50/50 dark:hover:bg-gray-800 shadow-2xs transition-all flex items-center justify-center cursor-pointer">
+                    <i data-lucide="sun" id="theme-sun-icon" class="w-4 h-4 text-amber-400 hidden animate-spin-slow"></i>
+                    <i data-lucide="moon" id="theme-moon-icon" class="w-4 h-4 text-gray-700 dark:text-gray-300 hover:text-[#7B0B1E]"></i>
                 </button>
+
+                <!-- Direct CTA WhatsApp Button -->
+                <a href="<?= $waHomeUrl ?>" target="_blank" rel="noopener noreferrer" 
+                   class="px-3.5 sm:px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] rounded-lg transition-all shadow-xs flex items-center justify-center">
+                    Hubungi Kami
+                </a>
+
+                <!-- Developer Portal Icon -->
+                <a href="/admin" title="Portal Developer"
+                   class="w-8 h-8 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:bg-rose-50/50 dark:hover:bg-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-[#7B0B1E] dark:hover:text-rose-400 transition-colors">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- Mobile Drawer Menu -->
-    <div id="mobile-menu" class="fixed inset-0 z-50 bg-[#09090b]/95 backdrop-blur-2xl hidden flex flex-col p-6 animate-fadeIn">
-        <div class="flex items-center justify-between pb-6 border-b border-zinc-800">
-            <span class="font-heading font-bold text-xl text-white">SOLVETA<span class="text-red-500">.</span></span>
-            <button id="close-mobile-menu" class="p-2 rounded-lg bg-zinc-900 text-zinc-400 hover:text-white" aria-label="Tutup Menu">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-        </div>
-        <div class="flex flex-col gap-6 py-8 text-lg font-semibold">
-            <a href="/#services" class="hover:text-red-500 py-2 border-b border-zinc-900" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Layanan</a>
-            <a href="/#pricing" class="hover:text-red-500 py-2 border-b border-zinc-900" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Paket & Harga</a>
-            <a href="/#portfolio" class="hover:text-red-500 py-2 border-b border-zinc-900" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Portofolio</a>
-            <a href="/#process" class="hover:text-red-500 py-2 border-b border-zinc-900" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Alur Kerja</a>
-            <a href="/formulir" class="text-red-400 py-2 border-b border-zinc-900 flex items-center justify-between">
-                <span>Isi Formulir Brief Pemesanan</span>
-                <i data-lucide="arrow-right" class="w-5 h-5"></i>
-            </a>
-            <a href="/admin/login" class="text-zinc-500 text-sm py-2">
-                <span>Admin Login Portal</span>
-            </a>
-        </div>
-        <div class="mt-auto">
-            <a href="<?= $waHomeUrl ?>" target="_blank" rel="noopener noreferrer" 
-               class="w-full py-3.5 rounded-xl bg-red-600 text-white text-center font-bold flex items-center justify-center gap-2 shadow-lg shadow-red-600/30">
-                <i data-lucide="message-circle" class="w-5 h-5"></i>
-                <span>Hubungi via WhatsApp</span>
-            </a>
+    <!-- ========================================================================= -->
+    <!-- 3. SEARCH MODAL (Identical to Next.js SearchModal.tsx)                   -->
+    <!-- ========================================================================= -->
+    <div id="search-modal" class="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 hidden font-sans">
+        <!-- Backdrop -->
+        <div id="search-modal-backdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity"></div>
+
+        <!-- Dialog Box -->
+        <div class="bg-white dark:bg-[#11121B] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10">
+            <!-- Input Header -->
+            <div class="flex items-center gap-3 px-4 py-3.5 border-b border-gray-100 dark:border-gray-800">
+                <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
+                <input id="search-modal-input" type="text" placeholder="Cari solusi, paket, atau layanan..." 
+                       class="w-full text-sm text-gray-900 dark:text-white placeholder-gray-400 outline-none bg-transparent">
+                <button id="search-modal-close" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-md" aria-label="Tutup pencarian">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Results List -->
+            <div id="search-results-list" class="max-h-72 overflow-y-auto p-2">
+                <!-- Dynamically filtered via JS -->
+            </div>
+
+            <!-- Footer -->
+            <div class="px-4 py-2 bg-gray-50 dark:bg-gray-900/60 border-t border-gray-100 dark:border-gray-800 text-[10px] text-gray-400 flex items-center justify-between">
+                <span>Navigasi instan SOLVETA</span>
+                <span class="font-mono">ESC untuk tutup</span>
+            </div>
         </div>
     </div>
 
-    <!-- Main Content Area -->
-    <main class="flex-grow z-10">
+    <!-- ========================================================================= -->
+    <!-- 4. MAIN CONTENT AREA                                                     -->
+    <!-- ========================================================================= -->
+    <main>
         <?= $this->renderSection('content') ?>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-[#060608] border-t border-white/[0.08] relative z-10 pt-16 pb-12 mt-20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 pb-12 border-b border-white/[0.08]">
-                <!-- Brand Info -->
-                <div class="md:col-span-2 space-y-4">
-                    <div class="flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-red-600 to-red-950 p-[1px] flex items-center justify-center">
-                            <span class="font-heading font-black text-lg text-white">S</span>
+    <!-- ========================================================================= -->
+    <!-- 5. FOOTER (Identical to Next.js Footer.tsx)                              -->
+    <!-- ========================================================================= -->
+    <footer class="border-t border-gray-200 dark:border-gray-800 pt-16 pb-10 bg-white dark:bg-[#07080E] text-gray-700 dark:text-gray-300 relative transition-colors duration-200 font-sans">
+        <div class="max-w-[1160px] mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+                
+                <!-- Col 1: Brand & Contact -->
+                <div class="flex flex-col gap-2.5">
+                    <div class="flex items-center gap-2.5">
+                        <div class="h-9 w-9 rounded-xl overflow-hidden flex items-center justify-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-2xs flex-shrink-0">
+                            <img src="<?= esc($siteLogo) ?>" alt="SOLVETA Logo" class="w-full h-full object-cover">
                         </div>
-                        <span class="font-heading font-bold text-2xl text-white">SOLVETA<span class="text-red-500">.</span></span>
+                        <div>
+                            <span class="font-extrabold text-base tracking-tight text-gray-900 dark:text-white block">
+                                SOLVETA
+                            </span>
+                            <span class="text-[10px] text-gray-400 font-mono block">
+                                Solve Technology Agency
+                            </span>
+                        </div>
                     </div>
-                    <p class="text-zinc-400 text-sm leading-relaxed max-w-md">
-                        <?= esc($copy['hero_subtitle'] ?? 'Mengubah tantangan bisnis menjadi solusi digital dan otomasi efisien yang siap pakai.') ?>
-                    </p>
-                    <div class="flex items-center gap-3 text-xs text-zinc-500 pt-2">
-                        <span class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-400">
-                            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                            Online & Melayani Seluruh Indonesia
-                        </span>
+                    <div class="flex flex-col gap-1.5 text-xs text-gray-600 dark:text-gray-400 mt-2">
+                        <a href="<?= $waHomeUrl ?>" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-[#8B0021] dark:hover:text-rose-400 transition-colors">
+                            <i data-lucide="phone" class="w-3.5 h-3.5 text-rose-600"></i>
+                            <span><?= esc($contact['whatsapp_display'] ?? $contact['whatsapp_number'] ?? '+62 857-1966-3154') ?></span>
+                        </a>
+                        <a href="https://<?= esc($contact['website_url'] ?? 'solveta.asia') ?>" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-[#8B0021] dark:hover:text-rose-400 transition-colors">
+                            <i data-lucide="globe" class="w-3.5 h-3.5 text-gray-400"></i>
+                            <span><?= esc($contact['website_url'] ?? 'solveta.asia') ?></span>
+                        </a>
                     </div>
                 </div>
 
-                <!-- Quick Navigation -->
+                <!-- Col 2: Services -->
                 <div>
-                    <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider mb-4">Navigasi Cepat</h4>
-                    <ul class="space-y-2.5 text-sm text-zinc-400">
-                        <li><a href="/#services" class="hover:text-red-400 transition-colors">Layanan Kami</a></li>
-                        <li><a href="/#pricing" class="hover:text-red-400 transition-colors">Paket & Harga</a></li>
-                        <li><a href="/#portfolio" class="hover:text-red-400 transition-colors">Katalog Portofolio</a></li>
-                        <li><a href="/#process" class="hover:text-red-400 transition-colors">Alur Pengerjaan</a></li>
-                        <li><a href="/formulir" class="hover:text-red-400 transition-colors">Formulir Pemesanan</a></li>
+                    <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3.5">
+                        Services
+                    </h4>
+                    <ul class="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
+                        <li>
+                            <a href="/#services" class="hover:text-gray-900 dark:hover:text-white transition-colors">Process Development</a>
+                        </li>
+                        <li>
+                            <a href="/#services" class="hover:text-gray-900 dark:hover:text-white transition-colors">Business Digitalization</a>
+                        </li>
                     </ul>
                 </div>
 
-                <!-- Contact & Legal -->
+                <!-- Col 3: Company -->
                 <div>
-                    <h4 class="font-heading font-bold text-white text-sm uppercase tracking-wider mb-4">Hubungi Kami</h4>
-                    <ul class="space-y-3 text-sm text-zinc-400">
-                        <li class="flex items-center gap-2.5">
-                            <i data-lucide="message-circle" class="w-4 h-4 text-emerald-500 shrink-0"></i>
-                            <a href="<?= $waHomeUrl ?>" target="_blank" class="hover:text-white transition-colors">
-                                <?= esc($contact['whatsapp_display'] ?? '+62 857-1966-3154') ?>
-                            </a>
+                    <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3.5">
+                        Company
+                    </h4>
+                    <ul class="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
+                        <li>
+                            <a href="/#hero" class="hover:text-gray-900 dark:hover:text-white transition-colors">About</a>
                         </li>
-                        <li class="flex items-center gap-2.5">
-                            <i data-lucide="mail" class="w-4 h-4 text-red-500 shrink-0"></i>
-                            <a href="mailto:<?= esc($contact['email'] ?? 'halo@solveta.asia') ?>" class="hover:text-white transition-colors">
-                                <?= esc($contact['email'] ?? 'halo@solveta.asia') ?>
-                            </a>
+                        <li>
+                            <a href="/#hero" class="hover:text-gray-900 dark:hover:text-white transition-colors">Careers</a>
                         </li>
-                        <li class="flex items-center gap-2.5">
-                            <i data-lucide="globe" class="w-4 h-4 text-blue-500 shrink-0"></i>
-                            <span><?= esc($contact['website_url'] ?? 'www.solveta.asia') ?></span>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Legal -->
+                <div>
+                    <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3.5">
+                        Legal
+                    </h4>
+                    <ul class="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
+                        <li>
+                            <a href="#" class="hover:text-gray-900 dark:hover:text-white transition-colors">Privacy Policy</a>
                         </li>
-                        <li class="pt-2">
-                            <a href="/admin/login" class="text-xs text-zinc-600 hover:text-zinc-400 transition-colors flex items-center gap-1">
-                                <i data-lucide="lock" class="w-3 h-3"></i>
-                                <span>Portal Admin & Developer</span>
-                            </a>
+                        <li>
+                            <a href="#" class="hover:text-gray-900 dark:hover:text-white transition-colors">Terms of Service</a>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Bottom Copyright -->
-            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-zinc-500 gap-4">
-                <p>&copy; <?= date('Y') ?> SOLVETA Technology Agency. Hak Cipta Dilindungi.</p>
-                <p class="text-zinc-600">Built with CodeIgniter 4 & Native MySQL for High-Performance cPanel Hosting.</p>
+            <!-- Bottom Bar with Hidden Developer Portal Trigger -->
+            <div class="border-t border-gray-100 dark:border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-400 dark:text-gray-500">
+                <span id="footer-secret-click" class="cursor-pointer hover:text-gray-600 dark:hover:text-gray-300 transition-colors select-none" title="Klik 3x untuk Developer Portal">
+                    &copy; <?= date('Y') ?> SOLVETA. All rights reserved.
+                </span>
+
+                <a href="/admin" class="opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 text-[10px] text-gray-400 hover:text-[#8B0021] dark:hover:text-rose-400" title="Developer Portal Access">
+                    <i data-lucide="lock" class="w-2.5 h-2.5"></i>
+                    <span>Dev Access</span>
+                </a>
             </div>
         </div>
     </footer>
-
-    <!-- Floating WhatsApp Action Button -->
-    <a href="<?= $waHomeUrl ?>" target="_blank" rel="noopener noreferrer" 
-       class="wa-float-btn flex items-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-3 rounded-full shadow-2xl shadow-emerald-900/50 group" 
-       aria-label="Konsultasi via WhatsApp">
-        <span class="relative flex h-3 w-3">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-        </span>
-        <i data-lucide="message-circle" class="w-5 h-5 text-white"></i>
-        <span class="font-semibold text-xs tracking-wide pr-1 hidden sm:inline-block">Tanya Tim SOLVETA</span>
-    </a>
 
     <!-- Scripts -->
     <script>

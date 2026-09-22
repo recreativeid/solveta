@@ -21,6 +21,10 @@ class BrandModel extends Model
 
     public function getBrands(): array
     {
+        if (! is_mysql_alive()) {
+            return $this->getDefaultBrands();
+        }
+
         try {
             $rows = $this->orderBy('sort_order', 'ASC')->findAll();
             if (!empty($rows)) {
@@ -32,6 +36,11 @@ class BrandModel extends Model
             log_message('error', 'BrandModel error: ' . $e->getMessage());
         }
 
+        return $this->getDefaultBrands();
+    }
+
+    public function getDefaultBrands(): array
+    {
         return [
             ['id' => 'brand-1', 'name' => 'Cuango Official', 'label' => 'Fashion & Apparel', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 1],
             ['id' => 'brand-2', 'name' => 'Haltea Herbal', 'label' => 'Food & Beverage', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 2],

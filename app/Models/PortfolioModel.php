@@ -23,6 +23,10 @@ class PortfolioModel extends Model
 
     public function getItems(): array
     {
+        if (! is_mysql_alive()) {
+            return $this->getDefaultItems();
+        }
+
         try {
             $rows = $this->orderBy('sort_order', 'ASC')->findAll();
             if (!empty($rows)) {
@@ -38,6 +42,11 @@ class PortfolioModel extends Model
             log_message('error', 'PortfolioModel error: ' . $e->getMessage());
         }
 
+        return $this->getDefaultItems();
+    }
+
+    public function getDefaultItems(): array
+    {
         return [
             [
                 'id' => 'port-1',
