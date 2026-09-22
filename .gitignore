@@ -1,39 +1,21 @@
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+# CodeIgniter 4 writable folders
+/writable/cache/*
+!/writable/cache/index.html
+/writable/logs/*
+!/writable/logs/index.html
+/writable/session/*
+!/writable/session/index.html
+/writable/debugbar/*
 
-# testing
-/coverage
+# Backup and Archives
+_nextjs_backup/
+*.zip
+scratch/
 
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-
-# local env files
+# Environment files
+.env
 .env*.local
 
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# scratch & temporary files
-scratch/
-*.zip
-
-
+# System files
+.DS_Store
+Thumbs.db
