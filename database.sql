@@ -1,14 +1,8 @@
 -- =========================================================
 -- SOLVETA DATABASE SCHEMA (MySQL 5.7+ / 8.0+ / MariaDB)
 -- Production Ready for cPanel Shared Hosting (Localhost)
--- Database: solveta_db
+-- Target Database: kond2433_solveta
 -- =========================================================
-
-CREATE DATABASE IF NOT EXISTS `solveta_db` 
-CHARACTER SET utf8mb4 
-COLLATE utf8mb4_unicode_ci;
-
-USE `solveta_db`;
 
 -- ---------------------------------------------------------
 -- 1. Table: admin_users (Autentikasi CMS Admin)
