@@ -1,6 +1,8 @@
 /**
- * Helper to ensure assets (images, logos, videos) load correctly
- * both in local development (/) and on GitHub Pages (/solveta/)
+ * Helper to ensure assets (images, logos, videos) load correctly:
+ * - On cPanel / custom domain (solveta.asia) -> root (/)
+ * - On GitHub Actions Pages -> subpath (/solveta/)
+ * - On local development -> root (/)
  */
 export const getAssetPath = (path?: string): string => {
   if (!path) return "";
@@ -13,14 +15,17 @@ export const getAssetPath = (path?: string): string => {
     return path;
   }
 
-  const isProd = process.env.NODE_ENV === "production";
+  const isGitHubPages =
+    process.env.GITHUB_ACTIONS === "true" ||
+    process.env.NEXT_PUBLIC_GH_PAGES === "true";
+
   const cleanPath = path.startsWith("./")
     ? path.slice(1)
     : path.startsWith("/")
     ? path
     : `/${path}`;
 
-  if (isProd && !cleanPath.startsWith("/solveta")) {
+  if (isGitHubPages && !cleanPath.startsWith("/solveta")) {
     return `/solveta${cleanPath}`;
   }
   return cleanPath;

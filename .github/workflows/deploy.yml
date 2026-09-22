@@ -36,6 +36,7 @@ jobs:
         env:
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || 'https://ymaqdrsomailsnqkgmag.supabase.co' }}
           NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_6MVHJX_Yy2romiVJ13pnEQ_hSr92REe' }}
+          NEXT_PUBLIC_GH_PAGES: "true"
         run: npm run build
 
       - name: Create .nojekyll and 404 fallback

@@ -34,4 +34,6 @@ next-env.d.ts
 
 # scratch & temporary files
 scratch/
+*.zip
+
 
