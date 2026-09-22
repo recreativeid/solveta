@@ -5,7 +5,7 @@ const path = require("path");
 async function deploy() {
     const client = new ftp.Client();
     client.ftp.verbose = true;
-    client.ftp.timeout = 60000;
+    client.ftp.timeout = 120000;
 
     const server = process.env.CPANEL_FTP_SERVER;
     const user = process.env.CPANEL_FTP_USERNAME;
@@ -17,27 +17,45 @@ async function deploy() {
     }
 
     try {
-        console.log(`Connecting to FTPS ${server}:21 as ${user}...`);
-        await client.access({
-            host: server,
-            user: user,
-            password: password,
-            port: 21,
-            secure: true,
-            secureOptions: {
-                rejectUnauthorized: false
-            }
-        });
+        let connected = false;
+        try {
+            console.log(`[1] Attempting FTPS (secure: true) to ${server}:21 as ${user}...`);
+            await client.access({
+                host: server,
+                user: user,
+                password: password,
+                port: 21,
+                secure: true,
+                secureOptions: {
+                    rejectUnauthorized: false
+                }
+            });
+            connected = true;
+            console.log("Successfully connected via FTPS!");
+        } catch (secErr) {
+            console.warn("FTPS connection failed, falling back to plain FTP:", secErr.message);
+        }
 
-        console.log("Connected successfully to cPanel FTP!");
+        if (!connected) {
+            console.log(`[2] Attempting standard FTP (secure: false) to ${server}:21 as ${user}...`);
+            await client.access({
+                host: server,
+                user: user,
+                password: password,
+                port: 21,
+                secure: false
+            });
+            console.log("Successfully connected via standard FTP!");
+        }
+
         const currentDir = await client.pwd();
         console.log("Initial remote directory:", currentDir);
 
         const list = await client.list();
         const names = list.map(item => item.name);
-        console.log("Items in current directory:", names);
+        console.log("Items in initial directory:", names);
 
-        // Check if we need to enter public_html
+        // Check if we are in cPanel home directory
         const isCpanelHome = names.includes("mail") || names.includes("etc") || names.includes("public_ftp");
         if (isCpanelHome && names.includes("public_html")) {
             console.log("Navigating into public_html/...");
@@ -46,27 +64,27 @@ async function deploy() {
             console.log("Navigating into public_html/...");
             await client.cd("public_html");
         } else {
-            console.log("Already inside target web root.");
+            console.log("Already in target web root directory.");
         }
 
-        console.log("Deploy target directory:", await client.pwd());
+        console.log("Target directory for deployment:", await client.pwd());
 
-        // 1. Upload app/ directory (views, models, controllers, configs)
+        // 1. Upload app/ directory (CodeIgniter 4 application)
         console.log("--> Uploading app/ directory...");
         await client.uploadFromDir("app", "app");
 
-        // 2. Upload public/ directory (assets, css, js, images)
+        // 2. Upload public/ directory (Assets, CSS, JS, Images)
         console.log("--> Uploading public/ directory...");
         await client.uploadFromDir("public", "public");
 
-        // 3. Upload system/ directory if needed
+        // 3. Upload system/ directory if present
         if (fs.existsSync("system")) {
-            console.log("--> Ensuring system/ directory is synced...");
+            console.log("--> Uploading system/ directory...");
             await client.uploadFromDir("system", "system");
         }
 
-        // 4. Upload root controllers and configuration
-        console.log("--> Uploading root entrypoint and routing files...");
+        // 4. Upload root controllers
+        console.log("--> Uploading root entrypoint files...");
         if (fs.existsSync("index.php")) {
             await client.uploadFrom("index.php", "index.php");
         }
@@ -78,10 +96,10 @@ async function deploy() {
         }
 
         console.log("==================================================");
-        console.log(">>> Solveta cPanel Deployment Completed 100%! <<<");
+        console.log(">>> SOLVETA DEPLOYMENT TO CPANEL SUCCEEDED! <<<");
         console.log("==================================================");
     } catch (err) {
-        console.error("Deployment failed with error:", err);
+        console.error("FATAL: Deployment failed:", err);
         process.exit(1);
     } finally {
         client.close();

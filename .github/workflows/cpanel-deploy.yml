@@ -27,8 +27,17 @@ jobs:
         run: npm install basic-ftp
 
       - name: 🚀 Deploy CodeIgniter 4 to cPanel via FTPS
-        run: node .github/deploy.js
+        id: deploy
+        run: |
+          node .github/deploy.js 2>&1 | tee deploy.log
         env:
           CPANEL_FTP_SERVER: ${{ secrets.CPANEL_FTP_SERVER }}
           CPANEL_FTP_USERNAME: ${{ secrets.CPANEL_FTP_USERNAME }}
           CPANEL_FTP_PASSWORD: ${{ secrets.CPANEL_FTP_PASSWORD }}
+
+      - name: 📢 Save Deployment Log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-log
+          path: deploy.log
