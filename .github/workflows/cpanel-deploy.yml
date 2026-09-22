@@ -18,6 +18,49 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: 🔍 Detect cPanel FTP Root Directory
+        id: detect
+        run: |
+          python3 -c "
+          import ftplib, os
+          server = os.environ['SERVER']
+          user = os.environ['USER']
+          pw = os.environ['PW']
+          ftps = ftplib.FTP_TLS()
+          ftps.connect(server, 21, timeout=30)
+          ftps.login(user, pw)
+          ftps.prot_p()
+          nlst = ftps.nlst()
+          print('Remote items in root:', nlst)
+          is_cpanel_home = any(d in nlst for d in ['mail', 'etc', 'access-logs', 'public_ftp'])
+          if is_cpanel_home and 'public_html' in nlst:
+              target = './public_html/'
+              print('Detected cPanel home directory. Target server-dir is ./public_html/')
+              try:
+                  ftps.cwd('public_html')
+                  items_in_pub = ftps.nlst()
+                  if '.ftp-deploy-sync-state.json' in items_in_pub:
+                      ftps.delete('.ftp-deploy-sync-state.json')
+                      print('Reset sync state in ./public_html/')
+              except Exception as e:
+                  print('State cleanup error:', e)
+          else:
+              target = './'
+              print('Detected FTP user rooted in public_html. Target server-dir is ./')
+              try:
+                  if '.ftp-deploy-sync-state.json' in nlst:
+                      ftps.delete('.ftp-deploy-sync-state.json')
+                      print('Reset sync state in ./')
+              except Exception as e:
+                  print('State cleanup error:', e)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f'server_dir={target}\n')
+          "
+        env:
+          SERVER: ${{ secrets.CPANEL_FTP_SERVER }}
+          USER: ${{ secrets.CPANEL_FTP_USERNAME }}
+          PW: ${{ secrets.CPANEL_FTP_PASSWORD }}
+
       - name: 🚀 Sync CodeIgniter 4 to cPanel public_html via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -27,7 +70,7 @@ jobs:
           protocol: ftps
           port: 21
           local-dir: ./
-          server-dir: ./public_html/
+          server-dir: ${{ steps.detect.outputs.server_dir }}
           dangerous-clean-slate: false
           exclude: |
             **/.git*
