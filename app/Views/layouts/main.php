@@ -84,7 +84,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/style.css?v=<?= file_exists(FCPATH . 'assets/css/style.css') ? filemtime(FCPATH . 'assets/css/style.css') : '2.0' ?>">
 </head>
 <body class="font-sans antialiased bg-[#FDFBF9] dark:bg-[#07080E] text-gray-700 dark:text-gray-200 min-h-screen relative overflow-x-hidden selection:bg-rose-100 dark:selection:bg-rose-950 selection:text-rose-900 dark:selection:text-rose-200 transition-colors duration-200">
 
@@ -322,7 +322,7 @@
     <script>
         lucide.createIcons();
     </script>
-    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/main.js?v=<?= file_exists(FCPATH . 'assets/js/main.js') ? filemtime(FCPATH . 'assets/js/main.js') : '2.0' ?>"></script>
     <?= $this->renderSection('scripts') ?>
 </body>
 </html>
