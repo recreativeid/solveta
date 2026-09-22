@@ -7,9 +7,9 @@ async function deploy() {
     client.ftp.verbose = true;
     client.ftp.timeout = 120000;
 
-    const server = process.env.CPANEL_FTP_SERVER;
-    const user = process.env.CPANEL_FTP_USERNAME;
-    const password = process.env.CPANEL_FTP_PASSWORD;
+    const server = (process.env.CPANEL_FTP_SERVER || "").trim();
+    const user = (process.env.CPANEL_FTP_USERNAME || "").trim();
+    const password = (process.env.CPANEL_FTP_PASSWORD || "").trim();
 
     if (!server || !user || !password) {
         console.error("Error: Missing FTP credentials in environment variables.");
