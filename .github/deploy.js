@@ -19,7 +19,14 @@ async function runUpload(client) {
         console.log("Already inside target web root.");
     }
 
-    console.log("Deploying directly to:", await client.pwd());
+    const currentDir = await client.pwd();
+    console.log("Current remote directory:", currentDir);
+
+    const pubList = await client.list();
+    console.log("=== CONTENTS OF REMOTE DIRECTORY (" + currentDir + ") ===");
+    for (const item of pubList) {
+        console.log(` - ${item.name} (${item.isDirectory ? 'DIR' : 'FILE'}, ${item.size} bytes)`);
+    }
 
     // 1. Upload app/ directory (CodeIgniter 4 application views, models, controllers)
     console.log("--> Uploading app/ directory...");
@@ -28,6 +35,10 @@ async function runUpload(client) {
     // 2. Upload public/ directory (Assets, CSS, JS, Images, Logo)
     console.log("--> Uploading public/ directory...");
     await client.uploadFromDir("public", "public");
+
+    // Also sync assets directly to assets/
+    console.log("--> Syncing assets directly to assets/...");
+    await client.uploadFromDir("public/assets", "assets");
 
     // 3. Upload system/ directory if present
     if (fs.existsSync("system")) {
