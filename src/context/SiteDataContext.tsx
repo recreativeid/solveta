@@ -373,53 +373,63 @@ const defaultState: SiteDataState = {
   ],
   portfolio: [
     {
+      id: "port-1790082622028",
+      title: "Landingpage Konservasi Akuatik",
+      category: "Landingpage",
+      image: "/images/portfolio/konservasi-akuatik.jpg",
+      description: "Website landingpage kursus & club renang profesional.",
+      tags: ["Custom", "SOLVETA"],
+      liveUrl: "https://konservasiakuatik.space/",
+    },
+    {
       id: "port-1",
-      title: "MedikaCare — Sistem Manajemen Klinik Terintegrasi",
+      title: "Squabumin.id",
       category: "Custom System",
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop&q=80",
-      description: "Digitalisasi rekam medis pasien, antrean online WhatsApp, dan sistem kasir klinik terpadu.",
-      tags: ["Healthcare", "Database", "Automation"],
-      liveUrl: "https://www.solveta.site",
+      image: "/images/portfolio/squabumin.jpg",
+      description: "Company profile product madu squabumin dari CV Herbal Indo Utama.",
+      tags: ["Herbal"],
+      liveUrl: "https://squabumin.id",
     },
     {
       id: "port-2",
-      title: "Nusantara Logistics — Portal Tracking & Fleet Dashboard",
+      title: "CuanGO",
       category: "Web Application",
-      image: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop&q=80",
-      description: "Platform pelacakan pengiriman kargo real-time dengan integrasi WhatsApp notification gateway.",
-      tags: ["Logistics", "Real-Time", "Dashboard"],
-      liveUrl: "https://www.solveta.site",
+      image: "/images/portfolio/cuango.jpg",
+      description: "POS UMKM & Inventaris Canggih untuk UMKM bertenaga AI.",
+      tags: ["UMKM Technology"],
+      liveUrl: "http://localhost/cuango",
     },
     {
       id: "port-3",
-      title: "UrbanVibe Property — Website Katalog Properti Premium",
+      title: "POS Haltea Indonesia",
       category: "Website & Presence",
-      image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80",
-      description: "Website interaktif listing properti dengan filter radius peta, virtual tour 360, dan direct order WhatsApp.",
-      tags: ["Real Estate", "Search Filter", "Catalog"],
-      liveUrl: "https://www.solveta.site",
+      image: "/images/portfolio/haltea.jpg",
+      description: "Sistem POS Management Haltea Indonesia: Dashboard, Transaksi Penjualan, Riwayat Transaksi, Kelola Stok Gudang, Kelola & Input Takaran Menu, Prediksi Bahan Baku, Laporan Keuangan, Laporan Arus Kas, Cek Absensi Karyawan, Kelola Akun Karyawan.",
+      tags: ["UMKM"],
+      liveUrl: "https://recreativeid.github.io/haltea/",
     },
     {
       id: "port-4",
-      title: "Kopi Nusantara — E-Commerce & POS Inventory Sync",
+      title: "Landing page Visual Genix",
       category: "E-Commerce",
-      image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop&q=80",
-      description: "Sinkronisasi otomatis antara stok toko offline dan pesanan online multi-channel.",
+      image: "/images/portfolio/visualgenix.jpg",
+      description: "Landingpage company profile Visual Genix | AI Affiliate Generator.",
       tags: ["E-Commerce", "Inventory", "WhatsApp Checkout"],
-      liveUrl: "https://www.solveta.site",
+      liveUrl: "https://v0-visualgenixaffiliate.vercel.app/",
     },
     {
       id: "port-5",
-      title: "Artha Finansial — Corporate Profile & Client Portal",
+      title: "Tidurnyenyak.com",
       category: "Corporate Profile",
-      image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80",
-      description: "Company profile modern ultra-fast dengan portal pengajuan konsultasi keuangan otomatis.",
+      image: "/images/portfolio/tidurnyenyak.jpg",
+      description: "Website company profile produk HerbaTDR dari CV Herbal Indo Utama.",
       tags: ["Fintech", "Corporate", "SEO Friendly"],
-      liveUrl: "https://www.solveta.site",
+      liveUrl: "https://tidurnyenyak.com",
     },
   ],
   clientBrands: [],
   categories: [
+    "Landingpage",
     "Custom System",
     "Web Application",
     "Website & Presence",
@@ -751,7 +761,11 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
               ...sbData.data,
               clientBrands: sbBrands,
             }));
-            localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...sbData.data, clientBrands: sbBrands }));
+            try {
+              localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...sbData.data, clientBrands: sbBrands }));
+            } catch (errStorage) {
+              console.warn("Could not cache to localStorage:", errStorage);
+            }
           }
         } catch (err) {
           console.log("Supabase fetch fallback:", err);
@@ -808,11 +822,14 @@ export const SiteDataProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       (async () => {
         try {
           const client = getSupabaseClient();
-          await client.from("site_content").upsert({
+          const { error } = await client.from("site_content").upsert({
             id: "solveta_cms_main",
             data: newState,
             updated_at: new Date().toISOString(),
           });
+          if (error) {
+            console.error("Supabase upsert error:", error);
+          }
         } catch (err) {
           console.error("Failed auto-sync with Supabase:", err);
         }

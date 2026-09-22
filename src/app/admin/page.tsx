@@ -66,6 +66,7 @@ import {
 } from "@/utils/mediaDb";
 import { cleanWhatsAppNumber, getWhatsAppUrl } from "@/utils/whatsapp";
 import { getAssetPath } from "@/utils/asset";
+import { compressImage } from "@/utils/imageCompressor";
 import {
   SiteDataProvider,
   useSiteData,
@@ -377,26 +378,44 @@ function AdminPortalVisual() {
     showToast("Semua data berhasil disimpan & disinkronkan ke cloud!");
   };
 
-  // Handle local portfolio image file upload
-  const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
+  // Handle local portfolio image file upload with automatic compression
+  const handleImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, isEdit = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      alert("Ukuran gambar maksimal 5MB");
+    if (file.size > 15 * 1024 * 1024) {
+      alert("Ukuran gambar maksimal 15MB");
       return;
     }
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string;
+    try {
+      showToast("Mengompresi gambar portofolio agar ringan...");
+      const compressedDataUrl = await compressImage(file, {
+        maxWidth: 1000,
+        maxHeight: 700,
+        quality: 0.8,
+      });
+
       if (isEdit && editingPortfolio) {
-        setEditingPortfolio({ ...editingPortfolio, image: result });
+        setEditingPortfolio({ ...editingPortfolio, image: compressedDataUrl });
       } else {
-        setNewPortImage(result);
+        setNewPortImage(compressedDataUrl);
       }
-    };
-    reader.readAsDataURL(file);
+      showToast("Gambar berhasil dioptimasi & siap disimpan!");
+    } catch (err) {
+      console.error("Gagal mengompresi gambar:", err);
+      // Fallback: baca normal jika kompresi gagal
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result as string;
+        if (isEdit && editingPortfolio) {
+          setEditingPortfolio({ ...editingPortfolio, image: result });
+        } else {
+          setNewPortImage(result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   // Handle client logo file upload - opens interactive Logo Studio
@@ -1579,7 +1598,7 @@ function AdminPortalVisual() {
                     <div>
                       <div className="h-36 bg-gray-100 overflow-hidden relative">
                         <img
-                          src={item.image}
+                          src={getAssetPath(item.image)}
                           alt={item.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
@@ -3086,6 +3105,15 @@ function AdminPortalVisual() {
                       className="hidden"
                     />
                   </div>
+                  {editingPortfolio.image && (
+                    <div className="mt-2 relative h-28 rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+                      <img
+                        src={getAssetPath(editingPortfolio.image)}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <div>

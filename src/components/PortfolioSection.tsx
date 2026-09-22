@@ -7,6 +7,7 @@ import { useSiteData } from "@/context/SiteDataContext";
 import { useTheme } from "@/context/ThemeContext";
 import { CoverFlowCarousel, CarouselItem } from "@/components/ui/3-d-coverflow-carousel";
 import { getWhatsAppUrl } from "@/utils/whatsapp";
+import { getAssetPath } from "@/utils/asset";
 
 export const PortfolioSection: React.FC = () => {
   const { data } = useSiteData();
@@ -71,7 +72,7 @@ export const PortfolioSection: React.FC = () => {
       titleLine1,
       titleLine2,
       desc: p.description,
-      img: p.image,
+      img: getAssetPath(p.image),
       tags: p.tags,
       ctaText: hasLiveUrl ? "Kunjungi Website" : "Konsultasi Proyek",
       ctaUrl: destinationUrl,
