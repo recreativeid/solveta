@@ -285,7 +285,7 @@ export const ProjectTransactionsManager: React.FC<{
         phoneNumber: formPhoneNumber.trim(),
         servicePrice: parsedPrice,
         websiteName: formWebsiteName.trim(),
-        websiteLink: formWebsiteLink.trim() || `https://${formWebsiteName.toLowerCase().replace(/\s+/g, "")}.solveta.site`,
+        websiteLink: formWebsiteLink.trim() || `https://${formWebsiteName.toLowerCase().replace(/\s+/g, "")}.solveta.asia`,
         status: formStatus,
         notes: formNotes.trim(),
         invoiceNumber: generatedInvoiceNumber,
@@ -980,7 +980,7 @@ export const ProjectTransactionsManager: React.FC<{
                       SOLVETA
                     </h1>
                     <p className="text-[11px] text-gray-500">
-                      Solve Technology Agency • www.solveta.site
+                      Solve Technology Agency • www.solveta.asia
                     </p>
                   </div>
                 </div>

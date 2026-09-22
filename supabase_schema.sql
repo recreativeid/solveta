@@ -34,8 +34,8 @@ VALUES (
     "contact": {
       "whatsappNumber": "6285719663154",
       "whatsappDisplay": "+62 857-1966-3154",
-      "websiteUrl": "www.solveta.site",
-      "email": "halo@solveta.site"
+      "websiteUrl": "www.solveta.asia",
+      "email": "halo@solveta.asia"
     },
     "siteCopy": {
       "siteLogo": "",

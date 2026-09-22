@@ -545,7 +545,7 @@ function AdminPortalVisual() {
       ? newPortLiveUrl.trim().startsWith("http")
         ? newPortLiveUrl.trim()
         : `https://${newPortLiveUrl.trim()}`
-      : "https://www.solveta.site";
+      : "https://www.solveta.asia";
 
     addPortfolioItem({
       title: newPortTitle,
@@ -585,7 +585,7 @@ function AdminPortalVisual() {
       ? editPortLiveUrl.trim().startsWith("http")
         ? editPortLiveUrl.trim()
         : `https://${editPortLiveUrl.trim()}`
-      : editingPortfolio.liveUrl || "https://www.solveta.site";
+      : editingPortfolio.liveUrl || "https://www.solveta.asia";
 
     const cleanCategory = editPortCategory.trim();
 

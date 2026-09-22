@@ -446,7 +446,7 @@ export function CoverFlowCarousel({
                     <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-black/40 border border-white/10 text-[9px] sm:text-[10px] text-gray-300 font-mono">
                       <Globe className="w-2.5 h-2.5 text-rose-400" />
                       <span className="truncate max-w-[130px] sm:max-w-[200px]">
-                        solveta.site/showcase/
+                        solveta.asia/showcase/
                         {item.titleLine1.toLowerCase().replace(/\s+/g, "-")}
                       </span>
                     </div>

@@ -439,8 +439,8 @@ const defaultState: SiteDataState = {
   contact: {
     whatsappNumber: "6285719663154",
     whatsappDisplay: "+62 857-1966-3154",
-    websiteUrl: "www.solveta.site",
-    email: "halo@solveta.site",
+    websiteUrl: "www.solveta.asia",
+    email: "halo@solveta.asia",
   },
   siteCopy: {
     siteLogo: "",
@@ -586,7 +586,7 @@ const defaultState: SiteDataState = {
       phoneNumber: "081234567890",
       servicePrice: 549000,
       websiteName: "Kopi Senja Nusantara",
-      websiteLink: "https://kopisenja.solveta.site",
+      websiteLink: "https://kopisenja.solveta.asia",
       status: "Progress",
       notes: "Tahap perakitan katalog produk dan integrasi tombol checkout WA.",
       invoiceNumber: "INV-20260902-001",

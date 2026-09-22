@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `contact_info` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
   `whatsapp_number` VARCHAR(50) NOT NULL DEFAULT '6285719663154',
   `whatsapp_display` VARCHAR(50) NOT NULL DEFAULT '+62 857-1966-3154',
-  `website_url` VARCHAR(255) NOT NULL DEFAULT 'www.solveta.site',
-  `email` VARCHAR(255) DEFAULT 'halo@solveta.site',
+  `website_url` VARCHAR(255) NOT NULL DEFAULT 'www.solveta.asia',
+  `email` VARCHAR(255) DEFAULT 'halo@solveta.asia',
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -58,8 +58,8 @@ VALUES (
   1,
   '6285719663154',
   '+62 857-1966-3154',
-  'www.solveta.site',
-  'halo@solveta.site'
+  'www.solveta.asia',
+  'halo@solveta.asia'
 ) ON DUPLICATE KEY UPDATE `id`=`id`;
 
 
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `portfolio_items` (
   `image_url` LONGTEXT NOT NULL,
   `description` TEXT NOT NULL,
   `tags_json` JSON DEFAULT NULL,
-  `live_url` VARCHAR(255) DEFAULT 'https://www.solveta.site',
+  `live_url` VARCHAR(255) DEFAULT 'https://www.solveta.asia',
   `sort_order` INT DEFAULT 0,
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -108,11 +108,11 @@ CREATE TABLE IF NOT EXISTS `portfolio_items` (
 -- Initial data for portfolio_items
 INSERT INTO `portfolio_items` (`id`, `title`, `category`, `image_url`, `description`, `tags_json`, `live_url`, `sort_order`)
 VALUES
-('port-1', 'MedikaCare — Sistem Manajemen Klinik Terintegrasi', 'Custom System', 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop&q=80', 'Digitalisasi rekam medis pasien, antrean online WhatsApp, dan sistem kasir klinik terpadu.', '["Healthcare", "Database", "Automation"]', 'https://www.solveta.site', 1),
-('port-2', 'Nusantara Logistics — Portal Tracking & Fleet Dashboard', 'Web Application', 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop&q=80', 'Platform pelacakan pengiriman kargo real-time dengan integrasi WhatsApp notification gateway.', '["Logistics", "Real-Time", "Dashboard"]', 'https://www.solveta.site', 2),
-('port-3', 'UrbanVibe Property — Website Katalog Properti Premium', 'Website & Presence', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80', 'Website interaktif listing properti dengan filter radius peta, virtual tour 360, dan direct order WhatsApp.', '["Real Estate", "Search Filter", "Catalog"]', 'https://www.solveta.site', 3),
-('port-4', 'Kopi Nusantara — E-Commerce & POS Inventory Sync', 'E-Commerce', 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop&q=80', 'Sinkronisasi otomatis antara stok toko offline dan pesanan online multi-channel.', '["E-Commerce", "Inventory", "WhatsApp Checkout"]', 'https://www.solveta.site', 4),
-('port-5', 'Artha Finansial — Corporate Profile & Client Portal', 'Corporate Profile', 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80', 'Company profile modern ultra-fast dengan portal pengajuan konsultasi keuangan otomatis.', '["Fintech", "Corporate", "SEO Friendly"]', 'https://www.solveta.site', 5)
+('port-1', 'MedikaCare — Sistem Manajemen Klinik Terintegrasi', 'Custom System', 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&auto=format&fit=crop&q=80', 'Digitalisasi rekam medis pasien, antrean online WhatsApp, dan sistem kasir klinik terpadu.', '["Healthcare", "Database", "Automation"]', 'https://www.solveta.asia', 1),
+('port-2', 'Nusantara Logistics — Portal Tracking & Fleet Dashboard', 'Web Application', 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=800&auto=format&fit=crop&q=80', 'Platform pelacakan pengiriman kargo real-time dengan integrasi WhatsApp notification gateway.', '["Logistics", "Real-Time", "Dashboard"]', 'https://www.solveta.asia', 2),
+('port-3', 'UrbanVibe Property — Website Katalog Properti Premium', 'Website & Presence', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&auto=format&fit=crop&q=80', 'Website interaktif listing properti dengan filter radius peta, virtual tour 360, dan direct order WhatsApp.', '["Real Estate", "Search Filter", "Catalog"]', 'https://www.solveta.asia', 3),
+('port-4', 'Kopi Nusantara — E-Commerce & POS Inventory Sync', 'E-Commerce', 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&auto=format&fit=crop&q=80', 'Sinkronisasi otomatis antara stok toko offline dan pesanan online multi-channel.', '["E-Commerce", "Inventory", "WhatsApp Checkout"]', 'https://www.solveta.asia', 4),
+('port-5', 'Artha Finansial — Corporate Profile & Client Portal', 'Corporate Profile', 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&auto=format&fit=crop&q=80', 'Company profile modern ultra-fast dengan portal pengajuan konsultasi keuangan otomatis.', '["Fintech", "Corporate", "SEO Friendly"]', 'https://www.solveta.asia', 5)
 ON DUPLICATE KEY UPDATE `title`=VALUES(`title`), `description`=VALUES(`description`);
 
 
