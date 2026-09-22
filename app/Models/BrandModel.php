@@ -42,16 +42,16 @@ class BrandModel extends Model
     public function getDefaultBrands(): array
     {
         return [
-            ['id' => 'brand-1', 'name' => 'Cuango Official', 'label' => 'Fashion & Apparel', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 1],
-            ['id' => 'brand-2', 'name' => 'Haltea Herbal', 'label' => 'Food & Beverage', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 2],
-            ['id' => 'brand-3', 'name' => 'Yayasan Konservasi Akuatik', 'label' => 'Environmental NGO', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 3],
-            ['id' => 'brand-4', 'name' => 'Squabumin Indonesia', 'label' => 'Pharmaceuticals', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 4],
-            ['id' => 'brand-5', 'name' => 'Tidur Nyenyak Bedding', 'label' => 'Home & Living', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 5],
-            ['id' => 'brand-6', 'name' => 'VisualGenix Studio', 'label' => 'Creative & Media', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 6],
-            ['id' => 'brand-7', 'name' => 'MedikaCare Group', 'label' => 'Healthcare System', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 7],
-            ['id' => 'brand-8', 'name' => 'Nusantara Logistics', 'label' => 'Supply Chain', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 8],
-            ['id' => 'brand-9', 'name' => 'UrbanVibe Properties', 'label' => 'Real Estate', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 9],
-            ['id' => 'brand-10', 'name' => 'Apex Global Industri', 'label' => 'Manufacturing', 'logo_image' => null, 'scale' => 1.0, 'sort_order' => 10],
+            ['id' => 'brand-1788254260324', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1788254260324.png', 'scale' => 1.0, 'sort_order' => 1],
+            ['id' => 'brand-1788254350483', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1788254350483.png', 'scale' => 1.0, 'sort_order' => 2],
+            ['id' => 'brand-1788254406941', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1788254406941.png', 'scale' => 1.0, 'sort_order' => 3],
+            ['id' => 'brand-1788254482294', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1788254482294.png', 'scale' => 1.0, 'sort_order' => 4],
+            ['id' => 'brand-1788254508761', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1788254508761.png', 'scale' => 1.0, 'sort_order' => 5],
+            ['id' => 'brand-1788258571491', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1788258571491.png', 'scale' => 1.0, 'sort_order' => 6],
+            ['id' => 'brand-1790081984303', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1790081984303.png', 'scale' => 1.0, 'sort_order' => 7],
+            ['id' => 'brand-1790082015511', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1790082015511.png', 'scale' => 1.0, 'sort_order' => 8],
+            ['id' => 'brand-1790082034279', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1790082034279.png', 'scale' => 1.0, 'sort_order' => 9],
+            ['id' => 'brand-1790082051828', 'name' => '', 'label' => '', 'logo_image' => '/uploads/brands/brand-1790082051828.png', 'scale' => 1.0, 'sort_order' => 10],
         ];
     }
 }

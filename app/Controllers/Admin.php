@@ -57,6 +57,9 @@ class Admin extends BaseController
             'marquee_title' => (string) $this->request->getPost('marquee_title'),
             'marquee_speed' => (int) ($this->request->getPost('marquee_speed') ?: 35),
             'marquee_logo_height' => (int) ($this->request->getPost('marquee_logo_height') ?: 46),
+            'marquee_logo_spacing' => (int) ($this->request->getPost('marquee_logo_spacing') ?: 36),
+            'marquee_logo_scale' => (int) ($this->request->getPost('marquee_logo_scale') ?: 100),
+            'marquee_logo_max_width' => (int) ($this->request->getPost('marquee_logo_max_width') ?: 240),
         ];
 
         // Handle Site Logo upload
@@ -86,7 +89,7 @@ class Admin extends BaseController
             log_message('error', 'Update copy DB error: ' . $e->getMessage());
         }
 
-        return redirect()->to('/admin#tab-copy')->with('success', 'Visual & Site Copy berhasil diperbarui!');
+        return redirect()->to('/admin#tab-visual')->with('success', 'Visual & Site Copy berhasil diperbarui!');
     }
 
     public function updateContact()
@@ -97,6 +100,7 @@ class Admin extends BaseController
             'whatsapp_display' => (string) $this->request->getPost('whatsapp_display'),
             'website_url' => (string) $this->request->getPost('website_url'),
             'email' => (string) $this->request->getPost('email'),
+            'instagram' => (string) $this->request->getPost('instagram'),
         ];
 
         try {
@@ -110,7 +114,7 @@ class Admin extends BaseController
             log_message('error', 'Update contact DB error: ' . $e->getMessage());
         }
 
-        return redirect()->to('/admin#tab-copy')->with('success', 'Kontak WhatsApp & Email berhasil diperbarui!');
+        return redirect()->to('/admin#tab-contact')->with('success', 'Kontak WhatsApp, Instagram & Email berhasil diperbarui!');
     }
 
     public function updatePassword()

@@ -197,6 +197,11 @@
 <?php if (!empty($brands)): ?>
     <?php
         $marqueeSpeed = !empty($copy['marquee_speed']) ? (int)$copy['marquee_speed'] : 35;
+        $logoHeight = !empty($copy['marquee_logo_height']) ? (int)$copy['marquee_logo_height'] : 46;
+        $logoSpacing = !empty($copy['marquee_logo_spacing']) ? (int)$copy['marquee_logo_spacing'] : 36;
+        $logoScalePercent = (!empty($copy['marquee_logo_scale']) ? (int)$copy['marquee_logo_scale'] : 100) / 100;
+        $logoMaxWidth = !empty($copy['marquee_logo_max_width']) ? (int)$copy['marquee_logo_max_width'] : 240;
+
         $offset = max(1, (int)floor(count($brands) / 2));
         $row1Brands = $brands;
         $row2Brands = array_merge(array_slice($brands, $offset), array_slice($brands, 0, $offset));
@@ -222,13 +227,20 @@
             <div class="flex w-max">
                 <div class="marquee-row-right flex items-center pr-6">
                     <?php foreach ($row1Quad as $brand): ?>
-                        <div class="px-8 py-2 flex items-center justify-center flex-shrink-0 group cursor-default transition-all duration-300">
+                        <?php
+                            $individualScale = isset($brand['scale']) ? (float)$brand['scale'] : 1.0;
+                            $effectiveScale = $logoScalePercent * $individualScale;
+                            $finalHeight = max(24, (int)round($logoHeight * $effectiveScale));
+                            $finalMaxWidth = max(80, (int)round($logoMaxWidth * $effectiveScale));
+                        ?>
+                        <div style="padding-left: <?= $logoSpacing ?>px; padding-right: <?= $logoSpacing ?>px;" class="py-2 flex items-center justify-center flex-shrink-0 group cursor-default transition-all duration-300">
                             <?php if (!empty($brand['logo_image'])): ?>
-                                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name']) ?>" 
-                                     class="h-8 max-h-12 w-auto object-contain select-none pointer-events-none filter grayscale opacity-85 contrast-125 dark:invert dark:opacity-95 dark:contrast-125 group-hover:grayscale-0 group-hover:dark:invert-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
+                                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name'] ?: 'Client Logo') ?>" 
+                                     style="height: <?= $finalHeight ?>px; max-height: <?= round($finalHeight * 1.45) ?>px; max-width: <?= $finalMaxWidth ?>px;"
+                                     class="w-auto object-contain select-none pointer-events-none filter grayscale opacity-85 contrast-125 dark:invert dark:opacity-95 dark:contrast-125 group-hover:grayscale-0 group-hover:dark:invert-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
                             <?php else: ?>
                                 <span class="font-black font-sans tracking-tight text-gray-800 dark:text-white/90 group-hover:text-black dark:group-hover:text-white group-hover:scale-105 transition-all duration-300 select-none whitespace-nowrap text-sm sm:text-base">
-                                    <?= esc($brand['name']) ?>
+                                    <?= esc($brand['name'] ?: 'Partner') ?>
                                 </span>
                             <?php endif; ?>
                         </div>
@@ -240,13 +252,20 @@
             <div class="flex w-max">
                 <div class="marquee-row-left flex items-center pr-6">
                     <?php foreach ($row2Quad as $brand): ?>
-                        <div class="px-8 py-2 flex items-center justify-center flex-shrink-0 group cursor-default transition-all duration-300">
+                        <?php
+                            $individualScale = isset($brand['scale']) ? (float)$brand['scale'] : 1.0;
+                            $effectiveScale = $logoScalePercent * $individualScale;
+                            $finalHeight = max(24, (int)round($logoHeight * $effectiveScale));
+                            $finalMaxWidth = max(80, (int)round($logoMaxWidth * $effectiveScale));
+                        ?>
+                        <div style="padding-left: <?= $logoSpacing ?>px; padding-right: <?= $logoSpacing ?>px;" class="py-2 flex items-center justify-center flex-shrink-0 group cursor-default transition-all duration-300">
                             <?php if (!empty($brand['logo_image'])): ?>
-                                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name']) ?>" 
-                                     class="h-8 max-h-12 w-auto object-contain select-none pointer-events-none filter grayscale opacity-85 contrast-125 dark:invert dark:opacity-95 dark:contrast-125 group-hover:grayscale-0 group-hover:dark:invert-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
+                                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name'] ?: 'Client Logo') ?>" 
+                                     style="height: <?= $finalHeight ?>px; max-height: <?= round($finalHeight * 1.45) ?>px; max-width: <?= $finalMaxWidth ?>px;"
+                                     class="w-auto object-contain select-none pointer-events-none filter grayscale opacity-85 contrast-125 dark:invert dark:opacity-95 dark:contrast-125 group-hover:grayscale-0 group-hover:dark:invert-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
                             <?php else: ?>
                                 <span class="font-black font-sans tracking-tight text-gray-800 dark:text-white/90 group-hover:text-black dark:group-hover:text-white group-hover:scale-105 transition-all duration-300 select-none whitespace-nowrap text-sm sm:text-base">
-                                    <?= esc($brand['name']) ?>
+                                    <?= esc($brand['name'] ?: 'Partner') ?>
                                 </span>
                             <?php endif; ?>
                         </div>

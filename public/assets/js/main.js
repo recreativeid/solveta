@@ -303,18 +303,92 @@ document.addEventListener("DOMContentLoaded", () => {
         heroVideo.addEventListener("pause", () => updateVideoPlayState(false));
     }
 
-    // Interactive mouse movement tilt on desktop
-    if (laptopChassis && laptopLid && window.innerWidth >= 768) {
-        laptopChassis.addEventListener("mousemove", (e) => {
-            const rect = laptopChassis.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            laptopLid.style.transform = `perspective(1200px) rotateY(${x * 9}deg) rotateX(${-y * 7}deg)`;
-        });
+    // -------------------------------------------------------------------------
+    // 5.1 3D CONTAINER SCROLL VERTICAL TILT & MOUSE PARALLAX
+    // (Authentic Next.js Aceternity Container Scroll Animation)
+    // -------------------------------------------------------------------------
+    if (laptopChassis && laptopLid) {
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetRotateX = 22;
+        let currentRotateX = 22;
+        let targetTranslateY = 50;
+        let currentTranslateY = 50;
+        let targetScale = 0.94;
+        let currentScale = 0.94;
+        let isTicking = false;
 
-        laptopChassis.addEventListener("mouseleave", () => {
-            laptopLid.style.transform = "perspective(1200px) rotateY(0deg) rotateX(0deg)";
-        });
+        const isMobile = window.innerWidth < 768;
+
+        function updateScrollTilt() {
+            const rect = laptopChassis.getBoundingClientRect();
+            const winH = window.innerHeight;
+            const targetCenter = winH * 0.5;
+            const elementCenter = rect.top + rect.height * 0.5;
+            
+            // Progress: 0 when element enters viewport, 1 when at center or passed
+            const totalDistance = (winH + rect.height) * 0.5;
+            let progress = 1 - (elementCenter - targetCenter) / totalDistance;
+            progress = Math.max(0, Math.min(1, progress));
+
+            targetRotateX = (1 - progress) * 22; // 22deg tilted backwards down to 0deg upright
+            targetTranslateY = (1 - progress) * 50; // 50px down to 0px
+            targetScale = isMobile ? (0.88 + progress * 0.12) : (0.94 + progress * 0.08);
+
+            if (!isTicking) {
+                isTicking = true;
+                requestAnimationFrame(animateFrame);
+            }
+        }
+
+        function animateFrame() {
+            // Smooth spring damping interpolation
+            currentRotateX += (targetRotateX - currentRotateX) * 0.12;
+            currentTranslateY += (targetTranslateY - currentTranslateY) * 0.12;
+            currentScale += (targetScale - currentScale) * 0.12;
+
+            laptopChassis.style.transform = `perspective(1200px) rotateX(${currentRotateX.toFixed(2)}deg) translateY(${currentTranslateY.toFixed(1)}px) scale(${currentScale.toFixed(3)})`;
+
+            // Mouse parallax tilt on lid for desktop
+            if (!isMobile) {
+                laptopLid.style.transform = `perspective(1200px) rotateY(${(mouseX * 9).toFixed(2)}deg) rotateX(${(-mouseY * 7).toFixed(2)}deg)`;
+            }
+
+            if (
+                Math.abs(targetRotateX - currentRotateX) > 0.05 ||
+                Math.abs(targetTranslateY - currentTranslateY) > 0.1 ||
+                Math.abs(targetScale - currentScale) > 0.002
+            ) {
+                requestAnimationFrame(animateFrame);
+            } else {
+                isTicking = false;
+            }
+        }
+
+        window.addEventListener("scroll", updateScrollTilt, { passive: true });
+        window.addEventListener("resize", updateScrollTilt);
+        updateScrollTilt();
+
+        if (!isMobile) {
+            laptopChassis.addEventListener("mousemove", (e) => {
+                const rect = laptopChassis.getBoundingClientRect();
+                mouseX = (e.clientX - rect.left) / rect.width - 0.5;
+                mouseY = (e.clientY - rect.top) / rect.height - 0.5;
+                if (!isTicking) {
+                    isTicking = true;
+                    requestAnimationFrame(animateFrame);
+                }
+            });
+
+            laptopChassis.addEventListener("mouseleave", () => {
+                mouseX = 0;
+                mouseY = 0;
+                if (!isTicking) {
+                    isTicking = true;
+                    requestAnimationFrame(animateFrame);
+                }
+            });
+        }
     }
 
     // -------------------------------------------------------------------------

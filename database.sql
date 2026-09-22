@@ -309,19 +309,21 @@ CREATE TABLE IF NOT EXISTS `client_brands` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DELETE FROM `client_brands` WHERE `id` LIKE 'brand-%' AND (`logo_image` IS NULL OR `logo_image` = '');
+
 INSERT INTO `client_brands` (`id`, `name`, `label`, `logo_image`, `scale`, `sort_order`)
 VALUES
-('brand-1', 'Cuango Official', 'Fashion & Apparel', NULL, 1.00, 1),
-('brand-2', 'Haltea Herbal', 'Food & Beverage', NULL, 1.00, 2),
-('brand-3', 'Yayasan Konservasi Akuatik', 'Environmental NGO', NULL, 1.00, 3),
-('brand-4', 'Squabumin Indonesia', 'Pharmaceuticals', NULL, 1.00, 4),
-('brand-5', 'Tidur Nyenyak Bedding', 'Home & Living', NULL, 1.00, 5),
-('brand-6', 'VisualGenix Studio', 'Creative & Media', NULL, 1.00, 6),
-('brand-7', 'MedikaCare Group', 'Healthcare System', NULL, 1.00, 7),
-('brand-8', 'Nusantara Logistics', 'Supply Chain', NULL, 1.00, 8),
-('brand-9', 'UrbanVibe Properties', 'Real Estate', NULL, 1.00, 9),
-('brand-10', 'Apex Global Industri', 'Manufacturing', NULL, 1.00, 10)
-ON DUPLICATE KEY UPDATE `name`=VALUES(`name`);
+('brand-1788254260324', '', '', '/uploads/brands/brand-1788254260324.png', 1.00, 1),
+('brand-1788254350483', '', '', '/uploads/brands/brand-1788254350483.png', 1.00, 2),
+('brand-1788254406941', '', '', '/uploads/brands/brand-1788254406941.png', 1.00, 3),
+('brand-1788254482294', '', '', '/uploads/brands/brand-1788254482294.png', 1.00, 4),
+('brand-1788254508761', '', '', '/uploads/brands/brand-1788254508761.png', 1.00, 5),
+('brand-1788258571491', '', '', '/uploads/brands/brand-1788258571491.png', 1.00, 6),
+('brand-1790081984303', '', '', '/uploads/brands/brand-1790081984303.png', 1.00, 7),
+('brand-1790082015511', '', '', '/uploads/brands/brand-1790082015511.png', 1.00, 8),
+('brand-1790082034279', '', '', '/uploads/brands/brand-1790082034279.png', 1.00, 9),
+('brand-1790082051828', '', '', '/uploads/brands/brand-1790082051828.png', 1.00, 10)
+ON DUPLICATE KEY UPDATE `logo_image`=VALUES(`logo_image`), `scale`=VALUES(`scale`);
 
 -- ---------------------------------------------------------
 -- 7. Table: customer_orders (Formulir Pemesanan 16 Field)
