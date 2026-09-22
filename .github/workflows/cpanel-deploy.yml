@@ -16,24 +16,19 @@ jobs:
       - name: 🚚 Checkout Repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
 
-      - name: 🚀 Sync CodeIgniter 4 to cPanel public_html via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          server: ${{ secrets.CPANEL_FTP_SERVER }}
-          username: ${{ secrets.CPANEL_FTP_USERNAME }}
-          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
-          protocol: ftps
-          port: 21
-          local-dir: ./
-          server-dir: ./public_html/
-          dangerous-clean-slate: false
-          exclude: |
-            **/.git*
-            **/.git*/**
-            **/_nextjs_backup/**
-            **/node_modules/**
-            **/.github/**
-            *.zip
-            scratch/**
+          node-version: 20
+
+      - name: 📦 Install basic-ftp
+        run: npm install basic-ftp
+
+      - name: 🚀 Deploy CodeIgniter 4 to cPanel via FTPS
+        run: node .github/deploy.js
+        env:
+          CPANEL_FTP_SERVER: ${{ secrets.CPANEL_FTP_SERVER }}
+          CPANEL_FTP_USERNAME: ${{ secrets.CPANEL_FTP_USERNAME }}
+          CPANEL_FTP_PASSWORD: ${{ secrets.CPANEL_FTP_PASSWORD }}
