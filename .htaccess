@@ -1,10 +1,19 @@
 # ==============================================================================
 # SOLVETA — ROOT CPANEL APACHE / LITESPEED CONFIGURATION
-# Automatically forwards requests to the /public folder
 # ==============================================================================
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+
+    # Prevent internal loop
+    RewriteCond %{REQUEST_URI} ^/public/ [NC]
+    RewriteRule ^ - [L]
+
+    # Rewrite root to public/
     RewriteRule ^$ public/ [L]
-    RewriteRule (.*) public/$1 [L]
+
+    # Rewrite all other paths to public/
+    RewriteRule ^(.*)$ public/$1 [L,QSA]
 </IfModule>
+
+DirectoryIndex index.php public/index.php
