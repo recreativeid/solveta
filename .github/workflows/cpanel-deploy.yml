@@ -12,8 +12,6 @@ concurrency:
 jobs:
   deploy-to-cpanel:
     runs-on: ubuntu-latest
-    # Hanya berjalan jika Secret FTP sudah diatur di Settings > Secrets di GitHub
-    if: ${{ secrets.CPANEL_FTP_SERVER != '' && secrets.CPANEL_FTP_USERNAME != '' }}
     steps:
       - name: 🚚 Checkout Repository
         uses: actions/checkout@v4
