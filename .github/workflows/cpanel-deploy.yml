@@ -12,6 +12,8 @@ concurrency:
 jobs:
   deploy-to-cpanel:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: 🚚 Checkout Repository
         uses: actions/checkout@v4
@@ -35,9 +37,11 @@ jobs:
           CPANEL_FTP_USERNAME: ${{ secrets.CPANEL_FTP_USERNAME }}
           CPANEL_FTP_PASSWORD: ${{ secrets.CPANEL_FTP_PASSWORD }}
 
-      - name: 📢 Save Deployment Log
+      - name: 📋 Commit deployment log to repository
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: deploy-log
-          path: deploy.log
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add -f deploy.log
+          git commit -m "chore: save cpanel deploy log [skip ci]" || true
+          git push || true
