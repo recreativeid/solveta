@@ -45,10 +45,10 @@ class Auth extends BaseController
                 $isAuthenticated = true;
                 $displayName = $user['display_name'] ?? $username;
             }
-        } elseif ($username === 'admin' && $password === 'admin123') {
+        } elseif ($username === 'developer' && $password === 'developer123') {
             // Emergency fallback for initial setup if database is not yet migrated
             $isAuthenticated = true;
-            $displayName = 'Administrator SOLVETA';
+            $displayName = 'Developer SOLVETA';
         }
 
         if ($isAuthenticated) {

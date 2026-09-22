@@ -2,6 +2,15 @@
 -- SOLVETA DATABASE SCHEMA (MySQL 5.7+ / 8.0+ / MariaDB)
 -- Production Ready for cPanel Shared Hosting (Localhost)
 -- Target Database: kond2433_solveta
+-- Synced from Supabase Data — 2026-09-23
+-- =========================================================
+
+-- Migration: Add instagram column if not exists
+SET @col_exists = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'contact_info' AND COLUMN_NAME = 'instagram');
+SET @sql = IF(@col_exists = 0, 'ALTER TABLE `contact_info` ADD COLUMN `instagram` VARCHAR(255) DEFAULT NULL AFTER `email`', 'SELECT 1');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
 -- =========================================================
 
 -- ---------------------------------------------------------
@@ -15,10 +24,10 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Default login: admin / admin123
+-- Login: developer / developer123
 INSERT INTO `admin_users` (`id`, `username`, `password_hash`, `display_name`)
-VALUES (1, 'admin', '$2y$10$3W.Otc4LGTgwkh.3d9duq.24hwmqRmBj.6NDLwpaeaEBHvz.yRi1y', 'Administrator SOLVETA')
-ON DUPLICATE KEY UPDATE `username`=VALUES(`username`);
+VALUES (1, 'developer', '$2y$10$6n.mJZAy4HQwHWWldDBBeuGSXamUh7xo0bOTHtHuYqKvVizEd.CTK', 'Developer SOLVETA')
+ON DUPLICATE KEY UPDATE `username`='developer', `password_hash`='$2y$10$6n.mJZAy4HQwHWWldDBBeuGSXamUh7xo0bOTHtHuYqKvVizEd.CTK', `display_name`='Developer SOLVETA';
 
 -- ---------------------------------------------------------
 -- 2. Table: site_copy (Teks Headline, Subtitle, & Visual Media)
@@ -56,31 +65,33 @@ VALUES (
   'DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG',
   '/solveta-logo.png',
   '/videos/profile.mp4'
-) ON DUPLICATE KEY UPDATE `id`=`id`;
+) ON DUPLICATE KEY UPDATE `hero_eyebrow`=VALUES(`hero_eyebrow`), `hero_headline`=VALUES(`hero_headline`), `hero_subtitle`=VALUES(`hero_subtitle`), `portfolio_title`=VALUES(`portfolio_title`), `portfolio_subtitle`=VALUES(`portfolio_subtitle`);
 
 -- ---------------------------------------------------------
--- 3. Table: contact_info (Nomor WhatsApp & Link Kontak)
+-- 3. Table: contact_info (Nomor WhatsApp, Instagram & Link Kontak)
 -- ---------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `contact_info` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
-  `whatsapp_number` VARCHAR(50) NOT NULL DEFAULT '6285719663154',
-  `whatsapp_display` VARCHAR(50) NOT NULL DEFAULT '+62 857-1966-3154',
+  `whatsapp_number` VARCHAR(50) NOT NULL DEFAULT '6285876603826',
+  `whatsapp_display` VARCHAR(50) NOT NULL DEFAULT '+6285876603826',
   `website_url` VARCHAR(255) NOT NULL DEFAULT 'www.solveta.asia',
   `email` VARCHAR(255) DEFAULT 'halo@solveta.asia',
+  `instagram` VARCHAR(255) DEFAULT 'solveta.asia',
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `contact_info` (`id`, `whatsapp_number`, `whatsapp_display`, `website_url`, `email`)
+INSERT INTO `contact_info` (`id`, `whatsapp_number`, `whatsapp_display`, `website_url`, `email`, `instagram`)
 VALUES (
   1,
-  '6285719663154',
-  '+62 857-1966-3154',
+  '6285876603826',
+  '+6285876603826',
   'www.solveta.asia',
-  'halo@solveta.asia'
-) ON DUPLICATE KEY UPDATE `id`=`id`;
+  'halo@solveta.asia',
+  'solveta.asia'
+) ON DUPLICATE KEY UPDATE `whatsapp_number`='6285876603826', `whatsapp_display`='+6285876603826', `email`='halo@solveta.asia', `instagram`='solveta.asia';
 
 -- ---------------------------------------------------------
--- 4. Table: pricing_tiers (Paket & Harga Website)
+-- 4. Table: pricing_tiers (Paket & Harga Website — Synced from Supabase)
 -- ---------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `pricing_tiers` (
   `id` VARCHAR(50) PRIMARY KEY,
@@ -106,104 +117,106 @@ CREATE TABLE IF NOT EXISTS `pricing_tiers` (
   `sort_order` INT DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Delete old pricing data first for clean sync
+DELETE FROM `pricing_tiers`;
+
 INSERT INTO `pricing_tiers` (`id`, `name`, `price_prefix`, `price`, `price_badge`, `renewal_price`, `active_period`, `delivery_time`, `popular`, `popular_label`, `features_json`, `checklist_json`, `domain_addons_json`, `email_addons_json`, `revision_rules_json`, `custom_note`, `suitability`, `button_label`, `button_variant`, `wa_message`, `sort_order`)
 VALUES
 (
   'basic', 
-  'BASIC', 
-  NULL, 
-  'Rp 299K', 
-  'Paling Hemat',
-  'Rp 199.000 / tahun',
-  '1 Tahun Aktif',
-  '2-3 Hari Kerja',
+  'STARTER', 
+  'mulai dari', 
+  'Rp 349K', 
+  '349K',
+  '249k/tahun*',
+  '1 Tahun',
+  '1–2 Hari',
   FALSE, 
   '',
-  '["Landing Page 1 Halaman (Single-Page)", "Desain Responsif Mobile & Desktop", "Tombol WhatsApp Langsung Terhubung", "Free Domain .my.id (1 Tahun)", "SSL Security & Cloud Server"]', 
-  '[{"text": "Landing page 1 halaman panjang", "included": true}, {"text": "Domain .my.id 1 tahun", "included": true}, {"text": "Hosting Cloud SSD 1 tahun", "included": true}, {"text": "Tombol Chat WhatsApp", "included": true}, {"text": "Multi-halaman navigasi", "included": false}, {"text": "Email bisnis nama domain", "included": false}]',
-  '[{"name": ".com", "price": "+Rp 150.000"}, {"name": ".id", "price": "+Rp 200.000"}]',
-  '[{"name": "Email Bisnis 1 Akun", "price": "+Rp 50.000/thn"}]',
-  '{"light": "Maksimal 2x revisi teks & foto minor", "heavy": "Revisi layout besar dikenakan biaya tambahan"}',
-  'Cocok bagi pelaku usaha baru yang ingin memiliki identitas digital cepat tanpa modal besar.',
-  'Freelancer, Konsultan, Usaha Jasa Baru yang butuh online cepat.', 
-  'Pilih Basic', 
+  '["Maksimal 1 Halaman (tambah Rp 50k/Halaman)", "Revisi ringan 2x (Tidak berubah dari brief awal)", "Optimasi Speed (High Perform)", "Free Domain (.my.id, .site, .store, .xyz, .space, .fund, .shop)", "Free Hosting (Akses Dashboard, Tanpa login cPanel)", "Responsive Web (mobile friendly)", "SSL Security", "Full Garansi*"]', 
+  '[{"text": "Maksimal 1 Halaman (tambah Rp 50k/Halaman)", "included": true}, {"text": "Revisi ringan 2x (Tidak berubah dari brief awal)", "included": true}, {"text": "Optimasi Speed (High Perform)", "included": true}, {"text": "Free Domain (my.id .site .cloud .online ..shop .blog)", "included": true}, {"text": "Free Hosting (Akses Dashboard, Tanpa login cPanel)", "included": true}, {"text": "Email Bisnis (nama@domain.com)", "included": false}, {"text": "Responsive Web (mobile friendly)", "included": true}, {"text": "SSL Security", "included": true}, {"text": "SEO Basic", "included": false}, {"text": "Google Analytics", "included": false}, {"text": "Full Garansi*", "included": true}, {"text": "Akses API (Integrasi Aplikasi)", "included": false}]',
+  '[]',
+  '[{"name": "1 Akun Email Bisnis", "price": "Rp 50.000"}, {"name": "5 Akun Email Bisnis", "price": "Rp 150.000"}]',
+  '{"light": "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)", "heavy": "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)", "extraPage": "Rp 50.000 / halaman"}',
+  NULL,
+  'kebutuhan pribadi: landing page, portofolio online, blog pribadi, CV digital, dan halaman profil.', 
+  'Pesan Paket Basic (Rp 349K)', 
   'outline', 
-  'Halo SOLVETA, saya tertarik dengan paket Basic Rp299K. Mohon info langkah pengerjaannya.', 
+  'Halo SOLVETA, saya tertarik untuk memesan Paket BASIC Rp 349K.', 
   1
 ),
 (
   'standard', 
   'STANDARD', 
   NULL, 
-  'Rp 549K', 
-  'Best Seller',
-  'Rp 299.000 / tahun',
-  '1 Tahun Aktif',
-  '3-5 Hari Kerja',
-  TRUE, 
-  'Paling Populer',
-  '["Website Multi-Halaman (Home, About, Services, Contact)", "Desain Profesional & Responsif", "Integrasi Google Maps & Media Sosial", "Free Domain .com (1 Tahun)", "SSL Security & Cloud Hosting Cepat"]', 
-  '[{"text": "Hingga 5 Halaman Konten", "included": true}, {"text": "Free Domain .com (1 Tahun)", "included": true}, {"text": "Hosting Cepat SSD NVMe", "included": true}, {"text": "Integrasi Google Maps & Medsos", "included": true}, {"text": "SEO On-Page Dasar", "included": true}, {"text": "Fitur Katalog Produk Dinamis", "included": false}]',
-  '[{"name": ".id (Indonesia)", "price": "+Rp 100.000"}]',
-  '[{"name": "Email Bisnis (halo@namabisnis.com)", "price": "+Rp 75.000/thn"}]',
-  '{"light": "Maksimal 3x revisi konten & layout", "heavy": "Perubahan struktur total di luar brief dikenakan biaya"}',
-  'Paket paling direkomendasikan untuk membangun kredibilitas dan kepercayaan calon klien di era digital.',
-  'UMKM, Startup, Klinik, atau Agensi yang butuh kredibilitas tinggi.', 
+  'Rp 699K', 
+  '699K',
+  '399k/tahun*',
+  '1 Tahun',
+  '3–5 Hari',
+  FALSE, 
+  '',
+  '["Maksimal 4 Halaman, 3 Halaman Utama 1 Dashboard (tambah Rp 50k/Halaman)", "Revisi ringan 2x (Tidak berubah dari brief awal)", "Optimasi Speed (2x lebih cepat)", "Free Domain (my.id .site .cloud .online .shop .blog .store .org .digital)", "Free Hosting (Akses Dashboard, Tanpa login cPanel)", "Responsive Web (mobile friendly)", "SSL Security", "SEO Basic", "Full Garansi"]', 
+  '[{"text": "Maksimal 4 Halaman, 3 Halaman Utama 1 Dashboard (tambah Rp 50k/Halaman)", "included": true}, {"text": "Revisi ringan 2x (Tidak berubah dari brief awal)", "included": true}, {"text": "Optimasi Speed (2x lebih cepat)", "included": true}, {"text": "Free Domain (my.id .site .cloud .online .shop .blog .store .org .digital)", "included": true}, {"text": "Free Hosting (Akses Dashboard, Tanpa login cPanel)", "included": true}, {"text": "Responsive Web (mobile friendly)", "included": true}, {"text": "SSL Security", "included": true}, {"text": "SEO Basic", "included": true}, {"text": "Full Garansi", "included": true}, {"text": "Akses API (Integrasi Aplikasi)", "included": false}]',
+  '[]',
+  '[]',
+  '{"light": "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)", "heavy": "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)", "extraPage": "Rp 50.000 / halaman"}',
+  NULL,
+  'kebutuhan bisnis kecil, umkm, home industry', 
   'Pilih Standard', 
-  'red', 
-  'Halo SOLVETA, saya tertarik dengan paket Standard Rp549K. Mohon bantu konsultasi konsep websitenya.', 
+  'outline', 
+  'Halo SOLVETA, saya tertarik dengan paket Standard Rp 699K. Mohon bantu konsultasi konsep websitenya.', 
   2
 ),
 (
   'premium', 
   'PREMIUM', 
   NULL, 
-  'Rp 749K', 
-  'Lengkap & Power',
-  'Rp 399.000 / tahun',
-  '1 Tahun Aktif',
-  '5-7 Hari Kerja',
+  'Rp 964K', 
+  '964K',
+  '399k/tahun*',
+  '1 Tahun',
+  '+-5 Hari',
   FALSE, 
   '',
-  '["Katalog Produk / Portofolio Lengkap", "Fitur Pencarian & Filter Kategori", "Form Order terhubung ke WhatsApp Otomatis", "Free Domain .com (1 Tahun)", "Gratis 1 Akun Email Bisnis Profesional"]', 
-  '[{"text": "Hingga 10 Halaman / Katalog Produk", "included": true}, {"text": "Pencarian & Filter Interaktif", "included": true}, {"text": "Checkout / Order via WhatsApp Otomatis", "included": true}, {"text": "Free Domain .com & SSL", "included": true}, {"text": "1 Akun Email Bisnis Resmi", "included": true}, {"text": "Sistem Database Kompleks", "included": false}]',
-  '[{"name": ".co.id (Butuh Legalitas)", "price": "+Rp 150.000"}]',
-  '[{"name": "Tambahan Email Bisnis", "price": "+Rp 50.000/akun"}]',
-  '{"light": "Maksimal 4x revisi materi", "heavy": "Revisi fitur sistem tambahan dihitung add-on"}',
-  'Solusi terbaik bagi penjual produk fisik, katalog arsitektur, dan bisnis retail online.',
-  'Toko Online (WhatsApp Based), Katalog Properti, Dealer Kendaraan.', 
+  '["Maksimal 7 Halaman (tambah Rp 50k/Halaman)", "Revisi ringan 2x (Tidak berubah dari brief awal)", "Optimasi Speed (3x lebih cepat)", "Free Desain Mockup", "Free Domain (.store .org .net .digital .it.com .media .agency .company)", "Free Hosting (Akses Dashboard, Tanpa login cPanel)", "2 Email Bisnis (nama@domain.com)", "Responsive Web (mobile friendly)", "SSL Security", "SEO Friendly", "Full Garansi*"]', 
+  '[{"text": "Maksimal 7 Halaman (tambah Rp 50k/Halaman)", "included": true}, {"text": "Revisi ringan 2x (Tidak berubah dari brief awal)", "included": true}, {"text": "Optimasi Speed (3x lebih cepat)", "included": true}, {"text": "Free Desain Mockup", "included": true}, {"text": "Free Domain (.store .org .net .digital .it.com .media .agency .company)", "included": true}, {"text": "Free Hosting (Akses Dashboard, Tanpa login cPanel)", "included": true}, {"text": "2 Email Bisnis (nama@domain.com)", "included": true}, {"text": "Responsive Web (mobile friendly)", "included": true}, {"text": "SSL Security", "included": true}, {"text": "SEO Friendly", "included": true}, {"text": "Full Garansi*", "included": true}]',
+  '[]',
+  '[]',
+  '{"light": "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)", "heavy": "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)", "extraPage": "Rp 50.000 / halaman"}',
+  NULL,
+  'company profile & bisnis produk', 
   'Pilih Premium', 
   'outline', 
-  'Halo SOLVETA, saya tertarik dengan paket Premium Rp749K. Bagaimana proses pengerjaan katalog produknya?', 
+  'Halo SOLVETA, saya tertarik dengan paket Premium Rp 964K. Bagaimana proses pengerjaannya?', 
   3
 ),
 (
   'custom', 
-  'CUSTOM', 
+  'PLATINUM', 
   'Mulai', 
-  'Rp 1,5 Juta', 
-  'Enterprise Grade',
-  'Sesuai Kapasitas Cloud Server',
-  'Fleksibel',
-  '1-3 Minggu Kerja',
-  FALSE, 
-  '',
-  '["Sistem Database Custom (Gudang, Karyawan, Kasir)", "Dashboard Admin & Laporan Otomatis", "Integrasi API Pihak Ketiga & Notifikasi WA Gateway", "Arsitektur Keamanan Tingkat Lanjut & High Performance"]', 
-  '[{"text": "Arsitektur Database Terdedikasi", "included": true}, {"text": "Dashboard Manajemen & Laporan", "included": true}, {"text": "Sistem Role & Multi-User Akses", "included": true}, {"text": "Integrasi WhatsApp API Gateway", "included": true}, {"text": "Maintenance & Backup Berkala", "included": true}, {"text": "Support Teknis Prioritas", "included": true}]',
-  '[{"name": "Domain Apapun (.com / .id / .co.id)", "price": "Termasuk"}]',
-  '[{"name": "Email Bisnis Unlimited", "price": "Termasuk"}]',
-  '{"light": "Garansi bug & maintenance selama 3 bulan", "heavy": "Fitur baru modul tambahan dihitung change-request"}',
-  'Sistem dirancang khusus sesuai alur operasional dan tantangan spesifik bisnis Anda.',
-  'Perusahaan dengan kebutuhan operasional spesifik, Manajemen Stok, Sistem Absensi, ERP.', 
+  'Rp 1.5 jt', 
+  '1.5 jt',
+  'Harga mengikuti biaya dibutuhkan',
+  '1 Tahun',
+  'Wajib Meet (Fleksibel)',
+  TRUE, 
+  'Paling Populer',
+  '["Free Iklan Google Ads", "Optimasi Speed (Super Cepat)", "Free Desain Mockup", "Free Domain (.id .co.id .tech .dev .com)", "Free Hosting (Akses Dashboard, Akses login cPanel)", "Unlimited Email Bisnis (nama@domain.com)", "Responsive Web (mobile friendly)", "SSL Security", "SEO Friendly", "Google Analytics", "Full Garansi*", "Akses API (Integrasi aplikasi)"]', 
+  '[{"text": "Free Iklan Google Ads", "included": true}, {"text": "Optimasi Speed (Super Cepat)", "included": true}, {"text": "Free Desain Mockup", "included": true}, {"text": "Free Domain (.id .co.id .tech .dev .com)", "included": true}, {"text": "Free Hosting (Akses Dashboard, Akses login cPanel)", "included": true}, {"text": "Unlimited Email Bisnis (nama@domain.com)", "included": true}, {"text": "Responsive Web (mobile friendly)", "included": true}, {"text": "SSL Security", "included": true}, {"text": "SEO Friendly", "included": true}, {"text": "Google Analytics", "included": true}, {"text": "Full Garansi*", "included": true}, {"text": "Akses API (Integrasi aplikasi)", "included": true}]',
+  '[]',
+  '[]',
+  '{"light": "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)", "heavy": "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)", "extraPage": "Rp 50.000 / halaman"}',
+  NULL,
+  'Start up, UMKM, CV, PT, Organisasi/Yayasan, Professional (siapa pun yang mempunyai kebutuhan layanan khusus yang tidak sesuai dengan 3 paket sebelumnya)', 
   'Hubungi Kami', 
-  'outline', 
+  'red', 
   'Halo SOLVETA, saya ingin mendiskusikan kebutuhan Custom Website & Sistem Khusus untuk bisnis kami.', 
   4
-)
-ON DUPLICATE KEY UPDATE `name`=VALUES(`name`), `price`=VALUES(`price`), `features_json`=VALUES(`features_json`);
+);
 
 -- ---------------------------------------------------------
--- 5. Table: portfolio_items (Karya & Portofolio Website)
+-- 5. Table: portfolio_items (Karya & Portofolio — Synced from Supabase)
 -- ---------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `portfolio_items` (
   `id` VARCHAR(100) PRIMARY KEY,
@@ -217,69 +230,71 @@ CREATE TABLE IF NOT EXISTS `portfolio_items` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+-- Delete old portfolio data for clean sync
+DELETE FROM `portfolio_items`;
+
 INSERT INTO `portfolio_items` (`id`, `title`, `category`, `image_url`, `description`, `tags_json`, `live_url`, `sort_order`)
 VALUES
 (
   'port-1', 
-  'Cuango — Premium Fashion & Apparel Showcase', 
-  'E-Commerce', 
-  '/images/portfolio/cuango.jpg', 
-  'Platform showcase brand fashion modern dengan katalog interaktif, filter varian ukuran & warna, serta integrasi tombol direct checkout ke WhatsApp.', 
-  '["Fashion", "Catalog", "WhatsApp Checkout"]', 
+  'Landingpage Konservasi Akuatik', 
+  'Landingpage', 
+  '/images/portfolio/konservasi-akuatik.jpg', 
+  'Landingpage untuk yayasan konservasi akuatik — desain modern, responsif, dan informatif.',
+  '["Landingpage", "Yayasan", "Responsif"]', 
   'https://www.solveta.asia', 
   1
 ),
 (
   'port-2', 
-  'Haltea — Healthy Herbal Tea & Lifestyle Brand', 
-  'Website & Presence', 
-  '/images/portfolio/haltea.jpg', 
-  'Landing page estetis dan responsif untuk produk teh herbal premium dengan visual storytelling, testimoni pelanggan, dan kalkulator estimasi pembelian.', 
-  '["Branding", "Landing Page", "Health & Wellness"]', 
+  'Squabumin.id', 
+  'Custom System', 
+  '/images/portfolio/squabumin.jpg', 
+  'Website lengkap dengan custom system untuk Squabumin — suplemen kesehatan berbasis herbal.',
+  '["Custom System", "Healthcare", "Product Verification"]', 
   'https://www.solveta.asia', 
   2
 ),
 (
   'port-3', 
-  'Konservasi Akuatik — Portal Edukasi & Donasi Lingkungan', 
-  'Corporate Profile', 
-  '/images/portfolio/konservasi-akuatik.jpg', 
-  'Website resmi lembaga konservasi kelautan dengan sistem peta zona terumbu karang, publikasi riset berkala, dan formulir pendaftaran relawan terpadu.', 
-  '["NGO", "Conservation", "Interactive Maps"]', 
+  'CuanGO', 
+  'Web Application', 
+  '/images/portfolio/cuango.jpg', 
+  'Aplikasi web modern CuanGO — platform digital untuk kebutuhan finansial dan e-commerce.',
+  '["Web App", "Fintech", "E-Commerce"]', 
   'https://www.solveta.asia', 
   3
 ),
 (
   'port-4', 
-  'Squabumin — Suplemen Kesehatan & Farmasi Herbal', 
+  'POS Haltea Indonesia', 
   'Website & Presence', 
-  '/images/portfolio/squabumin.jpg', 
-  'Company profile dan product landing page farmasi herbal berstandar BPOM dengan fitur verifikasi keaslian produk dan integrasi distribusi klinik.', 
-  '["Healthcare", "Pharma", "Product Verification"]', 
+  '/images/portfolio/haltea.jpg', 
+  'Website POS (Point of Sale) dan brand presence untuk Haltea Indonesia — produk teh herbal premium.',
+  '["POS", "F&B", "Branding"]', 
   'https://www.solveta.asia', 
   4
 ),
 (
   'port-5', 
-  'Tidur Nyenyak — Bedding & Home Living Commerce', 
+  'Landing page Visual Genix', 
   'E-Commerce', 
-  '/images/portfolio/tidurnyenyak.jpg', 
-  'E-commerce perlengkapan tidur mewah dengan navigasi multi-kategori, sistem ulasan bintang pelanggan, dan perhitungan ongkir otomatis.', 
-  '["Home Living", "E-Commerce", "Customer Reviews"]', 
+  '/images/portfolio/visualgenix.jpg', 
+  'Landingpage company profile Visual Genix | AI Affiliate Generator — desain kreatif dan modern.',
+  '["E-Commerce", "Inventory", "WhatsApp Checkout"]', 
   'https://www.solveta.asia', 
   5
 ),
 (
   'port-6', 
-  'VisualGenix — Digital Creative Studio & Media Agency', 
+  'Tidurnyenyak.com', 
   'Corporate Profile', 
-  '/images/portfolio/visualgenix.jpg', 
-  'Portofolio agensi multimedia modern dengan transisi sinematik, video hero showcase, dan portal penerimaan brief proyek kreatif otomatis.', 
-  '["Creative Agency", "Portfolio Showcase", "Dark Modern"]', 
-  'https://www.solveta.asia', 
+  '/images/portfolio/tidurnyenyak.jpg', 
+  'Website company profile produk HerbaTDR dari CV Herbal Indo Utama — profesional dan SEO-friendly.',
+  '["Fintech", "Corporate", "SEO Friendly"]', 
+  'https://tidurnyenyak.com', 
   6
-)
-ON DUPLICATE KEY UPDATE `title`=VALUES(`title`), `description`=VALUES(`description`), `image_url`=VALUES(`image_url`);
+);
 
 -- ---------------------------------------------------------
 -- 6. Table: client_brands (Logo Klien / Partner Slider)
@@ -333,7 +348,7 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------
--- 8. Table: service_profit_analyses (Analisis HPP & Profit)
+-- 8. Table: service_profit_analyses (Analisis HPP & Profit — Updated prices)
 -- ---------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `service_profit_analyses` (
   `id` VARCHAR(50) PRIMARY KEY,
@@ -347,13 +362,15 @@ CREATE TABLE IF NOT EXISTS `service_profit_analyses` (
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+DELETE FROM `service_profit_analyses`;
+
 INSERT INTO `service_profit_analyses` (`id`, `service_name`, `tier_id`, `selling_price`, `labor_fee`, `estimated_monthly_orders`, `costs_json`, `notes`)
 VALUES
 (
   'spa-basic', 
-  'Paket Basic — 299K', 
+  'Paket Starter — 349K', 
   'basic', 
-  299000, 
+  349000, 
   100000, 
   5, 
   '[{"id": "c1", "name": "Domain .my.id (1 Tahun)", "amount": 15000, "category": "infrastruktur"}, {"id": "c2", "name": "Cloud Hosting SSD Allocation", "amount": 25000, "category": "infrastruktur"}]', 
@@ -361,9 +378,9 @@ VALUES
 ),
 (
   'spa-standard', 
-  'Paket Standard — 549K', 
+  'Paket Standard — 699K', 
   'standard', 
-  549000, 
+  699000, 
   200000, 
   8, 
   '[{"id": "c1", "name": "Domain .com (1 Tahun)", "amount": 135000, "category": "infrastruktur"}, {"id": "c2", "name": "Cloud Hosting NVMe Allocation", "amount": 35000, "category": "infrastruktur"}, {"id": "c3", "name": "Template License & Assets", "amount": 20000, "category": "lisensi_tools"}]', 
@@ -371,15 +388,24 @@ VALUES
 ),
 (
   'spa-premium', 
-  'Paket Premium — 749K', 
+  'Paket Premium — 964K', 
   'premium', 
-  749000, 
+  964000, 
   300000, 
   4, 
   '[{"id": "c1", "name": "Domain .com (1 Tahun)", "amount": 135000, "category": "infrastruktur"}, {"id": "c2", "name": "Cloud Hosting NVMe High RAM", "amount": 50000, "category": "infrastruktur"}, {"id": "c3", "name": "Email Server Setup", "amount": 25000, "category": "operasional"}]', 
-  'Paket katalog produk toko online.'
-)
-ON DUPLICATE KEY UPDATE `service_name`=VALUES(`service_name`), `selling_price`=VALUES(`selling_price`);
+  'Paket company profile dan bisnis produk.'
+),
+(
+  'spa-custom',
+  'Paket Platinum — 1.5jt',
+  'custom',
+  1500000,
+  500000,
+  2,
+  '[{"id": "c1", "name": "Domain .id/.co.id (1 Tahun)", "amount": 250000, "category": "infrastruktur"}, {"id": "c2", "name": "Cloud Hosting Dedicated", "amount": 100000, "category": "infrastruktur"}, {"id": "c3", "name": "Google Ads Setup", "amount": 150000, "category": "marketing"}]',
+  'Paket enterprise untuk kebutuhan khusus, termasuk iklan dan API.'
+);
 
 -- ---------------------------------------------------------
 -- 9. Table: project_transactions (Manajemen Invoice Klien)
@@ -429,3 +455,31 @@ VALUES
   'Proyek selesai tepat waktu 4 hari kerja.'
 )
 ON DUPLICATE KEY UPDATE `invoice_number`=VALUES(`invoice_number`);
+
+-- ---------------------------------------------------------
+-- 10. Table: addon_services (Layanan Tambahan — from Supabase)
+-- ---------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `addon_services` (
+  `id` VARCHAR(100) PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL,
+  `category` VARCHAR(100) DEFAULT NULL,
+  `base_price` BIGINT NOT NULL DEFAULT 0,
+  `third_party_cost` BIGINT DEFAULT 0,
+  `price_description` VARCHAR(255) DEFAULT NULL,
+  `sort_order` INT DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DELETE FROM `addon_services`;
+
+INSERT INTO `addon_services` (`id`, `name`, `category`, `base_price`, `price_description`, `sort_order`)
+VALUES
+('addon-1', 'Revisi ringan tambahan', 'revision', 30000, 'Rp30K / revisi', 1),
+('addon-2', 'Revisi berat tambahan', 'revision', 50000, 'Rp50K / revisi', 2),
+('addon-3', 'Tambah 1 halaman', 'page', 50000, 'Rp50K / halaman', 3),
+('addon-4', 'WhatsApp Business API', 'api', 150000, 'Mulai Rp150K', 4),
+('addon-5', 'Google Maps API / Places / Routes', 'api', 150000, 'Mulai Rp150K', 5),
+('addon-6', 'API sederhana', 'api', 150000, 'Mulai Rp150K', 6),
+('addon-7', 'API kompleks', 'api', 250000, 'Mulai Rp250K', 7),
+('addon-8', 'Payment Gateway', 'api', 250000, 'Mulai Rp250K', 8),
+('addon-9', 'Email / SMTP', 'email', 50000, 'Mulai Rp50K', 9),
+('addon-10', 'AI API', 'api', 250000, 'Mulai Rp250K', 10);

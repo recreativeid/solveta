@@ -13,6 +13,7 @@ class ContactModel extends Model
         'whatsapp_display',
         'website_url',
         'email',
+        'instagram',
     ];
     protected $useTimestamps = true;
     protected $updatedField  = 'updated_at';
@@ -39,10 +40,11 @@ class ContactModel extends Model
     {
         return [
             'id' => 1,
-            'whatsapp_number' => '6285719663154',
-            'whatsapp_display' => '+62 857-1966-3154',
+            'whatsapp_number' => '6285876603826',
+            'whatsapp_display' => '+6285876603826',
             'website_url' => 'www.solveta.asia',
             'email' => 'halo@solveta.asia',
+            'instagram' => 'solveta.asia',
         ];
     }
 }
