@@ -1010,74 +1010,43 @@
             </div>
         </div>
 
-        <!-- 6.2. BIAYA LAYANAN TAMBAHAN (ADD-ON SERVICES) -->
+        <!-- 6.2. BIAYA LAYANAN TAMBAHAN (ADD-ON SERVICES) — SATU KONTAINER SIMPLE BARIS-BARIS -->
         <?php if (!empty($addons)): ?>
-            <div id="layanan-tambahan" class="mt-12 space-y-6">
-                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-gray-200 dark:border-gray-800 pb-4">
-                    <div>
-                        <div class="text-[10px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase">
-                            BIAYA LAYANAN TAMBAHAN &amp; ADD-ON
-                        </div>
-                        <h3 class="text-lg sm:text-xl font-extrabold text-gray-950 dark:text-white uppercase tracking-tight mt-1">
-                            Transparansi Biaya Penyesuaian &amp; Fitur Tambahan
-                        </h3>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                            Tambahkan halaman ekstra, revisi khusus di luar brief awal, atau fitur integrasi sesuai kebutuhan tanpa biaya tersembunyi.
-                        </p>
-                    </div>
-                    <div class="text-right hidden sm:block">
-                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-400">
-                            <i data-lucide="check-circle" class="w-3 h-3"></i>
-                            <span>Harga Transparan</span>
-                        </span>
-                    </div>
+            <div id="layanan-tambahan" class="mt-8 bg-white dark:bg-[#11121B] rounded-2xl border border-gray-200 dark:border-gray-800 p-5 sm:p-7 shadow-xs font-sans">
+                <div class="flex items-center justify-between pb-3 mb-1 border-b border-gray-100 dark:border-gray-800">
+                    <h3 class="text-sm sm:text-base font-extrabold text-gray-950 dark:text-white uppercase tracking-tight flex items-center gap-2">
+                        <i data-lucide="plus-circle" class="w-4 h-4 text-[#8B0021] dark:text-rose-400"></i>
+                        <span>Layanan biaya tambahan</span>
+                    </h3>
+                    <span class="text-[11px] text-gray-400 font-mono hidden sm:inline">
+                        Transparan &amp; fleksibel
+                    </span>
                 </div>
 
-                <!-- Grid of Addon Cards -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                    <?php foreach ($addons as $addon): ?>
+                <!-- Baris-baris panjang simpel (1 baris per poin layanan) -->
+                <div class="divide-y divide-gray-100 dark:divide-gray-800/70">
+                    <?php foreach ($addons as $idx => $addon): ?>
                         <?php 
                             $addonWaUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo SOLVETA, saya ingin menanyakan / memesan Layanan Tambahan: {$addon['name']} ({$addon['price_description']}).");
                         ?>
-                        <div class="bg-white dark:bg-[#11121B] rounded-2xl border border-gray-200 dark:border-gray-800 p-4.5 flex flex-col justify-between hover:border-[#8B0021]/50 dark:hover:border-rose-700/50 hover:shadow-md transition-all group">
-                            <div class="space-y-3">
-                                <div class="flex items-start justify-between gap-2">
-                                    <span class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-[#8B0021] dark:text-rose-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                                        <?php if (($addon['category'] ?? '') === 'page'): ?>
-                                            <i data-lucide="file-plus-2" class="w-4 h-4"></i>
-                                        <?php elseif (($addon['category'] ?? '') === 'revision'): ?>
-                                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                                        <?php elseif (($addon['category'] ?? '') === 'domain'): ?>
-                                            <i data-lucide="globe" class="w-4 h-4"></i>
-                                        <?php elseif (($addon['category'] ?? '') === 'email'): ?>
-                                            <i data-lucide="mail" class="w-4 h-4"></i>
-                                        <?php else: ?>
-                                            <i data-lucide="layers" class="w-4 h-4"></i>
-                                        <?php endif; ?>
-                                    </span>
-                                    <span class="inline-block px-2.5 py-1 rounded-lg bg-[#8B0021]/10 dark:bg-rose-950/80 border border-[#8B0021]/20 dark:border-rose-800/60 font-mono font-bold text-[#8B0021] dark:text-rose-400 text-[11px] text-right">
-                                        <?= esc($addon['price_description']) ?>
-                                    </span>
-                                </div>
-
-                                <div>
-                                    <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-tight">
-                                        <?= esc($addon['name']) ?>
-                                    </h4>
-                                    <?php if (!empty($addon['description'])): ?>
-                                        <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
-                                            <?= esc($addon['description']) ?>
-                                        </p>
-                                    <?php endif; ?>
-                                </div>
+                        <div class="py-3 flex items-center justify-between gap-3 hover:bg-gray-50/60 dark:hover:bg-gray-900/40 px-2 rounded-lg transition-colors group">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <span class="text-xs font-mono font-bold text-gray-400 dark:text-gray-500 w-5 flex-shrink-0">
+                                    <?= $idx + 1 ?>.
+                                </span>
+                                <span class="text-xs sm:text-sm font-semibold text-gray-800 dark:text-gray-200 truncate">
+                                    <?= esc($addon['name']) ?>
+                                </span>
                             </div>
 
-                            <div class="pt-3 mt-3 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-between text-[10px]">
-                                <span class="text-gray-400 font-mono">Biaya Tambahan</span>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <span class="font-mono font-bold text-xs sm:text-sm text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 border border-rose-200/70 dark:border-rose-900/50 px-2.5 py-0.5 rounded-md">
+                                    <?= esc($addon['price_description']) ?>
+                                </span>
                                 <a href="<?= $addonWaUrl ?>" target="_blank" rel="noopener noreferrer"
-                                   class="text-[#8B0021] dark:text-rose-400 font-semibold hover:underline flex items-center gap-1">
-                                    <span>Pesan via WA</span>
-                                    <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                                   class="text-gray-400 hover:text-[#8B0021] dark:hover:text-rose-400 p-1 transition-colors"
+                                   title="Pesan via WhatsApp">
+                                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
                                 </a>
                             </div>
                         </div>

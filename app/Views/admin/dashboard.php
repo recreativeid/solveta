@@ -815,54 +815,45 @@
                                 </div>
                             </div>
 
-                            <!-- LIVE STUDIO CARD: BIAYA LAYANAN TAMBAHAN (ADD-ON SERVICES) -->
-                            <div class="p-6 rounded-2xl bg-white border-2 border-dashed border-gray-200 hover:border-[#8B0021] transition-all space-y-4">
-                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
-                                    <div>
-                                        <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#8B0021]">
-                                            BIAYA LAYANAN TAMBAHAN (ADD-ON)
-                                        </div>
-                                        <h3 class="text-sm font-extrabold text-gray-900 uppercase">
-                                            Kelola Poin Biaya Layanan Tambahan (<?= count($addons ?? []) ?> Item Aktif)
+                            <!-- LIVE STUDIO CARD: LAYANAN BIAYA TAMBAHAN (SATU KONTAINER SIMPLE BARIS-BARIS) -->
+                            <div class="p-5 sm:p-6 rounded-2xl bg-white border-2 border-dashed border-gray-200 hover:border-[#8B0021] transition-all space-y-3">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-100 pb-3">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="plus-circle" class="w-4 h-4 text-[#8B0021]"></i>
+                                        <h3 class="text-xs sm:text-sm font-extrabold text-gray-900 uppercase">
+                                            Layanan Biaya Tambahan (<?= count($addons ?? []) ?> Item)
                                         </h3>
-                                        <p class="text-[11px] text-gray-400">
-                                            Bisa ditambah atau disesuaikan: tambah halaman, revisi ringan/berat, custom domain, dsb.
-                                        </p>
                                     </div>
                                     <button type="button" onclick="openAddAddonModal()"
-                                            class="px-3.5 py-1.5 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-semibold rounded-lg shadow-xs flex items-center gap-1.5 cursor-pointer">
-                                        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
-                                        <span>Tambah Poin Layanan Baru</span>
+                                            class="px-3 py-1.5 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-semibold rounded-lg shadow-xs flex items-center gap-1.5 cursor-pointer self-start sm:self-auto">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                        <span>Tambah Poin Baru</span>
                                     </button>
                                 </div>
 
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                <div class="divide-y divide-gray-100">
                                     <?php foreach ($addons as $aIdx => $addon): ?>
-                                        <div class="p-3.5 rounded-xl border border-gray-200 hover:border-[#8B0021] bg-gray-50/50 flex flex-col justify-between space-y-2.5 transition-all">
-                                            <div class="space-y-1.5">
-                                                <div class="flex items-center justify-between">
-                                                    <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-gray-200 text-gray-700">#<?= $aIdx + 1 ?></span>
-                                                    <span class="text-[11px] font-mono font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2 py-0.5 rounded">
-                                                        <?= esc($addon['price_description']) ?>
-                                                    </span>
-                                                </div>
-                                                <h4 class="text-xs font-bold text-gray-900 leading-snug">
+                                        <div class="py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-gray-50/70 px-2 rounded-lg transition-colors group">
+                                            <div class="flex items-center gap-2.5 min-w-0">
+                                                <span class="text-[11px] font-mono font-bold text-gray-400 w-5 flex-shrink-0">
+                                                    <?= $aIdx + 1 ?>.
+                                                </span>
+                                                <span class="text-xs font-bold text-gray-900 truncate">
                                                     <?= esc($addon['name']) ?>
-                                                </h4>
-                                                <?php if (!empty($addon['description'])): ?>
-                                                    <p class="text-[10px] text-gray-500 leading-relaxed line-clamp-2">
-                                                        <?= esc($addon['description']) ?>
-                                                    </p>
-                                                <?php endif; ?>
+                                                </span>
                                             </div>
 
-                                            <div class="pt-2 border-t border-gray-200 flex items-center justify-between text-xs">
+                                            <div class="flex items-center justify-between sm:justify-end gap-3 pl-7 sm:pl-0 flex-shrink-0">
+                                                <span class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded">
+                                                    <?= esc($addon['price_description']) ?>
+                                                </span>
+
                                                 <div class="flex items-center gap-1">
                                                     <?php if ($aIdx > 0): ?>
                                                         <form action="/admin/addon/move/<?= esc($addon['id']) ?>/up" method="POST" class="inline">
                                                             <?= csrf_field() ?>
                                                             <input type="hidden" name="redirect_tab" value="visual">
-                                                            <button type="submit" class="p-1 rounded hover:bg-gray-200 text-gray-600 cursor-pointer" title="Pindah ke atas">
+                                                            <button type="submit" class="p-1 rounded hover:bg-gray-200 text-gray-500 cursor-pointer" title="Pindah ke atas">
                                                                 <i data-lucide="arrow-up" class="w-3 h-3"></i>
                                                             </button>
                                                         </form>
@@ -871,23 +862,22 @@
                                                         <form action="/admin/addon/move/<?= esc($addon['id']) ?>/down" method="POST" class="inline">
                                                             <?= csrf_field() ?>
                                                             <input type="hidden" name="redirect_tab" value="visual">
-                                                            <button type="submit" class="p-1 rounded hover:bg-gray-200 text-gray-600 cursor-pointer" title="Pindah ke bawah">
+                                                            <button type="submit" class="p-1 rounded hover:bg-gray-200 text-gray-500 cursor-pointer" title="Pindah ke bawah">
                                                                 <i data-lucide="arrow-down" class="w-3 h-3"></i>
                                                             </button>
                                                         </form>
                                                     <?php endif; ?>
                                                 </div>
 
-                                                <div class="flex items-center gap-2">
+                                                <div class="flex items-center gap-1.5">
                                                     <button type="button" onclick="openEditAddonModal(<?= htmlspecialchars(json_encode($addon), ENT_QUOTES, 'UTF-8') ?>)"
-                                                            class="text-xs font-semibold text-gray-700 hover:text-black flex items-center gap-1 cursor-pointer">
+                                                            class="p-1 text-gray-500 hover:text-black cursor-pointer" title="Edit">
                                                         <i data-lucide="edit-2" class="w-3 h-3"></i>
-                                                        <span>Edit</span>
                                                     </button>
                                                     <form action="/admin/addon/delete/<?= esc($addon['id']) ?>" method="POST" class="inline" onsubmit="return confirm('Hapus layanan tambahan ini?')">
                                                         <?= csrf_field() ?>
                                                         <input type="hidden" name="redirect_tab" value="visual">
-                                                        <button type="submit" class="text-xs text-red-500 hover:text-red-700 cursor-pointer" title="Hapus">
+                                                        <button type="submit" class="p-1 text-red-400 hover:text-red-600 cursor-pointer" title="Hapus">
                                                             <i data-lucide="trash-2" class="w-3 h-3"></i>
                                                         </button>
                                                     </form>
@@ -1042,85 +1032,82 @@
                 </div>
 
                 <!-- ADD-ON SERVICES MANAGER SECTION IN TAB-PRICING -->
+                <!-- ADD-ON SERVICES MANAGER SECTION IN TAB-PRICING — SATU KONTAINER SIMPLE BARIS-BARIS -->
                 <div class="mt-8 pt-6 border-t border-gray-200/80 space-y-4">
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                        <div>
-                            <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#8B0021]">
-                                BIAYA LAYANAN TAMBAHAN (ADD-ON SERVICES)
+                    <div class="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 space-y-3">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-gray-100">
+                            <div>
+                                <h2 class="text-xs sm:text-sm font-bold text-gray-900 uppercase tracking-tight flex items-center gap-2">
+                                    <i data-lucide="plus-circle" class="w-4 h-4 text-[#8B0021]"></i>
+                                    <span>Layanan Biaya Tambahan</span>
+                                </h2>
+                                <p class="text-[11px] text-gray-400 mt-0.5">
+                                    Kelola daftar poin tarif biaya tambahan secara berurutan dan transparan.
+                                </p>
                             </div>
-                            <h2 class="text-xs font-semibold text-gray-900 uppercase tracking-wider">
-                                Kelola Poin Biaya Layanan Tambahan (<?= count($addons ?? []) ?> Item Aktif)
-                            </h2>
-                            <p class="text-[11px] text-gray-400">
-                                Atur tarif tambahan seperti tambah halaman (50k), revisi ringan (30k), revisi berat (50k), custom domain, dll.
-                            </p>
+                            <button type="button" onclick="openAddAddonModal()"
+                                    class="px-3.5 py-1.5 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-semibold rounded-lg shadow-xs flex items-center gap-1.5 cursor-pointer self-start sm:self-auto">
+                                <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                <span>Tambah Poin Baru</span>
+                            </button>
                         </div>
-                        <button type="button" onclick="openAddAddonModal()"
-                                class="px-3.5 py-1.5 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-semibold rounded-lg shadow-xs flex items-center gap-1.5 cursor-pointer">
-                            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
-                            <span>Tambah Poin Layanan Baru</span>
-                        </button>
-                    </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                        <?php foreach ($addons as $aIdx => $addon): ?>
-                            <div class="bg-white border border-gray-200/80 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-[#8B0021] transition-all">
-                                <div class="space-y-1.5">
-                                    <div class="flex items-center justify-between">
-                                        <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-700">#<?= $aIdx + 1 ?></span>
-                                        <span class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2 py-0.5 rounded">
-                                            <?= esc($addon['price_description']) ?>
+                        <div class="divide-y divide-gray-100">
+                            <?php foreach ($addons as $aIdx => $addon): ?>
+                                <div class="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-gray-50/70 px-2 rounded-lg transition-colors group">
+                                    <div class="flex items-center gap-2.5 min-w-0">
+                                        <span class="text-[11px] font-mono font-bold text-gray-400 w-5 flex-shrink-0">
+                                            <?= $aIdx + 1 ?>.
+                                        </span>
+                                        <span class="text-xs sm:text-sm font-semibold text-gray-900 truncate">
+                                            <?= esc($addon['name']) ?>
                                         </span>
                                     </div>
-                                    <h3 class="text-xs font-bold text-gray-900 leading-snug">
-                                        <?= esc($addon['name']) ?>
-                                    </h3>
-                                    <?php if (!empty($addon['description'])): ?>
-                                        <p class="text-[11px] text-gray-500 leading-relaxed line-clamp-2">
-                                            <?= esc($addon['description']) ?>
-                                        </p>
-                                    <?php endif; ?>
-                                </div>
 
-                                <div class="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
-                                    <div class="flex items-center gap-1">
-                                        <?php if ($aIdx > 0): ?>
-                                            <form action="/admin/addon/move/<?= esc($addon['id']) ?>/up" method="POST" class="inline">
-                                                <?= csrf_field() ?>
-                                                <input type="hidden" name="redirect_tab" value="pricing">
-                                                <button type="submit" class="p-1 rounded hover:bg-gray-100 text-gray-600 border border-gray-200 cursor-pointer" title="Pindah ke atas">
-                                                    <i data-lucide="arrow-up" class="w-3 h-3"></i>
-                                                </button>
-                                            </form>
-                                        <?php endif; ?>
-                                        <?php if ($aIdx < count($addons) - 1): ?>
-                                            <form action="/admin/addon/move/<?= esc($addon['id']) ?>/down" method="POST" class="inline">
-                                                <?= csrf_field() ?>
-                                                <input type="hidden" name="redirect_tab" value="pricing">
-                                                <button type="submit" class="p-1 rounded hover:bg-gray-100 text-gray-600 border border-gray-200 cursor-pointer" title="Pindah ke bawah">
-                                                    <i data-lucide="arrow-down" class="w-3 h-3"></i>
-                                                </button>
-                                            </form>
-                                        <?php endif; ?>
-                                    </div>
+                                    <div class="flex items-center justify-between sm:justify-end gap-3 pl-7 sm:pl-0 flex-shrink-0">
+                                        <span class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded">
+                                            <?= esc($addon['price_description']) ?>
+                                        </span>
 
-                                    <div class="flex items-center gap-2">
-                                        <button type="button" onclick="openEditAddonModal(<?= htmlspecialchars(json_encode($addon), ENT_QUOTES, 'UTF-8') ?>)"
-                                                class="text-xs font-semibold text-gray-700 hover:text-black flex items-center gap-1 cursor-pointer">
-                                            <i data-lucide="edit-2" class="w-3 h-3"></i>
-                                            <span>Edit</span>
-                                        </button>
-                                        <form action="/admin/addon/delete/<?= esc($addon['id']) ?>" method="POST" class="inline" onsubmit="return confirm('Hapus layanan tambahan ini?')">
-                                            <?= csrf_field() ?>
-                                            <input type="hidden" name="redirect_tab" value="pricing">
-                                            <button type="submit" class="text-xs text-red-500 hover:text-red-700 cursor-pointer" title="Hapus">
-                                                <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                        <div class="flex items-center gap-1">
+                                            <?php if ($aIdx > 0): ?>
+                                                <form action="/admin/addon/move/<?= esc($addon['id']) ?>/up" method="POST" class="inline">
+                                                    <?= csrf_field() ?>
+                                                    <input type="hidden" name="redirect_tab" value="pricing">
+                                                    <button type="submit" class="p-1 rounded hover:bg-gray-100 text-gray-500 border border-gray-200 cursor-pointer" title="Pindah ke atas">
+                                                        <i data-lucide="arrow-up" class="w-3 h-3"></i>
+                                                    </button>
+                                                </form>
+                                            <?php endif; ?>
+                                            <?php if ($aIdx < count($addons) - 1): ?>
+                                                <form action="/admin/addon/move/<?= esc($addon['id']) ?>/down" method="POST" class="inline">
+                                                    <?= csrf_field() ?>
+                                                    <input type="hidden" name="redirect_tab" value="pricing">
+                                                    <button type="submit" class="p-1 rounded hover:bg-gray-100 text-gray-500 border border-gray-200 cursor-pointer" title="Pindah ke bawah">
+                                                        <i data-lucide="arrow-down" class="w-3 h-3"></i>
+                                                    </button>
+                                                </form>
+                                            <?php endif; ?>
+                                        </div>
+
+                                        <div class="flex items-center gap-1.5">
+                                            <button type="button" onclick="openEditAddonModal(<?= htmlspecialchars(json_encode($addon), ENT_QUOTES, 'UTF-8') ?>)"
+                                                    class="p-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded text-xs flex items-center gap-1 cursor-pointer" title="Edit">
+                                                <i data-lucide="edit-2" class="w-3 h-3"></i>
+                                                <span class="text-[11px] hidden sm:inline font-medium">Edit</span>
                                             </button>
-                                        </form>
+                                            <form action="/admin/addon/delete/<?= esc($addon['id']) ?>" method="POST" class="inline" onsubmit="return confirm('Hapus layanan tambahan ini?')">
+                                                <?= csrf_field() ?>
+                                                <input type="hidden" name="redirect_tab" value="pricing">
+                                                <button type="submit" class="p-1.5 bg-red-50 hover:bg-red-100 text-red-500 rounded text-xs cursor-pointer" title="Hapus">
+                                                    <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        <?php endforeach; ?>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
             </div>
