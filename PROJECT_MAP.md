@@ -106,32 +106,31 @@ c:\Users\user\Downloads\solveta/
 - **Default Seed**: `username = 'developer'`, `password_hash = BCRYPT('developer123')`.
 
 ### 3.2. Tabel `site_copy`
-- **Fungsi**: Teks headline, subheadline, banner konsultasi, dan pengaturan dinamis marquee logo.
+- **Fungsi**: Teks headline, subheadline, CTA buttons, banner konsultasi, quotes filosofi, dan pengaturan dinamis marquee logo.
 - **Kolom**:
   - `hero_eyebrow`, `hero_headline`, `hero_subtitle`
+  - `hero_cta_primary` (default: 'Pesan Sekarang'), `hero_cta_secondary` (default: 'Pelajari Selengkapnya')
   - `portfolio_title`, `portfolio_subtitle`
-  - `consultation_title`, `consultation_desc`
+  - `pricing_title` (default: 'PILIHAN PAKET LAYANAN WEBSITE'), `pricing_subtitle`
+  - `consultation_title`, `consultation_desc`, `consultation_button` (default: 'Konsultasikan Kebutuhan Anda')
+  - `philosophy_quote_1` (default: 'Bukan sekadar membangun teknologi.'), `philosophy_quote_2` (default: 'Kami membangun solusi.')
   - `marquee_title` (default: 'DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG')
-  - `marquee_speed` (default: 35s)
-  - `marquee_logo_height` (default: 46px)
-  - `marquee_logo_spacing` (default: 36px)
-  - `marquee_logo_scale` (default: 100%)
-  - `marquee_logo_max_width` (default: 240px)
+  - `marquee_speed` (default: 35s), `marquee_logo_height` (default: 46px), `marquee_logo_spacing` (default: 36px), `marquee_logo_scale` (default: 100%), `marquee_logo_max_width` (default: 240px)
   - `site_logo` (default: '/solveta-logo.png')
   - `profile_video` (default: '/videos/profile.mp4')
 
 ### 3.3. Tabel `contact_info`
 - **Fungsi**: Nomor WhatsApp, format display, email, instagram, dan link kontak global.
-- **Kolom**: `whatsapp_number` ('6285876603826'), `whatsapp_display` ('+62 858-7660-3826'), `website_url` ('https://solveta.asia'), `email` ('halo@solveta.asia'), `instagram` ('solveta.asia').
+- **Kolom**: `whatsapp_number` ('6285876603826'), `whatsapp_display` ('+6285876603826'), `website_url` ('www.solveta.asia'), `email` ('halo@solveta.asia'), `instagram` ('solveta.asia').
 
 ### 3.4. Tabel `pricing_tiers`
-- **Fungsi**: 4 Paket harga layanan SOLVETA.
+- **Fungsi**: 4 Paket harga layanan SOLVETA (STARTER, STANDARD, PREMIUM, PLATINUM).
 - **Daftar Paket**:
-  1. `tier-starter`: **STARTER** — Rp 349.000 (diskon dari Rp 500.000). Renewal: Rp 250.000 / th.
-  2. `tier-standard`: **STANDARD** — Rp 699.000 (diskon dari Rp 1.000.000, Popular Badge). Renewal: Rp 350.000 / th.
-  3. `tier-premium`: **PREMIUM** — Rp 964.000 (diskon dari Rp 1.500.000). Renewal: Rp 500.000 / th.
-  4. `tier-platinum`: **PLATINUM** — Rp 1.500.000 (diskon dari Rp 2.500.000). Renewal: Rp 750.000 / th.
-- **Kolom**: `id`, `name`, `price_prefix`, `price`, `price_badge`, `renewal_price`, `active_period`, `delivery_time`, `popular`, `features_json`, `checklist_json`, `suitability`, `button_label`, `wa_message`, `sort_order`.
+  1. `basic`: **STARTER** — Rp 349K. Delivery: 1-2 Hari. Button CTA: `PESAN PAKET STARTER (RP 349K)`. Renewal: 249k/tahun*.
+  2. `standard`: **STANDARD** — Rp 699K. Delivery: 3-5 Hari. Button CTA: `PESAN PAKET STANDARD (RP 699K)`. Renewal: 399k/tahun*.
+  3. `premium`: **PREMIUM** — Rp 964K. Delivery: 4-7 Hari. Button CTA: `PESAN PAKET PREMIUM (RP 964K)`. Renewal: 499k/tahun*.
+  4. `custom`: **PLATINUM** — Hubungi Kami. Delivery: 7-14 Hari. Button CTA: `KONSULTASI PAKET PLATINUM`.
+- **Kolom**: `id`, `name`, `price_prefix`, `price`, `price_badge`, `renewal_price`, `active_period`, `delivery_time`, `popular`, `popular_label`, `features_json`, `checklist_json`, `domain_addons_json`, `email_addons_json`, `revision_rules_json`, `custom_note`, `suitability`, `button_label`, `button_variant`, `wa_message`, `sort_order`.
 
 ### 3.5. Tabel `portfolio_items`
 - **Fungsi**: Daftar karya proyek dalam 3D Coverflow Carousel.

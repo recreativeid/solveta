@@ -46,21 +46,40 @@ class Admin extends BaseController
         $copyModel = new SiteCopyModel();
         $current = $copyModel->getCopy();
 
-        $data = [
-            'hero_eyebrow' => (string) $this->request->getPost('hero_eyebrow'),
-            'hero_headline' => (string) $this->request->getPost('hero_headline'),
-            'hero_subtitle' => (string) $this->request->getPost('hero_subtitle'),
-            'portfolio_title' => (string) $this->request->getPost('portfolio_title'),
-            'portfolio_subtitle' => (string) $this->request->getPost('portfolio_subtitle'),
-            'consultation_title' => (string) $this->request->getPost('consultation_title'),
-            'consultation_desc' => (string) $this->request->getPost('consultation_desc'),
-            'marquee_title' => (string) $this->request->getPost('marquee_title'),
-            'marquee_speed' => (int) ($this->request->getPost('marquee_speed') ?: 35),
-            'marquee_logo_height' => (int) ($this->request->getPost('marquee_logo_height') ?: 46),
-            'marquee_logo_spacing' => (int) ($this->request->getPost('marquee_logo_spacing') ?: 36),
-            'marquee_logo_scale' => (int) ($this->request->getPost('marquee_logo_scale') ?: 100),
-            'marquee_logo_max_width' => (int) ($this->request->getPost('marquee_logo_max_width') ?: 240),
+        $keys = [
+            'hero_eyebrow',
+            'hero_headline',
+            'hero_subtitle',
+            'hero_cta_primary',
+            'hero_cta_secondary',
+            'portfolio_title',
+            'portfolio_subtitle',
+            'pricing_title',
+            'pricing_subtitle',
+            'consultation_title',
+            'consultation_desc',
+            'consultation_button',
+            'philosophy_quote_1',
+            'philosophy_quote_2',
+            'marquee_title',
+            'marquee_speed',
+            'marquee_logo_height',
+            'marquee_logo_spacing',
+            'marquee_logo_scale',
+            'marquee_logo_max_width',
         ];
+
+        $data = [];
+        foreach ($keys as $k) {
+            $val = $this->request->getPost($k);
+            if ($val !== null) {
+                if (in_array($k, ['marquee_speed', 'marquee_logo_height', 'marquee_logo_spacing', 'marquee_logo_scale', 'marquee_logo_max_width'])) {
+                    $data[$k] = (int) $val;
+                } else {
+                    $data[$k] = (string) $val;
+                }
+            }
+        }
 
         // Handle Site Logo upload
         $logoFile = $this->request->getFile('site_logo_file');
@@ -83,13 +102,14 @@ class Admin extends BaseController
             if ($existing) {
                 $copyModel->update($existing['id'], $data);
             } else {
-                $copyModel->insert($data);
+                $copyModel->insert(array_merge($current, $data));
             }
         } catch (\Throwable $e) {
             log_message('error', 'Update copy DB error: ' . $e->getMessage());
         }
 
-        return redirect()->to('/admin#tab-visual')->with('success', 'Visual & Site Copy berhasil diperbarui!');
+        $redirectTab = $this->request->getPost('redirect_tab') ?: 'visual';
+        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', 'Visual & Site Copy berhasil diperbarui!');
     }
 
     public function updateContact()
@@ -241,7 +261,7 @@ class Admin extends BaseController
             'price_badge' => (string) $this->request->getPost('price_badge'),
             'renewal_price' => (string) $this->request->getPost('renewal_price'),
             'active_period' => (string) $this->request->getPost('active_period') ?: '1 Tahun',
-            'delivery_time' => (string) $this->request->getPost('delivery_time') ?: '3-7 Hari Kerja',
+            'delivery_time' => str_replace(['â€“', '–'], '-', (string) $this->request->getPost('delivery_time') ?: '1-2 Hari'),
             'popular' => $this->request->getPost('popular') ? 1 : 0,
             'popular_label' => (string) $this->request->getPost('popular_label'),
             'features_json' => json_encode(array_values($features)),
@@ -266,7 +286,8 @@ class Admin extends BaseController
             log_message('error', 'Save pricing DB error: ' . $e->getMessage());
         }
 
-        return redirect()->to('/admin#tab-pricing')->with('success', 'Paket harga berhasil disimpan!');
+        $redirectTab = $this->request->getPost('redirect_tab') ?: 'pricing';
+        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', 'Paket harga berhasil disimpan!');
     }
 
     public function deletePricing($id)

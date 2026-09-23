@@ -323,148 +323,425 @@
                             </div>
                         </div>
 
-                        <!-- 1. Hero Live Section (Interactive Click-to-Edit Landing Page Preview) -->
-                        <div class="text-center relative group p-6 rounded-2xl border border-dashed border-gray-200 hover:border-[#7B0B1E]/40 transition-colors">
-                            <span class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-[#7B0B1E] bg-rose-50 px-2 py-0.5 rounded transition-opacity">
-                                Klik untuk edit Hero
-                            </span>
-
-                            <div onclick="openEditHeroModal()" class="cursor-pointer inline-block font-mono text-[11px] font-semibold uppercase tracking-wider text-gray-700 bg-white border border-gray-200 px-3.5 py-1 rounded-full mb-4 hover:border-[#7B0B1E]">
-                                <?= esc($copy['hero_eyebrow'] ?? 'SOLVE TECHNOLOGY AGENCY') ?>
+                        <!-- 1. STUDIO INSTRUCTION BAR -->
+                        <div class="p-4 bg-gradient-to-r from-gray-900 via-gray-800 to-black text-white rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-xl bg-rose-600/30 border border-rose-500/40 flex items-center justify-center text-rose-300 flex-shrink-0">
+                                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-xs font-bold uppercase tracking-wider text-white">Live Interactive Landing Page Studio</h3>
+                                    <p class="text-[11px] text-gray-300">Setiap tulisan, judul, badge, dan tombol dapat diklik langsung untuk mengedit teks &amp; link-nya secara real-time.</p>
+                                </div>
                             </div>
-
-                            <div onclick="openEditHeroModal()" class="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors max-w-3xl mx-auto mb-3">
-                                <h1 class="text-2xl sm:text-4xl font-extrabold text-gray-950 tracking-tight leading-tight">
-                                    <?= esc($copy['hero_headline'] ?? 'Mengubah Tantangan Bisnis Menjadi Solusi Digital.') ?>
-                                </h1>
-                            </div>
-
-                            <div onclick="openEditHeroModal()" class="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors max-w-2xl mx-auto">
-                                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                                    <?= esc($copy['hero_subtitle'] ?? 'Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.') ?>
-                                </p>
+                            <div class="flex items-center gap-2 flex-shrink-0">
+                                <a href="https://solveta.asia" target="_blank" rel="noopener noreferrer"
+                                   class="px-3 py-1.5 bg-white/10 hover:bg-white/20 text-white text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 border border-white/20">
+                                    <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                                    <span>Buka Website Asli</span>
+                                </a>
                             </div>
                         </div>
 
-                        <!-- 2. Marquee Live Section -->
-                        <div class="p-6 bg-gray-50/70 rounded-2xl border border-gray-200">
-                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 mb-4">
-                                <div>
-                                    <h3 class="text-xs font-bold text-gray-900 uppercase tracking-wider">
-                                        Kecepatan Logo Berjalan (Marquee)
+                        <!-- 2. HERO LIVE SECTION (Interactive Click-to-Edit Canvas) -->
+                        <div id="visual-hero" class="relative group p-6 sm:p-10 rounded-2xl border-2 border-dashed border-gray-200 hover:border-[#8B0021] bg-gradient-to-b from-rose-50/20 via-white to-gray-50/30 transition-all text-center">
+                            <div class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 bg-[#8B0021] text-white text-[10px] font-bold px-2.5 py-1 rounded-full shadow-sm transition-opacity flex items-center gap-1">
+                                <i data-lucide="edit-3" class="w-3 h-3"></i>
+                                <span>Bagian Hero (Klik Elemen)</span>
+                            </div>
+
+                            <!-- Eyebrow Badge (Click to Edit) -->
+                            <div class="mb-4 inline-block">
+                                <div onclick="openQuickEditModal('hero_eyebrow', 'Hero Eyebrow (Badge Teks)', '<?= addslashes(esc($copy['hero_eyebrow'] ?? 'SOLVE TECHNOLOGY AGENCY')) ?>', false)"
+                                     class="cursor-pointer inline-flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[#7B0B1E] bg-rose-50 border border-rose-200 px-4 py-1.5 rounded-full hover:ring-2 hover:ring-[#8B0021] hover:bg-rose-100 transition-all shadow-2xs relative group/item"
+                                     title="Klik untuk edit teks Eyebrow">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-[#8B0021] animate-pulse"></span>
+                                    <span><?= esc($copy['hero_eyebrow'] ?? 'SOLVE TECHNOLOGY AGENCY') ?></span>
+                                    <i data-lucide="edit-2" class="w-3 h-3 text-[#7B0B1E] opacity-50 group-hover/item:opacity-100 ml-1"></i>
+                                </div>
+                            </div>
+
+                            <!-- Headline (Click to Edit) -->
+                            <div onclick="openQuickEditModal('hero_headline', 'Headline Utama Hero', '<?= addslashes(esc($copy['hero_headline'] ?? 'Mengubah Tantangan Bisnis Menjadi Solusi Digital.')) ?>', true)"
+                                 class="cursor-pointer hover:bg-rose-50/70 p-3 rounded-xl transition-all max-w-3xl mx-auto mb-3 hover:ring-2 hover:ring-[#8B0021]/60 group/item relative"
+                                 title="Klik untuk edit Headline Utama">
+                                <h1 class="text-2xl sm:text-4xl font-black text-gray-950 tracking-tight leading-tight uppercase font-sans">
+                                    <?= esc($copy['hero_headline'] ?? 'Mengubah Tantangan Bisnis Menjadi Solusi Digital.') ?>
+                                </h1>
+                                <span class="absolute -top-2 right-2 bg-[#8B0021] text-white text-[9px] px-2 py-0.5 rounded opacity-0 group-hover/item:opacity-100 transition-opacity">Klik edit headline</span>
+                            </div>
+
+                            <!-- Subtitle (Click to Edit) -->
+                            <div onclick="openQuickEditModal('hero_subtitle', 'Subtitle / Pengantar Hero', '<?= addslashes(esc($copy['hero_subtitle'] ?? '')) ?>', true)"
+                                 class="cursor-pointer hover:bg-rose-50/70 p-3 rounded-xl transition-all max-w-2xl mx-auto mb-6 hover:ring-2 hover:ring-[#8B0021]/60 group/item relative"
+                                 title="Klik untuk edit Subtitle">
+                                <p class="text-xs sm:text-sm text-gray-600 leading-relaxed font-sans">
+                                    <?= esc($copy['hero_subtitle'] ?? 'Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.') ?>
+                                </p>
+                                <span class="absolute -top-2 right-2 bg-[#8B0021] text-white text-[9px] px-2 py-0.5 rounded opacity-0 group-hover/item:opacity-100 transition-opacity">Klik edit subtitle</span>
+                            </div>
+
+                            <!-- ACTION BUTTONS HERO (Interactive Click to Edit Button Labels) -->
+                            <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 max-w-md mx-auto mb-8">
+                                <!-- Tombol Utama (Pesan Sekarang) -->
+                                <div onclick="openQuickEditModal('hero_cta_primary', 'Teks Tombol Utama Hero', '<?= addslashes(esc($copy['hero_cta_primary'] ?? 'Pesan Sekarang')) ?>', false)"
+                                     class="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-bold rounded-xl shadow-md hover:shadow-lg hover:ring-2 hover:ring-rose-400 transition-all group/btn relative"
+                                     title="Klik untuk edit teks Tombol Utama">
+                                    <i data-lucide="message-circle" class="w-4 h-4 text-rose-200"></i>
+                                    <span class="btn-label font-sans font-bold"><?= esc($copy['hero_cta_primary'] ?? 'Pesan Sekarang') ?></span>
+                                    <i data-lucide="edit-2" class="w-3 h-3 text-rose-200 opacity-70 group-hover/btn:opacity-100 ml-1"></i>
+                                    <span class="absolute -top-2.5 -right-2 bg-gray-900 text-white text-[9px] px-1.5 py-0.5 rounded shadow opacity-0 group-hover/btn:opacity-100 transition-opacity">Edit Tombol</span>
+                                </div>
+
+                                <!-- Tombol Sekunder (Pelajari Selengkapnya) -->
+                                <div onclick="openQuickEditModal('hero_cta_secondary', 'Teks Tombol Sekunder Hero', '<?= addslashes(esc($copy['hero_cta_secondary'] ?? 'Pelajari Selengkapnya')) ?>', false)"
+                                     class="w-full sm:w-auto cursor-pointer inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white hover:bg-gray-50 border border-gray-300 text-gray-800 text-xs font-bold rounded-xl shadow-2xs hover:ring-2 hover:ring-rose-400 transition-all group/btn relative"
+                                     title="Klik untuk edit teks Tombol Sekunder">
+                                    <span class="btn-label font-sans font-bold"><?= esc($copy['hero_cta_secondary'] ?? 'Pelajari Selengkapnya') ?></span>
+                                    <i data-lucide="edit-2" class="w-3 h-3 text-gray-500 opacity-70 group-hover/btn:opacity-100 ml-1"></i>
+                                    <span class="absolute -top-2.5 -right-2 bg-gray-900 text-white text-[9px] px-1.5 py-0.5 rounded shadow opacity-0 group-hover/btn:opacity-100 transition-opacity">Edit Tombol</span>
+                                </div>
+                            </div>
+
+                            <!-- 3D Laptop Display Mockup Preview -->
+                            <div class="max-w-[700px] mx-auto mt-4 pt-4 border-t border-gray-100">
+                                <div class="bg-[#1a1b24] rounded-t-xl p-2.5 border-[2px] border-[#2c2d3a] shadow-lg relative group/laptop">
+                                    <!-- Notch & macOS Dots Header -->
+                                    <div class="flex items-center justify-between px-2 pb-1.5 border-b border-[#232533] text-[10px] text-gray-400 font-mono">
+                                        <div class="flex items-center gap-1.5">
+                                            <div class="w-2 h-2 rounded-full bg-[#ff5f56]"></div>
+                                            <div class="w-2 h-2 rounded-full bg-[#ffbd2e]"></div>
+                                            <div class="w-2 h-2 rounded-full bg-[#27c93f]"></div>
+                                            <span class="ml-2 text-gray-300 font-semibold">Preview Video Showcase Hero 3D</span>
+                                        </div>
+                                        <button type="button" onclick="switchTab('video')"
+                                                class="px-2 py-0.5 bg-rose-600 hover:bg-rose-700 text-white text-[10px] font-semibold rounded transition-colors flex items-center gap-1 cursor-pointer">
+                                            <i data-lucide="film" class="w-3 h-3"></i>
+                                            <span>Ganti Video</span>
+                                        </button>
+                                    </div>
+                                    <!-- Laptop Screen Video Player -->
+                                    <div class="aspect-[16/9] bg-black rounded-b-lg overflow-hidden relative">
+                                        <video src="<?= esc($copy['profile_video'] ?? '/videos/profile.mp4') ?>"
+                                               autoplay loop muted playsinline class="w-full h-full object-cover"></video>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 3. MARQUEE LIVE SECTION (Running Logos Studio) -->
+                        <div id="visual-marquee" class="p-6 bg-gray-50/80 rounded-2xl border-2 border-dashed border-gray-200 hover:border-[#8B0021] transition-all space-y-4">
+                            <!-- Marquee Header Title (Click to Edit) -->
+                            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div onclick="openQuickEditModal('marquee_title', 'Teks Judul Logo Klien Berjalan', '<?= addslashes(esc($copy['marquee_title'] ?? 'DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG')) ?>', false)"
+                                     class="cursor-pointer hover:bg-white p-2 rounded-lg transition-all group/item relative border border-transparent hover:border-gray-200"
+                                     title="Klik untuk edit Judul Running Logo">
+                                    <h3 class="text-xs font-bold text-gray-900 uppercase tracking-wider flex items-center gap-2">
+                                        <span><?= esc($copy['marquee_title'] ?? 'DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG') ?></span>
+                                        <i data-lucide="edit-2" class="w-3.5 h-3.5 text-[#8B0021] opacity-50 group-hover/item:opacity-100"></i>
                                     </h3>
-                                    <p class="text-[11px] text-gray-500">
-                                        Geser slider untuk mempercepat atau memperlambat logo klien.
-                                    </p>
+                                    <p class="text-[11px] text-gray-500 mt-0.5">Teks berjalan di atas deretan logo klien.</p>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span id="visual-speed-display" class="text-xs font-mono font-bold text-[#7B0B1E] bg-white border border-gray-200 px-2.5 py-1 rounded-lg">
-                                        <?= esc($copy['marquee_speed'] ?? 35) ?> detik / putaran
+                                        <?= esc($copy['marquee_speed'] ?? 35) ?>s / putaran
                                     </span>
                                     <button type="button" onclick="switchTab('brands')"
-                                            class="text-xs font-semibold text-[#7B0B1E] hover:underline cursor-pointer">
-                                        Kelola Logo Klien (<?= count($brands) ?>) &rarr;
+                                            class="text-xs font-semibold text-[#7B0B1E] hover:underline cursor-pointer flex items-center gap-1">
+                                        <span>Kelola Logo Klien (<?= count($brands) ?>)</span>
+                                        <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
                                     </button>
                                 </div>
                             </div>
-                            <form action="/admin/update-copy" method="POST" id="form-quick-speed">
-                                <?= csrf_field() ?>
-                                <input type="hidden" name="hero_eyebrow" value="<?= esc($copy['hero_eyebrow'] ?? '') ?>">
-                                <input type="hidden" name="hero_headline" value="<?= esc($copy['hero_headline'] ?? '') ?>">
-                                <input type="hidden" name="hero_subtitle" value="<?= esc($copy['hero_subtitle'] ?? '') ?>">
-                                <input type="hidden" name="portfolio_title" value="<?= esc($copy['portfolio_title'] ?? '') ?>">
-                                <input type="hidden" name="consultation_title" value="<?= esc($copy['consultation_title'] ?? '') ?>">
-                                <input type="hidden" name="consultation_desc" value="<?= esc($copy['consultation_desc'] ?? '') ?>">
-                                <input type="hidden" name="marquee_logo_height" value="<?= esc($copy['marquee_logo_height'] ?? 46) ?>">
-                                <input type="hidden" name="marquee_logo_spacing" value="<?= esc($copy['marquee_logo_spacing'] ?? 36) ?>">
-                                <input type="hidden" name="marquee_logo_scale" value="<?= esc($copy['marquee_logo_scale'] ?? 100) ?>">
 
-                                <div class="flex items-center gap-3">
-                                    <span class="text-[11px] text-gray-500 font-medium">Cepat (15s)</span>
-                                    <input type="range" name="marquee_speed" min="15" max="60" step="5"
-                                           value="<?= esc($copy['marquee_speed'] ?? 35) ?>"
-                                           oninput="document.getElementById('visual-speed-display').innerText = this.value + ' detik / putaran'"
-                                           onchange="document.getElementById('form-quick-speed').submit()"
-                                           class="flex-grow accent-[#7B0B1E] cursor-pointer">
-                                    <span class="text-[11px] text-gray-500 font-medium">Lambat (60s)</span>
+                            <!-- Live Running Logo Animation Strip -->
+                            <div class="overflow-hidden py-3 bg-white rounded-xl border border-gray-200 relative select-none">
+                                <div class="flex items-center gap-6 whitespace-nowrap animate-marquee">
+                                    <?php foreach (array_merge($brands, $brands) as $b): ?>
+                                        <div class="inline-flex items-center justify-center px-4 flex-shrink-0">
+                                            <img src="<?= esc($b['logo_image']) ?>" alt="<?= esc($b['name']) ?>" 
+                                                 style="height: <?= esc($copy['marquee_logo_height'] ?? 46) ?>px;" 
+                                                 class="object-contain filter grayscale hover:grayscale-0 transition-all opacity-70 hover:opacity-100">
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+
+                            <!-- Sliders Quick Tuning -->
+                            <form action="/admin/update-copy" method="POST" id="form-quick-speed" class="pt-2">
+                                <?= csrf_field() ?>
+                                <input type="hidden" name="redirect_tab" value="visual">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-[11px]">
+                                    <div>
+                                        <div class="flex justify-between mb-1 text-gray-600 font-medium">
+                                            <span>Kecepatan Marquee</span>
+                                            <span class="font-mono text-[#8B0021] font-bold"><?= esc($copy['marquee_speed'] ?? 35) ?>s</span>
+                                        </div>
+                                        <input type="range" name="marquee_speed" min="15" max="60" step="5" value="<?= esc($copy['marquee_speed'] ?? 35) ?>" onchange="this.form.submit()" class="w-full accent-[#8B0021] cursor-pointer">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1 text-gray-600 font-medium">
+                                            <span>Tinggi Logo (Height)</span>
+                                            <span class="font-mono text-[#8B0021] font-bold"><?= esc($copy['marquee_logo_height'] ?? 46) ?>px</span>
+                                        </div>
+                                        <input type="range" name="marquee_logo_height" min="28" max="90" step="2" value="<?= esc($copy['marquee_logo_height'] ?? 46) ?>" onchange="this.form.submit()" class="w-full accent-[#8B0021] cursor-pointer">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1 text-gray-600 font-medium">
+                                            <span>Jarak Antar Logo</span>
+                                            <span class="font-mono text-[#8B0021] font-bold"><?= esc($copy['marquee_logo_spacing'] ?? 36) ?>px</span>
+                                        </div>
+                                        <input type="range" name="marquee_logo_spacing" min="16" max="80" step="4" value="<?= esc($copy['marquee_logo_spacing'] ?? 36) ?>" onchange="this.form.submit()" class="w-full accent-[#8B0021] cursor-pointer">
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between mb-1 text-gray-600 font-medium">
+                                            <span>Skala Proporsi</span>
+                                            <span class="font-mono text-[#8B0021] font-bold"><?= esc($copy['marquee_logo_scale'] ?? 100) ?>%</span>
+                                        </div>
+                                        <input type="range" name="marquee_logo_scale" min="60" max="150" step="5" value="<?= esc($copy['marquee_logo_scale'] ?? 100) ?>" onchange="this.form.submit()" class="w-full accent-[#8B0021] cursor-pointer">
+                                    </div>
                                 </div>
                             </form>
                         </div>
 
-                        <!-- 3. Portfolio Live Section Header -->
-                        <div class="text-center relative group p-6 rounded-2xl border border-dashed border-gray-200 hover:border-[#7B0B1E]/40 transition-colors">
-                            <span class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-[10px] font-semibold text-[#7B0B1E] bg-rose-50 px-2 py-0.5 rounded transition-opacity">
-                                Klik untuk edit Judul Portofolio
-                            </span>
-
-                            <div onclick="openEditPortfolioTitleModal()" class="cursor-pointer hover:bg-rose-50/50 p-2 rounded-lg transition-colors max-w-xl mx-auto">
-                                <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">
-                                    <?= esc($copy['portfolio_title'] ?? 'Portofolio Proyek Website Yang Telah Kami Bangun') ?>
-                                </h2>
+                        <!-- 4. PORTFOLIO LIVE SECTION -->
+                        <div id="visual-portfolio" class="p-6 rounded-2xl border-2 border-dashed border-gray-200 hover:border-[#8B0021] transition-all space-y-6">
+                            <!-- Portfolio Header (Click to Edit) -->
+                            <div class="text-center max-w-xl mx-auto space-y-2">
+                                <div onclick="openQuickEditModal('portfolio_title', 'Judul Bagian Portofolio', '<?= addslashes(esc($copy['portfolio_title'] ?? 'Portofolio Proyek Website Yang Telah Kami Bangun')) ?>', false)"
+                                     class="cursor-pointer hover:bg-rose-50/60 p-2 rounded-lg transition-all group/item"
+                                     title="Klik untuk edit Judul Portofolio">
+                                    <h2 class="text-xl sm:text-2xl font-extrabold text-gray-950 tracking-tight flex items-center justify-center gap-2">
+                                        <span><?= esc($copy['portfolio_title'] ?? 'Portofolio Proyek Website Yang Telah Kami Bangun') ?></span>
+                                        <i data-lucide="edit-2" class="w-4 h-4 text-[#8B0021] opacity-50 group-hover/item:opacity-100"></i>
+                                    </h2>
+                                </div>
+                                <div onclick="openQuickEditModal('portfolio_subtitle', 'Deskripsi Bagian Portofolio', '<?= addslashes(esc($copy['portfolio_subtitle'] ?? 'Koleksi karya digital terbaik yang memadukan desain visual kelas dunia dengan performa teknologi tanpa kompromi.')) ?>', true)"
+                                     class="cursor-pointer hover:bg-rose-50/60 p-2 rounded-lg transition-all group/item"
+                                     title="Klik untuk edit Deskripsi Portofolio">
+                                    <p class="text-xs text-gray-500 leading-relaxed">
+                                        <?= esc($copy['portfolio_subtitle'] ?? 'Koleksi karya digital terbaik yang memadukan desain visual kelas dunia dengan performa teknologi tanpa kompromi.') ?>
+                                    </p>
+                                </div>
                             </div>
 
-                            <div class="mt-4 flex items-center justify-center gap-2">
+                            <!-- Live Projects Grid Preview -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <?php foreach (array_slice($portfolios, 0, 4) as $p): ?>
+                                    <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-2xs hover:shadow-md transition-all group/card flex flex-col justify-between">
+                                        <div class="aspect-[16/10] bg-gray-100 overflow-hidden relative">
+                                            <img src="<?= esc($p['image_url']) ?>" alt="<?= esc($p['title']) ?>" class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300">
+                                            <span class="absolute top-2 left-2 bg-black/75 backdrop-blur-xs text-white text-[9px] font-mono font-bold px-2 py-0.5 rounded">
+                                                <?= esc($p['category']) ?>
+                                            </span>
+                                        </div>
+                                        <div class="p-3.5 space-y-2">
+                                            <h4 class="text-xs font-bold text-gray-900 truncate"><?= esc($p['title']) ?></h4>
+                                            <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                                                <button type="button" onclick="openEditPortfolioModal(<?= htmlspecialchars(json_encode($p), ENT_QUOTES, 'UTF-8') ?>)"
+                                                        class="text-[11px] font-semibold text-[#8B0021] hover:underline cursor-pointer flex items-center gap-1">
+                                                    <i data-lucide="edit-3" class="w-3 h-3"></i>
+                                                    <span>Edit Proyek</span>
+                                                </button>
+                                                <?php if (!empty($p['live_url'])): ?>
+                                                    <a href="<?= esc($p['live_url']) ?>" target="_blank" class="text-[10px] text-gray-400 hover:text-gray-700">Lihat Web &rarr;</a>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+
+                            <div class="text-center pt-2">
                                 <button type="button" onclick="switchTab('portfolio')"
-                                        class="inline-flex items-center gap-1.5 text-xs font-semibold text-[#7B0B1E] bg-white border border-rose-200 hover:bg-rose-50 px-3.5 py-1.5 rounded-full transition-colors cursor-pointer">
+                                        class="inline-flex items-center gap-2 text-xs font-semibold text-[#8B0021] bg-white border border-rose-200 hover:bg-rose-50 px-4 py-2 rounded-full transition-colors cursor-pointer shadow-2xs">
                                     <i data-lucide="plus" class="w-3.5 h-3.5"></i>
-                                    <span>Upload, Edit &amp; Kelola Portofolio (<?= count($portfolios) ?> Karya)</span>
+                                    <span>Kelola &amp; Tambah Portofolio Lengkap (<?= count($portfolios) ?> Karya)</span>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- 4. Pricing Live Section -->
-                        <div>
-                            <div class="text-center mb-6">
-                                <h2 class="text-base font-bold uppercase tracking-wider text-gray-900 mb-1">
-                                    PILIH SOLUSI SESUAI KEBUTUHAN
-                                </h2>
-                                <p class="text-xs text-gray-500">
-                                    Klik kartu mana saja untuk mengubah harga, perpanjangan, checklist fitur, add-on, atau pesan WA secara instan.
+                        <!-- 5. CONSULTATION LIVE BANNER -->
+                        <div id="visual-consultation" class="p-6 sm:p-8 rounded-2xl bg-white border-2 border-dashed border-gray-200 hover:border-[#8B0021] text-center space-y-3 transition-all relative group">
+                            <span class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-[#8B0021] text-white text-[9px] px-2 py-0.5 rounded shadow">Klik untuk edit banner konsultasi</span>
+
+                            <!-- Title (Click to Edit) -->
+                            <div onclick="openQuickEditModal('consultation_title', 'Judul Banner Konsultasi', '<?= addslashes(esc($copy['consultation_title'] ?? 'TIDAK TAHU HARUS MULAI DARI MANA?')) ?>', false)"
+                                 class="cursor-pointer hover:bg-rose-50/60 p-2 rounded-lg transition-all inline-block"
+                                 title="Klik untuk edit Judul Konsultasi">
+                                <h3 class="text-sm sm:text-base font-extrabold text-gray-900 uppercase tracking-wider flex items-center justify-center gap-2">
+                                    <span><?= esc($copy['consultation_title'] ?? 'TIDAK TAHU HARUS MULAI DARI MANA?') ?></span>
+                                    <i data-lucide="edit-2" class="w-3.5 h-3.5 text-[#8B0021]"></i>
+                                </h3>
+                            </div>
+
+                            <!-- Description (Click to Edit) -->
+                            <div onclick="openQuickEditModal('consultation_desc', 'Deskripsi Banner Konsultasi', '<?= addslashes(esc($copy['consultation_desc'] ?? 'Konsultasikan masalah bisnis Anda secara gratis. Kami akan merekomendasikan langkah paling efisien untuk memulainya.')) ?>', true)"
+                                 class="cursor-pointer hover:bg-rose-50/60 p-2 rounded-lg transition-all max-w-xl mx-auto"
+                                 title="Klik untuk edit Deskripsi Konsultasi">
+                                <p class="text-xs text-gray-600 leading-relaxed font-sans">
+                                    <?= esc($copy['consultation_desc'] ?? 'Konsultasikan masalah bisnis Anda secara gratis. Kami akan merekomendasikan langkah paling efisien untuk memulainya.') ?>
                                 </p>
                             </div>
 
-                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <?php foreach ($tiers as $tier): ?>
-                                    <div onclick="openEditPricingModal(<?= htmlspecialchars(json_encode($tier), ENT_QUOTES, 'UTF-8') ?>)"
-                                         class="p-5 rounded-xl border bg-white cursor-pointer hover:border-[#7B0B1E] hover:shadow-md transition-all relative group <?= !empty($tier['popular']) ? 'border-2 border-[#8B0021]' : 'border-gray-200' ?>">
-                                        
-                                        <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-rose-50 text-[#7B0B1E] p-1 rounded transition-opacity">
-                                            <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
-                                        </div>
+                            <!-- CTA Button (Click to Edit) -->
+                            <div class="pt-2">
+                                <div onclick="openQuickEditModal('consultation_button', 'Teks Tombol Konsultasi WhatsApp', '<?= addslashes(esc($copy['consultation_button'] ?? 'Konsultasikan Kebutuhan Anda')) ?>', false)"
+                                     class="cursor-pointer inline-flex items-center gap-2 px-6 py-3 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-bold rounded-xl shadow-md hover:ring-2 hover:ring-rose-400 transition-all group/btn relative"
+                                     title="Klik untuk edit teks Tombol Konsultasi">
+                                    <span class="btn-label"><?= esc($copy['consultation_button'] ?? 'Konsultasikan Kebutuhan Anda') ?></span>
+                                    <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-rose-200"></i>
+                                    <i data-lucide="edit-2" class="w-3 h-3 text-rose-200 opacity-70 group-hover/btn:opacity-100 ml-1"></i>
+                                </div>
+                            </div>
+                        </div>
 
-                                        <?php if (!empty($tier['popular'])): ?>
-                                            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white font-mono text-[9px] font-bold uppercase px-2.5 py-0.5 rounded-full">
-                                                POPULAR
+                        <!-- 6. PRICING LIVE SECTION (Interactive 4 Tiers & Editable Buttons) -->
+                        <div id="visual-pricing" class="p-6 rounded-2xl border-2 border-dashed border-gray-200 hover:border-[#8B0021] transition-all space-y-6">
+                            <!-- Section Title & Subtitle (Click to Edit) -->
+                            <div class="text-center max-w-2xl mx-auto space-y-2">
+                                <div onclick="openQuickEditModal('pricing_title', 'Judul Bagian Paket & Harga', '<?= addslashes(esc($copy['pricing_title'] ?? 'INFORMASI RINCI SETIAP PAKET')) ?>', false)"
+                                     class="cursor-pointer hover:bg-rose-50/60 p-2 rounded-lg transition-all group/item"
+                                     title="Klik untuk edit Judul Paket & Harga">
+                                    <h2 class="text-xl sm:text-2xl font-extrabold text-gray-950 uppercase tracking-tight flex items-center justify-center gap-2">
+                                        <span><?= esc($copy['pricing_title'] ?? 'INFORMASI RINCI SETIAP PAKET') ?></span>
+                                        <i data-lucide="edit-2" class="w-4 h-4 text-[#8B0021] opacity-50 group-hover/item:opacity-100"></i>
+                                    </h2>
+                                </div>
+
+                                <div onclick="openQuickEditModal('pricing_subtitle', 'Deskripsi Bagian Paket & Harga', '<?= addslashes(esc($copy['pricing_subtitle'] ?? 'Rincian lengkap masing-masing 4 paket website dengan tata letak minimalis, batas garis tepi yang tegas, dan transparansi spesifikasi tanpa biaya tersembunyi.')) ?>', true)"
+                                     class="cursor-pointer hover:bg-rose-50/60 p-2 rounded-lg transition-all group/item"
+                                     title="Klik untuk edit Deskripsi Paket & Harga">
+                                    <p class="text-xs text-gray-500 leading-relaxed font-sans">
+                                        <?= esc($copy['pricing_subtitle'] ?? 'Rincian lengkap masing-masing 4 paket website dengan tata letak minimalis, batas garis tepi yang tegas, dan transparansi spesifikasi tanpa biaya tersembunyi.') ?>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 4 Real Interactive Cards -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <?php foreach ($tiers as $tier): ?>
+                                    <?php 
+                                        $cleanDelivery = str_replace(['â€“', '–'], '-', $tier['delivery_time'] ?? '1-2 Hari');
+                                        $tierBtnText = !empty($tier['button_label']) ? $tier['button_label'] : "Pesan Paket {$tier['name']}";
+                                        $isPopular = !empty($tier['popular']);
+                                    ?>
+                                    <div class="bg-white rounded-2xl border-2 <?= $isPopular ? 'border-[#8B0021] shadow-md shadow-rose-950/10' : 'border-gray-200 hover:border-gray-300' ?> p-5 flex flex-col justify-between space-y-4 relative group/tier transition-all">
+                                        
+                                        <?php if ($isPopular): ?>
+                                            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white font-mono text-[9px] font-bold uppercase px-3 py-0.5 rounded-full shadow-xs">
+                                                PALING POPULER
                                             </span>
                                         <?php endif; ?>
 
-                                        <div class="text-xs font-bold text-gray-800 uppercase mb-1">
-                                            <?= esc($tier['name']) ?>
-                                        </div>
-                                        <div class="text-xl font-extrabold text-gray-950 mb-2">
-                                            <?= esc($tier['price']) ?>
+                                        <div class="space-y-3">
+                                            <!-- Top Label + Price -->
+                                            <div class="border-b border-gray-100 pb-3 text-center">
+                                                <div class="text-[10px] font-mono font-bold tracking-widest text-[#8B0021] uppercase">
+                                                    PAKET WEBSITE
+                                                </div>
+                                                <h3 class="text-sm font-black text-gray-950 uppercase mt-0.5">
+                                                    <?= esc($tier['name']) ?>
+                                                </h3>
+                                                <div class="text-2xl font-black font-sans text-gray-950 mt-1">
+                                                    <?= esc($tier['price']) ?>
+                                                </div>
+                                                <div class="text-[10px] font-mono text-gray-400 mt-0.5">
+                                                    Perpanjangan: <?= esc($tier['renewal_price'] ?? '-') ?>
+                                                </div>
+                                            </div>
+
+                                            <!-- Masa Aktif & Estimasi Jadi -->
+                                            <div class="grid grid-cols-2 gap-2 text-center text-[10px]">
+                                                <div class="p-2 rounded-lg bg-gray-50 border border-gray-100">
+                                                    <span class="text-gray-400 block font-mono">Masa Aktif:</span>
+                                                    <strong class="text-gray-900"><?= esc($tier['active_period'] ?? '1 Tahun') ?></strong>
+                                                </div>
+                                                <div class="p-2 rounded-lg bg-gray-50 border border-gray-100">
+                                                    <span class="text-gray-400 block font-mono">Estimasi Jadi:</span>
+                                                    <strong class="text-gray-900"><?= esc($cleanDelivery) ?></strong>
+                                                </div>
+                                            </div>
+
+                                            <!-- Target Kesesuaian -->
+                                            <div class="p-2.5 rounded-lg bg-rose-50/50 border border-rose-100 text-[11px] leading-relaxed text-gray-700">
+                                                <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-[#8B0021] block mb-0.5">Cocok Untuk:</span>
+                                                <p class="line-clamp-2"><?= esc($tier['suitability'] ?? '-') ?></p>
+                                            </div>
+
+                                            <!-- CHECKLIST FITUR PREVIEW -->
+                                            <div class="space-y-1.5 pt-1 text-[11px] text-gray-600">
+                                                <?php 
+                                                    $feats = is_array($tier['features']) ? $tier['features'] : json_decode($tier['features_json'] ?? '[]', true);
+                                                    if (!empty($feats)):
+                                                        foreach (array_slice($feats, 0, 3) as $f):
+                                                ?>
+                                                    <div class="flex items-start gap-1.5 truncate">
+                                                        <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-500 shrink-0 mt-0.5"></i>
+                                                        <span class="truncate"><?= esc($f) ?></span>
+                                                    </div>
+                                                <?php 
+                                                        endforeach;
+                                                    endif; 
+                                                ?>
+                                            </div>
                                         </div>
 
-                                        <div class="text-[11px] text-gray-600 bg-gray-50 p-2 rounded mb-3 border border-gray-100">
-                                            <div>⏳ Masa aktif: <strong><?= esc($tier['active_period'] ?? '1 Tahun') ?></strong></div>
-                                            <div>Perpanjangan: <strong><?= esc($tier['renewal_price'] ?? '249k/th') ?></strong></div>
+                                        <!-- THE BUTTON CTA (Click to Edit Button Label & Tier Details) -->
+                                        <div class="space-y-2 pt-2 border-t border-gray-100">
+                                            <button type="button" onclick="openEditPricingModal(<?= htmlspecialchars(json_encode($tier), ENT_QUOTES, 'UTF-8') ?>)"
+                                                    class="w-full cursor-pointer py-3 px-3 rounded-xl text-white text-[11px] font-bold uppercase tracking-wider transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-1.5 hover:ring-2 hover:ring-rose-400 relative group/btn <?= $isPopular ? 'bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013]' : 'bg-gray-900 hover:bg-[#8B0021]' ?>"
+                                                    title="Klik untuk edit teks tombol dan konfigurasi paket">
+                                                <i data-lucide="message-circle" class="w-3.5 h-3.5 text-rose-200"></i>
+                                                <span class="truncate"><?= esc($tierBtnText) ?></span>
+                                                <i data-lucide="edit-2" class="w-3 h-3 text-rose-200 opacity-60 group-hover/btn:opacity-100"></i>
+                                            </button>
+
+                                            <div class="flex items-center justify-between text-[10px] text-gray-400 px-1">
+                                                <span>Klik tombol untuk edit</span>
+                                                <button type="button" onclick="openEditPricingModal(<?= htmlspecialchars(json_encode($tier), ENT_QUOTES, 'UTF-8') ?>)" class="text-[#8B0021] font-semibold hover:underline cursor-pointer">Edit Paket &rarr;</button>
+                                            </div>
                                         </div>
 
-                                        <div class="text-[10px] text-gray-500 border-t pt-2">
-                                            <strong>Cocok:</strong> <?= esc($tier['suitability'] ?? 'Bisnis berkembang') ?>
-                                        </div>
-
-                                        <div class="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-[#8B0021] font-semibold">
-                                            <span>Edit Rincian &amp; Fitur</span>
-                                            <span>&rarr;</span>
-                                        </div>
                                     </div>
                                 <?php endforeach; ?>
                             </div>
                         </div>
 
-                        <!-- 5. Cloud Database Status & Sync Card -->
-                        <div class="bg-white border-2 border-dashed border-gray-200 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <!-- 7. PHILOSOPHY & SLOGAN SECTION -->
+                        <div id="visual-philosophy" class="p-6 rounded-2xl bg-white border-2 border-dashed border-gray-200 hover:border-[#8B0021] text-center space-y-4 transition-all relative group">
+                            <span class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 bg-[#8B0021] text-white text-[9px] px-2 py-0.5 rounded shadow">Klik untuk edit slogan</span>
+
+                            <div class="space-y-2">
+                                <div onclick="openQuickEditModal('philosophy_quote_1', 'Slogan Filosofi Baris 1', '<?= addslashes(esc($copy['philosophy_quote_1'] ?? 'Bukan sekadar membangun teknologi.')) ?>', false)"
+                                     class="cursor-pointer hover:bg-rose-50/60 p-2 rounded-lg transition-all inline-block"
+                                     title="Klik untuk edit Slogan Baris 1">
+                                    <span class="text-xl sm:text-2xl font-black bg-gradient-to-r from-[#8B0021] via-[#c00030] to-[#50000F] bg-clip-text text-transparent">
+                                        <?= esc($copy['philosophy_quote_1'] ?? 'Bukan sekadar membangun teknologi.') ?>
+                                    </span>
+                                </div>
+                                <br>
+                                <div onclick="openQuickEditModal('philosophy_quote_2', 'Slogan Filosofi Baris 2', '<?= addslashes(esc($copy['philosophy_quote_2'] ?? 'Kami membangun solusi.')) ?>', false)"
+                                     class="cursor-pointer hover:bg-rose-50/60 p-2 rounded-lg transition-all inline-block"
+                                     title="Klik untuk edit Slogan Baris 2">
+                                    <span class="text-xl sm:text-2xl font-black text-gray-950">
+                                        <?= esc($copy['philosophy_quote_2'] ?? 'Kami membangun solusi.') ?>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div onclick="openQuickEditModal('consultation_button', 'Teks Tombol Konsultasi', '<?= addslashes(esc($copy['consultation_button'] ?? 'Konsultasikan Kebutuhan Anda')) ?>', false)"
+                                     class="cursor-pointer inline-flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs font-bold rounded-xl shadow-md hover:ring-2 hover:ring-rose-400 transition-all group/btn"
+                                     title="Klik untuk edit teks Tombol Slogan">
+                                    <span class="btn-label"><?= esc($copy['consultation_button'] ?? 'Konsultasikan Kebutuhan Anda') ?></span>
+                                    <i data-lucide="arrow-right" class="w-4 h-4 text-rose-200"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 8. CLOUD DATABASE SYNC STATUS -->
+                        <div class="bg-white border-2 border-dashed border-gray-200 rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xs">
                             <div class="space-y-1.5 text-left">
                                 <div class="flex items-center gap-2">
                                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -1465,15 +1742,48 @@
     </div>
 
     <!-- Modal 3: Edit Pricing Tier -->
+    <!-- Modal Universal Quick Edit (Bisa Edit Tulisan & Tombol Mana Saja Secara Langsung) -->
+    <div id="modal-quick-text" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl border border-gray-200 max-w-md w-full p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 rounded-full bg-[#8B0021] animate-pulse"></div>
+                    <h3 class="text-xs font-bold text-gray-900" id="quick-text-title">Edit Teks Landing Page</h3>
+                </div>
+                <button type="button" onclick="closeModal('modal-quick-text')" class="text-gray-400 hover:text-gray-700 cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <form action="/admin/update-copy" method="POST" class="space-y-3">
+                <?= csrf_field() ?>
+                <input type="hidden" name="redirect_tab" value="visual">
+
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-600 mb-1" id="quick-text-label">Teks / Tulisan</label>
+                    <input type="text" id="quick-text-input" class="w-full text-xs px-3 py-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-semibold shadow-xs">
+                    <textarea id="quick-text-textarea" rows="4" class="hidden w-full text-xs px-3 py-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 leading-relaxed shadow-xs"></textarea>
+                </div>
+
+                <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                    <span class="text-[10px] text-gray-400">Tersimpan otomatis ke database</span>
+                    <div class="flex gap-2">
+                        <button type="button" onclick="closeModal('modal-quick-text')" class="px-3 py-1.5 text-xs text-gray-500 hover:text-gray-700 cursor-pointer">Batal</button>
+                        <button type="submit" class="px-4 py-1.5 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg shadow-xs cursor-pointer">Simpan Perubahan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3: Edit Pricing Tier -->
     <div id="modal-pricing" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs hidden flex items-center justify-center p-4">
         <div class="bg-white rounded-xl border border-gray-200 max-w-lg w-full p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
-                <h3 class="text-xs font-bold text-gray-900" id="pricing-modal-title">Edit Paket Harga</h3>
+                <h3 class="text-xs font-bold text-gray-900" id="pricing-modal-title">Edit Paket Harga &amp; Tombol</h3>
                 <button type="button" onclick="closeModal('modal-pricing')" class="text-gray-400 hover:text-gray-700 cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
             </div>
             <form action="/admin/pricing/save" method="POST" class="space-y-3">
                 <?= csrf_field() ?>
                 <input type="hidden" name="id" id="price-input-id">
+                <input type="hidden" name="redirect_tab" id="price-input-redirect-tab" value="pricing">
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -1483,6 +1793,17 @@
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">Harga Tampilan (Display)</label>
                         <input type="text" name="price" id="price-input-price" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono font-bold text-[#8B0021]">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-600 mb-1">Teks Tombol CTA Paket</label>
+                        <input type="text" name="button_label" id="price-input-button" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-bold text-[#8B0021]" placeholder="PESAN PAKET STARTER (RP 349K)">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-600 mb-1">Estimasi Jadi</label>
+                        <input type="text" name="delivery_time" id="price-input-delivery" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-semibold" placeholder="1-2 Hari">
                     </div>
                 </div>
 
@@ -1499,12 +1820,17 @@
 
                 <div>
                     <label class="block text-[11px] font-medium text-gray-600 mb-1">Target Kesesuaian (Cocok Untuk)</label>
-                    <input type="text" name="suitability" id="price-input-suitability" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none">
+                    <textarea name="suitability" id="price-input-suitability" rows="2" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none"></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-600 mb-1">Template Pesan WhatsApp</label>
+                    <textarea name="wa_message" id="price-input-wamsg" rows="2" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono text-[11px]"></textarea>
                 </div>
 
                 <div>
                     <label class="block text-[11px] font-medium text-gray-600 mb-1">Daftar Fitur (1 baris per fitur)</label>
-                    <textarea name="features" id="price-input-features" rows="5" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono"></textarea>
+                    <textarea name="features" id="price-input-features" rows="4" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono"></textarea>
                 </div>
 
                 <div class="flex items-center gap-2 pt-1">
@@ -1718,7 +2044,10 @@
             'projects': 'Pencatatan Proyek & Invoice'
         };
 
+        let activeTab = 'visual';
+
         function switchTab(tabId) {
+            activeTab = tabId;
             document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.sidebar-btn').forEach(el => el.classList.remove('active'));
 
@@ -1760,15 +2089,44 @@
             openModal('modal-port-title-edit');
         }
 
+        // Universal Quick Edit Modal
+        function openQuickEditModal(key, label, value, isTextarea) {
+            document.getElementById('quick-text-title').innerText = 'Edit ' + label;
+            document.getElementById('quick-text-label').innerText = label;
+            const singleInput = document.getElementById('quick-text-input');
+            const textInput = document.getElementById('quick-text-textarea');
+            
+            if (isTextarea) {
+                singleInput.classList.add('hidden');
+                singleInput.removeAttribute('name');
+                textInput.classList.remove('hidden');
+                textInput.setAttribute('name', key);
+                textInput.value = value || '';
+                setTimeout(() => textInput.focus(), 100);
+            } else {
+                textInput.classList.add('hidden');
+                textInput.removeAttribute('name');
+                singleInput.classList.remove('hidden');
+                singleInput.setAttribute('name', key);
+                singleInput.value = value || '';
+                setTimeout(() => singleInput.focus(), 100);
+            }
+            openModal('modal-quick-text');
+        }
+
         // Pricing Modals
         function openEditPricingModal(tier) {
             document.getElementById('pricing-modal-title').innerText = 'Edit ' + (tier.name || 'Paket');
             document.getElementById('price-input-id').value = tier.id || '';
             document.getElementById('price-input-name').value = tier.name || '';
             document.getElementById('price-input-price').value = tier.price || '';
+            document.getElementById('price-input-button').value = tier.button_label || '';
+            document.getElementById('price-input-delivery').value = (tier.delivery_time || '1-2 Hari').replace(/[â€“–]/g, '-');
             document.getElementById('price-input-renewal').value = tier.renewal_price || '';
             document.getElementById('price-input-period').value = tier.active_period || '1 Tahun';
             document.getElementById('price-input-suitability').value = tier.suitability || '';
+            document.getElementById('price-input-wamsg').value = tier.wa_message || '';
+            document.getElementById('price-input-redirect-tab').value = (activeTab === 'visual' ? 'visual' : 'pricing');
             
             let feats = [];
             if (Array.isArray(tier.features)) {

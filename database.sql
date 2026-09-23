@@ -11,6 +11,43 @@ SET @sql = IF(@col_exists = 0, 'ALTER TABLE `contact_info` ADD COLUMN `instagram
 PREPARE stmt FROM @sql;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
+
+-- Migration: Add new site_copy columns if not exists
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'hero_cta_primary');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `hero_cta_primary` VARCHAR(100) DEFAULT 'Pesan Sekarang' AFTER `hero_subtitle`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'hero_cta_secondary');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `hero_cta_secondary` VARCHAR(100) DEFAULT 'Pelajari Selengkapnya' AFTER `hero_cta_primary`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'pricing_title');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `pricing_title` VARCHAR(255) DEFAULT 'PILIHAN PAKET LAYANAN WEBSITE' AFTER `portfolio_subtitle`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'pricing_subtitle');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `pricing_subtitle` VARCHAR(255) DEFAULT 'Solusi website lengkap dari profil pribadi hingga platform enterprise, transparan tanpa biaya tersembunyi.' AFTER `pricing_title`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'consultation_title');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `consultation_title` VARCHAR(255) DEFAULT 'TIDAK TAHU HARUS MULAI DARI MANA?' AFTER `pricing_subtitle`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'consultation_desc');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `consultation_desc` TEXT AFTER `consultation_title`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'consultation_button');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `consultation_button` VARCHAR(100) DEFAULT 'Konsultasikan Kebutuhan Anda' AFTER `consultation_desc`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'philosophy_quote_1');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `philosophy_quote_1` VARCHAR(255) DEFAULT 'Bukan sekadar membangun teknologi.' AFTER `consultation_button`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'philosophy_quote_2');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `philosophy_quote_2` VARCHAR(255) DEFAULT 'Kami membangun solusi.' AFTER `philosophy_quote_1`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 -- =========================================================
 
 -- ---------------------------------------------------------
@@ -37,10 +74,17 @@ CREATE TABLE IF NOT EXISTS `site_copy` (
   `hero_eyebrow` VARCHAR(255) DEFAULT 'SOLVE TECHNOLOGY AGENCY',
   `hero_headline` TEXT NOT NULL,
   `hero_subtitle` TEXT NOT NULL,
+  `hero_cta_primary` VARCHAR(100) DEFAULT 'Pesan Sekarang',
+  `hero_cta_secondary` VARCHAR(100) DEFAULT 'Pelajari Selengkapnya',
   `portfolio_title` VARCHAR(255) DEFAULT 'Portofolio Proyek Website Yang Telah Kami Bangun',
   `portfolio_subtitle` VARCHAR(255) DEFAULT 'Koleksi karya digital terbaik yang memadukan desain visual kelas dunia dengan performa teknologi tanpa kompromi.',
+  `pricing_title` VARCHAR(255) DEFAULT 'PILIHAN PAKET LAYANAN WEBSITE',
+  `pricing_subtitle` VARCHAR(255) DEFAULT 'Solusi website lengkap dari profil pribadi hingga platform enterprise, transparan tanpa biaya tersembunyi.',
   `consultation_title` VARCHAR(255) DEFAULT 'TIDAK TAHU HARUS MULAI DARI MANA?',
   `consultation_desc` TEXT,
+  `consultation_button` VARCHAR(100) DEFAULT 'Konsultasikan Kebutuhan Anda',
+  `philosophy_quote_1` VARCHAR(255) DEFAULT 'Bukan sekadar membangun teknologi.',
+  `philosophy_quote_2` VARCHAR(255) DEFAULT 'Kami membangun solusi.',
   `marquee_title` VARCHAR(255) DEFAULT 'DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG',
   `marquee_speed` INT DEFAULT 35,
   `marquee_logo_height` INT DEFAULT 46,
@@ -52,20 +96,41 @@ CREATE TABLE IF NOT EXISTS `site_copy` (
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `site_copy` (`id`, `hero_eyebrow`, `hero_headline`, `hero_subtitle`, `portfolio_title`, `portfolio_subtitle`, `consultation_title`, `consultation_desc`, `marquee_title`, `site_logo`, `profile_video`)
+INSERT INTO `site_copy` (`id`, `hero_eyebrow`, `hero_headline`, `hero_subtitle`, `hero_cta_primary`, `hero_cta_secondary`, `portfolio_title`, `portfolio_subtitle`, `pricing_title`, `pricing_subtitle`, `consultation_title`, `consultation_desc`, `consultation_button`, `philosophy_quote_1`, `philosophy_quote_2`, `marquee_title`, `site_logo`, `profile_video`)
 VALUES (
   1,
   'SOLVE TECHNOLOGY AGENCY',
   'Mengubah Tantangan Bisnis Menjadi Solusi Digital.',
   'Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.',
+  'Pesan Sekarang',
+  'Pelajari Selengkapnya',
   'Portofolio Proyek Website Yang Telah Kami Bangun',
   'Koleksi karya digital terbaik yang memadukan desain visual kelas dunia dengan performa teknologi tanpa kompromi.',
+  'PILIHAN PAKET LAYANAN WEBSITE',
+  'Solusi website lengkap dari profil pribadi hingga platform enterprise, transparan tanpa biaya tersembunyi.',
   'TIDAK TAHU HARUS MULAI DARI MANA?',
   'Konsultasikan masalah bisnis Anda secara gratis. Kami akan merekomendasikan langkah paling efisien untuk memulainya.',
+  'Konsultasikan Kebutuhan Anda',
+  'Bukan sekadar membangun teknologi.',
+  'Kami membangun solusi.',
   'DIPERCAYA OLEH BERBAGAI BISNIS & INSTITUSI BERKEMBANG',
   '/solveta-logo.png',
   '/videos/profile.mp4'
-) ON DUPLICATE KEY UPDATE `hero_eyebrow`=VALUES(`hero_eyebrow`), `hero_headline`=VALUES(`hero_headline`), `hero_subtitle`=VALUES(`hero_subtitle`), `portfolio_title`=VALUES(`portfolio_title`), `portfolio_subtitle`=VALUES(`portfolio_subtitle`);
+) ON DUPLICATE KEY UPDATE 
+  `hero_eyebrow`=VALUES(`hero_eyebrow`), 
+  `hero_headline`=VALUES(`hero_headline`), 
+  `hero_subtitle`=VALUES(`hero_subtitle`), 
+  `hero_cta_primary`=VALUES(`hero_cta_primary`),
+  `hero_cta_secondary`=VALUES(`hero_cta_secondary`),
+  `portfolio_title`=VALUES(`portfolio_title`), 
+  `portfolio_subtitle`=VALUES(`portfolio_subtitle`),
+  `pricing_title`=VALUES(`pricing_title`),
+  `pricing_subtitle`=VALUES(`pricing_subtitle`),
+  `consultation_title`=VALUES(`consultation_title`),
+  `consultation_desc`=VALUES(`consultation_desc`),
+  `consultation_button`=VALUES(`consultation_button`),
+  `philosophy_quote_1`=VALUES(`philosophy_quote_1`),
+  `philosophy_quote_2`=VALUES(`philosophy_quote_2`);
 
 -- ---------------------------------------------------------
 -- 3. Table: contact_info (Nomor WhatsApp, Instagram & Link Kontak)
@@ -130,7 +195,7 @@ VALUES
   '349K',
   '249k/tahun*',
   '1 Tahun',
-  '1–2 Hari',
+  '1-2 Hari',
   FALSE, 
   '',
   '["Maksimal 1 Halaman (tambah Rp 50k/Halaman)", "Revisi ringan 2x (Tidak berubah dari brief awal)", "Optimasi Speed (High Perform)", "Free Domain (.my.id, .site, .store, .xyz, .space, .fund, .shop)", "Free Hosting (Akses Dashboard, Tanpa login cPanel)", "Responsive Web (mobile friendly)", "SSL Security", "Full Garansi*"]', 
@@ -140,9 +205,9 @@ VALUES
   '{"light": "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)", "heavy": "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)", "extraPage": "Rp 50.000 / halaman"}',
   NULL,
   'kebutuhan pribadi: landing page, portofolio online, blog pribadi, CV digital, dan halaman profil.', 
-  'Pesan Paket Basic (Rp 349K)', 
+  'PESAN PAKET STARTER (RP 349K)', 
   'outline', 
-  'Halo SOLVETA, saya tertarik untuk memesan Paket BASIC Rp 349K.', 
+  'Halo SOLVETA, saya tertarik untuk memesan Paket STARTER Rp 349K.', 
   1
 ),
 (
@@ -153,7 +218,7 @@ VALUES
   '699K',
   '399k/tahun*',
   '1 Tahun',
-  '3–5 Hari',
+  '3-5 Hari',
   FALSE, 
   '',
   '["Maksimal 4 Halaman, 3 Halaman Utama 1 Dashboard (tambah Rp 50k/Halaman)", "Revisi ringan 2x (Tidak berubah dari brief awal)", "Optimasi Speed (2x lebih cepat)", "Free Domain (my.id .site .cloud .online .shop .blog .store .org .digital)", "Free Hosting (Akses Dashboard, Tanpa login cPanel)", "Responsive Web (mobile friendly)", "SSL Security", "SEO Basic", "Full Garansi"]', 
@@ -163,7 +228,7 @@ VALUES
   '{"light": "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)", "heavy": "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)", "extraPage": "Rp 50.000 / halaman"}',
   NULL,
   'kebutuhan bisnis kecil, umkm, home industry', 
-  'Pilih Standard', 
+  'PESAN PAKET STANDARD (RP 699K)', 
   'outline', 
   'Halo SOLVETA, saya tertarik dengan paket Standard Rp 699K. Mohon bantu konsultasi konsep websitenya.', 
   2
@@ -176,7 +241,7 @@ VALUES
   '964K',
   '399k/tahun*',
   '1 Tahun',
-  '+-5 Hari',
+  '3-5 Hari',
   FALSE, 
   '',
   '["Maksimal 7 Halaman (tambah Rp 50k/Halaman)", "Revisi ringan 2x (Tidak berubah dari brief awal)", "Optimasi Speed (3x lebih cepat)", "Free Desain Mockup", "Free Domain (.store .org .net .digital .it.com .media .agency .company)", "Free Hosting (Akses Dashboard, Tanpa login cPanel)", "2 Email Bisnis (nama@domain.com)", "Responsive Web (mobile friendly)", "SSL Security", "SEO Friendly", "Full Garansi*"]', 
@@ -186,7 +251,7 @@ VALUES
   '{"light": "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)", "heavy": "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)", "extraPage": "Rp 50.000 / halaman"}',
   NULL,
   'company profile & bisnis produk', 
-  'Pilih Premium', 
+  'PESAN PAKET PREMIUM (RP 964K)', 
   'outline', 
   'Halo SOLVETA, saya tertarik dengan paket Premium Rp 964K. Bagaimana proses pengerjaannya?', 
   3
@@ -209,7 +274,7 @@ VALUES
   '{"light": "Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)", "heavy": "Rp 50.000 (merubah halaman, menambah halaman, atau struktur)", "extraPage": "Rp 50.000 / halaman"}',
   NULL,
   'Start up, UMKM, CV, PT, Organisasi/Yayasan, Professional (siapa pun yang mempunyai kebutuhan layanan khusus yang tidak sesuai dengan 3 paket sebelumnya)', 
-  'Hubungi Kami', 
+  'KONSULTASI PLATINUM', 
   'red', 
   'Halo SOLVETA, saya ingin mendiskusikan kebutuhan Custom Website & Sistem Khusus untuk bisnis kami.', 
   4

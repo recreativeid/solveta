@@ -89,14 +89,14 @@
             <a href="<?= $waOrderGeneral ?>" target="_blank" rel="noopener noreferrer"
                class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:via-[#85001D] hover:to-[#5E0013] text-white text-sm font-bold rounded-xl shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 group cursor-pointer border border-rose-800/30 font-sans">
                 <i data-lucide="message-circle" class="w-4 h-4 text-rose-200 group-hover:scale-110 transition-transform"></i>
-                <span>Pesan Sekarang</span>
+                <span><?= esc($copy['hero_cta_primary'] ?? 'Pesan Sekarang') ?></span>
                 <i data-lucide="arrow-right" class="w-4 h-4 text-rose-200 group-hover:translate-x-1 transition-transform"></i>
             </a>
 
             <!-- 2. Tombol Pelajari Selengkapnya -->
             <a href="#problems" 
                class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-3.5 bg-white dark:bg-white/10 hover:bg-gray-50 dark:hover:bg-white/20 backdrop-blur-md border border-gray-200 dark:border-white/20 hover:border-gray-300 dark:hover:border-white/40 text-gray-800 dark:text-white text-sm font-bold rounded-xl shadow-2xs hover:shadow-xs transition-all duration-300 cursor-pointer font-sans">
-                <span>Pelajari Selengkapnya</span>
+                <span><?= esc($copy['hero_cta_secondary'] ?? 'Pelajari Selengkapnya') ?></span>
                 <i data-lucide="arrow-down" class="w-4 h-4 text-gray-400 dark:text-rose-300 animate-bounce"></i>
             </a>
         </div>
@@ -634,13 +634,23 @@
 
     </div>
 
-    <!-- Bottom Consultation Link -->
-    <div class="mt-8 text-center max-w-[1240px] mx-auto px-4 sm:px-6">
-        <a href="<?= $waOrderGeneral ?>" target="_blank" rel="noopener noreferrer"
-           class="inline-flex items-center gap-2 text-xs font-bold font-sans text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 dark:hover:bg-rose-900/60 border border-rose-200/80 dark:border-rose-800/80 px-5 py-2.5 rounded-full transition-colors shadow-2xs">
-            <span>Punya Kebutuhan Sistem / Website Serupa? Diskusikan dengan Kami</span>
-            <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-        </a>
+    <!-- Bottom Consultation Banner -->
+    <div class="mt-12 text-center max-w-[840px] mx-auto px-4 sm:px-6">
+        <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#11121B] border border-gray-200 dark:border-gray-800 shadow-sm space-y-3">
+            <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider font-sans">
+                <?= esc($copy['consultation_title'] ?? 'TIDAK TAHU HARUS MULAI DARI MANA?') ?>
+            </h3>
+            <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-xl mx-auto leading-relaxed">
+                <?= esc($copy['consultation_desc'] ?? 'Konsultasikan masalah bisnis Anda secara gratis. Kami akan merekomendasikan langkah paling efisien untuk memulainya.') ?>
+            </p>
+            <div class="pt-2">
+                <a href="<?= $waOrderGeneral ?>" target="_blank" rel="noopener noreferrer"
+                   class="inline-flex items-center gap-2 text-xs font-bold font-sans text-white bg-[#8B0021] hover:bg-[#a30026] px-6 py-3 rounded-xl transition-all shadow-md">
+                    <span><?= esc($copy['consultation_button'] ?? 'Konsultasikan Kebutuhan Anda') ?></span>
+                    <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                </a>
+            </div>
+        </div>
     </div>
 
 </section>
@@ -658,10 +668,10 @@
                 PILIHAN PAKET &amp; RINCIAN LENGKAP
             </span>
             <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight mb-3 uppercase">
-                INFORMASI RINCI SETIAP PAKET
+                <?= esc($copy['pricing_title'] ?? 'INFORMASI RINCI SETIAP PAKET') ?>
             </h2>
             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-                Rincian lengkap masing-masing 4 paket website dengan tata letak minimalis, batas garis tepi yang tegas, dan transparansi spesifikasi tanpa biaya tersembunyi.
+                <?= esc($copy['pricing_subtitle'] ?? 'Rincian lengkap masing-masing 4 paket website dengan tata letak minimalis, batas garis tepi yang tegas, dan transparansi spesifikasi tanpa biaya tersembunyi.') ?>
             </p>
         </div>
 
@@ -686,7 +696,7 @@
                     $tierWaMsg = !empty($tier['wa_message']) ? $tier['wa_message'] : "Halo SOLVETA, saya tertarik untuk memesan Paket {$tier['name']} {$tier['price']}.";
                     $tierWaUrl = "https://wa.me/{$waClean}?text=" . rawurlencode($tierWaMsg);
                     $priceBadge = !empty($tier['price_badge']) ? $tier['price_badge'] : preg_replace('/Rp\s*/i', '', $tier['price']);
-                    $delivery = !empty($tier['delivery_time']) ? $tier['delivery_time'] : '3–5 Hari';
+                    $delivery = !empty($tier['delivery_time']) ? str_replace(['â€“', '–'], '-', $tier['delivery_time']) : '1-2 Hari';
                     $activePeriod = !empty($tier['active_period']) ? $tier['active_period'] : '1 Tahun';
                     $renewal = !empty($tier['renewal_price']) ? $tier['renewal_price'] : '249k/tahun*';
                     $checklist = !empty($tier['checklist']) ? $tier['checklist'] : [];
@@ -1003,10 +1013,10 @@
             <div class="pt-2 pb-2">
                 <div class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight leading-snug font-sans">
                     <span class="bg-gradient-to-r from-[#8B0021] via-[#c00030] dark:via-rose-400 to-[#50000F] dark:to-rose-500 bg-clip-text text-transparent">
-                        Bukan sekadar membangun teknologi.
+                        <?= esc($copy['philosophy_quote_1'] ?? 'Bukan sekadar membangun teknologi.') ?>
                     </span>
                     <br />
-                    <span class="text-gray-950 dark:text-white">Kami membangun solusi.</span>
+                    <span class="text-gray-950 dark:text-white"><?= esc($copy['philosophy_quote_2'] ?? 'Kami membangun solusi.') ?></span>
                 </div>
             </div>
 
@@ -1014,7 +1024,7 @@
             <div class="pt-2">
                 <a href="<?= $waOrderGeneral ?>" target="_blank" rel="noopener noreferrer"
                    class="inline-flex items-center gap-2.5 px-8 py-3.5 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] text-white text-xs sm:text-sm font-bold rounded-xl shadow-md hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 font-sans">
-                    <span>Konsultasikan Kebutuhan Anda</span>
+                    <span><?= esc($copy['consultation_button'] ?? 'Konsultasikan Kebutuhan Anda') ?></span>
                     <i data-lucide="arrow-right" class="w-4 h-4 text-rose-200"></i>
                 </a>
             </div>
