@@ -8,7 +8,10 @@ class OrderModel extends Model
 {
     protected $table = 'customer_orders';
     protected $primaryKey = 'id';
+    protected $useAutoIncrement = false;
+    protected $keyType = 'string';
     protected $allowedFields = [
+        'id',
         'full_name',
         'whatsapp_number',
         'brand_name',
@@ -25,15 +28,14 @@ class OrderModel extends Model
         'website_and_domain_name',
         'business_profile',
         'status',
+        'created_at',
     ];
-    protected $useTimestamps = true;
-    protected $createdField  = 'created_at';
-    protected $updatedField  = '';
+    protected $useTimestamps = false;
 
     public function getOrders(): array
     {
         try {
-            $rows = $this->orderBy('id', 'DESC')->findAll();
+            $rows = $this->orderBy('created_at', 'DESC')->findAll();
             return !empty($rows) ? array_map(function($r){ return (array)$r; }, $rows) : [];
         } catch (\Throwable $e) {
             log_message('error', 'OrderModel error: ' . $e->getMessage());

@@ -326,10 +326,10 @@ VALUES
 ON DUPLICATE KEY UPDATE `logo_image`=VALUES(`logo_image`), `scale`=VALUES(`scale`);
 
 -- ---------------------------------------------------------
--- 7. Table: customer_orders (Formulir Pemesanan 16 Field)
+-- 7. Table: customer_orders (Formulir Pemesanan 16 Field — Synced from Supabase)
 -- ---------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `customer_orders` (
-  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `id` VARCHAR(50) PRIMARY KEY,
   `full_name` VARCHAR(150) NOT NULL,
   `whatsapp_number` VARCHAR(50) NOT NULL,
   `brand_name` VARCHAR(150) NOT NULL,
@@ -345,9 +345,17 @@ CREATE TABLE IF NOT EXISTS `customer_orders` (
   `special_notes` TEXT,
   `website_and_domain_name` VARCHAR(150),
   `business_profile` TEXT,
-  `status` ENUM('Baru', 'Dihubungi', 'Selesai') DEFAULT 'Baru',
+  `status` VARCHAR(50) DEFAULT 'Baru',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `customer_orders` (`id`, `full_name`, `whatsapp_number`, `brand_name`, `business_description`, `selected_package`, `website_type`, `pages_needed`, `design_color_theme`, `has_domain`, `has_logo`, `product_photos`, `example_websites`, `special_notes`, `website_and_domain_name`, `business_profile`, `status`, `created_at`)
+VALUES
+('sub-1788784935470', 'TB hendy yustana', '083172988502', 'BUSERINFO.CO.ID', 'PORTAL BERITA', 'Standard — 549k', 'Company Profile Bisnis / Perusahaan', 'Beranda / Home, Tentang Kami, Layanan / Produk, Kontak & WhatsApp', 'Modern Minimalist Putih & Bersih', 'Belum punya (ingin dibantu carikan oleh SOLVETA)', 'Sudah punya logo (file siap dikirim)', 'File terunggah (2 file): 1001016902.jpg, 1000986321.png', '-', '-', 'BuserInfo.co.id', 'Pemburu berita kasus mencari kebenaran', 'Baru', '2026-09-07 19:42:00'),
+('sub-1788526035867', 'Afrizal', '081266234486', 'Kabarpauhpadang.id', 'Media online jurnalis', 'Basic — 299k', 'Company Profile Bisnis / Perusahaan', 'Beranda / Home, Tentang Kami, Layanan / Produk, Kontak & WhatsApp, Galeri / Portofolio, Artikel / Blog, Testimoni Klien', 'Modern Minimalist Putih & Bersih', 'Belum punya (ingin dibantu carikan oleh SOLVETA)', 'Sudah punya logo (file siap dikirim)', 'Tidak ada foto khusus (gunakan ilustrasi/stok foto profesional)', '-', '-', 'id', '-', 'Baru', '2026-09-04 19:47:00'),
+('sub-1788434577062', 'Budi Santoso', '081298765432', 'Kopi Harum Nusantara', 'Kedai kopi artisan dan roastery modern nusantara', 'Standard — 549k', 'Company Profile Bisnis / Perusahaan', 'Beranda / Home, Tentang Kami, Layanan / Produk, Kontak & WhatsApp', 'Warm Earth Tone & Brown Minimalist', 'Belum punya (ingin dibantu carikan oleh SOLVETA)', 'Sudah punya logo (file siap dikirim)', 'Tidak ada foto khusus (gunakan ilustrasi/stok foto profesional)', '-', '-', 'kopiharum.id', 'Berdiri sejak 2021 dengan biji kopi pilihan petani nusantara', 'Baru', '2026-09-03 18:22:00'),
+('sub-2', 'Siti Rahmawati', '085798765432', 'Glow & Co Beauty', 'Klinik estetika medis dan skincare organik terdaftar BPOM.', 'Premium (849k)', 'Company Profile & Reservasi Treatment', 'Beranda, Layanan Dokter, Treatment & Biaya, Testimoni, Kontak', 'Clean White, Pastel Pink, dan Sage Green', 'Sudah punya (glowandco.id)', 'Sudah punya', 'Tersedia di Google Drive klinik', 'https://erha.co.id', 'Perlu form booking jadwal dokter dengan notifikasi WA otomatis.', 'glowandco.id', 'Klinik perawatan kulit dengan 2 cabang di Jakarta Selatan.', 'Dihubungi', '2026-09-01 16:45:00')
+ON DUPLICATE KEY UPDATE `full_name`=VALUES(`full_name`), `status`=VALUES(`status`);
 
 -- ---------------------------------------------------------
 -- 8. Table: service_profit_analyses (Analisis HPP & Profit — Updated prices)
@@ -410,7 +418,7 @@ VALUES
 );
 
 -- ---------------------------------------------------------
--- 9. Table: project_transactions (Manajemen Invoice Klien)
+-- 9. Table: project_transactions (Manajemen Invoice Klien — Synced from Supabase)
 -- ---------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `project_transactions` (
   `id` VARCHAR(50) PRIMARY KEY,
@@ -430,33 +438,10 @@ CREATE TABLE IF NOT EXISTS `project_transactions` (
 
 INSERT INTO `project_transactions` (`id`, `invoice_number`, `date`, `customer_name`, `phone_number`, `website_name`, `website_link`, `service_price`, `status`, `cost_components_json`, `notes`)
 VALUES
-(
-  'tx-1', 
-  'INV-2026-001', 
-  '2026-09-01', 
-  'Bambang Wijaya', 
-  '081234567890', 
-  'Cuango Fashion Official', 
-  'https://cuango.com', 
-  749000, 
-  'Terlaksana', 
-  '[{"id": "comp-1", "name": "Pembuatan Website Premium 10 Halaman", "cost": 749000, "note": "Termasuk Domain .com & SSL"}, {"id": "comp-2", "name": "Setup Akun WhatsApp Direct Checkout", "cost": 0, "note": "Gratis Bonus"}]', 
-  'Pembayaran lunas via transfer BCA.'
-),
-(
-  'tx-2', 
-  'INV-2026-002', 
-  '2026-09-15', 
-  'Siti Rahmawati', 
-  '085678901234', 
-  'Haltea Herbal Wellness', 
-  'https://haltea.com', 
-  549000, 
-  'Terlaksana', 
-  '[{"id": "comp-1", "name": "Pembuatan Website Standard Multi-Page", "cost": 549000, "note": "Termasuk Domain .com"}]', 
-  'Proyek selesai tepat waktu 4 hari kerja.'
-)
-ON DUPLICATE KEY UPDATE `invoice_number`=VALUES(`invoice_number`);
+('proj-1788784935470', 'INV-20260907-189', '2026-09-07', 'TB hendy yustana', '083172988502', 'BUSERINFO.CO.ID', '', 0, 'Progress', '[]', ''),
+('proj-1788526035867', 'INV-20260904-664', '2026-09-04', 'Afrizal', '081266234486', 'Kabarpauhpadang.id', '', 0, 'Progress', '[]', ''),
+('proj-1788434577062', 'INV-20260903-896', '2026-09-03', 'Budi Santoso', '081298765432', 'Kopi Harum Nusantara', '', 0, 'Progress', '[]', '')
+ON DUPLICATE KEY UPDATE `invoice_number`=VALUES(`invoice_number`), `customer_name`=VALUES(`customer_name`), `status`=VALUES(`status`);
 
 -- ---------------------------------------------------------
 -- 10. Table: addon_services (Layanan Tambahan — from Supabase)
