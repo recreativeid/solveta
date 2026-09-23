@@ -52,6 +52,7 @@ c:\Users\user\Downloads\solveta/
 │   │   ├── SiteCopyModel.php       # Model tabel `site_copy` (headline, subtitle, marquee speed/height/scale)
 │   │   ├── ContactModel.php        # Model tabel `contact_info` (whatsapp_number, display, website, email, instagram)
 │   │   ├── PricingModel.php        # Model tabel `pricing_tiers` (4 paket: Starter, Standard, Premium, Platinum)
+│   │   ├── AddonModel.php          # Model tabel `addon_services` (poin biaya layanan tambahan dinamis)
 │   │   ├── PortfolioModel.php      # Model tabel `portfolio_items` (karya digital, kategori, link live, gambar)
 │   │   ├── BrandModel.php          # Model tabel `client_brands` (10 logo klien tersimpan, skala, sort order)
 │   │   ├── OrderModel.php          # Model tabel `customer_orders` (submisi formulir brief 16 field)
