@@ -7,6 +7,7 @@ use App\Models\ContactModel;
 use App\Models\PricingModel;
 use App\Models\PortfolioModel;
 use App\Models\BrandModel;
+use App\Models\AddonModel;
 
 class Home extends BaseController
 {
@@ -17,6 +18,7 @@ class Home extends BaseController
         $pricingModel = new PricingModel();
         $portfolioModel = new PortfolioModel();
         $brandModel = new BrandModel();
+        $addonModel = new AddonModel();
 
         $data = [
             'copy' => $copyModel->getCopy(),
@@ -24,6 +26,7 @@ class Home extends BaseController
             'tiers' => $pricingModel->getTiers(),
             'portfolios' => $portfolioModel->getItems(),
             'brands' => $brandModel->getBrands(),
+            'addons' => $addonModel->getAddons(),
             'title' => 'SOLVETA — Mengubah Tantangan Bisnis Menjadi Solusi Digital',
         ];
 

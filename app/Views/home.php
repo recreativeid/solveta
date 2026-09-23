@@ -938,6 +938,154 @@
             <?php endforeach; ?>
         </div>
 
+        <!-- 6.1. CUSTOM PACKAGE BANNER (Menerima Layanan Paket Custom) -->
+        <div id="paket-custom" class="mt-12 bg-gradient-to-br from-white via-rose-50/30 to-white dark:from-[#11121B] dark:via-rose-950/20 dark:to-[#11121B] rounded-3xl border-2 border-[#8B0021]/30 dark:border-rose-900/50 p-6 sm:p-10 shadow-lg shadow-rose-950/5 relative overflow-hidden">
+            <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                <div class="space-y-4 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8B0021]/10 dark:bg-rose-900/40 border border-[#8B0021]/20 dark:border-rose-700/40 text-[10px] font-mono font-bold uppercase tracking-widest text-[#8B0021] dark:text-rose-400">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        <span><?= esc($copy['custom_package_title'] ?? 'LAYANAN KHUSUS & ENTERPRISE') ?></span>
+                    </div>
+                    
+                    <h3 class="text-xl sm:text-2xl lg:text-3xl font-extrabold text-gray-950 dark:text-white tracking-tight uppercase">
+                        <?= esc($copy['custom_package_headline'] ?? 'Menerima Layanan Paket Custom Website') ?>
+                    </h3>
+                    
+                    <p class="text-xs sm:text-sm text-gray-600 dark:text-gray-300 leading-relaxed font-sans">
+                        <?= esc($copy['custom_package_desc'] ?? 'Solusi website tanpa batasan halaman dengan kustomisasi fitur penuh, integrasi sistem, dan penyesuaian khusus. Biaya investasi fleksibel dan transparan mengikuti konsep dan spesifikasi website yang ingin Anda bangun.') ?>
+                    </p>
+
+                    <!-- 3 Core Highlights requested by user -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div class="p-3.5 rounded-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200/80 dark:border-gray-800 shadow-2xs">
+                            <div class="flex items-center gap-2 text-[#8B0021] dark:text-rose-400 font-bold text-xs uppercase mb-1">
+                                <i data-lucide="infinity" class="w-4 h-4"></i>
+                                <span>Tanpa Batasan</span>
+                            </div>
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-snug">
+                                Bebas tentukan jumlah halaman &amp; struktur sesuai skala bisnis.
+                            </p>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200/80 dark:border-gray-800 shadow-2xs">
+                            <div class="flex items-center gap-2 text-[#8B0021] dark:text-rose-400 font-bold text-xs uppercase mb-1">
+                                <i data-lucide="cpu" class="w-4 h-4"></i>
+                                <span>Custom Kebutuhan</span>
+                            </div>
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-snug">
+                                Fitur sistem spesifik, integrasi API, database, dan otomasi.
+                            </p>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-white/80 dark:bg-gray-900/80 border border-gray-200/80 dark:border-gray-800 shadow-2xs">
+                            <div class="flex items-center gap-2 text-[#8B0021] dark:text-rose-400 font-bold text-xs uppercase mb-1">
+                                <i data-lucide="sliders" class="w-4 h-4"></i>
+                                <span>Biaya Sesuai Konsep</span>
+                            </div>
+                            <p class="text-[11px] text-gray-500 dark:text-gray-400 leading-snug">
+                                Perhitungan biaya proporsional mengikuti konsep yang dibuat.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side CTA -->
+                <div class="lg:w-80 flex-shrink-0 flex flex-col justify-center items-center text-center p-6 rounded-2xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-sm space-y-4">
+                    <div class="w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/80 text-[#8B0021] dark:text-rose-400 flex items-center justify-center">
+                        <i data-lucide="message-square" class="w-6 h-6"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-900 dark:text-white uppercase">Punya Konsep Sendiri?</h4>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">Konsultasikan kebutuhan teknis &amp; rancangan Anda langsung dengan developer.</p>
+                    </div>
+                    <a href="https://wa.me/<?= $waClean ?>?text=<?= rawurlencode('Halo SOLVETA, saya ingin berkonsultasi mengenai Layanan Paket Custom Website. Saya memiliki konsep dan kebutuhan fitur khusus tanpa batasan halaman.') ?>"
+                       target="_blank" rel="noopener noreferrer"
+                       class="w-full inline-flex items-center justify-center gap-2 py-3 px-5 rounded-xl text-white text-xs font-bold uppercase tracking-wider bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] transition-all shadow-md shadow-rose-950/30 hover:scale-[1.02] cursor-pointer">
+                        <i data-lucide="message-circle" class="w-4 h-4 text-rose-200"></i>
+                        <span><?= esc($copy['custom_package_button'] ?? 'Konsultasikan Paket Custom') ?></span>
+                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-rose-200"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6.2. BIAYA LAYANAN TAMBAHAN (ADD-ON SERVICES) -->
+        <?php if (!empty($addons)): ?>
+            <div id="layanan-tambahan" class="mt-12 space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-3 border-b border-gray-200 dark:border-gray-800 pb-4">
+                    <div>
+                        <div class="text-[10px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase">
+                            BIAYA LAYANAN TAMBAHAN &amp; ADD-ON
+                        </div>
+                        <h3 class="text-lg sm:text-xl font-extrabold text-gray-950 dark:text-white uppercase tracking-tight mt-1">
+                            Transparansi Biaya Penyesuaian &amp; Fitur Tambahan
+                        </h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                            Tambahkan halaman ekstra, revisi khusus di luar brief awal, atau fitur integrasi sesuai kebutuhan tanpa biaya tersembunyi.
+                        </p>
+                    </div>
+                    <div class="text-right hidden sm:block">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 text-[10px] font-mono font-bold text-emerald-700 dark:text-emerald-400">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i>
+                            <span>Harga Transparan</span>
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Grid of Addon Cards -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <?php foreach ($addons as $addon): ?>
+                        <?php 
+                            $addonWaUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo SOLVETA, saya ingin menanyakan / memesan Layanan Tambahan: {$addon['name']} ({$addon['price_description']}).");
+                        ?>
+                        <div class="bg-white dark:bg-[#11121B] rounded-2xl border border-gray-200 dark:border-gray-800 p-4.5 flex flex-col justify-between hover:border-[#8B0021]/50 dark:hover:border-rose-700/50 hover:shadow-md transition-all group">
+                            <div class="space-y-3">
+                                <div class="flex items-start justify-between gap-2">
+                                    <span class="w-8 h-8 rounded-lg bg-rose-50 dark:bg-rose-950/60 text-[#8B0021] dark:text-rose-400 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
+                                        <?php if (($addon['category'] ?? '') === 'page'): ?>
+                                            <i data-lucide="file-plus-2" class="w-4 h-4"></i>
+                                        <?php elseif (($addon['category'] ?? '') === 'revision'): ?>
+                                            <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                                        <?php elseif (($addon['category'] ?? '') === 'domain'): ?>
+                                            <i data-lucide="globe" class="w-4 h-4"></i>
+                                        <?php elseif (($addon['category'] ?? '') === 'email'): ?>
+                                            <i data-lucide="mail" class="w-4 h-4"></i>
+                                        <?php else: ?>
+                                            <i data-lucide="layers" class="w-4 h-4"></i>
+                                        <?php endif; ?>
+                                    </span>
+                                    <span class="inline-block px-2.5 py-1 rounded-lg bg-[#8B0021]/10 dark:bg-rose-950/80 border border-[#8B0021]/20 dark:border-rose-800/60 font-mono font-bold text-[#8B0021] dark:text-rose-400 text-[11px] text-right">
+                                        <?= esc($addon['price_description']) ?>
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-tight">
+                                        <?= esc($addon['name']) ?>
+                                    </h4>
+                                    <?php if (!empty($addon['description'])): ?>
+                                        <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">
+                                            <?= esc($addon['description']) ?>
+                                        </p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <div class="pt-3 mt-3 border-t border-gray-100 dark:border-gray-800/80 flex items-center justify-between text-[10px]">
+                                <span class="text-gray-400 font-mono">Biaya Tambahan</span>
+                                <a href="<?= $addonWaUrl ?>" target="_blank" rel="noopener noreferrer"
+                                   class="text-[#8B0021] dark:text-rose-400 font-semibold hover:underline flex items-center gap-1">
+                                    <span>Pesan via WA</span>
+                                    <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                                </a>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <!-- Global Assurance Banner -->
         <div class="mt-12 border border-gray-200 dark:border-gray-800 rounded-2xl bg-white dark:bg-gray-900 p-5 sm:p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs text-gray-600 dark:text-gray-400 shadow-2xs font-sans">
             <div class="flex items-start gap-3">

@@ -11,6 +11,7 @@ use App\Models\OrderModel;
 use App\Models\ProfitModel;
 use App\Models\TransactionModel;
 use App\Models\UserModel;
+use App\Models\AddonModel;
 
 class Admin extends BaseController
 {
@@ -24,6 +25,7 @@ class Admin extends BaseController
         $orderModel = new OrderModel();
         $profitModel = new ProfitModel();
         $transactionModel = new TransactionModel();
+        $addonModel = new AddonModel();
 
         $data = [
             'copy' => $copyModel->getCopy(),
@@ -34,6 +36,7 @@ class Admin extends BaseController
             'orders' => $orderModel->getOrders(),
             'profits' => $profitModel->getAnalyses(),
             'transactions' => $transactionModel->getTransactions(),
+            'addons' => $addonModel->getAddons(),
             'title' => 'Admin CMS & Portal Manajemen — SOLVETA',
             'admin_name' => session()->get('admin_name') ?? 'Admin Solveta',
         ];
@@ -59,6 +62,10 @@ class Admin extends BaseController
             'consultation_title',
             'consultation_desc',
             'consultation_button',
+            'custom_package_title',
+            'custom_package_headline',
+            'custom_package_desc',
+            'custom_package_button',
             'philosophy_quote_1',
             'philosophy_quote_2',
             'marquee_title',
@@ -298,7 +305,76 @@ class Admin extends BaseController
         } catch (\Throwable $e) {
             log_message('error', 'Delete pricing DB error: ' . $e->getMessage());
         }
-        return redirect()->to('/admin#tab-pricing')->with('success', 'Paket harga berhasil dihapus!');
+        $redirectTab = $this->request->getGetPost('redirect_tab') ?: 'pricing';
+        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', 'Paket harga berhasil dihapus!');
+    }
+
+    public function movePricing($id, $direction)
+    {
+        $pricingModel = new PricingModel();
+        $pricingModel->moveTier($id, $direction);
+
+        $redirectTab = $this->request->getGetPost('redirect_tab') ?: 'visual';
+        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', 'Urutan posisi paket harga berhasil diperbarui!');
+    }
+
+    // ==========================================
+    // ADDON SERVICES CRUD
+    // ==========================================
+    public function saveAddon()
+    {
+        $addonModel = new AddonModel();
+        $id = $this->request->getPost('id');
+        $isNew = empty($id);
+
+        if ($isNew) {
+            $id = 'addon-' . time() . '-' . rand(100, 999);
+        }
+
+        $data = [
+            'id' => $id,
+            'name' => (string) $this->request->getPost('name'),
+            'category' => (string) $this->request->getPost('category') ?: 'general',
+            'price_description' => (string) $this->request->getPost('price_description'),
+            'base_price' => (int) preg_replace('/[^0-9]/', '', (string) $this->request->getPost('price_description') ?: '0'),
+            'description' => (string) $this->request->getPost('description'),
+            'sort_order' => (int) ($this->request->getPost('sort_order') ?: 1),
+        ];
+
+        try {
+            $existing = $addonModel->find($id);
+            if ($existing) {
+                $addonModel->update($id, $data);
+            } else {
+                $addonModel->insert($data);
+            }
+        } catch (\Throwable $e) {
+            log_message('error', 'Save addon DB error: ' . $e->getMessage());
+        }
+
+        $redirectTab = $this->request->getPost('redirect_tab') ?: 'pricing';
+        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', 'Layanan tambahan berhasil disimpan!');
+    }
+
+    public function deleteAddon($id)
+    {
+        $addonModel = new AddonModel();
+        try {
+            $addonModel->delete($id);
+        } catch (\Throwable $e) {
+            log_message('error', 'Delete addon DB error: ' . $e->getMessage());
+        }
+        $redirectTab = $this->request->getGetPost('redirect_tab') ?: 'pricing';
+        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', 'Layanan tambahan berhasil dihapus!');
+    }
+
+    public function moveAddon($id, $direction)
+    {
+        $addonModel = new AddonModel();
+        $addonModel->moveAddon($id, $direction);
+
+        $redirectTab = $this->request->getGetPost('redirect_tab') ?: 'pricing';
+        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', 'Urutan layanan tambahan berhasil diubah!');
     }
 
     // ==========================================

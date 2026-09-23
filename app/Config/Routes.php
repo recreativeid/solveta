@@ -49,6 +49,12 @@ $routes->group('admin', ['filter' => 'auth'], static function ($routes) {
     // Pricing
     $routes->post('pricing/save', 'Admin::savePricing');
     $routes->post('pricing/delete/(:segment)', 'Admin::deletePricing/$1');
+    $routes->post('pricing/move/(:segment)/(:segment)', 'Admin::movePricing/$1/$2');
+
+    // Addon Services
+    $routes->post('addon/save', 'Admin::saveAddon');
+    $routes->post('addon/delete/(:segment)', 'Admin::deleteAddon/$1');
+    $routes->post('addon/move/(:segment)/(:segment)', 'Admin::moveAddon/$1/$2');
 
     // Brands / Marquee
     $routes->post('brand/save', 'Admin::saveBrand');

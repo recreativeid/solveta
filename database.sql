@@ -41,12 +41,33 @@ SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA =
 SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `consultation_button` VARCHAR(100) DEFAULT 'Konsultasikan Kebutuhan Anda' AFTER `consultation_desc`", 'SELECT 1');
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'custom_package_title');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `custom_package_title` VARCHAR(255) DEFAULT 'LAYANAN KHUSUS & ENTERPRISE' AFTER `consultation_button`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'custom_package_headline');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `custom_package_headline` VARCHAR(255) DEFAULT 'Menerima Layanan Paket Custom Website' AFTER `custom_package_title`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'custom_package_desc');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `custom_package_desc` TEXT AFTER `custom_package_headline`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'custom_package_button');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `custom_package_button` VARCHAR(100) DEFAULT 'Konsultasikan Paket Custom' AFTER `custom_package_desc`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
 SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'philosophy_quote_1');
-SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `philosophy_quote_1` VARCHAR(255) DEFAULT 'Bukan sekadar membangun teknologi.' AFTER `consultation_button`", 'SELECT 1');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `philosophy_quote_1` VARCHAR(255) DEFAULT 'Bukan sekadar membangun teknologi.' AFTER `custom_package_button`", 'SELECT 1');
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 
 SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'philosophy_quote_2');
 SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `philosophy_quote_2` VARCHAR(255) DEFAULT 'Kami membangun solusi.' AFTER `philosophy_quote_1`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- Migration: Add description to addon_services if not exists
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'addon_services' AND COLUMN_NAME = 'description');
+SET @sql = IF(@col = 0, "ALTER TABLE `addon_services` ADD COLUMN `description` TEXT DEFAULT NULL AFTER `price_description`", 'SELECT 1');
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 -- =========================================================
 
@@ -518,20 +539,17 @@ CREATE TABLE IF NOT EXISTS `addon_services` (
   `base_price` BIGINT NOT NULL DEFAULT 0,
   `third_party_cost` BIGINT DEFAULT 0,
   `price_description` VARCHAR(255) DEFAULT NULL,
+  `description` TEXT DEFAULT NULL,
   `sort_order` INT DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 DELETE FROM `addon_services`;
 
-INSERT INTO `addon_services` (`id`, `name`, `category`, `base_price`, `price_description`, `sort_order`)
+INSERT INTO `addon_services` (`id`, `name`, `category`, `base_price`, `price_description`, `description`, `sort_order`)
 VALUES
-('addon-1', 'Revisi ringan tambahan', 'revision', 30000, 'Rp30K / revisi', 1),
-('addon-2', 'Revisi berat tambahan', 'revision', 50000, 'Rp50K / revisi', 2),
-('addon-3', 'Tambah 1 halaman', 'page', 50000, 'Rp50K / halaman', 3),
-('addon-4', 'WhatsApp Business API', 'api', 150000, 'Mulai Rp150K', 4),
-('addon-5', 'Google Maps API / Places / Routes', 'api', 150000, 'Mulai Rp150K', 5),
-('addon-6', 'API sederhana', 'api', 150000, 'Mulai Rp150K', 6),
-('addon-7', 'API kompleks', 'api', 250000, 'Mulai Rp250K', 7),
-('addon-8', 'Payment Gateway', 'api', 250000, 'Mulai Rp250K', 8),
-('addon-9', 'Email / SMTP', 'email', 50000, 'Mulai Rp50K', 9),
-('addon-10', 'AI API', 'api', 250000, 'Mulai Rp250K', 10);
+('addon-1', 'Tambah 1 Halaman', 'page', 50000, 'Rp 50.000 / halaman', 'Penambahan halaman ekstra jika kebutuhan halaman melebihi kuota paket standar.', 1),
+('addon-2', 'Biaya Revisi Ringan (di luar brief awal)', 'revision', 30000, 'Rp 30.000 / revisi', 'Perubahan minor seperti ganti logo, icon, warna, teks, gambar, atau tata letak kecil.', 2),
+('addon-3', 'Biaya Revisi Berat (di luar brief awal)', 'revision', 50000, 'Rp 50.000 / revisi', 'Perubahan besar seperti merombak tata letak halaman, menambah halaman baru, atau merubah alur website.', 3),
+('addon-4', 'Biaya Custom Domain', 'domain', 0, 'Mengikuti domain yg dibutuhkan', 'Pendaftaran ekstensi domain kustom (.com, .id, .co.id, .sch.id, dsb.) sesuai harga registrar resmi.', 4),
+('addon-5', 'Akun Email Bisnis', 'email', 50000, 'Rp 50.000 / akun', 'Setup akun email profesional dengan nama domain sendiri (contoh: nama@domain.com).', 5),
+('addon-6', 'Integrasi WhatsApp API / Payment Gateway', 'api', 150000, 'Mulai Rp 150.000', 'Integrasi sistem pembayaran otomatis, WhatsApp Business API, atau API pihak ketiga.', 6);

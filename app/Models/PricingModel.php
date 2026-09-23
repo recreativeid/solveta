@@ -62,6 +62,43 @@ class PricingModel extends Model
         return $this->getDefaultTiers();
     }
 
+    public function moveTier(string $id, string $direction): bool
+    {
+        $all = $this->orderBy('sort_order', 'ASC')->findAll();
+        $targetIndex = null;
+
+        foreach ($all as $i => $item) {
+            if ($item['id'] === $id) {
+                $targetIndex = $i;
+                break;
+            }
+        }
+
+        if ($targetIndex === null) {
+            return false;
+        }
+
+        $swapIndex = ($direction === 'left' || $direction === 'up') ? $targetIndex - 1 : $targetIndex + 1;
+
+        if ($swapIndex < 0 || $swapIndex >= count($all)) {
+            return false;
+        }
+
+        // Normalize sequential sort_order to avoid identical order collisions
+        foreach ($all as $idx => $t) {
+            $this->update($t['id'], ['sort_order' => $idx + 1]);
+            $all[$idx]['sort_order'] = $idx + 1;
+        }
+
+        $current = $all[$targetIndex];
+        $neighbor = $all[$swapIndex];
+
+        $this->update($current['id'], ['sort_order' => $neighbor['sort_order']]);
+        $this->update($neighbor['id'], ['sort_order' => $current['sort_order']]);
+
+        return true;
+    }
+
     public function getDefaultTiers(): array
     {
         return [

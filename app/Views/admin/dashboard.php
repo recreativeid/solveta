@@ -618,9 +618,9 @@
                                 </div>
                             </div>
 
-                            <!-- 4 Real Interactive Cards -->
+                            <!-- 4 Real Interactive Cards with Reordering Controls -->
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                                <?php foreach ($tiers as $tier): ?>
+                                <?php foreach ($tiers as $idx => $tier): ?>
                                     <?php 
                                         $cleanDelivery = str_replace(['â€“', '–'], '-', $tier['delivery_time'] ?? '1-2 Hari');
                                         $tierBtnText = !empty($tier['button_label']) ? $tier['button_label'] : "Pesan Paket {$tier['name']}";
@@ -633,6 +633,34 @@
                                                 PALING POPULER
                                             </span>
                                         <?php endif; ?>
+
+                                        <!-- Top Reorder & Sort Indicator -->
+                                        <div class="flex items-center justify-between pb-2 border-b border-gray-100">
+                                            <div class="flex items-center gap-1.5">
+                                                <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-700">#<?= $idx + 1 ?></span>
+                                                <span class="text-[10px] font-semibold text-gray-400">Urutan</span>
+                                            </div>
+                                            <div class="flex items-center gap-1">
+                                                <?php if ($idx > 0): ?>
+                                                    <form action="/admin/pricing/move/<?= esc($tier['id']) ?>/left" method="POST" class="inline">
+                                                        <?= csrf_field() ?>
+                                                        <input type="hidden" name="redirect_tab" value="visual">
+                                                        <button type="submit" class="p-1 rounded bg-gray-100 hover:bg-[#8B0021] hover:text-white text-gray-600 transition-colors cursor-pointer" title="Geser ke kiri / urutan sebelumnya">
+                                                            <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                                                        </button>
+                                                    </form>
+                                                <?php endif; ?>
+                                                <?php if ($idx < count($tiers) - 1): ?>
+                                                    <form action="/admin/pricing/move/<?= esc($tier['id']) ?>/right" method="POST" class="inline">
+                                                        <?= csrf_field() ?>
+                                                        <input type="hidden" name="redirect_tab" value="visual">
+                                                        <button type="submit" class="p-1 rounded bg-gray-100 hover:bg-[#8B0021] hover:text-white text-gray-600 transition-colors cursor-pointer" title="Geser ke kanan / urutan berikutnya">
+                                                            <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                                                        </button>
+                                                    </form>
+                                                <?php endif; ?>
+                                            </div>
+                                        </div>
 
                                         <div class="space-y-3">
                                             <!-- Top Label + Price -->
@@ -706,6 +734,169 @@
                                     </div>
                                 <?php endforeach; ?>
                             </div>
+
+                            <!-- LIVE STUDIO CARD: LAYANAN PAKET CUSTOM WEBSITE (Click to Edit) -->
+                            <div class="p-6 rounded-2xl bg-gradient-to-br from-white via-rose-50/20 to-white border-2 border-dashed border-[#8B0021]/40 hover:border-[#8B0021] transition-all space-y-4 relative group">
+                                <span class="absolute top-3 right-3 bg-[#8B0021] text-white text-[9px] font-bold px-2 py-0.5 rounded shadow opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Klik teks untuk edit Paket Custom
+                                </span>
+
+                                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+                                    <div class="space-y-3 max-w-2xl">
+                                        <!-- Custom Eyebrow -->
+                                        <div onclick="openQuickEditModal('custom_package_title', 'Badge Kategori Custom', '<?= addslashes(esc($copy['custom_package_title'] ?? 'LAYANAN KHUSUS & ENTERPRISE')) ?>', false)"
+                                             class="cursor-pointer hover:bg-rose-100/60 px-2 py-1 rounded inline-block transition-colors"
+                                             title="Klik untuk edit Badge Kategori Custom">
+                                            <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8B0021] flex items-center gap-1.5">
+                                                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                                                <span><?= esc($copy['custom_package_title'] ?? 'LAYANAN KHUSUS & ENTERPRISE') ?></span>
+                                                <i data-lucide="edit-2" class="w-3 h-3 opacity-60"></i>
+                                            </span>
+                                        </div>
+
+                                        <!-- Custom Headline -->
+                                        <div onclick="openQuickEditModal('custom_package_headline', 'Judul Paket Custom', '<?= addslashes(esc($copy['custom_package_headline'] ?? 'Menerima Layanan Paket Custom Website')) ?>', false)"
+                                             class="cursor-pointer hover:bg-rose-100/60 p-2 rounded-lg transition-colors"
+                                             title="Klik untuk edit Judul Paket Custom">
+                                            <h3 class="text-xl sm:text-2xl font-black text-gray-950 uppercase tracking-tight flex items-center gap-2">
+                                                <span><?= esc($copy['custom_package_headline'] ?? 'Menerima Layanan Paket Custom Website') ?></span>
+                                                <i data-lucide="edit-2" class="w-4 h-4 text-[#8B0021] opacity-60"></i>
+                                            </h3>
+                                        </div>
+
+                                        <!-- Custom Description -->
+                                        <div onclick="openQuickEditModal('custom_package_desc', 'Deskripsi Paket Custom', '<?= addslashes(esc($copy['custom_package_desc'] ?? 'Solusi website tanpa batasan halaman dengan kustomisasi fitur penuh, integrasi sistem, dan penyesuaian khusus. Biaya investasi fleksibel dan transparan mengikuti konsep dan spesifikasi website yang ingin Anda bangun.')) ?>', true)"
+                                             class="cursor-pointer hover:bg-rose-100/60 p-2 rounded-lg transition-colors"
+                                             title="Klik untuk edit Deskripsi Paket Custom">
+                                            <p class="text-xs text-gray-600 leading-relaxed font-sans">
+                                                <?= esc($copy['custom_package_desc'] ?? 'Solusi website tanpa batasan halaman dengan kustomisasi fitur penuh, integrasi sistem, dan penyesuaian khusus. Biaya investasi fleksibel dan transparan mengikuti konsep dan spesifikasi website yang ingin Anda bangun.') ?>
+                                            </p>
+                                        </div>
+
+                                        <!-- 3 Highlights Pill -->
+                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                                            <div class="p-2.5 rounded-lg bg-white border border-gray-200">
+                                                <div class="flex items-center gap-1.5 text-[#8B0021] font-bold text-xs">
+                                                    <i data-lucide="infinity" class="w-3.5 h-3.5"></i>
+                                                    <span>Tanpa Batasan</span>
+                                                </div>
+                                                <p class="text-[10px] text-gray-500 mt-0.5">Bebas tentukan jumlah halaman sesuai skala bisnis.</p>
+                                            </div>
+                                            <div class="p-2.5 rounded-lg bg-white border border-gray-200">
+                                                <div class="flex items-center gap-1.5 text-[#8B0021] font-bold text-xs">
+                                                    <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                                                    <span>Custom Kebutuhan</span>
+                                                </div>
+                                                <p class="text-[10px] text-gray-500 mt-0.5">Fitur spesifik, integrasi API &amp; otomasi.</p>
+                                            </div>
+                                            <div class="p-2.5 rounded-lg bg-white border border-gray-200">
+                                                <div class="flex items-center gap-1.5 text-[#8B0021] font-bold text-xs">
+                                                    <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+                                                    <span>Biaya Sesuai Konsep</span>
+                                                </div>
+                                                <p class="text-[10px] text-gray-500 mt-0.5">Biaya proporsional mengikuti konsep website.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Custom CTA Button (Click to Edit) -->
+                                    <div class="lg:w-64 flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 text-center space-y-3">
+                                        <div class="text-[11px] font-bold text-gray-700">Tombol Konsultasi Custom</div>
+                                        <button type="button"
+                                                onclick="openQuickEditModal('custom_package_button', 'Teks Tombol Paket Custom', '<?= addslashes(esc($copy['custom_package_button'] ?? 'Konsultasikan Paket Custom')) ?>', false)"
+                                                class="w-full py-2.5 px-4 bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white text-xs font-bold rounded-lg shadow-sm hover:ring-2 hover:ring-rose-400 cursor-pointer flex items-center justify-center gap-1.5"
+                                                title="Klik untuk edit teks tombol Paket Custom">
+                                            <i data-lucide="message-circle" class="w-3.5 h-3.5 text-rose-200"></i>
+                                            <span><?= esc($copy['custom_package_button'] ?? 'Konsultasikan Paket Custom') ?></span>
+                                            <i data-lucide="edit-2" class="w-3 h-3 text-rose-200"></i>
+                                        </button>
+                                        <span class="text-[9px] text-gray-400">Terhubung langsung ke WhatsApp</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- LIVE STUDIO CARD: BIAYA LAYANAN TAMBAHAN (ADD-ON SERVICES) -->
+                            <div class="p-6 rounded-2xl bg-white border-2 border-dashed border-gray-200 hover:border-[#8B0021] transition-all space-y-4">
+                                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-3">
+                                    <div>
+                                        <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#8B0021]">
+                                            BIAYA LAYANAN TAMBAHAN (ADD-ON)
+                                        </div>
+                                        <h3 class="text-sm font-extrabold text-gray-900 uppercase">
+                                            Kelola Poin Biaya Layanan Tambahan (<?= count($addons ?? []) ?> Item Aktif)
+                                        </h3>
+                                        <p class="text-[11px] text-gray-400">
+                                            Bisa ditambah atau disesuaikan: tambah halaman, revisi ringan/berat, custom domain, dsb.
+                                        </p>
+                                    </div>
+                                    <button type="button" onclick="openAddAddonModal()"
+                                            class="px-3.5 py-1.5 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-semibold rounded-lg shadow-xs flex items-center gap-1.5 cursor-pointer">
+                                        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                                        <span>Tambah Poin Layanan Baru</span>
+                                    </button>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                                    <?php foreach ($addons as $aIdx => $addon): ?>
+                                        <div class="p-3.5 rounded-xl border border-gray-200 hover:border-[#8B0021] bg-gray-50/50 flex flex-col justify-between space-y-2.5 transition-all">
+                                            <div class="space-y-1.5">
+                                                <div class="flex items-center justify-between">
+                                                    <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-gray-200 text-gray-700">#<?= $aIdx + 1 ?></span>
+                                                    <span class="text-[11px] font-mono font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2 py-0.5 rounded">
+                                                        <?= esc($addon['price_description']) ?>
+                                                    </span>
+                                                </div>
+                                                <h4 class="text-xs font-bold text-gray-900 leading-snug">
+                                                    <?= esc($addon['name']) ?>
+                                                </h4>
+                                                <?php if (!empty($addon['description'])): ?>
+                                                    <p class="text-[10px] text-gray-500 leading-relaxed line-clamp-2">
+                                                        <?= esc($addon['description']) ?>
+                                                    </p>
+                                                <?php endif; ?>
+                                            </div>
+
+                                            <div class="pt-2 border-t border-gray-200 flex items-center justify-between text-xs">
+                                                <div class="flex items-center gap-1">
+                                                    <?php if ($aIdx > 0): ?>
+                                                        <form action="/admin/addon/move/<?= esc($addon['id']) ?>/up" method="POST" class="inline">
+                                                            <?= csrf_field() ?>
+                                                            <input type="hidden" name="redirect_tab" value="visual">
+                                                            <button type="submit" class="p-1 rounded hover:bg-gray-200 text-gray-600 cursor-pointer" title="Pindah ke atas">
+                                                                <i data-lucide="arrow-up" class="w-3 h-3"></i>
+                                                            </button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                    <?php if ($aIdx < count($addons) - 1): ?>
+                                                        <form action="/admin/addon/move/<?= esc($addon['id']) ?>/down" method="POST" class="inline">
+                                                            <?= csrf_field() ?>
+                                                            <input type="hidden" name="redirect_tab" value="visual">
+                                                            <button type="submit" class="p-1 rounded hover:bg-gray-200 text-gray-600 cursor-pointer" title="Pindah ke bawah">
+                                                                <i data-lucide="arrow-down" class="w-3 h-3"></i>
+                                                            </button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                </div>
+
+                                                <div class="flex items-center gap-2">
+                                                    <button type="button" onclick="openEditAddonModal(<?= htmlspecialchars(json_encode($addon), ENT_QUOTES, 'UTF-8') ?>)"
+                                                            class="text-xs font-semibold text-gray-700 hover:text-black flex items-center gap-1 cursor-pointer">
+                                                        <i data-lucide="edit-2" class="w-3 h-3"></i>
+                                                        <span>Edit</span>
+                                                    </button>
+                                                    <form action="/admin/addon/delete/<?= esc($addon['id']) ?>" method="POST" class="inline" onsubmit="return confirm('Hapus layanan tambahan ini?')">
+                                                        <?= csrf_field() ?>
+                                                        <input type="hidden" name="redirect_tab" value="visual">
+                                                        <button type="submit" class="text-xs text-red-500 hover:text-red-700 cursor-pointer" title="Hapus">
+                                                            <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- 7. PHILOSOPHY & SLOGAN SECTION -->
@@ -775,11 +966,12 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <?php foreach ($tiers as $tier): ?>
+                    <?php foreach ($tiers as $idx => $tier): ?>
                         <div class="bg-white border border-gray-200/80 rounded-xl p-5 flex flex-col justify-between space-y-4 hover:border-gray-300 transition-colors">
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
+                                        <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-700">#<?= $idx + 1 ?></span>
                                         <span class="text-xs font-bold text-gray-900 uppercase"><?= esc($tier['name']) ?></span>
                                         <?php if (!empty($tier['popular'])): ?>
                                             <span class="text-[9px] px-2 py-0.5 rounded-full bg-red-50 text-red-600 font-bold border border-red-100">POPULAR</span>
@@ -813,8 +1005,32 @@
                                 </div>
                             </div>
 
-                            <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
-                                <span class="text-[10px] text-gray-400 font-mono">Perpanjangan: <?= esc($tier['renewal_price'] ?? '-') ?></span>
+                            <div class="pt-2 text-[10px] text-gray-400 font-mono truncate">
+                                Perpanjangan: <?= esc($tier['renewal_price'] ?? '-') ?>
+                            </div>
+
+                            <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between">
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-[10px] text-gray-400 font-mono">Urutan:</span>
+                                    <?php if ($idx > 0): ?>
+                                        <form action="/admin/pricing/move/<?= esc($tier['id']) ?>/left" method="POST" class="inline">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="redirect_tab" value="pricing">
+                                            <button type="submit" class="p-1 rounded hover:bg-gray-100 text-gray-600 border border-gray-200 cursor-pointer" title="Pindah ke kiri / posisi sebelumnya">
+                                                <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i>
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+                                    <?php if ($idx < count($tiers) - 1): ?>
+                                        <form action="/admin/pricing/move/<?= esc($tier['id']) ?>/right" method="POST" class="inline">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="redirect_tab" value="pricing">
+                                            <button type="submit" class="p-1 rounded hover:bg-gray-100 text-gray-600 border border-gray-200 cursor-pointer" title="Pindah ke kanan / posisi selanjutnya">
+                                                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                                            </button>
+                                        </form>
+                                    <?php endif; ?>
+                                </div>
                                 <button type="button" onclick="openEditPricingModal(<?= htmlspecialchars(json_encode($tier), ENT_QUOTES, 'UTF-8') ?>)"
                                         class="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-800 text-[11px] font-medium rounded-lg transition-colors flex items-center gap-1 cursor-pointer">
                                     <i data-lucide="edit" class="w-3 h-3"></i>
@@ -823,6 +1039,89 @@
                             </div>
                         </div>
                     <?php endforeach; ?>
+                </div>
+
+                <!-- ADD-ON SERVICES MANAGER SECTION IN TAB-PRICING -->
+                <div class="mt-8 pt-6 border-t border-gray-200/80 space-y-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                        <div>
+                            <div class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#8B0021]">
+                                BIAYA LAYANAN TAMBAHAN (ADD-ON SERVICES)
+                            </div>
+                            <h2 class="text-xs font-semibold text-gray-900 uppercase tracking-wider">
+                                Kelola Poin Biaya Layanan Tambahan (<?= count($addons ?? []) ?> Item Aktif)
+                            </h2>
+                            <p class="text-[11px] text-gray-400">
+                                Atur tarif tambahan seperti tambah halaman (50k), revisi ringan (30k), revisi berat (50k), custom domain, dll.
+                            </p>
+                        </div>
+                        <button type="button" onclick="openAddAddonModal()"
+                                class="px-3.5 py-1.5 bg-[#8B0021] hover:bg-[#a30026] text-white text-xs font-semibold rounded-lg shadow-xs flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+                            <span>Tambah Poin Layanan Baru</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                        <?php foreach ($addons as $aIdx => $addon): ?>
+                            <div class="bg-white border border-gray-200/80 rounded-xl p-4 flex flex-col justify-between space-y-3 hover:border-[#8B0021] transition-all">
+                                <div class="space-y-1.5">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-700">#<?= $aIdx + 1 ?></span>
+                                        <span class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2 py-0.5 rounded">
+                                            <?= esc($addon['price_description']) ?>
+                                        </span>
+                                    </div>
+                                    <h3 class="text-xs font-bold text-gray-900 leading-snug">
+                                        <?= esc($addon['name']) ?>
+                                    </h3>
+                                    <?php if (!empty($addon['description'])): ?>
+                                        <p class="text-[11px] text-gray-500 leading-relaxed line-clamp-2">
+                                            <?= esc($addon['description']) ?>
+                                        </p>
+                                    <?php endif; ?>
+                                </div>
+
+                                <div class="pt-2 border-t border-gray-100 flex items-center justify-between text-xs">
+                                    <div class="flex items-center gap-1">
+                                        <?php if ($aIdx > 0): ?>
+                                            <form action="/admin/addon/move/<?= esc($addon['id']) ?>/up" method="POST" class="inline">
+                                                <?= csrf_field() ?>
+                                                <input type="hidden" name="redirect_tab" value="pricing">
+                                                <button type="submit" class="p-1 rounded hover:bg-gray-100 text-gray-600 border border-gray-200 cursor-pointer" title="Pindah ke atas">
+                                                    <i data-lucide="arrow-up" class="w-3 h-3"></i>
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                        <?php if ($aIdx < count($addons) - 1): ?>
+                                            <form action="/admin/addon/move/<?= esc($addon['id']) ?>/down" method="POST" class="inline">
+                                                <?= csrf_field() ?>
+                                                <input type="hidden" name="redirect_tab" value="pricing">
+                                                <button type="submit" class="p-1 rounded hover:bg-gray-100 text-gray-600 border border-gray-200 cursor-pointer" title="Pindah ke bawah">
+                                                    <i data-lucide="arrow-down" class="w-3 h-3"></i>
+                                                </button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <button type="button" onclick="openEditAddonModal(<?= htmlspecialchars(json_encode($addon), ENT_QUOTES, 'UTF-8') ?>)"
+                                                class="text-xs font-semibold text-gray-700 hover:text-black flex items-center gap-1 cursor-pointer">
+                                            <i data-lucide="edit-2" class="w-3 h-3"></i>
+                                            <span>Edit</span>
+                                        </button>
+                                        <form action="/admin/addon/delete/<?= esc($addon['id']) ?>" method="POST" class="inline" onsubmit="return confirm('Hapus layanan tambahan ini?')">
+                                            <?= csrf_field() ?>
+                                            <input type="hidden" name="redirect_tab" value="pricing">
+                                            <button type="submit" class="text-xs text-red-500 hover:text-red-700 cursor-pointer" title="Hapus">
+                                                <i data-lucide="trash-2" class="w-3 h-3"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             </div>
 
@@ -1833,14 +2132,77 @@
                     <textarea name="features" id="price-input-features" rows="4" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono"></textarea>
                 </div>
 
-                <div class="flex items-center gap-2 pt-1">
-                    <input type="checkbox" name="popular" id="price-input-popular" value="1" class="rounded accent-[#8B0021]">
-                    <label for="price-input-popular" class="text-xs font-semibold text-gray-800">Tandai sebagai Paket Paling Diminati (POPULAR)</label>
+                <div class="grid grid-cols-2 gap-3 items-center pt-1">
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" name="popular" id="price-input-popular" value="1" class="rounded accent-[#8B0021]">
+                        <label for="price-input-popular" class="text-xs font-semibold text-gray-800">Tandai Paling Populer</label>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-600 mb-1">Urutan Posisi Paket (#)</label>
+                        <input type="number" name="sort_order" id="price-input-sort" min="1" max="20" class="w-full text-xs px-3 py-1.5 rounded-lg border border-gray-200 outline-none font-mono">
+                    </div>
                 </div>
 
                 <div class="flex justify-end gap-2 pt-2">
                     <button type="button" onclick="closeModal('modal-pricing')" class="px-3 py-1.5 text-xs text-gray-500 cursor-pointer">Batal</button>
                     <button type="submit" class="px-4 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-lg cursor-pointer">Simpan Paket</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 3B: Tambah / Edit Layanan Tambahan (Addon) -->
+    <div id="modal-addon" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl border border-gray-200 max-w-md w-full p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                <h3 class="text-xs font-bold text-gray-900" id="addon-modal-title">Tambah Biaya Layanan Tambahan</h3>
+                <button type="button" onclick="closeModal('modal-addon')" class="text-gray-400 hover:text-gray-700 cursor-pointer"><i data-lucide="x" class="w-4 h-4"></i></button>
+            </div>
+            <form action="/admin/addon/save" method="POST" class="space-y-3">
+                <?= csrf_field() ?>
+                <input type="hidden" name="id" id="addon-input-id">
+                <input type="hidden" name="redirect_tab" id="addon-input-redirect-tab" value="visual">
+
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-600 mb-1">Nama Poin Layanan</label>
+                    <input type="text" name="name" id="addon-input-name" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-bold" placeholder="contoh: Biaya Tambah 1 Halaman">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-600 mb-1">Teks Harga Display</label>
+                        <input type="text" name="price_description" id="addon-input-price-desc" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-bold text-[#8B0021]" placeholder="contoh: + Rp 50.000 / halaman">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-600 mb-1">Kategori</label>
+                        <select name="category" id="addon-input-category" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none">
+                            <option value="page">Halaman (Page)</option>
+                            <option value="revision">Revisi (Revision)</option>
+                            <option value="domain">Domain</option>
+                            <option value="feature">Fitur / Addon Lain</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-600 mb-1">Harga Numerik (Opsional)</label>
+                        <input type="number" name="base_price" id="addon-input-base-price" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono" placeholder="50000">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-medium text-gray-600 mb-1">Urutan Tampil (#)</label>
+                        <input type="number" name="sort_order" id="addon-input-sort" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono" placeholder="1">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-medium text-gray-600 mb-1">Keterangan / Rincian Layanan</label>
+                    <textarea name="description" id="addon-input-desc" rows="2" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none" placeholder="Penjelasan mengenai ketentuan layanan tambahan ini..."></textarea>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeModal('modal-addon')" class="px-3 py-1.5 text-xs text-gray-500 cursor-pointer">Batal</button>
+                    <button type="submit" class="px-4 py-1.5 bg-gray-900 text-white text-xs font-medium rounded-lg cursor-pointer">Simpan Layanan</button>
                 </div>
             </form>
         </div>
@@ -2126,6 +2488,7 @@
             document.getElementById('price-input-period').value = tier.active_period || '1 Tahun';
             document.getElementById('price-input-suitability').value = tier.suitability || '';
             document.getElementById('price-input-wamsg').value = tier.wa_message || '';
+            document.getElementById('price-input-sort').value = tier.sort_order || '';
             document.getElementById('price-input-redirect-tab').value = (activeTab === 'visual' ? 'visual' : 'pricing');
             
             let feats = [];
@@ -2137,6 +2500,33 @@
             document.getElementById('price-input-features').value = feats.join('\n');
             document.getElementById('price-input-popular').checked = !!(tier.popular == 1);
             openModal('modal-pricing');
+        }
+
+        // Addon Services Modals
+        function openAddAddonModal() {
+            document.getElementById('addon-modal-title').innerText = 'Tambah Biaya Layanan Tambahan';
+            document.getElementById('addon-input-id').value = '';
+            document.getElementById('addon-input-name').value = '';
+            document.getElementById('addon-input-price-desc').value = '';
+            document.getElementById('addon-input-category').value = 'page';
+            document.getElementById('addon-input-base-price').value = '';
+            document.getElementById('addon-input-sort').value = '';
+            document.getElementById('addon-input-desc').value = '';
+            document.getElementById('addon-input-redirect-tab').value = (activeTab === 'visual' ? 'visual' : 'pricing');
+            openModal('modal-addon');
+        }
+
+        function openEditAddonModal(addon) {
+            document.getElementById('addon-modal-title').innerText = 'Edit Biaya Layanan Tambahan';
+            document.getElementById('addon-input-id').value = addon.id || '';
+            document.getElementById('addon-input-name').value = addon.name || '';
+            document.getElementById('addon-input-price-desc').value = addon.price_description || '';
+            document.getElementById('addon-input-category').value = addon.category || 'page';
+            document.getElementById('addon-input-base-price').value = addon.base_price || '';
+            document.getElementById('addon-input-sort').value = addon.sort_order || '';
+            document.getElementById('addon-input-desc').value = addon.description || '';
+            document.getElementById('addon-input-redirect-tab').value = (activeTab === 'visual' ? 'visual' : 'pricing');
+            openModal('modal-addon');
         }
 
         // Brand Modals & Live Marquee Preview
