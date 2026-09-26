@@ -17,7 +17,6 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('Home');
 $routes->setDefaultMethod('index');
 $routes->setTranslateURIDashes(false);
-$routes->set404Override();
 
 /*
  * --------------------------------------------------------------------
@@ -26,7 +25,10 @@ $routes->set404Override();
  */
 
 // Public Routes
+$routes->get('', 'Home::index');
 $routes->get('/', 'Home::index');
+$routes->get('public', 'Home::index');
+$routes->get('public/', 'Home::index');
 $routes->get('/formulir', 'Formulir::index');
 $routes->post('/formulir/submit', 'Formulir::submit');
 

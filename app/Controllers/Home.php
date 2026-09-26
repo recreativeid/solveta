@@ -11,7 +11,7 @@ use App\Models\AddonModel;
 
 class Home extends BaseController
 {
-    public function index(): string
+    public function index()
     {
         $copyModel = new SiteCopyModel();
         $contactModel = new ContactModel();

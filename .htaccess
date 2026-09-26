@@ -2,18 +2,21 @@
 # SOLVETA — ROOT CPANEL APACHE / LITESPEED CONFIGURATION
 # ==============================================================================
 
+DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Prevent internal loop
-    RewriteCond %{REQUEST_URI} ^/public/ [NC]
+    # If the requested file or directory exists in root, serve directly
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
     RewriteRule ^ - [L]
 
-    # Rewrite root to public/
-    RewriteRule ^$ public/ [L]
+    # If the requested file exists in public/, rewrite directly to public/
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -d
+    RewriteRule ^(.*)$ public/$1 [L]
 
-    # Rewrite all other paths to public/
-    RewriteRule ^(.*)$ public/$1 [L,QSA]
+    # Otherwise send request to root front controller
+    RewriteRule ^(.*)$ index.php [L,QSA]
 </IfModule>
-
-DirectoryIndex index.php public/index.php

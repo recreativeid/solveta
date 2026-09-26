@@ -15,8 +15,16 @@ async function runUpload(client) {
     } else if (names.includes("public_html") && !names.includes("app")) {
         console.log("Entering public_html/...");
         await client.cd("public_html");
+    }
+
+    // Target addon domain folder if exists (prevents overwriting primary cPanel domain)
+    const afterHtmlList = await client.list();
+    const afterHtmlNames = afterHtmlList.map(item => item.name);
+    if (afterHtmlNames.includes("solveta.asia")) {
+        console.log("Entering solveta.asia/ directory (Addon Domain Document Root)...");
+        await client.cd("solveta.asia");
     } else {
-        console.log("Already inside target web root.");
+        console.log("Using current directory as target web root.");
     }
 
     const currentDir = await client.pwd();

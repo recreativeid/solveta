@@ -1,5 +1,13 @@
 <?php
 
+// Ensure zlib output compression does not interfere with CodeIgniter buffer
+@ini_set('zlib.output_compression', 'Off');
+
+// Normalize SCRIPT_NAME for root .htaccess rewrite in cPanel shared hosting
+if (isset($_SERVER['SCRIPT_NAME']) && strpos($_SERVER['SCRIPT_NAME'], '/public/index.php') === 0 && (empty($_SERVER['REQUEST_URI']) || strpos($_SERVER['REQUEST_URI'], '/public') !== 0)) {
+    $_SERVER['SCRIPT_NAME'] = '/index.php';
+}
+
 // Check PHP version.
 $minPhpVersion = '7.4'; // If you update this, don't forget to update `spark`.
 if (version_compare(PHP_VERSION, $minPhpVersion, '<')) {
