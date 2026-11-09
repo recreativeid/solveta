@@ -258,7 +258,7 @@
             Perusahaan Rekayasa Teknologi &amp; Solusi Digital Bisnis
           </h3>
           
-          <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-body">
+          <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-sans">
             SOLVETA (Solve Technology Agency) adalah perusahaan teknologi yang berfokus membantu bisnis, instansi, UMKM, dan perusahaan bertransformasi dari sistem manual menjadi serba digital dan otomatis. Kami merekayasa solusi perangkat lunak terpadu — mulai dari website profesional, aplikasi bisnis kustom, CRM, ERP, hingga integrasi kecerdasan buatan (AI) — yang dirancang kokoh, cepat, dan menjadi aset permanen bisnis Anda tanpa biaya sewa bulanan.
           </p>
         </div>
@@ -631,7 +631,7 @@
         Aplikasi &amp; Sistem Apa Saja <br class="hidden sm:inline" />
         <span class="text-neutral-400 dark:text-neutral-500">yang Kami Bangun?</span>
       </h2>
-      <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-body max-w-2xl mx-auto">
+      <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-sans max-w-2xl mx-auto">
         Pilih sistem yang paling dibutuhkan bisnis atau organisasi Anda — lengkap dengan kepanjangan &amp; fungsi utamanya.
       </p>
     </div>
@@ -1714,7 +1714,7 @@
         <span class="text-[#C4264A] dark:text-[#F05A72]">Tapi Pernahkah Anda Bertanya Diam-diam?</span>
       </h2>
 
-      <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-body max-w-2xl mx-auto">
+      <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed font-sans max-w-2xl mx-auto">
         Jelajahi 5 sudut pandang operasional yang sering kali luput dari perhatian pemilik bisnis — hingga mereka menyadari betapa banyaknya potensi &amp; waktu yang diam-diam terbuang setiap harinya.
       </p>
     </div>
@@ -1748,10 +1748,10 @@
               <h3 class="text-xl sm:text-2xl font-bold text-[#111215] dark:text-white leading-snug">
                 Pernahkah Anda menghitung berapa jam waktu terbaik tim Anda habis hanya untuk mencocokkan laporan manual?
               </h3>
-              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-sans">
                 Bisnis Anda mungkin terasa baik-baik saja hari ini karena tim Anda selalu sibuk. Staf mencatat, kasir melayani, dan penjualan tetap berjalan. Namun jika Anda perhatikan lebih dekat: ada jam-jam produktif yang hilang setiap sore hanya untuk mengetik ulang nota ke spreadsheet Excel, memeriksa bukti transfer bank satu per satu, dan mengejar rekonsiliasi stok gudang yang selisih beberapa angka.
               </p>
-              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-sans">
                 Tim Anda tidak kurang rajin. Mereka hanya kekurangan sistem terintegrasi yang mampu menuntaskannya secara otomatis dalam 0.4 detik.
               </p>
             </div>
@@ -1782,10 +1782,10 @@
               <h3 class="text-xl sm:text-2xl font-bold text-[#111215] dark:text-white leading-snug">
                 Berapa banyak calon pembeli yang bertanya jam 9 malam, lalu diam-diam hilang saat dibalas besok pagi?
               </h3>
-              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-sans">
                 Ketika calon pelanggan mengirim chat di luar jam kantor, mereka sedang berada di puncak minat beli dan siap bertransaksi. Menunggu balasan 8 hingga 12 jam kemudian sering kali membuat mereka sudah menyelesaikan pesanan di tempat kompetitor yang merespons dalam 30 detik.
               </p>
-              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-sans">
                 Sistem follow-up dan otomasi WhatsApp pintar bukan untuk menggantikan keramahan interaksi manusia, melainkan mengamankan prospek panas sebelum minat beli mereka mendingin.
               </p>
             </div>
@@ -1816,10 +1816,10 @@
               <h3 class="text-xl sm:text-2xl font-bold text-[#111215] dark:text-white leading-snug">
                 Mengapa harus terus membayar sewa software bulanan yang fiturnya tidak pernah sesuai alur unik Anda?
               </h3>
-              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-sans">
                 Awalnya berlangganan aplikasi terasa murah: beberapa ratus ribu per bulan. Lalu bertambah jumlah staf, bertambah cabang, dan bisnis Anda terkunci jutaan rupiah setiap bulan hanya untuk menyewa sistem milik orang lain. Saat Anda butuh fitur spesifik, vendor menolaknya karena template mereka kaku.
               </p>
-              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-sans">
                 Membangun sistem dan aplikasi sendiri bukan soal gengsi — melainkan memastikan seluruh database, kode sumber, dan alur rahasia bisnis Anda 100% menjadi aset permanen milik Anda selamanya.
               </p>
             </div>
@@ -1850,10 +1850,10 @@
               <h3 class="text-xl sm:text-2xl font-bold text-[#111215] dark:text-white leading-snug">
                 Apakah Anda mendirikan bisnis untuk menjadi orang yang paling tidak bisa beristirahat di dalamnya?
               </h3>
-              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-sans">
                 Ketika setiap persetujuan harus menunggu Anda, ketika selisih kasir &amp; stok gudang membuat Anda tidak bisa tidur tenang, dan ketika Anda merasa cemas meninggalkan kantor bahkan untuk berlibur sejenak — bisnis Anda sebenarnya belum memiliki sistem; bisnis Anda sedang menyandera waktu Anda.
               </p>
-              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-sans">
                 Teknologi rekayasa SOLVETA dibangun agar operasional berjalan rapi, transparan, dan terukur — dengan atau tanpa kehadiran fisik Anda setiap saat.
               </p>
             </div>
@@ -1885,10 +1885,10 @@
                 Anda mungkin belum merasa butuh sistem baru hari ini. <br class="hidden sm:inline" />
                 <span class="text-[#C4264A] dark:text-[#F05A72]">Sampai Anda melihat bagaimana kompetitor diam-diam bergerak jauh lebih ringan.</span>
               </h3>
-              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed font-sans">
                 Transformasi tidak pernah harus dimulai dari proyek raksasa yang membingungkan. Ia bisa dimulai dari hal paling sederhana: landing page yang membuat klien percaya, integrasi WhatsApp agar tidak ada prospek yang tercecer, atau kasir POS yang meniadakan selisih kas harian.
               </p>
-              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-body">
+              <p class="text-xs sm:text-sm text-neutral-500 dark:text-neutral-400 leading-relaxed font-sans">
                 Anda tidak harus memutuskan atau membeli apa pun sekarang. Mari duduk bersama dan memetakan di mana letak kebocoran operasional bisnis Anda — santai, gratis, rahasia, dan tanpa komitmen pembelian.
               </p>
             </div>

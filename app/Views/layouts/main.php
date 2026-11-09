@@ -82,7 +82,7 @@
                     fontFamily: {
                         sans: ["'Inter'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
                         inter: ["'Inter'", "sans-serif"],
-                        mono: ["'Inter'", "-apple-system", "sans-serif"],
+                        mono: ["'Inter'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
                     },
                     boxShadow: {
                         "clean": "0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03)",
@@ -112,23 +112,13 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <style>
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #FFFFFF;
-            color: #111215;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
+        *, *::before, *::after, html, body, button, input, select, textarea, span, p, h1, h2, h3, h4, h5, h6, time, a, small, label, code, pre, div, .font-mono, [class*="font-mono"] {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
         }
         .dark body, body.dark {
             background-color: #0E0F12;
             color: #F7F8FA;
         }
-        
-        /* Wajib Menggunakan Font Inter untuk Seluruh Elemen & Teks Keterangan */
-        *, html, body, button, input, select, textarea, .font-mono, .font-sans, time, code, pre, span, p, h1, h2, h3, h4, h5, h6, a, div {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
-        }
-
         .text-balance { text-wrap: balance; }
         
         /* Master Hero Background — Sesuai Arahan Presisi:
@@ -438,34 +428,7 @@
             filter: blur(0.5px);
         }
 
-        /* ========================================================================= */
-        /* SCROLL REVEAL BLUR-IN ANIMATION ENGINE                                    */
-        /* Hanya elemen baru dari bawah atau atas yang muncul dgn animasi blur halus */
-        /* Bukan mem-blur seluruh layar, menjaga elemen yang sudah tampil tetap tajam*/
-        /* ========================================================================= */
-        .scroll-blur-reveal {
-            opacity: 0;
-            filter: blur(14px);
-            transform: translateY(28px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                        filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: opacity, filter, transform;
-        }
-
-        .scroll-blur-reveal.is-revealed {
-            opacity: 1;
-            filter: blur(0px);
-            transform: translateY(0);
-        }
-
         @media (prefers-reduced-motion: reduce) {
-            .scroll-blur-reveal {
-                opacity: 1 !important;
-                filter: none !important;
-                transform: none !important;
-                transition: none !important;
-            }
             .marquee-track {
                 animation: none !important;
             }
@@ -841,48 +804,6 @@
     <script>
         // Initialize Lucide Icons
         lucide.createIcons();
-
-        // =========================================================================
-        // SCROLL REVEAL BLUR ENGINE (Elemen baru muncul dgn animasi blur naik/turun)
-        // Bagian yang belum terlihat di viewport muncul dengan efek animasi blur
-        // Elemen yang sudah di layar tetap tajam (bukan seluruh layar di-blur)
-        // =========================================================================
-        (function() {
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-            // Target elemen section, card, dan timeline untuk animasi blur reveal
-            const targets = document.querySelectorAll('main section:not(#beranda):not(.clean-hero-header), footer, .timeline-item, .bento-card');
-            
-            targets.forEach(el => {
-                const rect = el.getBoundingClientRect();
-                // Jika elemen sudah masuk viewport saat pertama kali render, tampilkan tajam
-                if (rect.top < window.innerHeight && rect.bottom > 0) {
-                    el.classList.add('scroll-blur-reveal', 'is-revealed');
-                } else {
-                    el.classList.add('scroll-blur-reveal');
-                }
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('is-revealed');
-                    } else {
-                        // Reset saat elemen terlewati ke atas atau bawah, sehingga saat discroll kembali
-                        // (baik naik maupun turun), elemen muncul kembali dengan animasi blur yang memukau
-                        const rect = entry.target.getBoundingClientRect();
-                        if (rect.top > window.innerHeight || rect.bottom < 0) {
-                            entry.target.classList.remove('is-revealed');
-                        }
-                    }
-                });
-            }, {
-                threshold: 0.05,
-                rootMargin: "30px 0px -40px 0px"
-            });
-
-            document.querySelectorAll('.scroll-blur-reveal').forEach(el => observer.observe(el));
-        })();
 
         // Sticky Navbar Transition on Scroll
         const header = document.getElementById('main-header');
