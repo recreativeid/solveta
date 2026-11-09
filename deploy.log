@@ -88,9 +88,13 @@ Current remote directory: /public_html/solveta.asia
  - run_import.php (FILE, 1721 bytes)
  - images (DIR, 0 bytes)
 --> Uploading app/ directory...
-FTPS TLS 1.2 failed: [Error: C03C0F3D5D700000:error:0A00041A:SSL routines:ssl3_read_bytes:tlsv1 alert decode error:../deps/openssl/openssl/ssl/record/rec_layer_s3.c:1601:SSL alert number 50
- (data socket)] {
-  library: 'SSL routines',
-  reason: 'tlsv1 alert decode error',
-  code: 'ERR_SSL_TLSV1_ALERT_DECODE_ERROR'
+FTPS TLS 1.2 failed: FTPError: 425 Unable to build data connection: Operation not permitted
+    at FTPContext._onControlSocketData (/home/runner/work/solveta/solveta/node_modules/basic-ftp/dist/FtpContext.js:317:39)
+    at TLSSocket.<anonymous> (/home/runner/work/solveta/solveta/node_modules/basic-ftp/dist/FtpContext.js:133:44)
+    at TLSSocket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at TLSWrap.onStreamRead (node:internal/stream_base_commons:191:23) {
+  code: 425
 }
