@@ -377,7 +377,7 @@
                             <!-- Eyebrow Badge (Click to Edit) -->
                             <div class="mb-4 inline-block">
                                 <div onclick="openQuickEditModal('hero_eyebrow', 'Hero Eyebrow (Badge Teks)', '<?= addslashes(esc($copy['hero_eyebrow'] ?? 'SOLVE TECHNOLOGY AGENCY')) ?>', false)"
-                                     class="cursor-pointer inline-flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[#7B0B1E] bg-rose-50 border border-rose-200 px-4 py-1.5 rounded-full hover:ring-2 hover:ring-[#8B0021] hover:bg-rose-100 transition-all shadow-2xs relative group/item"
+                                     class="cursor-pointer inline-flex items-center gap-1.5 font-sans text-[11px] font-bold uppercase tracking-wider text-[#7B0B1E] bg-rose-50 border border-rose-200 px-4 py-1.5 rounded-full hover:ring-2 hover:ring-[#8B0021] hover:bg-rose-100 transition-all shadow-2xs relative group/item"
                                      title="Klik untuk edit teks Eyebrow">
                                     <span class="w-1.5 h-1.5 rounded-full bg-[#8B0021] animate-pulse"></span>
                                     <span><?= esc($copy['hero_eyebrow'] ?? 'SOLVE TECHNOLOGY AGENCY') ?></span>
@@ -431,7 +431,7 @@
                             <div class="max-w-[700px] mx-auto mt-4 pt-4 border-t border-gray-100">
                                 <div class="bg-[#1a1b24] rounded-t-xl p-2.5 border-[2px] border-[#2c2d3a] shadow-lg relative group/laptop">
                                     <!-- Notch & macOS Dots Header -->
-                                    <div class="flex items-center justify-between px-2 pb-1.5 border-b border-[#232533] text-[10px] text-gray-400 font-mono">
+                                    <div class="flex items-center justify-between px-2 pb-1.5 border-b border-[#232533] text-[10px] text-gray-400 font-sans">
                                         <div class="flex items-center gap-1.5">
                                             <div class="w-2 h-2 rounded-full bg-[#ff5f56]"></div>
                                             <div class="w-2 h-2 rounded-full bg-[#ffbd2e]"></div>
@@ -467,7 +467,7 @@
                                     <p class="text-[11px] text-gray-500 mt-0.5">Teks berjalan di atas deretan logo klien.</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <span id="visual-speed-display" class="text-xs font-mono font-bold text-[#7B0B1E] bg-white border border-gray-200 px-2.5 py-1 rounded-lg">
+                                    <span id="visual-speed-display" class="text-xs font-sans font-bold text-[#7B0B1E] bg-white border border-gray-200 px-2.5 py-1 rounded-lg">
                                         <?= esc($copy['marquee_speed'] ?? 35) ?>s / putaran
                                     </span>
                                     <button type="button" onclick="switchTab('brands')"
@@ -499,28 +499,28 @@
                                     <div>
                                         <div class="flex justify-between mb-1 text-gray-600 font-medium">
                                             <span>Kecepatan Marquee</span>
-                                            <span class="font-mono text-[#8B0021] font-bold"><?= esc($copy['marquee_speed'] ?? 35) ?>s</span>
+                                            <span class="font-sans text-[#8B0021] font-bold"><?= esc($copy['marquee_speed'] ?? 35) ?>s</span>
                                         </div>
                                         <input type="range" name="marquee_speed" min="15" max="60" step="5" value="<?= esc($copy['marquee_speed'] ?? 35) ?>" onchange="this.form.submit()" class="w-full accent-[#8B0021] cursor-pointer">
                                     </div>
                                     <div>
                                         <div class="flex justify-between mb-1 text-gray-600 font-medium">
                                             <span>Tinggi Logo (Height)</span>
-                                            <span class="font-mono text-[#8B0021] font-bold"><?= esc($copy['marquee_logo_height'] ?? 46) ?>px</span>
+                                            <span class="font-sans text-[#8B0021] font-bold"><?= esc($copy['marquee_logo_height'] ?? 46) ?>px</span>
                                         </div>
                                         <input type="range" name="marquee_logo_height" min="28" max="90" step="2" value="<?= esc($copy['marquee_logo_height'] ?? 46) ?>" onchange="this.form.submit()" class="w-full accent-[#8B0021] cursor-pointer">
                                     </div>
                                     <div>
                                         <div class="flex justify-between mb-1 text-gray-600 font-medium">
                                             <span>Jarak Antar Logo</span>
-                                            <span class="font-mono text-[#8B0021] font-bold"><?= esc($copy['marquee_logo_spacing'] ?? 36) ?>px</span>
+                                            <span class="font-sans text-[#8B0021] font-bold"><?= esc($copy['marquee_logo_spacing'] ?? 36) ?>px</span>
                                         </div>
                                         <input type="range" name="marquee_logo_spacing" min="16" max="80" step="4" value="<?= esc($copy['marquee_logo_spacing'] ?? 36) ?>" onchange="this.form.submit()" class="w-full accent-[#8B0021] cursor-pointer">
                                     </div>
                                     <div>
                                         <div class="flex justify-between mb-1 text-gray-600 font-medium">
                                             <span>Skala Proporsi</span>
-                                            <span class="font-mono text-[#8B0021] font-bold"><?= esc($copy['marquee_logo_scale'] ?? 100) ?>%</span>
+                                            <span class="font-sans text-[#8B0021] font-bold"><?= esc($copy['marquee_logo_scale'] ?? 100) ?>%</span>
                                         </div>
                                         <input type="range" name="marquee_logo_scale" min="60" max="150" step="5" value="<?= esc($copy['marquee_logo_scale'] ?? 100) ?>" onchange="this.form.submit()" class="w-full accent-[#8B0021] cursor-pointer">
                                     </div>
@@ -555,7 +555,7 @@
                                     <div class="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-2xs hover:shadow-md transition-all group/card flex flex-col justify-between">
                                         <div class="aspect-[16/10] bg-gray-100 overflow-hidden relative">
                                             <img src="<?= esc($p['image_url']) ?>" alt="<?= esc($p['title']) ?>" class="w-full h-full object-cover group-hover/card:scale-105 transition-transform duration-300">
-                                            <span class="absolute top-2 left-2 bg-black/75 backdrop-blur-xs text-white text-[9px] font-mono font-bold px-2 py-0.5 rounded">
+                                            <span class="absolute top-2 left-2 bg-black/75 backdrop-blur-xs text-white text-[9px] font-sans font-bold px-2 py-0.5 rounded">
                                                 <?= esc($p['category']) ?>
                                             </span>
                                         </div>
@@ -653,7 +653,7 @@
                                     <div class="bg-white rounded-2xl border-2 <?= $isPopular ? 'border-[#8B0021] shadow-md shadow-rose-950/10' : 'border-gray-200 hover:border-gray-300' ?> p-5 flex flex-col justify-between space-y-4 relative group/tier transition-all">
                                         
                                         <?php if ($isPopular): ?>
-                                            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white font-mono text-[9px] font-bold uppercase px-3 py-0.5 rounded-full shadow-xs">
+                                            <span class="absolute -top-2.5 left-1/2 -translate-x-1/2 bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white font-sans text-[9px] font-bold uppercase px-3 py-0.5 rounded-full shadow-xs">
                                                 PALING POPULER
                                             </span>
                                         <?php endif; ?>
@@ -661,7 +661,7 @@
                                         <!-- Top Reorder & Sort Indicator -->
                                         <div class="flex items-center justify-between pb-2 border-b border-gray-100">
                                             <div class="flex items-center gap-1.5">
-                                                <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-700">#<?= $idx + 1 ?></span>
+                                                <span class="text-[10px] font-sans font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-700">#<?= $idx + 1 ?></span>
                                                 <span class="text-[10px] font-semibold text-gray-400">Urutan</span>
                                             </div>
                                             <div class="flex items-center gap-1">
@@ -689,7 +689,7 @@
                                         <div class="space-y-3">
                                             <!-- Top Label + Price -->
                                             <div class="border-b border-gray-100 pb-3 text-center">
-                                                <div class="text-[10px] font-mono font-bold tracking-widest text-[#8B0021] uppercase">
+                                                <div class="text-[10px] font-sans font-bold tracking-widest text-[#8B0021] uppercase">
                                                     PAKET WEBSITE
                                                 </div>
                                                 <h3 class="text-sm font-black text-gray-950 uppercase mt-0.5">
@@ -698,7 +698,7 @@
                                                 <div class="text-2xl font-black font-sans text-gray-950 mt-1">
                                                     <?= esc($tier['price']) ?>
                                                 </div>
-                                                <div class="text-[10px] font-mono text-gray-400 mt-0.5">
+                                                <div class="text-[10px] font-sans text-gray-400 mt-0.5">
                                                     Perpanjangan: <?= esc($tier['renewal_price'] ?? '-') ?>
                                                 </div>
                                             </div>
@@ -706,18 +706,18 @@
                                             <!-- Masa Aktif & Estimasi Jadi -->
                                             <div class="grid grid-cols-2 gap-2 text-center text-[10px]">
                                                 <div class="p-2 rounded-lg bg-gray-50 border border-gray-100">
-                                                    <span class="text-gray-400 block font-mono">Masa Aktif:</span>
+                                                    <span class="text-gray-400 block font-sans">Masa Aktif:</span>
                                                     <strong class="text-gray-900"><?= esc($tier['active_period'] ?? '1 Tahun') ?></strong>
                                                 </div>
                                                 <div class="p-2 rounded-lg bg-gray-50 border border-gray-100">
-                                                    <span class="text-gray-400 block font-mono">Estimasi Jadi:</span>
+                                                    <span class="text-gray-400 block font-sans">Estimasi Jadi:</span>
                                                     <strong class="text-gray-900"><?= esc($cleanDelivery) ?></strong>
                                                 </div>
                                             </div>
 
                                             <!-- Target Kesesuaian -->
                                             <div class="p-2.5 rounded-lg bg-rose-50/50 border border-rose-100 text-[11px] leading-relaxed text-gray-700">
-                                                <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-[#8B0021] block mb-0.5">Cocok Untuk:</span>
+                                                <span class="text-[9px] font-sans font-bold uppercase tracking-wider text-[#8B0021] block mb-0.5">Cocok Untuk:</span>
                                                 <p class="line-clamp-2"><?= esc($tier['suitability'] ?? '-') ?></p>
                                             </div>
 
@@ -771,7 +771,7 @@
                                         <div onclick="openQuickEditModal('custom_package_title', 'Badge Kategori Custom', '<?= addslashes(esc($copy['custom_package_title'] ?? 'LAYANAN KHUSUS & ENTERPRISE')) ?>', false)"
                                              class="cursor-pointer hover:bg-rose-100/60 px-2 py-1 rounded inline-block transition-colors"
                                              title="Klik untuk edit Badge Kategori Custom">
-                                            <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-[#8B0021] flex items-center gap-1.5">
+                                            <span class="text-[10px] font-sans font-bold uppercase tracking-widest text-[#8B0021] flex items-center gap-1.5">
                                                 <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
                                                 <span><?= esc($copy['custom_package_title'] ?? 'LAYANAN KHUSUS & ENTERPRISE') ?></span>
                                                 <i data-lucide="edit-2" class="w-3 h-3 opacity-60"></i>
@@ -859,7 +859,7 @@
                                     <?php foreach ($addons as $aIdx => $addon): ?>
                                         <div class="py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-gray-50/70 px-2 rounded-lg transition-colors group">
                                             <div class="flex items-center gap-2.5 min-w-0">
-                                                <span class="text-[11px] font-mono font-bold text-gray-400 w-5 flex-shrink-0">
+                                                <span class="text-[11px] font-sans font-bold text-gray-400 w-5 flex-shrink-0">
                                                     <?= $aIdx + 1 ?>.
                                                 </span>
                                                 <span class="text-xs font-bold text-gray-900 truncate">
@@ -868,7 +868,7 @@
                                             </div>
 
                                             <div class="flex items-center justify-between sm:justify-end gap-3 pl-7 sm:pl-0 flex-shrink-0">
-                                                <span class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded">
+                                                <span class="text-xs font-sans font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded">
                                                     <?= esc($addon['price_description']) ?>
                                                 </span>
 
@@ -985,13 +985,13 @@
                             <div class="space-y-3">
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center gap-2">
-                                        <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-700">#<?= $idx + 1 ?></span>
+                                        <span class="text-[10px] font-sans font-bold px-2 py-0.5 rounded bg-gray-100 text-gray-700">#<?= $idx + 1 ?></span>
                                         <span class="text-xs font-bold text-gray-900 uppercase"><?= esc($tier['name']) ?></span>
                                         <?php if (!empty($tier['popular'])): ?>
                                             <span class="text-[9px] px-2 py-0.5 rounded-full bg-red-50 text-red-600 font-bold border border-red-100">POPULAR</span>
                                         <?php endif; ?>
                                     </div>
-                                    <span class="text-xs font-bold font-mono text-gray-900"><?= esc($tier['price']) ?></span>
+                                    <span class="text-xs font-bold font-sans text-gray-900"><?= esc($tier['price']) ?></span>
                                 </div>
 
                                 <p class="text-[11px] text-gray-500 leading-relaxed">
@@ -1019,13 +1019,13 @@
                                 </div>
                             </div>
 
-                            <div class="pt-2 text-[10px] text-gray-400 font-mono truncate">
+                            <div class="pt-2 text-[10px] text-gray-400 font-sans truncate">
                                 Perpanjangan: <?= esc($tier['renewal_price'] ?? '-') ?>
                             </div>
 
                             <div class="pt-2.5 border-t border-gray-100 flex items-center justify-between">
                                 <div class="flex items-center gap-1.5">
-                                    <span class="text-[10px] text-gray-400 font-mono">Urutan:</span>
+                                    <span class="text-[10px] text-gray-400 font-sans">Urutan:</span>
                                     <?php if ($idx > 0): ?>
                                         <form action="/admin/pricing/move/<?= esc($tier['id']) ?>/left" method="POST" class="inline">
                                             <?= csrf_field() ?>
@@ -1080,7 +1080,7 @@
                             <?php foreach ($addons as $aIdx => $addon): ?>
                                 <div class="py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 hover:bg-gray-50/70 px-2 rounded-lg transition-colors group">
                                     <div class="flex items-center gap-2.5 min-w-0">
-                                        <span class="text-[11px] font-mono font-bold text-gray-400 w-5 flex-shrink-0">
+                                        <span class="text-[11px] font-sans font-bold text-gray-400 w-5 flex-shrink-0">
                                             <?= $aIdx + 1 ?>.
                                         </span>
                                         <span class="text-xs sm:text-sm font-semibold text-gray-900 truncate">
@@ -1089,7 +1089,7 @@
                                     </div>
 
                                     <div class="flex items-center justify-between sm:justify-end gap-3 pl-7 sm:pl-0 flex-shrink-0">
-                                        <span class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded">
+                                        <span class="text-xs font-sans font-bold text-[#8B0021] bg-rose-50 border border-rose-200 px-2.5 py-0.5 rounded">
                                             <?= esc($addon['price_description']) ?>
                                         </span>
 
@@ -1160,19 +1160,19 @@
                     ?>
                     <div class="p-4 bg-white rounded-xl border border-gray-200/80">
                         <div class="text-[10px] text-gray-400 font-medium uppercase">Proyeksi Omset / Bln</div>
-                        <div class="text-sm font-bold font-mono text-gray-900 mt-1">Rp <?= number_format($totOmset, 0, ',', '.') ?></div>
+                        <div class="text-sm font-bold font-sans text-gray-900 mt-1">Rp <?= number_format($totOmset, 0, ',', '.') ?></div>
                     </div>
                     <div class="p-4 bg-white rounded-xl border border-gray-200/80">
                         <div class="text-[10px] text-gray-400 font-medium uppercase">Total Beban HPP / Bln</div>
-                        <div class="text-sm font-bold font-mono text-gray-600 mt-1">Rp <?= number_format($totHpp, 0, ',', '.') ?></div>
+                        <div class="text-sm font-bold font-sans text-gray-600 mt-1">Rp <?= number_format($totHpp, 0, ',', '.') ?></div>
                     </div>
                     <div class="p-4 bg-white rounded-xl border border-gray-200/80">
                         <div class="text-[10px] text-emerald-600 font-medium uppercase">Laba Bersih / Bln</div>
-                        <div class="text-sm font-bold font-mono text-emerald-600 mt-1">Rp <?= number_format($totLaba, 0, ',', '.') ?></div>
+                        <div class="text-sm font-bold font-sans text-emerald-600 mt-1">Rp <?= number_format($totLaba, 0, ',', '.') ?></div>
                     </div>
                     <div class="p-4 bg-white rounded-xl border border-gray-200/80">
                         <div class="text-[10px] text-gray-400 font-medium uppercase">Rata-rata Margin</div>
-                        <div class="text-sm font-bold font-mono text-gray-900 mt-1"><?= $avgMargin ?>%</div>
+                        <div class="text-sm font-bold font-sans text-gray-900 mt-1"><?= $avgMargin ?>%</div>
                     </div>
                 </div>
 
@@ -1205,12 +1205,12 @@
                                 <div>
                                     <div class="flex items-center gap-2">
                                         <h3 class="text-xs font-bold text-gray-900"><?= esc($prof['service_name']) ?></h3>
-                                        <span class="text-[10px] px-2 py-0.5 rounded bg-gray-100 font-mono text-gray-600">Harga: Rp <?= number_format($sp, 0, ',', '.') ?></span>
+                                        <span class="text-[10px] px-2 py-0.5 rounded bg-gray-100 font-sans text-gray-600">Harga: Rp <?= number_format($sp, 0, ',', '.') ?></span>
                                     </div>
                                     <p class="text-[11px] text-gray-400 mt-0.5"><?= esc($prof['notes'] ?? '-') ?></p>
                                 </div>
 
-                                <div class="flex items-center gap-4 text-xs font-mono">
+                                <div class="flex items-center gap-4 text-xs font-sans">
                                     <div>
                                         <span class="text-[10px] text-gray-400 block font-sans">Laba/Unit:</span>
                                         <span class="font-bold text-emerald-600">Rp <?= number_format($unitProfit, 0, ',', '.') ?> (<?= $marginPct ?>%)</span>
@@ -1237,14 +1237,14 @@
                                             <tr>
                                                 <td class="px-3 py-2 text-gray-700 font-medium"><?= esc($c['name'] ?? '-') ?></td>
                                                 <td class="px-3 py-2 text-gray-400"><?= esc(ucwords(str_replace('_', ' ', $c['category'] ?? '-'))) ?></td>
-                                                <td class="px-3 py-2 text-right font-mono text-gray-800">Rp <?= number_format((int)($c['amount'] ?? 0), 0, ',', '.') ?></td>
+                                                <td class="px-3 py-2 text-right font-sans text-gray-800">Rp <?= number_format((int)($c['amount'] ?? 0), 0, ',', '.') ?></td>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
                                     <tfoot class="border-t border-gray-100 font-bold">
                                         <tr>
                                             <td colspan="2" class="px-3 py-2 text-gray-600">Total HPP per Unit</td>
-                                            <td class="px-3 py-2 text-right font-mono text-gray-900">Rp <?= number_format($costSum, 0, ',', '.') ?></td>
+                                            <td class="px-3 py-2 text-right font-sans text-gray-900">Rp <?= number_format($costSum, 0, ',', '.') ?></td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -1292,7 +1292,7 @@
                             </div>
 
                             <div class="p-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-                                <span class="text-[10px] font-mono text-gray-400">Urutan: <?= esc($port['sort_order']) ?></span>
+                                <span class="text-[10px] font-sans text-gray-400">Urutan: <?= esc($port['sort_order']) ?></span>
                                 <div class="flex items-center gap-2">
                                     <button type="button" onclick="openEditPortfolioModal(<?= htmlspecialchars(json_encode($port), ENT_QUOTES, 'UTF-8') ?>)"
                                             class="text-gray-500 hover:text-gray-900 text-xs p-1 cursor-pointer" title="Edit">
@@ -1400,7 +1400,7 @@
                                 <label class="text-xs font-bold text-gray-900">
                                     📏 Tinggi Logo
                                 </label>
-                                <span id="brand-badge-height" class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200">
+                                <span id="brand-badge-height" class="text-xs font-sans font-bold text-[#8B0021] bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200">
                                     <?= esc($copy['marquee_logo_height'] ?? 46) ?>px
                                 </span>
                             </div>
@@ -1409,7 +1409,7 @@
                                    value="<?= esc($copy['marquee_logo_height'] ?? 46) ?>"
                                    oninput="updateMarqueeLiveSettings()"
                                    class="w-full accent-[#8B0021] h-2 bg-gray-200 rounded-lg cursor-pointer">
-                            <div class="flex justify-between text-[10px] text-gray-400 font-mono">
+                            <div class="flex justify-between text-[10px] text-gray-400 font-sans">
                                 <span>28px (Mini)</span>
                                 <span>75px (Besar)</span>
                                 <span>150px (Maks)</span>
@@ -1422,7 +1422,7 @@
                                 <label class="text-xs font-bold text-gray-900">
                                     🔍 Skala Pembesaran
                                 </label>
-                                <span id="brand-badge-scale" class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200">
+                                <span id="brand-badge-scale" class="text-xs font-sans font-bold text-[#8B0021] bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200">
                                     <?= esc($copy['marquee_logo_scale'] ?? 100) ?>%
                                 </span>
                             </div>
@@ -1431,7 +1431,7 @@
                                    value="<?= esc($copy['marquee_logo_scale'] ?? 100) ?>"
                                    oninput="updateMarqueeLiveSettings()"
                                    class="w-full accent-[#8B0021] h-2 bg-gray-200 rounded-lg cursor-pointer">
-                            <div class="flex justify-between text-[10px] text-gray-400 font-mono">
+                            <div class="flex justify-between text-[10px] text-gray-400 font-sans">
                                 <span>50%</span>
                                 <span>100% (Normal)</span>
                                 <span>250% (Zoom 2.5x)</span>
@@ -1444,7 +1444,7 @@
                                 <label class="text-xs font-bold text-gray-900">
                                     ↔️ Jarak Antar Logo
                                 </label>
-                                <span id="brand-badge-spacing" class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200">
+                                <span id="brand-badge-spacing" class="text-xs font-sans font-bold text-[#8B0021] bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200">
                                     <?= esc($copy['marquee_logo_spacing'] ?? 36) ?>px
                                 </span>
                             </div>
@@ -1453,7 +1453,7 @@
                                    value="<?= esc($copy['marquee_logo_spacing'] ?? 36) ?>"
                                    oninput="updateMarqueeLiveSettings()"
                                    class="w-full accent-[#8B0021] h-2 bg-gray-200 rounded-lg cursor-pointer">
-                            <div class="flex justify-between text-[10px] text-gray-400 font-mono">
+                            <div class="flex justify-between text-[10px] text-gray-400 font-sans">
                                 <span>10px (Rapat)</span>
                                 <span>40px (Ideal)</span>
                                 <span>90px (Renggang)</span>
@@ -1466,7 +1466,7 @@
                                 <label class="text-xs font-bold text-gray-900">
                                     ⚡ Kecepatan Berjalan
                                 </label>
-                                <span id="brand-badge-speed" class="text-xs font-mono font-bold text-[#8B0021] bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200">
+                                <span id="brand-badge-speed" class="text-xs font-sans font-bold text-[#8B0021] bg-rose-50 px-2.5 py-0.5 rounded-md border border-rose-200">
                                     <?= esc($copy['marquee_speed'] ?? 35) ?>s
                                 </span>
                             </div>
@@ -1475,7 +1475,7 @@
                                    value="<?= esc($copy['marquee_speed'] ?? 35) ?>"
                                    oninput="updateMarqueeLiveSettings()"
                                    class="w-full accent-[#8B0021] h-2 bg-gray-200 rounded-lg cursor-pointer">
-                            <div class="flex justify-between text-[10px] text-gray-400 font-mono">
+                            <div class="flex justify-between text-[10px] text-gray-400 font-sans">
                                 <span>12s (Cepat)</span>
                                 <span>35s (Sedang)</span>
                                 <span>65s (Pelan)</span>
@@ -1488,9 +1488,9 @@
                         <div class="flex items-center justify-between text-xs text-gray-400">
                             <span class="font-bold text-white flex items-center gap-1.5">
                                 <span>📺 Pratinjau Langsung (Live Visual):</span>
-                                <span class="text-[10px] font-mono text-emerald-400">● Real-time</span>
+                                <span class="text-[10px] font-sans text-emerald-400">● Real-time</span>
                             </span>
-                            <span class="font-mono text-[11px] text-gray-300">
+                            <span class="font-sans text-[11px] text-gray-300">
                                 Tinggi: <strong id="preview-calc-height" class="text-white"><?= round(($copy['marquee_logo_height'] ?? 46) * (($copy['marquee_logo_scale'] ?? 100) / 100)) ?>px</strong> | Spasi: <strong id="preview-calc-spacing" class="text-white"><?= esc($copy['marquee_logo_spacing'] ?? 36) ?>px</strong>
                             </span>
                         </div>
@@ -1629,14 +1629,14 @@
                         <div>
                             <label class="block text-[11px] font-medium text-gray-600 mb-1">Nomor WhatsApp API (Format Internasional)</label>
                             <input type="text" name="whatsapp_number" value="<?= esc($contact['whatsapp_number'] ?? '6285876603826') ?>" placeholder="6285876603826"
-                                   class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-mono">
+                                   class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-sans">
                             <span class="text-[10px] text-gray-400">Gunakan angka saja tanpa tanda +, contoh: 6285876603826</span>
                         </div>
 
                         <div>
                             <label class="block text-[11px] font-medium text-gray-600 mb-1">Tampilan Nomor WhatsApp (Display)</label>
                             <input type="text" name="whatsapp_display" value="<?= esc($contact['whatsapp_display'] ?? '+62 858-7660-3826') ?>" placeholder="+62 858-7660-3826"
-                                   class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-mono">
+                                   class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-sans">
                         </div>
 
                         <div>
@@ -1761,19 +1761,19 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div class="p-4 bg-white rounded-xl border border-gray-200/80">
                         <div class="text-[10px] text-gray-400 font-medium uppercase">Total Order Masuk</div>
-                        <div class="text-xl font-bold font-mono text-gray-900 mt-1"><?= $countTotal ?> Submisi</div>
+                        <div class="text-xl font-bold font-sans text-gray-900 mt-1"><?= $countTotal ?> Submisi</div>
                     </div>
                     <div class="p-4 bg-white rounded-xl border border-gray-200/80">
                         <div class="text-[10px] text-emerald-600 font-medium uppercase">Pembayaran Selesai</div>
-                        <div class="text-xl font-bold font-mono text-emerald-600 mt-1"><?= $countDone ?> Selesai</div>
+                        <div class="text-xl font-bold font-sans text-emerald-600 mt-1"><?= $countDone ?> Selesai</div>
                     </div>
                     <div class="p-4 bg-white rounded-xl border border-gray-200/80">
                         <div class="text-[10px] text-amber-600 font-medium uppercase">Menunggu Pembayaran</div>
-                        <div class="text-xl font-bold font-mono text-amber-600 mt-1"><?= $countPending ?> Klien</div>
+                        <div class="text-xl font-bold font-sans text-amber-600 mt-1"><?= $countPending ?> Klien</div>
                     </div>
                     <div class="p-4 bg-white rounded-xl border border-gray-200/80">
                         <div class="text-[10px] text-gray-400 font-medium uppercase">Estimasi Nilai Order</div>
-                        <div class="text-xl font-bold font-mono text-gray-900 mt-1">Rp <?= number_format($potensiNilai, 0, ',', '.') ?></div>
+                        <div class="text-xl font-bold font-sans text-gray-900 mt-1">Rp <?= number_format($potensiNilai, 0, ',', '.') ?></div>
                     </div>
                 </div>
 
@@ -1819,7 +1819,7 @@
                                             data-status="<?= esc($ord['status'] ?? 'Baru') ?>">
                                             
                                             <!-- ID & Tanggal -->
-                                            <td class="px-4 py-3 font-mono text-gray-500 whitespace-nowrap">
+                                            <td class="px-4 py-3 font-sans text-gray-500 whitespace-nowrap">
                                                 <div class="font-bold text-gray-900"><?= esc(substr($ord['id'] ?? '-', -6)) ?></div>
                                                 <div class="text-[10px] text-gray-400"><?= esc(substr($ord['created_at'] ?? '-', 0, 16)) ?></div>
                                             </td>
@@ -1833,7 +1833,7 @@
                                             <!-- Kontak WA -->
                                             <td class="px-4 py-3 whitespace-nowrap">
                                                 <a href="https://wa.me/<?= preg_replace('/[^0-9]/', '', $ord['whatsapp_number']) ?>?text=Halo%20<?= urlencode($ord['full_name']) ?>,%20kami%20dari%20SOLVETA" target="_blank"
-                                                   class="inline-flex items-center gap-1 text-emerald-600 hover:text-emerald-700 font-mono font-medium">
+                                                   class="inline-flex items-center gap-1 text-emerald-600 hover:text-emerald-700 font-sans font-medium">
                                                     <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
                                                     <span><?= esc($ord['whatsapp_number']) ?></span>
                                                 </a>
@@ -1926,19 +1926,19 @@
                                 <?php else: ?>
                                     <?php foreach ($transactions as $tx): ?>
                                         <tr class="hover:bg-gray-50/60 transition-colors">
-                                            <td class="px-4 py-3 font-mono">
+                                            <td class="px-4 py-3 font-sans">
                                                 <div class="font-bold text-gray-900"><?= esc($tx['invoice_number']) ?></div>
                                                 <div class="text-[10px] text-gray-400"><?= esc($tx['date']) ?></div>
                                             </td>
                                             <td class="px-4 py-3 font-medium text-gray-900"><?= esc($tx['customer_name']) ?></td>
-                                            <td class="px-4 py-3 font-mono text-gray-600"><?= esc($tx['phone_number']) ?></td>
+                                            <td class="px-4 py-3 font-sans text-gray-600"><?= esc($tx['phone_number']) ?></td>
                                             <td class="px-4 py-3">
                                                 <div class="font-medium text-gray-900"><?= esc($tx['website_name'] ?: '-') ?></div>
                                                 <?php if (!empty($tx['website_link'])): ?>
                                                     <a href="<?= esc($tx['website_link']) ?>" target="_blank" class="text-[10px] text-blue-600 hover:underline"><?= esc($tx['website_link']) ?></a>
                                                 <?php endif; ?>
                                             </td>
-                                            <td class="px-4 py-3 font-mono font-bold text-gray-900">
+                                            <td class="px-4 py-3 font-sans font-bold text-gray-900">
                                                 Rp <?= number_format((int)($tx['service_price'] ?? 0), 0, ',', '.') ?>
                                             </td>
                                             <td class="px-4 py-3">
@@ -2023,7 +2023,7 @@
                             <div class="sm:col-span-6">
                                 <label class="block text-[11px] font-medium text-gray-700 mb-1">Custom Slug URL (Opsional, kosongkan untuk otomatis)</label>
                                 <input type="text" name="slug" id="art-slug" placeholder="contoh-judul-artikel-otomatis"
-                                       class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-mono">
+                                       class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-sans">
                             </div>
 
                             <!-- Estimasi Waktu Baca & Penulis -->
@@ -2126,7 +2126,7 @@
                                             <td class="px-4 py-3 max-w-xs">
                                                 <div class="font-bold text-gray-900 leading-snug line-clamp-1"><?= esc($art['title']) ?></div>
                                                 <div class="text-[10px] text-gray-400 line-clamp-1 mt-0.5"><?= esc($art['summary']) ?></div>
-                                                <div class="text-[9px] font-mono text-gray-400 mt-0.5">/artikel/<?= esc($art['slug']) ?></div>
+                                                <div class="text-[9px] font-sans text-gray-400 mt-0.5">/artikel/<?= esc($art['slug']) ?></div>
                                             </td>
                                             <td class="px-4 py-3">
                                                 <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-red-50 text-[#8E1738] border border-red-100">
@@ -2494,7 +2494,7 @@
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">Harga Tampilan (Display)</label>
-                        <input type="text" name="price" id="price-input-price" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono font-bold text-[#8B0021]">
+                        <input type="text" name="price" id="price-input-price" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans font-bold text-[#8B0021]">
                     </div>
                 </div>
 
@@ -2527,12 +2527,12 @@
 
                 <div>
                     <label class="block text-[11px] font-medium text-gray-600 mb-1">Template Pesan WhatsApp</label>
-                    <textarea name="wa_message" id="price-input-wamsg" rows="2" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono text-[11px]"></textarea>
+                    <textarea name="wa_message" id="price-input-wamsg" rows="2" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans text-[11px]"></textarea>
                 </div>
 
                 <div>
                     <label class="block text-[11px] font-medium text-gray-600 mb-1">Daftar Fitur (1 baris per fitur)</label>
-                    <textarea name="features" id="price-input-features" rows="4" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono"></textarea>
+                    <textarea name="features" id="price-input-features" rows="4" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans"></textarea>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3 items-center pt-1">
@@ -2542,7 +2542,7 @@
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">Urutan Posisi Paket (#)</label>
-                        <input type="number" name="sort_order" id="price-input-sort" min="1" max="20" class="w-full text-xs px-3 py-1.5 rounded-lg border border-gray-200 outline-none font-mono">
+                        <input type="number" name="sort_order" id="price-input-sort" min="1" max="20" class="w-full text-xs px-3 py-1.5 rounded-lg border border-gray-200 outline-none font-sans">
                     </div>
                 </div>
 
@@ -2590,11 +2590,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">Harga Numerik (Opsional)</label>
-                        <input type="number" name="base_price" id="addon-input-base-price" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono" placeholder="50000">
+                        <input type="number" name="base_price" id="addon-input-base-price" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans" placeholder="50000">
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">Urutan Tampil (#)</label>
-                        <input type="number" name="sort_order" id="addon-input-sort" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono" placeholder="1">
+                        <input type="number" name="sort_order" id="addon-input-sort" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans" placeholder="1">
                     </div>
                 </div>
 
@@ -2635,7 +2635,7 @@
 
                 <div>
                     <label class="block text-[11px] font-medium text-gray-600 mb-1">Skala Gambar Individual</label>
-                    <input type="number" step="0.1" min="0.5" max="2.5" name="scale" id="brand-input-scale" value="1.0" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono">
+                    <input type="number" step="0.1" min="0.5" max="2.5" name="scale" id="brand-input-scale" value="1.0" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans">
                 </div>
 
                 <div>
@@ -2710,7 +2710,7 @@
 
                 <div>
                     <label class="block text-[11px] font-medium text-gray-600 mb-1">No. Invoice Resmi</label>
-                    <input type="text" name="invoice_number" id="tx-input-inv" value="INV-<?= date('Ymd') ?>-<?= rand(100, 999) ?>" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono font-bold">
+                    <input type="text" name="invoice_number" id="tx-input-inv" value="INV-<?= date('Ymd') ?>-<?= rand(100, 999) ?>" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans font-bold">
                 </div>
 
                 <div>
@@ -2721,11 +2721,11 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">No. WhatsApp</label>
-                        <input type="text" name="phone_number" id="tx-input-phone" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono">
+                        <input type="text" name="phone_number" id="tx-input-phone" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans">
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">Nilai Jasa (Rp)</label>
-                        <input type="number" name="service_price" id="tx-input-price" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-mono font-bold">
+                        <input type="number" name="service_price" id="tx-input-price" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans font-bold">
                     </div>
                 </div>
 
@@ -3058,13 +3058,13 @@
                     </div>
                     <div>
                         <span class="text-gray-400 block text-[9px] uppercase font-bold">Nomor WhatsApp</span>
-                        <a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-700 font-bold font-mono text-xs hover:underline flex items-center gap-1">
+                        <a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-700 font-bold font-sans text-xs hover:underline flex items-center gap-1">
                             <span>${ord.whatsapp_number || '-'}</span>
                         </a>
                     </div>
                     <div>
                         <span class="text-gray-400 block text-[9px] uppercase font-bold">Paket Pilihan</span>
-                        <span class="inline-block mt-0.5 px-2 py-0.5 rounded bg-gray-900 text-white font-mono font-bold text-[10px]">${ord.selected_package || '-'}</span>
+                        <span class="inline-block mt-0.5 px-2 py-0.5 rounded bg-gray-900 text-white font-sans font-bold text-[10px]">${ord.selected_package || '-'}</span>
                     </div>
                 </div>
 
@@ -3088,7 +3088,7 @@
                     </div>
                     <div class="p-3 bg-white flex flex-col sm:flex-row sm:items-start justify-between gap-1">
                         <span class="text-gray-500 font-medium sm:w-1/3 text-[11px]">5. Rencana Nama Domain:</span>
-                        <span class="font-mono text-gray-900 font-semibold sm:w-2/3 text-[11px]">${ord.website_and_domain_name || '-'}</span>
+                        <span class="font-sans text-gray-900 font-semibold sm:w-2/3 text-[11px]">${ord.website_and_domain_name || '-'}</span>
                     </div>
                     <div class="p-3 bg-gray-50/50 flex flex-col sm:flex-row sm:items-start justify-between gap-1">
                         <span class="text-gray-500 font-medium sm:w-1/3 text-[11px]">6. Kepemilikan Domain:</span>
@@ -3108,7 +3108,7 @@
                     </div>
                     <div class="p-3 bg-gray-50/50 flex flex-col sm:flex-row sm:items-start justify-between gap-1">
                         <span class="text-gray-500 font-medium sm:w-1/3 text-[11px]">10. Contoh Website Referensi:</span>
-                        <span class="text-blue-600 sm:w-2/3 text-[11px] font-mono break-all">${ord.example_websites || '-'}</span>
+                        <span class="text-blue-600 sm:w-2/3 text-[11px] font-sans break-all">${ord.example_websites || '-'}</span>
                     </div>
                     <div class="p-3 bg-white flex flex-col sm:flex-row sm:items-start justify-between gap-1">
                         <span class="text-gray-500 font-medium sm:w-1/3 text-[11px]">11. Catatan Khusus / Fitur Tambahan:</span>
@@ -3116,7 +3116,7 @@
                     </div>
                     <div class="p-3 bg-gray-50/50 flex flex-col sm:flex-row sm:items-start justify-between gap-1">
                         <span class="text-gray-500 font-medium sm:w-1/3 text-[11px]">12. Waktu Pengiriman Brief:</span>
-                        <span class="text-gray-700 sm:w-2/3 text-[11px] font-mono">${ord.created_at || ord.timestamp || '-'}</span>
+                        <span class="text-gray-700 sm:w-2/3 text-[11px] font-sans">${ord.created_at || ord.timestamp || '-'}</span>
                     </div>
                 </div>
             `;

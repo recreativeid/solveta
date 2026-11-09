@@ -58,7 +58,7 @@
 
             <div class="text-left sm:text-right">
                 <span class="text-xs uppercase tracking-widest text-zinc-400 font-bold block mb-1">INVOICE PENAGIHAN</span>
-                <div class="font-heading font-black text-2xl sm:text-3xl text-zinc-900 font-mono tracking-tight">
+                <div class="font-heading font-black text-2xl sm:text-3xl text-zinc-900 font-sans tracking-tight">
                     <?= esc($tx['invoice_number']) ?>
                 </div>
                 <div class="mt-3 space-y-1 text-xs text-zinc-600">
@@ -121,7 +121,7 @@
                                 <td class="py-4 text-right text-zinc-500">
                                     <?= esc($comp['note'] ?? '-') ?>
                                 </td>
-                                <td class="py-4 text-right font-mono font-bold text-zinc-800">
+                                <td class="py-4 text-right font-sans font-bold text-zinc-800">
                                     <?php if (isset($comp['cost']) && $comp['cost'] > 0): ?>
                                         Rp <?= number_format($comp['cost'], 0, ',', '.') ?>
                                     <?php else: ?>
@@ -138,7 +138,7 @@
                             <td class="py-4 text-right text-zinc-500">
                                 Termasuk Domain, Cloud Hosting, SSL & Garansi
                             </td>
-                            <td class="py-4 text-right font-mono font-bold text-zinc-800">
+                            <td class="py-4 text-right font-sans font-bold text-zinc-800">
                                 Rp <?= number_format($tx['service_price'], 0, ',', '.') ?>
                             </td>
                         </tr>
@@ -147,7 +147,7 @@
                 <tfoot>
                     <tr class="border-t-2 border-zinc-900 text-sm">
                         <td colspan="2" class="py-4 font-bold text-zinc-900 text-right uppercase">Total Penagihan:</td>
-                        <td class="py-4 text-right font-heading font-black text-xl text-red-600 font-mono">
+                        <td class="py-4 text-right font-heading font-black text-xl text-red-600 font-sans">
                             Rp <?= number_format($tx['service_price'], 0, ',', '.') ?>
                         </td>
                     </tr>

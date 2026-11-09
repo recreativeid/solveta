@@ -44,7 +44,7 @@
     
     <!-- Eyebrow Pill Badge (Background Shape Putih Solid, Bukan Glassmorphism) -->
     <div class="inline-flex items-center gap-2 bg-white px-4 py-1.5 rounded-full text-xs font-semibold text-[#111215] shadow-md border border-white">
-      <span class="text-[#C4264A] font-mono text-[11px] font-bold">&gt;_</span>
+      <span class="text-[#C4264A] font-sans text-[11px] font-bold">&gt;_</span>
       <span>Mitra Rekayasa Sistem Digital, Web &amp; Otomasi AI</span>
       <span class="w-2 h-2 rounded-full bg-[#C4264A] animate-pulse"></span>
     </div>
@@ -106,7 +106,7 @@
 <!-- ========================================================================= -->
 <section id="partner-marquee" class="py-8 bg-white dark:bg-[#0E0F12] border-b border-[#E8E9ED] dark:border-neutral-800 overflow-hidden font-sans">
   <div class="max-w-6xl mx-auto px-4 text-center mb-5">
-    <div class="inline-flex items-center gap-2 text-[11px] font-bold text-neutral-500 uppercase tracking-widest font-mono">
+    <div class="inline-flex items-center gap-2 text-[11px] font-bold text-neutral-500 uppercase tracking-widest font-sans">
       <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A]"></span>
       <span>DIPERCAYA OLEH EKOSISTEM BISNIS, INSTANSI &amp; TEKNOLOGI MODERN</span>
     </div>
@@ -197,7 +197,7 @@
     
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
       <div>
-        <div class="inline-flex items-center gap-2 bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#C4264A] dark:text-[#F05A72] font-mono mb-3">
+        <div class="inline-flex items-center gap-2 bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#C4264A] dark:text-[#F05A72] font-sans mb-3">
           <i data-lucide="building-2" class="w-3.5 h-3.5"></i>
           <span>TENTANG KAMI — MENGENAL LEBIH DEKAT SOLVETA</span>
         </div>
@@ -236,7 +236,7 @@
         </div>
 
         <!-- Bottom Telemetry Node Strip -->
-        <div class="absolute bottom-3 left-4 right-4 z-10 pointer-events-none flex items-center justify-between text-[10px] font-mono text-white/80 bg-black/60 backdrop-blur-sm px-3.5 py-1.5 rounded-xl border border-white/10">
+        <div class="absolute bottom-3 left-4 right-4 z-10 pointer-events-none flex items-center justify-between text-[10px] font-sans text-white/80 bg-black/60 backdrop-blur-sm px-3.5 py-1.5 rounded-xl border border-white/10">
           <span class="flex items-center gap-1.5"><i data-lucide="check" class="w-3 h-3 text-emerald-400"></i>Standar Rekayasa Global</span>
           <span class="hidden sm:inline">Jakarta &amp; Surakarta Tech Hub</span>
         </div>
@@ -249,7 +249,7 @@
       <!-- KOTAK KIRI: PROFIL PERUSAHAAN TEKNOLOGI (Naratif Singkat, Tanpa Poin-Poin) -->
       <div class="bg-white dark:bg-[#1A1C22] rounded-[24px] md:rounded-[28px] p-6 sm:p-8 border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between">
         <div class="space-y-4">
-          <div class="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-[#C4264A] font-bold">
+          <div class="inline-flex items-center gap-2 text-[11px] font-sans uppercase tracking-wider text-[#C4264A] font-bold">
             <i data-lucide="building-2" class="w-3.5 h-3.5"></i>
             <span>TENTANG KAMI &amp; PERAN PERUSAHAAN</span>
           </div>
@@ -266,7 +266,7 @@
         <div class="pt-5 mt-5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between">
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span class="text-[11px] font-mono text-neutral-500 dark:text-neutral-400">Mitra Teknologi Skala Nasional &amp; Global</span>
+            <span class="text-[11px] font-sans text-neutral-500 dark:text-neutral-400">Mitra Teknologi Skala Nasional &amp; Global</span>
           </div>
           <a href="<?= base_url('tentang') ?>" class="text-xs font-bold text-[#C4264A] hover:underline flex items-center gap-1">
             <span>Profil Lengkap</span>
@@ -278,7 +278,7 @@
       <!-- KOTAK KANAN: MANFAAT LAYANAN SOLVETA DIBANDING PESAING (Poin-Poin Singkat, Tanpa Paragraf, Tanpa Emot/Stiker) -->
       <div class="bg-white dark:bg-[#1A1C22] rounded-[24px] md:rounded-[28px] p-6 sm:p-8 border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between">
         <div class="space-y-4">
-          <div class="inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-wider text-[#C4264A] font-bold">
+          <div class="inline-flex items-center gap-2 text-[11px] font-sans uppercase tracking-wider text-[#C4264A] font-bold">
             <i data-lucide="check-check" class="w-3.5 h-3.5"></i>
             <span>NILAI TAMBAH &amp; KEUNGGULAN KOMPETITIF</span>
           </div>
@@ -314,7 +314,7 @@
         <div class="pt-5 mt-5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between">
           <div class="flex items-center gap-2">
             <span class="w-2 h-2 rounded-full bg-[#C4264A]"></span>
-            <span class="text-[11px] font-mono text-neutral-500 dark:text-neutral-400">Efisiensi Maksimal, Bebas Ketergantungan Vendor</span>
+            <span class="text-[11px] font-sans text-neutral-500 dark:text-neutral-400">Efisiensi Maksimal, Bebas Ketergantungan Vendor</span>
           </div>
           <a href="<?= base_url('layanan') ?>" class="text-xs font-bold text-[#C4264A] hover:underline flex items-center gap-1">
             <span>Lihat Paket Layanan</span>
@@ -411,7 +411,7 @@
         <div>
           <div class="h-36 rounded-2xl overflow-hidden relative mb-4 bg-[#111215]">
             <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&w=600&q=80" alt="Penjualan & Pembukuan" class="w-full h-full object-cover">
-            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#C4264A] text-white text-[10px] font-bold font-mono">
+            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#C4264A] text-white text-[10px] font-bold font-sans">
               01 · Transaksi &amp; Kasir
             </span>
           </div>
@@ -448,7 +448,7 @@
           </ul>
         </div>
 
-        <div class="mt-5 pt-3.5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between text-[11px] font-mono text-neutral-500">
+        <div class="mt-5 pt-3.5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between text-[11px] font-sans text-neutral-500">
           <span>Solusi: <strong class="text-[#111215] dark:text-white font-medium">POS, CRM &amp; ERP</strong></span>
           <a href="<?= base_url('layanan') ?>" class="text-[#C4264A] font-semibold inline-flex items-center gap-1 hover:underline">
             <span>Detail</span>
@@ -462,7 +462,7 @@
         <div>
           <div class="h-36 rounded-2xl overflow-hidden relative mb-4 bg-[#111215]">
             <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80" alt="Manajemen Organisasi" class="w-full h-full object-cover">
-            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#111215] text-white text-[10px] font-bold font-mono">
+            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#111215] text-white text-[10px] font-bold font-sans">
               02 · Organisasi &amp; SDM
             </span>
           </div>
@@ -499,7 +499,7 @@
           </ul>
         </div>
 
-        <div class="mt-5 pt-3.5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between text-[11px] font-mono text-neutral-500">
+        <div class="mt-5 pt-3.5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between text-[11px] font-sans text-neutral-500">
           <span>Solusi: <strong class="text-[#111215] dark:text-white font-medium">HRIS &amp; PMS</strong></span>
           <a href="<?= base_url('layanan') ?>" class="text-[#C4264A] font-semibold inline-flex items-center gap-1 hover:underline">
             <span>Detail</span>
@@ -513,7 +513,7 @@
         <div>
           <div class="h-36 rounded-2xl overflow-hidden relative mb-4 bg-[#111215]">
             <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=600&q=80" alt="Gudang & Logistik" class="w-full h-full object-cover">
-            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#C4264A] text-white text-[10px] font-bold font-mono">
+            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#C4264A] text-white text-[10px] font-bold font-sans">
               03 · Gudang &amp; Supplier
             </span>
           </div>
@@ -550,7 +550,7 @@
           </ul>
         </div>
 
-        <div class="mt-5 pt-3.5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between text-[11px] font-mono text-neutral-500">
+        <div class="mt-5 pt-3.5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between text-[11px] font-sans text-neutral-500">
           <span>Solusi: <strong class="text-[#111215] dark:text-white font-medium">WMS &amp; SCM</strong></span>
           <a href="<?= base_url('layanan') ?>" class="text-[#C4264A] font-semibold inline-flex items-center gap-1 hover:underline">
             <span>Detail</span>
@@ -564,7 +564,7 @@
         <div>
           <div class="h-36 rounded-2xl overflow-hidden relative mb-4 bg-[#111215]">
             <img src="https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=600&q=80" alt="Website & Citra Bisnis" class="w-full h-full object-cover">
-            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#111215] text-white text-[10px] font-bold font-mono">
+            <span class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full bg-[#111215] text-white text-[10px] font-bold font-sans">
               04 · Citra &amp; Promosi
             </span>
           </div>
@@ -601,7 +601,7 @@
           </ul>
         </div>
 
-        <div class="mt-5 pt-3.5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between text-[11px] font-mono text-neutral-500">
+        <div class="mt-5 pt-3.5 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between text-[11px] font-sans text-neutral-500">
           <span>Solusi: <strong class="text-[#111215] dark:text-white font-medium">Web, Berita &amp; LMS</strong></span>
           <a href="<?= base_url('layanan') ?>" class="text-[#C4264A] font-semibold inline-flex items-center gap-1 hover:underline">
             <span>Detail</span>
@@ -665,11 +665,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80" alt="CRM Pipeline" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-mono font-bold">CRM</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-sans font-bold">CRM</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="contact" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">Customer Relationship Management</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">Customer Relationship Management</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             CRM <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Customer Relationship Management)</span>
@@ -692,11 +692,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80" alt="ERP Master Hub" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-mono font-bold border border-white/15">ERP</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-sans font-bold border border-white/15">ERP</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="network" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">Enterprise Resource Planning</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">Enterprise Resource Planning</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             ERP <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Enterprise Resource Planning)</span>
@@ -719,11 +719,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=600&q=80" alt="HRIS Attendance" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-mono font-bold">HRIS</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-sans font-bold">HRIS</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="user-check" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">Human Resource Information System</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">Human Resource Information System</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             HRIS <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Human Resource Information System)</span>
@@ -746,11 +746,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=600&q=80" alt="POS Kasir Pintar" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-mono font-bold">POS</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-sans font-bold">POS</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="credit-card" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">Point of Sale (Kasir Digital)</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">Point of Sale (Kasir Digital)</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             POS <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Point of Sale / Kasir Pintar)</span>
@@ -773,11 +773,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=600&q=80" alt="WMS Warehouse" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-mono font-bold border border-white/15">WMS</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-sans font-bold border border-white/15">WMS</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="boxes" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">Warehouse Management System</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">Warehouse Management System</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             WMS <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Warehouse Management System)</span>
@@ -800,11 +800,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=600&q=80" alt="SCM Supply Chain" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-mono font-bold border border-white/15">SCM</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-sans font-bold border border-white/15">SCM</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="truck" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">Supply Chain Management</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">Supply Chain Management</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             SCM <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Supply Chain Management)</span>
@@ -827,11 +827,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80" alt="PMS Project Timeline" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-mono font-bold">PMS</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-sans font-bold">PMS</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="kanban" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">Project &amp; Property Management</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">Project &amp; Property Management</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             PMS <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Project &amp; Property Management)</span>
@@ -854,11 +854,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?auto=format&fit=crop&w=600&q=80" alt="Landing Page Konversi" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-mono font-bold border border-white/15">LANDING PAGE</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-sans font-bold border border-white/15">LANDING PAGE</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="mouse-pointer-click" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">&lt; 0.8s High-Converting Speed</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">&lt; 0.8s High-Converting Speed</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             Landing Page <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Kecepatan Kilat &amp; Konversi)</span>
@@ -881,11 +881,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80" alt="Portal Media Berita" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-mono font-bold">MEDIA CMS</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-sans font-bold">MEDIA CMS</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="newspaper" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">Google News &amp; AdSense Ready</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">Google News &amp; AdSense Ready</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             Portal Media <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Media Berita &amp; Google News)</span>
@@ -908,11 +908,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80" alt="Company Profile Korporasi" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-mono font-bold border border-white/15">COMPRO B2B</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#111215] text-white text-xs font-sans font-bold border border-white/15">COMPRO B2B</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="building" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">Kredibilitas Tender &amp; Investor</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">Kredibilitas Tender &amp; Investor</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             Company Profile <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Kredibilitas B2B &amp; Tender)</span>
@@ -935,11 +935,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-[#111215] mb-4">
             <img src="https://images.unsplash.com/photo-1501504905252-473c47e087f8?auto=format&fit=crop&w=600&q=80" alt="LMS Course Hub" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-mono font-bold">LMS</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-sans font-bold">LMS</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="graduation-cap" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">E-Learning &amp; Sertifikat Digital</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">E-Learning &amp; Sertifikat Digital</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-[#111215] dark:text-white">
             LMS <span class="text-xs font-normal text-neutral-500 dark:text-neutral-400">(Learning Management System)</span>
@@ -962,11 +962,11 @@
           <div class="h-40 rounded-2xl overflow-hidden relative bg-neutral-900 mb-4">
             <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=600&q=80" alt="Custom Web App & AI" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
             <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-mono font-bold">CUSTOM AI</span>
+            <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#C4264A] text-white text-xs font-sans font-bold">CUSTOM AI</span>
             <span class="absolute top-3 right-3 w-8 h-8 rounded-full bg-white text-[#111215] flex items-center justify-center shadow-xs">
               <i data-lucide="bot" class="w-4 h-4"></i>
             </span>
-            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-mono text-white/90 truncate">AI Workflow &amp; 100% Hak Milik</span>
+            <span class="absolute bottom-2.5 left-3 right-3 text-[11px] font-sans text-white/90 truncate">AI Workflow &amp; 100% Hak Milik</span>
           </div>
           <h3 class="text-base sm:text-lg font-bold text-white">
             Custom App <span class="text-xs font-normal text-neutral-400">(Web Kustom &amp; AI Workflow)</span>
@@ -1007,7 +1007,7 @@
   <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
     
     <div class="space-y-3 text-center max-w-2xl mx-auto">
-      <div class="inline-flex items-center gap-2 bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#C4264A] dark:text-[#F05A72] font-mono">
+      <div class="inline-flex items-center gap-2 bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full text-xs font-bold text-[#C4264A] dark:text-[#F05A72] font-sans">
         <i data-lucide="git-commit" class="w-3.5 h-3.5"></i>
         <span>METODOLOGI &amp; PROSES PERANCANGAN SISTEM</span>
       </div>
@@ -1035,14 +1035,14 @@
           
           <!-- Header: Date + Title -->
           <div data-slot="timeline-header" class="space-y-1">
-            <time data-slot="timeline-date" class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-mono font-semibold uppercase tracking-wider tabular-nums">FASE 01 &bull; MINGGU 1</time>
+            <time data-slot="timeline-date" class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-sans font-semibold uppercase tracking-wider tabular-nums">FASE 01 &bull; MINGGU 1</time>
             <h3 data-slot="timeline-title" class="text-base font-bold text-[#111215] dark:text-white leading-tight">Pemetaan &amp; Analisis Kebutuhan</h3>
           </div>
           
           <!-- Content Body -->
           <div data-slot="timeline-content" class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
             Audit mendalam terhadap alur proses bisnis Anda, identifikasi hambatan sistem lama, dan penyusunan KPI sistem.
-            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-mono text-neutral-700 dark:text-neutral-300 font-medium">
+            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-sans text-neutral-700 dark:text-neutral-300 font-medium">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A]"></span>
               Output: System Blueprint &amp; Scope
             </div>
@@ -1061,14 +1061,14 @@
           
           <!-- Header: Date + Title -->
           <div data-slot="timeline-header" class="space-y-1">
-            <time data-slot="timeline-date" class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-mono font-semibold uppercase tracking-wider tabular-nums">FASE 02 &bull; MINGGU 2&ndash;3</time>
+            <time data-slot="timeline-date" class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-sans font-semibold uppercase tracking-wider tabular-nums">FASE 02 &bull; MINGGU 2&ndash;3</time>
             <h3 data-slot="timeline-title" class="text-base font-bold text-[#111215] dark:text-white leading-tight">Perancangan Arsitektur &amp; UI/UX</h3>
           </div>
           
           <!-- Content Body -->
           <div data-slot="timeline-content" class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
             Perancangan skema relasi database PostgreSQL, blueprint API, dan wireframe antarmuka interaktif yang divalidasi langsung.
-            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-mono text-neutral-700 dark:text-neutral-300 font-medium">
+            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-sans text-neutral-700 dark:text-neutral-300 font-medium">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A]"></span>
               Output: UI Prototype &amp; Database Schema
             </div>
@@ -1087,14 +1087,14 @@
           
           <!-- Header: Date + Title -->
           <div data-slot="timeline-header" class="space-y-1">
-            <time data-slot="timeline-date" class="text-[#C4264A] dark:text-[#F05A72] mb-1 block text-xs font-mono font-bold uppercase tracking-wider tabular-nums">FASE 03 &bull; MINGGU 4&ndash;6 (PROSES)</time>
+            <time data-slot="timeline-date" class="text-[#C4264A] dark:text-[#F05A72] mb-1 block text-xs font-sans font-bold uppercase tracking-wider tabular-nums">FASE 03 &bull; MINGGU 4&ndash;6 (PROSES)</time>
             <h3 data-slot="timeline-title" class="text-base font-bold text-[#111215] dark:text-white leading-tight">Rekayasa Kode &amp; Integrasi API</h3>
           </div>
           
           <!-- Content Body -->
           <div data-slot="timeline-content" class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
             Eksekusi pengkodean clean architecture, integrasi payment gateway / WhatsApp bot, kecerdasan buatan, dan demo sprint berkala.
-            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-50 dark:bg-red-950/40 text-[11px] font-mono text-[#C4264A] dark:text-red-300 font-semibold border border-red-200 dark:border-red-900/50">
+            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-50 dark:bg-red-950/40 text-[11px] font-sans text-[#C4264A] dark:text-red-300 font-semibold border border-red-200 dark:border-red-900/50">
               <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A] animate-ping"></span>
               Output: Production Source Code
             </div>
@@ -1105,19 +1105,19 @@
         <div data-slot="timeline-item" class="group/timeline-item relative flex flex-1 flex-col gap-2 ms-8 lg:ms-0 lg:mt-8">
           <!-- Indicator Dot (Pending State) -->
           <div data-slot="timeline-indicator" data-state="pending" class="absolute flex items-center justify-center rounded-full border-2 transition-all duration-200 size-7 top-0 -left-6 -translate-x-1/2 lg:-top-6 lg:left-0 lg:-translate-y-1/2 border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 text-neutral-400" aria-hidden="true">
-            <span class="text-xs font-mono font-bold">04</span>
+            <span class="text-xs font-sans font-bold">04</span>
           </div>
           
           <!-- Header: Date + Title -->
           <div data-slot="timeline-header" class="space-y-1">
-            <time data-slot="timeline-date" class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-mono font-semibold uppercase tracking-wider tabular-nums">FASE 04 &bull; MINGGU 7+</time>
+            <time data-slot="timeline-date" class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-sans font-semibold uppercase tracking-wider tabular-nums">FASE 04 &bull; MINGGU 7+</time>
             <h3 data-slot="timeline-title" class="text-base font-bold text-[#111215] dark:text-white leading-tight">Pengujian Ketat &amp; Garansi SLA</h3>
           </div>
           
           <!-- Content Body -->
           <div data-slot="timeline-content" class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
             Stress-test performa sistem, audit celah keamanan OWASP, migrasi server zero-downtime, serta garansi pemeliharaan 12 bulan penuh.
-            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-mono text-neutral-700 dark:text-neutral-300 font-medium">
+            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-sans text-neutral-700 dark:text-neutral-300 font-medium">
               <span class="w-1.5 h-1.5 rounded-full bg-neutral-400"></span>
               Output: 0-Downtime Go-Live &amp; Garansi
             </div>
@@ -1138,7 +1138,7 @@
     
     <!-- 1 Kalimat Simpel & Kecil Sesuai Permintaan User -->
     <div class="text-center space-y-1">
-      <p class="text-xs font-mono font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
+      <p class="text-xs font-sans font-bold uppercase tracking-wider text-neutral-400 dark:text-neutral-500">
         Testimoni &amp; cerita nyata dari para mitra yang telah bertumbuh bersama SOLVETA.
       </p>
     </div>
@@ -1163,7 +1163,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Mba Zuhro <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@zuhro_official</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@zuhro_official</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1179,7 +1179,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Bapak Rian <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@rian_retail</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@rian_retail</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1195,7 +1195,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Sarah M. <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@sarah.agency</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@sarah.agency</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1211,7 +1211,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Mba Zuhro <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@zuhro_official</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@zuhro_official</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1225,7 +1225,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Bapak Rian <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@rian_retail</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@rian_retail</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1239,7 +1239,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Sarah M. <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@sarah.agency</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@sarah.agency</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1260,7 +1260,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     dr. Hendra <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@hendra.klinik</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@hendra.klinik</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1276,7 +1276,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Dewi A. <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@dewi_hijab</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@dewi_hijab</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1292,7 +1292,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Ahmad Fauzi <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@fauzi_logistik</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@fauzi_logistik</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1308,7 +1308,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     dr. Hendra <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@hendra.klinik</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@hendra.klinik</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1322,7 +1322,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Dewi A. <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@dewi_hijab</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@dewi_hijab</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1336,7 +1336,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Ahmad Fauzi <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@fauzi_logistik</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@fauzi_logistik</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1357,7 +1357,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Ir. Bambang W. <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@bambang_corp</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@bambang_corp</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1373,7 +1373,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Mba Zuhro <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@zuhro_official</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@zuhro_official</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1389,7 +1389,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Nadia Putri <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@nadiaputri_edu</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@nadiaputri_edu</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1405,7 +1405,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Ir. Bambang W. <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@bambang_corp</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@bambang_corp</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1419,7 +1419,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Mba Zuhro <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@zuhro_official</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@zuhro_official</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1433,7 +1433,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Nadia Putri <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@nadiaputri_edu</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@nadiaputri_edu</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1454,7 +1454,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Kevin Tan <span class="text-[10px]">🇸🇬</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@kevintan_tech</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@kevintan_tech</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1470,7 +1470,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Mba Zuhro <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@zuhro_official</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@zuhro_official</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1486,7 +1486,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Mitra HIU Group <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@hiu_partner</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@hiu_partner</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1502,7 +1502,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Kevin Tan <span class="text-[10px]">🇸🇬</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@kevintan_tech</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@kevintan_tech</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1516,7 +1516,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Mba Zuhro <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@zuhro_official</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@zuhro_official</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1530,7 +1530,7 @@
                   <span class="text-xs font-bold text-[#111215] dark:text-white flex items-center gap-1">
                     Mitra HIU Group <span class="text-[10px]">🇮🇩</span>
                   </span>
-                  <span class="text-[10px] text-neutral-400 font-mono">@hiu_partner</span>
+                  <span class="text-[10px] text-neutral-400 font-sans">@hiu_partner</span>
                 </div>
               </div>
               <blockquote class="mt-2.5 text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
@@ -1560,7 +1560,7 @@
   <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
     
     <div class="text-center max-w-2xl mx-auto space-y-2">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-mono">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-sans">
         PILIHAN PAKET &amp; RINCIAN LENGKAP
       </div>
       <h2 class="text-2xl sm:text-4xl font-extrabold text-[#111215] dark:text-white tracking-tight">
@@ -1578,10 +1578,10 @@
       <div class="p-6 rounded-3xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-red-200 transition-all">
         <div class="space-y-4">
           <div>
-            <span class="text-[10px] font-mono uppercase text-neutral-400 font-bold block">1 Halaman</span>
+            <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">1 Halaman</span>
             <h3 class="text-lg font-bold text-[#111215] dark:text-white">Paket STARTER</h3>
             <div class="text-2xl font-black text-[#111215] dark:text-white mt-1">Rp 349K</div>
-            <span class="text-[10px] text-neutral-400 font-mono block mt-0.5">Perpanjangan: 249k/tahun*</span>
+            <span class="text-[10px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 249k/tahun*</span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
             Cocok untuk kebutuhan pribadi: landing page, portofolio online, blog pribadi, CV digital, &amp; halaman profil.
@@ -1603,10 +1603,10 @@
       <div class="p-6 rounded-3xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-red-200 transition-all">
         <div class="space-y-4">
           <div>
-            <span class="text-[10px] font-mono uppercase text-neutral-400 font-bold block">4 Halaman</span>
+            <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">4 Halaman</span>
             <h3 class="text-lg font-bold text-[#111215] dark:text-white">Paket STANDARD</h3>
             <div class="text-2xl font-black text-[#111215] dark:text-white mt-1">Rp 699K</div>
-            <span class="text-[10px] text-neutral-400 font-mono block mt-0.5">Perpanjangan: 399k/tahun*</span>
+            <span class="text-[10px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 399k/tahun*</span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
             Cocok untuk kebutuhan bisnis kecil, UMKM, home industry, dan web profil perusahaan.
@@ -1628,10 +1628,10 @@
       <div class="p-6 rounded-3xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-red-200 transition-all">
         <div class="space-y-4">
           <div>
-            <span class="text-[10px] font-mono uppercase text-neutral-400 font-bold block">7 Halaman</span>
+            <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">7 Halaman</span>
             <h3 class="text-lg font-bold text-[#111215] dark:text-white">Paket PREMIUM</h3>
             <div class="text-2xl font-black text-[#111215] dark:text-white mt-1">Rp 964K</div>
-            <span class="text-[10px] text-neutral-400 font-mono block mt-0.5">Perpanjangan: 399k/tahun*</span>
+            <span class="text-[10px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 399k/tahun*</span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
             Cocok untuk company profile korporasi, bisnis produk, dan portal layanan lengkap.
@@ -1651,15 +1651,15 @@
 
       <!-- Platinum (Popular) -->
       <div class="p-6 rounded-3xl bg-white dark:bg-[#1A1C22] border-2 border-[#C4264A] shadow-md flex flex-col justify-between relative overflow-hidden">
-        <div class="absolute top-0 right-0 bg-[#C4264A] text-white text-[9px] font-black uppercase px-3 py-0.5 rounded-bl-xl font-mono">
+        <div class="absolute top-0 right-0 bg-[#C4264A] text-white text-[9px] font-black uppercase px-3 py-0.5 rounded-bl-xl font-sans">
           POPULAR ★
         </div>
         <div class="space-y-4">
           <div>
-            <span class="text-[10px] font-mono uppercase text-[#C4264A] font-bold block">Paling Direkomendasikan</span>
+            <span class="text-[10px] font-sans uppercase text-[#C4264A] font-bold block">Paling Direkomendasikan</span>
             <h3 class="text-lg font-bold text-[#111215] dark:text-white">Paket PLATINUM</h3>
             <div class="text-2xl font-black text-[#C4264A] dark:text-[#F05A72] mt-1">Rp 1.5 jt</div>
-            <span class="text-[10px] text-neutral-400 font-mono block mt-0.5">Sesuai kebutuhan sistem</span>
+            <span class="text-[10px] text-neutral-400 font-sans block mt-0.5">Sesuai kebutuhan sistem</span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
             Start up, UMKM, CV, PT, Yayasan, Professional dengan kebutuhan sistem khusus &amp; integrasi API.
@@ -1704,7 +1704,7 @@
     <div class="text-center max-w-3xl mx-auto space-y-3">
       <div class="inline-flex items-center gap-2 bg-white dark:bg-[#1A1C22] border border-red-200 dark:border-neutral-800 px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#111215] dark:text-white shadow-xs">
         <span class="w-2 h-2 rounded-full bg-[#C4264A] animate-pulse"></span>
-        <span class="font-mono text-[#C4264A] dark:text-[#F05A72] font-bold">PERSPECTIVE TUNNEL</span>
+        <span class="font-sans text-[#C4264A] dark:text-[#F05A72] font-bold">PERSPECTIVE TUNNEL</span>
         <span class="text-neutral-300 dark:text-neutral-700">•</span>
         <span>Refleksi Kritis Operasional Bisnis</span>
       </div>
@@ -1737,11 +1737,11 @@
           <!-- CARD 01: WAKTU & EFISIENSI TIM -->
           <div class="tunnel-card absolute inset-x-2 sm:inset-x-4 bg-white/95 dark:bg-[#14151B]/95 backdrop-blur-xl rounded-[28px] p-6 sm:p-9 border border-black/10 dark:border-white/10 shadow-2xl text-left" data-index="0">
             <div class="flex items-center justify-between pb-4 border-b border-[#E8E9ED] dark:border-neutral-800">
-              <div class="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#C4264A] dark:text-[#F05A72]">
+              <div class="inline-flex items-center gap-2 text-xs font-sans font-bold text-[#C4264A] dark:text-[#F05A72]">
                 <i data-lucide="clock" class="w-4 h-4"></i>
                 <span>FASE 01 · WAKTU &amp; EFISIENSI TIM</span>
               </div>
-              <span class="text-[11px] font-mono text-neutral-400">01 / 05</span>
+              <span class="text-[11px] font-sans text-neutral-400">01 / 05</span>
             </div>
 
             <div class="mt-5 space-y-3.5">
@@ -1757,7 +1757,7 @@
             </div>
 
             <div class="mt-6 pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between">
-              <div class="flex items-center gap-2 text-[11px] font-mono text-[#C4264A] dark:text-[#F05A72] font-semibold">
+              <div class="flex items-center gap-2 text-[11px] font-sans text-[#C4264A] dark:text-[#F05A72] font-semibold">
                 <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
                 <span>Rata-rata 84 Jam/Bulan Habis untuk Input Manual Berulang</span>
               </div>
@@ -1771,11 +1771,11 @@
           <!-- CARD 02: KECEPATAN KONVERSI WHATSAPP -->
           <div class="tunnel-card absolute inset-x-2 sm:inset-x-4 bg-white/95 dark:bg-[#14151B]/95 backdrop-blur-xl rounded-[28px] p-6 sm:p-9 border border-black/10 dark:border-white/10 shadow-2xl text-left" data-index="1">
             <div class="flex items-center justify-between pb-4 border-b border-[#E8E9ED] dark:border-neutral-800">
-              <div class="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#C4264A] dark:text-[#F05A72]">
+              <div class="inline-flex items-center gap-2 text-xs font-sans font-bold text-[#C4264A] dark:text-[#F05A72]">
                 <i data-lucide="message-square" class="w-4 h-4"></i>
                 <span>FASE 02 · KECEPATAN KONVERSI PROSPEK</span>
               </div>
-              <span class="text-[11px] font-mono text-neutral-400">02 / 05</span>
+              <span class="text-[11px] font-sans text-neutral-400">02 / 05</span>
             </div>
 
             <div class="mt-5 space-y-3.5">
@@ -1791,7 +1791,7 @@
             </div>
 
             <div class="mt-6 pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between">
-              <div class="flex items-center gap-2 text-[11px] font-mono text-[#C4264A] dark:text-[#F05A72] font-semibold">
+              <div class="flex items-center gap-2 text-[11px] font-sans text-[#C4264A] dark:text-[#F05A72] font-semibold">
                 <i data-lucide="zap" class="w-3.5 h-3.5"></i>
                 <span>73% Pelanggan Memilih Bisnis yang Merespons Pertama</span>
               </div>
@@ -1805,11 +1805,11 @@
           <!-- CARD 03: KEDAULATAN ASET DIGITAL -->
           <div class="tunnel-card absolute inset-x-2 sm:inset-x-4 bg-white/95 dark:bg-[#14151B]/95 backdrop-blur-xl rounded-[28px] p-6 sm:p-9 border border-black/10 dark:border-white/10 shadow-2xl text-left" data-index="2">
             <div class="flex items-center justify-between pb-4 border-b border-[#E8E9ED] dark:border-neutral-800">
-              <div class="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#C4264A] dark:text-[#F05A72]">
+              <div class="inline-flex items-center gap-2 text-xs font-sans font-bold text-[#C4264A] dark:text-[#F05A72]">
                 <i data-lucide="shield" class="w-4 h-4"></i>
                 <span>FASE 03 · KEDAULATAN ASET DIGITAL</span>
               </div>
-              <span class="text-[11px] font-mono text-neutral-400">03 / 05</span>
+              <span class="text-[11px] font-sans text-neutral-400">03 / 05</span>
             </div>
 
             <div class="mt-5 space-y-3.5">
@@ -1825,7 +1825,7 @@
             </div>
 
             <div class="mt-6 pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between">
-              <div class="flex items-center gap-2 text-[11px] font-mono text-[#C4264A] dark:text-[#F05A72] font-semibold">
+              <div class="flex items-center gap-2 text-[11px] font-sans text-[#C4264A] dark:text-[#F05A72] font-semibold">
                 <i data-lucide="check" class="w-3.5 h-3.5"></i>
                 <span>100% Hak Milik Permanen Tanpa Sewa Bulanan Pihak Ketiga</span>
               </div>
@@ -1839,11 +1839,11 @@
           <!-- CARD 04: BEBAN MENTAL PEMILIK BISNIS -->
           <div class="tunnel-card absolute inset-x-2 sm:inset-x-4 bg-white/95 dark:bg-[#14151B]/95 backdrop-blur-xl rounded-[28px] p-6 sm:p-9 border border-black/10 dark:border-white/10 shadow-2xl text-left" data-index="3">
             <div class="flex items-center justify-between pb-4 border-b border-[#E8E9ED] dark:border-neutral-800">
-              <div class="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#C4264A] dark:text-[#F05A72]">
+              <div class="inline-flex items-center gap-2 text-xs font-sans font-bold text-[#C4264A] dark:text-[#F05A72]">
                 <i data-lucide="user-check" class="w-4 h-4"></i>
                 <span>FASE 04 · KEMANDIRIAN SISTEM OPERASIONAL</span>
               </div>
-              <span class="text-[11px] font-mono text-neutral-400">04 / 05</span>
+              <span class="text-[11px] font-sans text-neutral-400">04 / 05</span>
             </div>
 
             <div class="mt-5 space-y-3.5">
@@ -1859,7 +1859,7 @@
             </div>
 
             <div class="mt-6 pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center justify-between">
-              <div class="flex items-center gap-2 text-[11px] font-mono text-[#C4264A] dark:text-[#F05A72] font-semibold">
+              <div class="flex items-center gap-2 text-[11px] font-sans text-[#C4264A] dark:text-[#F05A72] font-semibold">
                 <i data-lucide="activity" class="w-3.5 h-3.5"></i>
                 <span>Sistem Otomatis = Ketenangan Pikiran &amp; Waktu Luang Anda</span>
               </div>
@@ -1873,11 +1873,11 @@
           <!-- CARD 05: TITIK BALIK (THE REVELATION & INVITATION) -->
           <div class="tunnel-card absolute inset-x-2 sm:inset-x-4 bg-gradient-to-br from-white via-white to-red-50/70 dark:from-[#14151B] dark:via-[#14151B] dark:to-[#220B13] backdrop-blur-xl rounded-[28px] p-6 sm:p-9 border-2 border-[#C4264A]/60 shadow-2xl text-left" data-index="4">
             <div class="flex items-center justify-between pb-4 border-b border-[#E8E9ED] dark:border-neutral-800">
-              <div class="inline-flex items-center gap-2 text-xs font-mono font-bold text-[#C4264A] dark:text-[#F05A72]">
+              <div class="inline-flex items-center gap-2 text-xs font-sans font-bold text-[#C4264A] dark:text-[#F05A72]">
                 <i data-lucide="sparkles" class="w-4 h-4"></i>
                 <span>FASE 05 · TITIK BALIK REKAYASA DIGITAL</span>
               </div>
-              <span class="text-[11px] font-mono text-[#C4264A] dark:text-[#F05A72] font-bold">05 / 05 ★</span>
+              <span class="text-[11px] font-sans text-[#C4264A] dark:text-[#F05A72] font-bold">05 / 05 ★</span>
             </div>
 
             <div class="mt-5 space-y-3.5">
@@ -1914,23 +1914,23 @@
         
         <!-- Milestone Pills -->
         <div class="flex items-center justify-center gap-1.5 sm:gap-2 w-full">
-          <button onclick="setTunnelCard(0)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-mono font-bold transition flex items-center gap-1.5 cursor-pointer bg-[#C4264A] text-white shadow-xs" data-step="0">
+          <button onclick="setTunnelCard(0)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-sans font-bold transition flex items-center gap-1.5 cursor-pointer bg-[#C4264A] text-white shadow-xs" data-step="0">
             <span>01</span>
             <span class="hidden sm:inline font-sans text-[11px] font-normal">Waktu</span>
           </button>
-          <button onclick="setTunnelCard(1)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-mono font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700" data-step="1">
+          <button onclick="setTunnelCard(1)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-sans font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700" data-step="1">
             <span>02</span>
             <span class="hidden sm:inline font-sans text-[11px] font-normal">Peluang</span>
           </button>
-          <button onclick="setTunnelCard(2)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-mono font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700" data-step="2">
+          <button onclick="setTunnelCard(2)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-sans font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700" data-step="2">
             <span>03</span>
             <span class="hidden sm:inline font-sans text-[11px] font-normal">Kedaulatan</span>
           </button>
-          <button onclick="setTunnelCard(3)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-mono font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700" data-step="3">
+          <button onclick="setTunnelCard(3)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-sans font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700" data-step="3">
             <span>04</span>
             <span class="hidden sm:inline font-sans text-[11px] font-normal">Beban</span>
           </button>
-          <button onclick="setTunnelCard(4)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-mono font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700" data-step="4">
+          <button onclick="setTunnelCard(4)" class="tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-sans font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700" data-step="4">
             <span>05</span>
             <span class="hidden sm:inline font-sans text-[11px] font-normal">Solusi</span>
           </button>
@@ -1943,7 +1943,7 @@
             <span>Sebelumnya</span>
           </button>
 
-          <div class="flex items-center gap-2 text-xs font-mono text-neutral-500">
+          <div class="flex items-center gap-2 text-xs font-sans text-neutral-500">
             <span id="tunnel-current-num" class="text-[#111215] dark:text-white font-bold">1</span>
             <span>/</span>
             <span>5</span>
@@ -1974,7 +1974,7 @@
           <img src="<?= base_url('images/cs-zahra.jpg') ?>" alt="Admin Zahra" class="w-full h-full object-cover object-top">
         </div>
         <div class="space-y-1">
-          <div class="inline-flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">
+          <div class="inline-flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
             <span>Live Verified Support (&lt; 5 Menit)</span>
           </div>
@@ -2011,22 +2011,22 @@
     </button>
 
     <div class="space-y-1">
-      <span class="text-[10px] font-mono text-[#C4264A] font-bold uppercase">KONSULTASI PRIORITAS</span>
+      <span class="text-[10px] font-sans text-[#C4264A] font-bold uppercase">KONSULTASI PRIORITAS</span>
       <h3 class="text-xl font-bold text-[#111215] dark:text-white">Mulai Diskusi Proyek</h3>
       <p class="text-xs text-neutral-500">Isi singkat di bawah untuk terhubung ke WhatsApp CS Zahra:</p>
     </div>
 
     <form onsubmit="submitConsultForm(event)" class="space-y-4">
       <div class="space-y-1">
-        <label class="text-[11px] font-bold text-neutral-700 dark:text-neutral-300 font-mono">Nama / Perusahaan</label>
+        <label class="text-[11px] font-bold text-neutral-700 dark:text-neutral-300 font-sans">Nama / Perusahaan</label>
         <input type="text" id="consult-name-input" required placeholder="Nama Anda atau PT/CV" class="w-full px-3.5 py-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-transparent text-xs text-[#111215] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#C4264A]">
       </div>
       <div class="space-y-1">
-        <label class="text-[11px] font-bold text-neutral-700 dark:text-neutral-300 font-mono">Nomor WhatsApp</label>
+        <label class="text-[11px] font-bold text-neutral-700 dark:text-neutral-300 font-sans">Nomor WhatsApp</label>
         <input type="tel" id="consult-contact-input" required placeholder="08xxxxxxxxxx" class="w-full px-3.5 py-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-transparent text-xs text-[#111215] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#C4264A]">
       </div>
       <div class="space-y-1">
-        <label class="text-[11px] font-bold text-neutral-700 dark:text-neutral-300 font-mono">Kebutuhan Solusi</label>
+        <label class="text-[11px] font-bold text-neutral-700 dark:text-neutral-300 font-sans">Kebutuhan Solusi</label>
         <input type="text" id="consult-topic-input" required placeholder="Contoh: Website Paket Standard / Sistem POS" class="w-full px-3.5 py-2.5 rounded-xl border border-black/10 dark:border-white/10 bg-transparent text-xs text-[#111215] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#C4264A]">
       </div>
       
@@ -2202,9 +2202,9 @@
 
     stepBtns.forEach((btn, idx) => {
       if (idx === currentTunnelIndex) {
-        btn.className = 'tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-mono font-bold transition flex items-center gap-1.5 cursor-pointer bg-[#C4264A] text-white shadow-xs';
+        btn.className = 'tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-sans font-bold transition flex items-center gap-1.5 cursor-pointer bg-[#C4264A] text-white shadow-xs';
       } else {
-        btn.className = 'tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-mono font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700';
+        btn.className = 'tunnel-step-btn px-3 py-1.5 rounded-full text-xs font-sans font-bold transition flex items-center gap-1.5 cursor-pointer bg-white dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-700 border border-[#E8E9ED] dark:border-neutral-700';
       }
     });
 

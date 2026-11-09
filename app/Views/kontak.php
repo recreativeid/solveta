@@ -21,7 +21,7 @@
         <!-- Eyebrow Pill Badge -->
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs font-semibold shadow-xs">
             <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-            <span class="font-bold tracking-wider uppercase font-mono">PUSAT KOMUNIKASI &amp; KONSULTASI RESMI</span>
+            <span class="font-bold tracking-wider uppercase font-sans">PUSAT KOMUNIKASI &amp; KONSULTASI RESMI</span>
         </div>
 
         <!-- Headline -->
@@ -68,11 +68,11 @@
                     <div class="p-4 sm:p-5 bg-gradient-to-r from-red-50 to-rose-50/50 dark:from-neutral-900 dark:to-neutral-800 border-b border-red-100 dark:border-neutral-800 flex items-center justify-between">
                         <div class="flex items-center gap-2">
                             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                            <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider font-mono">
+                            <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-400 uppercase tracking-wider font-sans">
                                 Live Verified Support
                             </span>
                         </div>
-                        <span class="text-[10px] text-neutral-500 font-mono">Respon &lt; 5 Menit</span>
+                        <span class="text-[10px] text-neutral-500 font-sans">Respon &lt; 5 Menit</span>
                     </div>
 
                     <!-- CS Poster Image -->
@@ -85,13 +85,13 @@
                     <!-- Details Body -->
                     <div class="p-6 sm:p-7 space-y-5">
                         <div>
-                            <div class="text-[10px] font-mono tracking-widest text-[#C4264A] dark:text-[#F05A72] uppercase font-bold">SOLVETA CLIENT RELATIONS</div>
+                            <div class="text-[10px] font-sans tracking-widest text-[#C4264A] dark:text-[#F05A72] uppercase font-bold">SOLVETA CLIENT RELATIONS</div>
                             <h3 class="text-xl font-extrabold text-[#111215] dark:text-white mt-0.5">Admin Zahra</h3>
                             <p class="text-xs text-neutral-500 dark:text-neutral-400 mt-1">Lead Customer Service &amp; Project Coordinator Resmi SOLVETA</p>
                         </div>
 
                         <div class="space-y-2 border-t border-[#E8E9ED] dark:border-neutral-800 pt-4">
-                            <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-mono">Siap Membantu Kebutuhan Anda:</span>
+                            <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-sans">Siap Membantu Kebutuhan Anda:</span>
                             <ul class="space-y-2 text-xs text-neutral-600 dark:text-neutral-400">
                                 <li class="flex items-start gap-2">
                                     <i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A] shrink-0 mt-0.5"></i>
@@ -120,11 +120,11 @@
                         <!-- Operating Hours & Email -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-[11px] border-t border-[#E8E9ED] dark:border-neutral-800">
                             <div>
-                                <span class="text-neutral-400 uppercase font-mono block">Jam Operasional Layanan:</span>
+                                <span class="text-neutral-400 uppercase font-sans block">Jam Operasional Layanan:</span>
                                 <span class="font-bold text-[#111215] dark:text-white">Senin – Sabtu (08:00 – 21:00 WIB)</span>
                             </div>
                             <div>
-                                <span class="text-neutral-400 uppercase font-mono block">Email Resmi Perusahaan:</span>
+                                <span class="text-neutral-400 uppercase font-sans block">Email Resmi Perusahaan:</span>
                                 <a href="mailto:kontak@solveta.asia" class="font-bold text-[#C4264A] hover:underline">kontak@solveta.asia</a>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                 <div class="rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] p-6 sm:p-10 shadow-sm space-y-8">
                     
                     <div class="space-y-2">
-                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-mono">
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-sans">
                             FORMULIR KONSULTASI PROYEK
                         </div>
                         <h2 class="text-2xl sm:text-3xl font-extrabold text-[#111215] dark:text-white tracking-tight">
@@ -156,7 +156,7 @@
                         
                         <!-- Nama Lengkap -->
                         <div class="space-y-1.5">
-                            <label for="nama" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-mono">
+                            <label for="nama" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-sans">
                                 Nama Lengkap <span class="text-[#C4264A]">*</span>
                             </label>
                             <input type="text" id="nama" name="nama" required placeholder="Contoh: Budi Santoso"
@@ -165,7 +165,7 @@
 
                         <!-- Nama Perusahaan / Usaha -->
                         <div class="space-y-1.5">
-                            <label for="perusahaan" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-mono">
+                            <label for="perusahaan" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-sans">
                                 Nama Perusahaan / Usaha
                             </label>
                             <input type="text" id="perusahaan" name="perusahaan" placeholder="Contoh: PT Sumber Rezeki / Toko Sejahtera"
@@ -176,7 +176,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <!-- WhatsApp -->
                             <div class="space-y-1.5">
-                                <label for="whatsapp" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-mono">
+                                <label for="whatsapp" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-sans">
                                     Nomor WhatsApp Aktif <span class="text-[#C4264A]">*</span>
                                 </label>
                                 <input type="tel" id="whatsapp" name="whatsapp" required placeholder="08xxxxxxxxxx"
@@ -185,7 +185,7 @@
 
                             <!-- Email -->
                             <div class="space-y-1.5">
-                                <label for="email" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-mono">
+                                <label for="email" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-sans">
                                     Alamat Email Bisnis <span class="text-[#C4264A]">*</span>
                                 </label>
                                 <input type="email" id="email" name="email" required placeholder="nama@perusahaan.com"
@@ -195,7 +195,7 @@
 
                         <!-- Kebutuhan Solusi Teknologi -->
                         <div class="space-y-1.5">
-                            <label for="paket" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-mono">
+                            <label for="paket" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-sans">
                                 Kebutuhan Solusi Teknologi <span class="text-[#C4264A]">*</span>
                             </label>
                             <select id="paket" name="paket" required
@@ -210,7 +210,7 @@
 
                         <!-- Ceritakan Tantangan atau Fitur yang Ingin Dibuat -->
                         <div class="space-y-1.5">
-                            <label for="pesan" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-mono">
+                            <label for="pesan" class="block text-xs font-bold text-[#111215] dark:text-white uppercase font-sans">
                                 Ceritakan Tantangan atau Fitur yang Ingin Dibuat <span class="text-[#C4264A]">*</span>
                             </label>
                             <textarea id="pesan" name="pesan" rows="4" required placeholder="Contoh: Kami membutuhkan website company profile 4 halaman dengan fitur katalog produk dan formulir konsultasi terhubung ke WhatsApp..."
@@ -236,7 +236,7 @@
                     <div class="p-5 rounded-2xl border border-[#E8E9ED] dark:border-neutral-800 bg-white dark:bg-[#14151B] space-y-1.5">
                         <div class="flex items-center gap-2">
                             <i data-lucide="building" class="w-4 h-4 text-[#C4264A]"></i>
-                            <span class="text-xs font-bold text-[#111215] dark:text-white font-mono uppercase">Kantor Rekayasa SOLVETA</span>
+                            <span class="text-xs font-bold text-[#111215] dark:text-white font-sans uppercase">Kantor Rekayasa SOLVETA</span>
                         </div>
                         <p class="text-xs text-neutral-500 leading-relaxed">
                             Jakarta &amp; Surakarta Tech Hub, Indonesia. Melayani klien di seluruh Indonesia &amp; Regional Asia.
@@ -246,7 +246,7 @@
                     <div class="p-5 rounded-2xl border border-[#E8E9ED] dark:border-neutral-800 bg-white dark:bg-[#14151B] space-y-1.5">
                         <div class="flex items-center gap-2">
                             <i data-lucide="lock" class="w-4 h-4 text-[#C4264A]"></i>
-                            <span class="text-xs font-bold text-[#111215] dark:text-white font-mono uppercase">Jaminan Kerahasiaan Data (NDA)</span>
+                            <span class="text-xs font-bold text-[#111215] dark:text-white font-sans uppercase">Jaminan Kerahasiaan Data (NDA)</span>
                         </div>
                         <p class="text-xs text-neutral-500 leading-relaxed">
                             Seluruh informasi rencana bisnis dan kontak yang Anda kirimkan dijamin kerahasiaannya secara hukum.

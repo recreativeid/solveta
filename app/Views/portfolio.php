@@ -339,7 +339,7 @@
         <!-- Eyebrow Pill Badge -->
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs font-semibold shadow-xs">
             <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-            <span class="font-bold tracking-wider uppercase font-mono">PORTOFOLIO &amp; KARYA REKAYASA • SOLVETA</span>
+            <span class="font-bold tracking-wider uppercase font-sans">PORTOFOLIO &amp; KARYA REKAYASA • SOLVETA</span>
         </div>
 
         <!-- Headline (Clean, Crisp Inter, High Contrast) -->
@@ -414,7 +414,7 @@
     <!-- Client Marquee Strip -->
     <div class="mt-12 sm:mt-16 pt-6 border-t border-[#E8E9ED] dark:border-neutral-800">
         <div class="max-w-7xl mx-auto px-4 text-center mb-4">
-            <span class="text-[11px] font-bold text-neutral-500 uppercase tracking-wider font-mono">
+            <span class="text-[11px] font-bold text-neutral-500 uppercase tracking-wider font-sans">
                 Dipercaya oleh puluhan brand, korporasi, dan institusi di Indonesia:
             </span>
         </div>
@@ -578,7 +578,7 @@
                 <p class="text-xs text-[#737780] dark:text-neutral-400 leading-relaxed">
                     Peningkatan kunjungan organik berkelanjutan melalui optimasi teknis Core Web Vitals dan struktur semantik SEO modern.
                 </p>
-                <div class="pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center gap-2 text-[11px] font-mono text-[#737780] dark:text-neutral-400">
+                <div class="pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center gap-2 text-[11px] font-sans text-[#737780] dark:text-neutral-400">
                     <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
                     <span>Verified via Google Lighthouse</span>
                 </div>
@@ -600,7 +600,7 @@
                 <p class="text-xs text-[#737780] dark:text-neutral-400 leading-relaxed">
                     Infrastruktur cloud berstandar industri dengan proteksi DDoS, auto-scaling, dan disaster recovery multi-zone redundan.
                 </p>
-                <div class="pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center gap-2 text-[11px] font-mono text-[#737780] dark:text-neutral-400">
+                <div class="pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center gap-2 text-[11px] font-sans text-[#737780] dark:text-neutral-400">
                     <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
                     <span>Enterprise Cloud Architecture</span>
                 </div>
@@ -622,7 +622,7 @@
                 <p class="text-xs text-[#737780] dark:text-neutral-400 leading-relaxed">
                     Desain UI/UX berbasis riset psikologi konversi total yang terbukti melipatgandakan closing deal dan formulir leads.
                 </p>
-                <div class="pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center gap-2 text-[11px] font-mono text-[#737780] dark:text-neutral-400">
+                <div class="pt-4 border-t border-[#E8E9ED] dark:border-neutral-800 flex items-center gap-2 text-[11px] font-sans text-[#737780] dark:text-neutral-400">
                     <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
                     <span>Field Behavioral UX</span>
                 </div>
@@ -685,7 +685,7 @@
         
         <div class="flex items-center justify-between pb-3 border-b border-[#E8E9ED] dark:border-neutral-800">
             <div>
-                <span id="modal-category" class="text-[10px] font-mono font-bold text-[#8E1738] dark:text-[#F05A72] uppercase block"></span>
+                <span id="modal-category" class="text-[10px] font-sans font-bold text-[#8E1738] dark:text-[#F05A72] uppercase block"></span>
                 <h3 id="modal-title" class="text-xl sm:text-2xl font-black text-[#171717] dark:text-white"></h3>
             </div>
             <button type="button" onclick="closeProjectModal()" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-neutral-800 text-[#737780] hover:text-[#171717] flex items-center justify-center transition-colors">
@@ -714,7 +714,7 @@
             </div>
 
             <div class="pt-2 border-t border-[#E8E9ED] dark:border-neutral-800 flex flex-wrap items-center justify-between gap-3">
-                <div class="text-[11px] font-mono text-[#737780]">
+                <div class="text-[11px] font-sans text-[#737780]">
                     <span>Teknologi: </span><b id="modal-tech" class="text-[#171717] dark:text-white"></b>
                 </div>
                 <div class="flex items-center gap-2">

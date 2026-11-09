@@ -87,7 +87,7 @@
             </button>
         </form>
 
-        <div class="mt-4 p-2.5 rounded-lg bg-gray-50 border border-gray-200/60 text-[10px] text-gray-500 font-mono text-center">
+        <div class="mt-4 p-2.5 rounded-lg bg-gray-50 border border-gray-200/60 text-[10px] text-gray-500 font-sans text-center">
             Default: <span class="font-bold text-gray-800">developer</span> / <span class="font-bold text-gray-800">developer123</span>
         </div>
 

@@ -1,0 +1,58 @@
+[
+    {
+        "id": "art-1",
+        "title": "Panduan Memilih Website Company Profile vs Web App untuk Akselerasi Bisnis",
+        "slug": "panduan-memilih-website-company-profile-vs-web-app",
+        "category": "Website & SaaS",
+        "category_slug": "website-saas",
+        "summary": "Ketahui perbedaan fundamental antara landing page company profile dengan platform web application kustom agar investasi teknologi bisnis Anda tepat sasaran.",
+        "image_url": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+        "author": "Tim Rekayasa SOLVETA",
+        "read_time": "5 min baca",
+        "created_at": "2026-11-05 10:00:00",
+        "is_published": 1,
+        "content": "\n<p>Banyak pemilik bisnis dan pengambil keputusan menghadapi dilema saat memulai digitalisasi: <i>apakah bisnis kami cukup membutuhkan website company profile modern, ataukah kami memerlukan custom web application dengan integrasi basis data penuh?</i></p>\n\n<h3>1. Apa Fungsi Utama Website Company Profile?</h3>\n<p>Website company profile berperan sebagai etalase digital utama perusahaan Anda. Tujuannya adalah membangun kredibilitas, menjelaskan proposisi nilai produk, memamerkan portofolio terpercaya, dan mengarahkan calon prospek ke tim penjualan (seperti WhatsApp atau formulir penawaran B2B).</p>\n<p>Karakteristik penting:</p>\n<ul>\n    <li>Fokus pada penyampaian informasi, visual branding, dan kecepatan akses (*fast loading*).</li>\n    <li>Struktur SEO yang kuat untuk merajai pencarian Google di industri terkait.</li>\n    <li>Proses pengerjaan yang relatif cepat dan efisien biaya.</li>\n</ul>\n\n<h3>2. Kapan Anda Memerlukan Web Application (SaaS/Sistem Kustom)?</h3>\n<p>Jika operasional bisnis Anda melibatkan transaksi multi-pengguna, alur verifikasi data bertingkat, sinkronisasi inventaris antar cabang, atau integrasi API pihak ketiga (payment gateway, kurir logistik, WhatsApp automasi), maka Anda memerlukan <b>Web Application</b>.</p>\n<p>Contoh nyata yang telah kami bangun di SOLVETA mencakup:</p>\n<ul>\n    <li><b>CuanGO Digital Platform:</b> Pembukuan keuangan dan digital ledger realtime untuk ribuan transaksi harian.</li>\n    <li><b>Haltea POS:</b> Point of Sale offline-first untuk operasional multi-outlet waralaba F&B.</li>\n    <li><b>Squabumin CRM:</b> Otomasi order distributor dengan kalkulator ongkir dan cetak invoice instan.</li>\n</ul>\n\n<h3>Kesimpulan</h3>\n<p>Mulailah dengan mengidentifikasi hambatan terbesar operasional Anda saat ini. Jika masalahnya adalah kurangnya prospek dan kredibilitas, prioritaskan website profesional. Namun jika masalahnya adalah kekacauan pencatatan manual dan inefisiensi tim, saatnya membangun sistem aplikasi web terpadu bersama mitra teknologi yang tepat.</p>\n"
+    },
+    {
+        "id": "art-2",
+        "title": "Kenapa Kecepatan Website (Core Web Vitals) Berpengaruh Langsung pada Omzet Penjualan",
+        "slug": "kenapa-kecepatan-website-core-web-vitals-berpengaruh-pada-omzet",
+        "category": "Tips Teknologi",
+        "category_slug": "tips-teknologi",
+        "summary": "Riset membuktikan setiap keterlambatan 1 detik waktu muat website dapat menurunkan tingkat konversi hingga 20%. Simak cara optimasi performa digital terkini.",
+        "image_url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+        "author": "Tim Performa SOLVETA",
+        "read_time": "4 min baca",
+        "created_at": "2026-11-03 14:30:00",
+        "is_published": 1,
+        "content": "\n<p>Di era konektivitas instan, pengguna internet tidak lagi memiliki kesabaran untuk menunggu halaman website yang lambat memuat. Google secara resmi menjadikan <b>Core Web Vitals</b> sebagai salah satu faktor penentu peringkat pencarian organik dan pengalaman pengguna.</p>\n\n<h3>Tiga Pilar Utama Core Web Vitals:</h3>\n<ol>\n    <li><b>LCP (Largest Contentful Paint):</b> Mengukur seberapa cepat elemen visual utama (seperti gambar hero atau judul) selesai dimuat. Target ideal adalah di bawah 2.5 detik.</li>\n    <li><b>INP (Interaction to Next Paint):</b> Mengukur responsivitas halaman saat pengguna mengklik tombol atau membuka menu navigasi.</li>\n    <li><b>CLS (Cumulative Layout Shift):</b> Mengukur stabilitas visual agar elemen tidak bergeser tiba-tiba saat halaman sedang memuat.</li>\n</ol>\n\n<h3>Dampak Nyata pada Bisnis</h3>\n<p>Ketika website Anda memuat dalam waktu kurang dari 1 detik (seperti standar JAMStack dan Tailwind yang kami terapkan di proyek SOLVETA), angka pentalan (*bounce rate*) turun drastis hingga 38%, dan rasio konversi pengunjung menjadi pelanggan aktif melonjak rata-rata 142%.</p>\n"
+    },
+    {
+        "id": "art-3",
+        "title": "Digitalisasi Operasional: Mengubah Pencatatan Manual Menjadi Sistem ERP & POS Terpadu",
+        "slug": "digitalisasi-operasional-mengubah-pencatatan-manual-menjadi-sistem-erp-pos",
+        "category": "Transformasi Digital",
+        "category_slug": "transformasi-digital",
+        "summary": "Langkah-langkah strategis bagi pemilik bisnis untuk bermigrasi dari pembukuan buku kas manual menuju ekosistem cloud otomatis tanpa mengganggu rutinitas harian.",
+        "image_url": "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80",
+        "author": "Lead Architect SOLVETA",
+        "read_time": "6 min baca",
+        "created_at": "2026-11-01 09:15:00",
+        "is_published": 1,
+        "content": "\n<p>Banyak bisnis skala menengah hingga korporasi masih bergantung pada spreadsheet terpisah atau bahkan catatan kertas untuk mengelola stok gudang, tagihan invoice, dan laporan kasir. Masalahnya baru terasa saat terjadi selisih stok barang atau keterlambatan penagihan piutang.</p>\n\n<h3>Fase Transisi yang Terbukti Berhasil:</h3>\n<ul>\n    <li><b>Audit Alur Kerja Nyata:</b> Petakan alur kerja yang sudah berjalan tanpa mengubah kebiasaan tim secara drastis di awal.</li>\n    <li><b>Sentralisasi Basis Data:</b> Buat satu sumber kebenaran (*single source of truth*) berbasis cloud yang aman dan terenkripsi.</li>\n    <li><b>Antarmuka yang Ramah Pengguna:</b> Sistem secanggih apa pun akan gagal jika staf lapangan kesulitan mengoperasikannya. Di SOLVETA, antarmuka dirancang dengan prinsip Apple Design & Inter Typography yang intuitif.</li>\n    <li><b>Otomasi Integrasi:</b> Hubungkan notifikasi invoice langsung ke WhatsApp pelanggan dan rekonsiliasi bank otomatis.</li>\n</ul>\n"
+    },
+    {
+        "id": "art-4",
+        "title": "Tren Desain Web 2026: Mengapa Minimalis Clean Mengalahkan Tampilan AI Slop",
+        "slug": "tren-desain-web-2026-minimalis-clean-kalahkan-ai-slop",
+        "category": "UI/UX Architecture",
+        "category_slug": "ui-ux-architecture",
+        "summary": "Eksplorasi estetika antarmuka Swiss Design dan Apple fluid layout yang mengutamakan kenyamanan pengguna, kontras tinggi, dan fungsionalitas tanpa elemen visual berlebihan.",
+        "image_url": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=1200&q=80",
+        "author": "Creative Director SOLVETA",
+        "read_time": "4 min baca",
+        "created_at": "2026-10-28 16:45:00",
+        "is_published": 1,
+        "content": "\n<p>Banjirnya generator desain instan menghasilkan fenomena yang dikenal luas sebagai <i>'AI Slop'</i> — website yang penuh gradasi ungu neon mencolok, kartu melayang tanpa fungsi jelas, dan teks generik yang tidak menyampaikan solusi bisnis apa pun.</p>\n\n<p>Klien dan pengguna modern semakin menghargai kejelasan (*clarity*). Prinsip desain bersih yang berakar pada Swiss Typography, ruang bernapas (*white space*), dan sentuhan warna aksen terukur terbukti menghasilkan kepercayaan (*trust*) yang jauh lebih tinggi bagi agensi dan korporasi teknologi.</p>\n"
+    }
+]

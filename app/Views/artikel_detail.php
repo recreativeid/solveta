@@ -69,7 +69,7 @@
 
         <!-- Category & Read time -->
         <div class="flex items-center gap-2 text-xs font-semibold">
-            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold uppercase tracking-wider font-mono">
+            <span class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold uppercase tracking-wider font-sans">
                 <?= esc($article['category'] ?? 'Wawasan') ?>
             </span>
             <span class="text-white/40">•</span>

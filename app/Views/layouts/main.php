@@ -82,6 +82,7 @@
                     fontFamily: {
                         sans: ["'Inter'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
                         inter: ["'Inter'", "sans-serif"],
+                        mono: ["'Inter'", "-apple-system", "sans-serif"],
                     },
                     boxShadow: {
                         "clean": "0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03)",
@@ -122,6 +123,12 @@
             background-color: #0E0F12;
             color: #F7F8FA;
         }
+        
+        /* Wajib Menggunakan Font Inter untuk Seluruh Elemen & Teks Keterangan */
+        *, html, body, button, input, select, textarea, .font-mono, .font-sans, time, code, pre, span, p, h1, h2, h3, h4, h5, h6, a, div {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+        }
+
         .text-balance { text-wrap: balance; }
         
         /* Master Hero Background — Sesuai Arahan Presisi:
@@ -432,77 +439,32 @@
         }
 
         /* ========================================================================= */
-        /* DYNAMIC SCROLL MOTION BLUR & FROSTED LENS ENGINE                          */
-        /* Aktif otomatis saat user melakukan scroll ke atas maupun ke bawah         */
+        /* SCROLL REVEAL BLUR-IN ANIMATION ENGINE                                    */
+        /* Hanya elemen baru dari bawah atau atas yang muncul dgn animasi blur halus */
+        /* Bukan mem-blur seluruh layar, menjaga elemen yang sudah tampil tetap tajam*/
         /* ========================================================================= */
-        #scroll-content-wrapper {
-            transition: filter 0.16s cubic-bezier(0.16, 1, 0.3, 1);
-            will-change: filter;
-            transform: translateZ(0);
-            backface-visibility: hidden;
-        }
-
-        .scroll-edge-blur-top,
-        .scroll-edge-blur-bottom {
-            position: fixed;
-            left: 0;
-            right: 0;
-            height: 56px;
-            pointer-events: none;
-            z-index: 45;
+        .scroll-blur-reveal {
             opacity: 0;
-            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            filter: blur(14px);
+            transform: translateY(28px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        filter 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, filter, transform;
         }
 
-        .scroll-edge-blur-top {
-            top: 0;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, transparent 100%);
-            mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
-        }
-
-        .scroll-edge-blur-bottom {
-            bottom: 0;
-            background: linear-gradient(0deg, rgba(255, 255, 255, 0.7) 0%, transparent 100%);
-            mask-image: linear-gradient(to top, black 30%, transparent 100%);
-            -webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%);
-        }
-
-        .dark .scroll-edge-blur-top {
-            background: linear-gradient(180deg, rgba(14, 15, 18, 0.7) 0%, transparent 100%);
-        }
-
-        .dark .scroll-edge-blur-bottom {
-            background: linear-gradient(0deg, rgba(14, 15, 18, 0.8) 0%, transparent 100%);
-        }
-
-        body.is-scrolling-active .scroll-edge-blur-top,
-        body.is-scrolling-active .scroll-edge-blur-bottom {
+        .scroll-blur-reveal.is-revealed {
             opacity: 1;
-        }
-
-        #main-header.scrolling-motion-blur {
-            backdrop-filter: blur(28px) saturate(180%) !important;
-            -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
-            background-color: rgba(255, 255, 255, 0.88) !important;
-            box-shadow: 0 14px 35px -5px rgba(0, 0, 0, 0.08) !important;
-        }
-
-        .dark #main-header.scrolling-motion-blur {
-            background-color: rgba(20, 21, 27, 0.88) !important;
-            box-shadow: 0 14px 35px -5px rgba(0, 0, 0, 0.45) !important;
+            filter: blur(0px);
+            transform: translateY(0);
         }
 
         @media (prefers-reduced-motion: reduce) {
-            #scroll-content-wrapper {
+            .scroll-blur-reveal {
+                opacity: 1 !important;
                 filter: none !important;
+                transform: none !important;
                 transition: none !important;
-            }
-            .scroll-edge-blur-top,
-            .scroll-edge-blur-bottom {
-                display: none !important;
             }
             .marquee-track {
                 animation: none !important;
@@ -541,10 +503,6 @@
 </head>
 <body class="font-sans antialiased bg-white dark:bg-[#0E0F12] text-[#111215] dark:text-[#F7F8FA] min-h-screen relative overflow-x-hidden selection:bg-[#C4264A] selection:text-white transition-colors duration-200">
 
-    <!-- Dynamic Frosted Edge Vignettes (Aktif saat user scroll ke atas & bawah) -->
-    <div class="scroll-edge-blur-top" aria-hidden="true"></div>
-    <div class="scroll-edge-blur-bottom" aria-hidden="true"></div>
-
     <?php 
         $siteLogo = !empty($copy['site_logo']) ? $copy['site_logo'] : '/solveta-logo.png';
         $currentPage = $current_page ?? 'home';
@@ -562,7 +520,7 @@
     <div id="liquid-glass-intro" class="fixed inset-0 z-[99999] flex flex-col items-center justify-center select-none bg-white">
         
         <!-- Skip Intro Button (Clean Light Styling) -->
-        <button id="skip-intro-btn" onclick="dismissIntro()" class="absolute top-5 right-5 sm:top-7 sm:right-7 text-[11px] font-mono text-neutral-500 hover:text-neutral-900 bg-neutral-100/90 hover:bg-neutral-200 border border-neutral-200/90 shadow-xs px-3.5 py-1.5 rounded-full transition flex items-center gap-1.5 cursor-pointer z-50">
+        <button id="skip-intro-btn" onclick="dismissIntro()" class="absolute top-5 right-5 sm:top-7 sm:right-7 text-[11px] font-sans text-neutral-500 hover:text-neutral-900 bg-neutral-100/90 hover:bg-neutral-200 border border-neutral-200/90 shadow-xs px-3.5 py-1.5 rounded-full transition flex items-center gap-1.5 cursor-pointer z-50">
             <span>Lewati Intro</span>
             <span class="text-neutral-400 font-sans">&rarr;</span>
         </button>
@@ -585,7 +543,7 @@
             <!-- Sleek Typography below Glass Tile -->
             <div class="reveal-caption mt-6 flex flex-col items-center text-center">
                 <span class="text-2xl sm:text-3xl font-black tracking-tight text-neutral-900 font-sans">SOLVETA</span>
-                <span class="text-[10px] sm:text-[11px] tracking-[0.25em] text-[#C4264A] uppercase font-bold mt-1 font-mono">Solve Technology Agency</span>
+                <span class="text-[10px] sm:text-[11px] tracking-[0.25em] text-[#C4264A] uppercase font-bold mt-1 font-sans">Solve Technology Agency</span>
             </div>
         </div>
     </div>
@@ -610,7 +568,7 @@
                             SOLVETA
                         </span>
                     </div>
-                    <span class="text-[8.5px] font-bold tracking-wider uppercase text-[#C4264A] leading-none mt-0.5 font-mono">
+                    <span class="text-[8.5px] font-bold tracking-wider uppercase text-[#C4264A] leading-none mt-0.5 font-sans">
                         SOLVE TECHNOLOGY AGENCY
                     </span>
                 </div>
@@ -697,7 +655,7 @@
                         <i data-lucide="home" class="w-4 h-4 text-neutral-400"></i>
                         <span>Beranda</span>
                     </div>
-                    <span class="text-xs font-mono text-neutral-400">(01)</span>
+                    <span class="text-xs font-sans text-neutral-400">(01)</span>
                 </a>
 
                 <!-- 2. Layanan -->
@@ -706,7 +664,7 @@
                         <i data-lucide="layers" class="w-4 h-4 text-neutral-400"></i>
                         <span>Layanan</span>
                     </div>
-                    <span class="text-xs font-mono text-neutral-400">(02)</span>
+                    <span class="text-xs font-sans text-neutral-400">(02)</span>
                 </a>
 
                 <!-- 3. Portofolio -->
@@ -715,7 +673,7 @@
                         <i data-lucide="briefcase" class="w-4 h-4 text-neutral-400"></i>
                         <span>Portofolio</span>
                     </div>
-                    <span class="text-xs font-mono text-neutral-400">(03)</span>
+                    <span class="text-xs font-sans text-neutral-400">(03)</span>
                 </a>
 
                 <!-- 4. Artikel -->
@@ -724,7 +682,7 @@
                         <i data-lucide="file-text" class="w-4 h-4 text-neutral-400"></i>
                         <span>Artikel</span>
                     </div>
-                    <span class="text-xs font-mono text-neutral-400">(04)</span>
+                    <span class="text-xs font-sans text-neutral-400">(04)</span>
                 </a>
 
                 <!-- 5. Tentang Kami -->
@@ -733,7 +691,7 @@
                         <i data-lucide="building-2" class="w-4 h-4 text-neutral-400"></i>
                         <span>Tentang Kami</span>
                     </div>
-                    <span class="text-xs font-mono text-neutral-400">(05)</span>
+                    <span class="text-xs font-sans text-neutral-400">(05)</span>
                 </a>
 
                 <!-- 6. Karir -->
@@ -742,7 +700,7 @@
                         <i data-lucide="users" class="w-4 h-4 text-neutral-400"></i>
                         <span>Karir</span>
                     </div>
-                    <span class="text-xs font-mono text-neutral-400">(06)</span>
+                    <span class="text-xs font-sans text-neutral-400">(06)</span>
                 </a>
 
                 <!-- 7. Kontak -->
@@ -751,7 +709,7 @@
                         <i data-lucide="phone-call" class="w-4 h-4 text-neutral-400"></i>
                         <span>Kontak</span>
                     </div>
-                    <span class="text-xs font-mono text-neutral-400">(07)</span>
+                    <span class="text-xs font-sans text-neutral-400">(07)</span>
                 </a>
 
                 <!-- WhatsApp CTA inside Mobile Menu -->
@@ -767,15 +725,11 @@
     </header>
 
     <!-- ========================================================================= -->
-    <!-- SCROLL CONTENT TARGET WRAPPER                                             -->
-    <!-- Mengaplikasikan efek blur halus dinamis saat scroll ke atas & bawah       -->
+    <!-- MAIN CONTENT VIEW                                                         -->
     <!-- ========================================================================= -->
-    <div id="scroll-content-wrapper" class="w-full relative">
-        
-        <!-- MAIN CONTENT VIEW -->
-        <main class="min-h-[calc(100vh-140px)]">
-            <?= $this->renderSection('content') ?>
-        </main>
+    <main class="min-h-[calc(100vh-140px)]">
+        <?= $this->renderSection('content') ?>
+    </main>
 
     <!-- ========================================================================= -->
     <!-- MINIMALIST GLASSMORPHISM FOOTER WITH SUBTLE LIGHTING GLOW EFFECT          -->
@@ -882,7 +836,6 @@
             </div>
         </div>
     </footer>
-    </div> <!-- End #scroll-content-wrapper -->
 
     <!-- Scripts: Mobile Drawer Toggle, Sticky Navbar Scroll, & Dark Mode Engine -->
     <script>
@@ -890,54 +843,45 @@
         lucide.createIcons();
 
         // =========================================================================
-        // DYNAMIC SCROLL BLUR ENGINE (Efek blur aktif saat scroll naik maupun turun)
+        // SCROLL REVEAL BLUR ENGINE (Elemen baru muncul dgn animasi blur naik/turun)
+        // Bagian yang belum terlihat di viewport muncul dengan efek animasi blur
+        // Elemen yang sudah di layar tetap tajam (bukan seluruh layar di-blur)
         // =========================================================================
         (function() {
-            const wrapper = document.getElementById('scroll-content-wrapper');
-            const nav = document.getElementById('main-header');
-            const body = document.body;
-            let lastY = window.scrollY;
-            let scrollTimer = null;
-            let ticking = false;
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-            function handleDynamicScrollBlur() {
-                if (ticking) return;
-                ticking = true;
+            // Target elemen section, card, dan timeline untuk animasi blur reveal
+            const targets = document.querySelectorAll('main section:not(#beranda):not(.clean-hero-header), footer, .timeline-item, .bento-card');
+            
+            targets.forEach(el => {
+                const rect = el.getBoundingClientRect();
+                // Jika elemen sudah masuk viewport saat pertama kali render, tampilkan tajam
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    el.classList.add('scroll-blur-reveal', 'is-revealed');
+                } else {
+                    el.classList.add('scroll-blur-reveal');
+                }
+            });
 
-                window.requestAnimationFrame(() => {
-                    const currentY = window.scrollY;
-                    const delta = Math.abs(currentY - lastY);
-                    lastY = currentY;
-
-                    // Hitung intensitas blur berdasarkan pergerakan scroll (naik maupun turun)
-                    // Nilai blur berkisar antara 1.8px hingga 3.5px saat sedang bergerak
-                    const blurValue = Math.min(Math.max(delta * 0.08, 1.8), 3.5);
-
-                    if (wrapper) {
-                        wrapper.style.filter = `blur(${blurValue.toFixed(1)}px)`;
-                    }
-                    if (nav) {
-                        nav.classList.add('scrolling-motion-blur');
-                    }
-                    body.classList.add('is-scrolling-active');
-
-                    // Kembalikan ke tajam normal blur(0px) segera setelah scroll berhenti (110ms)
-                    clearTimeout(scrollTimer);
-                    scrollTimer = setTimeout(() => {
-                        if (wrapper) {
-                            wrapper.style.filter = 'blur(0px)';
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-revealed');
+                    } else {
+                        // Reset saat elemen terlewati ke atas atau bawah, sehingga saat discroll kembali
+                        // (baik naik maupun turun), elemen muncul kembali dengan animasi blur yang memukau
+                        const rect = entry.target.getBoundingClientRect();
+                        if (rect.top > window.innerHeight || rect.bottom < 0) {
+                            entry.target.classList.remove('is-revealed');
                         }
-                        if (nav) {
-                            nav.classList.remove('scrolling-motion-blur');
-                        }
-                        body.classList.remove('is-scrolling-active');
-                    }, 110);
-
-                    ticking = false;
+                    }
                 });
-            }
+            }, {
+                threshold: 0.05,
+                rootMargin: "30px 0px -40px 0px"
+            });
 
-            window.addEventListener('scroll', handleDynamicScrollBlur, { passive: true });
+            document.querySelectorAll('.scroll-blur-reveal').forEach(el => observer.observe(el));
         })();
 
         // Sticky Navbar Transition on Scroll

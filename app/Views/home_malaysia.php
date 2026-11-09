@@ -67,7 +67,7 @@
         
         <!-- Eyebrow Pill -->
         <div class="inline-block">
-            <span class="inline-flex items-center gap-1.5 font-mono text-[11px] font-bold uppercase tracking-wider text-[#7B0B1E] dark:text-rose-300 bg-rose-50/90 dark:bg-rose-950/60 backdrop-blur-md border border-rose-200/80 dark:border-rose-500/30 px-4 py-1.5 rounded-full mb-6 shadow-2xs">
+            <span class="inline-flex items-center gap-1.5 font-sans text-[11px] font-bold uppercase tracking-wider text-[#7B0B1E] dark:text-rose-300 bg-rose-50/90 dark:bg-rose-950/60 backdrop-blur-md border border-rose-200/80 dark:border-rose-500/30 px-4 py-1.5 rounded-full mb-6 shadow-2xs">
                 <span class="w-1.5 h-1.5 rounded-full bg-[#8B0021] dark:bg-rose-400 animate-pulse"></span>
                 <span><?= esc(trim(preg_replace('/(\x{1F1F2}\x{1F1FE}|ðŸ‡²ðŸ‡¾|🇲🇾)/u', '', $copy['hero_eyebrow'] ?? 'SOLVE TECHNOLOGY AGENCY')) ?: 'SOLVE TECHNOLOGY AGENCY') ?></span>
             </span>
@@ -209,7 +209,7 @@
     <section class="py-12 sm:py-16 bg-white dark:bg-[#07080E] border-y border-gray-100 dark:border-gray-800 overflow-hidden relative transition-colors duration-200 font-sans"
              style="--marquee-speed: <?= $marqueeSpeed ?>s;">
         <div class="max-w-[1160px] mx-auto px-6 mb-8 text-center">
-            <p class="text-[11px] sm:text-xs font-mono font-bold tracking-widest text-gray-400 dark:text-gray-500 uppercase">
+            <p class="text-[11px] sm:text-xs font-sans font-bold tracking-widest text-gray-400 dark:text-gray-500 uppercase">
                 <?= esc($copy['marquee_title'] ?? 'DIPERCAYAI OLEH PELBAGAI PERNIAGAAN & INSTITUSI BERKEMBANG') ?>
             </p>
         </div>
@@ -281,7 +281,7 @@
     <div class="max-w-[1080px] mx-auto px-4 sm:px-6 text-center">
         <!-- Section Header -->
         <div class="space-y-3 mb-8 sm:mb-10 max-w-2xl mx-auto">
-            <span class="font-mono text-[10px] sm:text-[11px] font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 px-3.5 py-1 sm:py-1.5 rounded-full inline-block">
+            <span class="font-sans text-[10px] sm:text-[11px] font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 px-3.5 py-1 sm:py-1.5 rounded-full inline-block">
                 CABARAN PERNIAGAAN &bull; SOLUSI TEPAT
             </span>
             <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight leading-snug break-words px-1">
@@ -430,7 +430,7 @@
     <!-- Centered Header & Category Filters -->
     <div class="max-w-[1240px] mx-auto px-4 sm:px-6 mb-6">
         <div class="text-center max-w-2xl mx-auto">
-            <span class="font-mono text-[11px] font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 px-4 py-1.5 rounded-full inline-block mb-3">
+            <span class="font-sans text-[11px] font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 px-4 py-1.5 rounded-full inline-block mb-3">
                 KARYA &amp; PORTOFOLIO NYATA
             </span>
             <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight leading-tight uppercase font-sans">
@@ -475,7 +475,7 @@
             
             <!-- Eyebrow Label Pill -->
             <div class="flex items-center justify-center mb-3 sm:mb-5">
-                <span class="px-3.5 py-1 rounded-full bg-rose-50 dark:bg-rose-950/60 border border-rose-200/50 dark:border-rose-800/40 text-[10px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-300 uppercase shadow-2xs">
+                <span class="px-3.5 py-1 rounded-full bg-rose-50 dark:bg-rose-950/60 border border-rose-200/50 dark:border-rose-800/40 text-[10px] font-sans font-bold tracking-widest text-[#8B0021] dark:text-rose-300 uppercase shadow-2xs">
                     SOLVETA SHOWCASE
                 </span>
             </div>
@@ -526,12 +526,12 @@
                                     <span class="w-2 h-2 rounded-full bg-emerald-500/80"></span>
                                 </div>
 
-                                <div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/40 border border-white/10 text-[8.5px] sm:text-[9.5px] text-gray-300 font-mono">
+                                <div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/40 border border-white/10 text-[8.5px] sm:text-[9.5px] text-gray-300 font-sans">
                                     <i data-lucide="globe" class="w-2.5 h-2.5 text-rose-400"></i>
                                     <span class="truncate max-w-[120px] sm:max-w-[180px]">solveta.asia/showcase/<?= esc($slug) ?></span>
                                 </div>
 
-                                <span class="text-[8.5px] sm:text-[9.5px] font-bold font-mono text-rose-300 uppercase tracking-wider hidden sm:inline-block">
+                                <span class="text-[8.5px] sm:text-[9.5px] font-bold font-sans text-rose-300 uppercase tracking-wider hidden sm:inline-block">
                                     <?= $tagStr ?>
                                 </span>
                             </div>
@@ -574,7 +574,7 @@
             ?>
             <div id="coverflow-active-info" class="w-full max-w-xl mx-auto text-center px-4 mt-2 space-y-2 transition-all duration-300 font-sans">
                 <div>
-                    <span id="active-port-cat" class="inline-block text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/60 border border-rose-200/60 dark:border-rose-800/50 text-[#8B0021] dark:text-rose-400">
+                    <span id="active-port-cat" class="inline-block text-[10px] font-sans font-bold uppercase tracking-wider px-3 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/60 border border-rose-200/60 dark:border-rose-800/50 text-[#8B0021] dark:text-rose-400">
                         <?= esc($firstCat) ?>
                     </span>
                 </div>
@@ -627,7 +627,7 @@
         
         <!-- Section Header -->
         <div class="text-center mb-8 sm:mb-10">
-            <span class="inline-block text-[11px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 border border-rose-200/70 dark:border-rose-800/60 px-3.5 py-1 rounded-full uppercase mb-3">
+            <span class="inline-block text-[11px] font-sans font-bold tracking-widest text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 border border-rose-200/70 dark:border-rose-800/60 px-3.5 py-1 rounded-full uppercase mb-3">
                 PAKEJ LAMAN WEB SOLVETA
             </span>
             <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight mb-3 uppercase">
@@ -680,7 +680,7 @@
                     
                     <!-- Popular Banner -->
                     <?php if ($isPopular): ?>
-                        <div class="bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-center font-mono text-[11px] font-bold uppercase tracking-widest py-1.5 px-4 flex items-center justify-center gap-2">
+                        <div class="bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] text-white text-center font-sans text-[11px] font-bold uppercase tracking-widest py-1.5 px-4 flex items-center justify-center gap-2">
                             <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-300"></i>
                             <span><?= esc($tier['popular_label'] ?: 'PAKEJ PALING DISYORKAN (POPULAR)') ?></span>
                             <i data-lucide="sparkles" class="w-3.5 h-3.5 text-amber-300"></i>
@@ -696,7 +696,7 @@
                                 
                                 <!-- Top Script Label + Large Price Badge -->
                                 <div class="border border-gray-200 dark:border-gray-800 rounded-2xl p-5 bg-gradient-to-b from-gray-50/80 dark:from-gray-900/60 to-white dark:to-gray-900 text-center relative shadow-2xs">
-                                    <div class="text-[11px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase mb-1">
+                                    <div class="text-[11px] font-sans font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase mb-1">
                                         PAKEJ LAMAN WEB
                                     </div>
 
@@ -709,7 +709,7 @@
                                     </div>
 
                                     <?php if (!empty($tier['renewal_price'])): ?>
-                                        <div class="text-[11px] font-mono font-semibold text-gray-500 dark:text-gray-400 mt-1">
+                                        <div class="text-[11px] font-sans font-semibold text-gray-500 dark:text-gray-400 mt-1">
                                             Kos Pembaharuan: <?= esc($renewal) ?>
                                         </div>
                                     <?php endif; ?>
@@ -718,18 +718,18 @@
                                 <!-- Box 2: Tempoh Aktif & Anggaran Siap -->
                                 <div class="grid grid-cols-2 gap-3 text-center">
                                     <div class="border border-gray-200 dark:border-gray-800 rounded-xl p-3 bg-white dark:bg-gray-900/60">
-                                        <span class="text-[10px] text-gray-400 font-mono uppercase block mb-0.5">Tempoh Aktif:</span>
+                                        <span class="text-[10px] text-gray-400 font-sans uppercase block mb-0.5">Tempoh Aktif:</span>
                                         <span class="text-xs font-bold text-gray-900 dark:text-white"><?= esc($activePeriod) ?></span>
                                     </div>
                                     <div class="border border-gray-200 dark:border-gray-800 rounded-xl p-3 bg-white dark:bg-gray-900/60">
-                                        <span class="text-[10px] text-gray-400 font-mono uppercase block mb-0.5">Anggaran Siap:</span>
+                                        <span class="text-[10px] text-gray-400 font-sans uppercase block mb-0.5">Anggaran Siap:</span>
                                         <span class="text-xs font-bold text-gray-900 dark:text-white"><?= esc($delivery) ?></span>
                                     </div>
                                 </div>
 
                                 <!-- Box 3: Sesuai Untuk Siapa -->
                                 <div class="border border-gray-200 dark:border-gray-800 rounded-xl p-4 bg-gray-50/50 dark:bg-gray-900/40 text-xs">
-                                    <span class="text-[10px] font-mono font-bold uppercase tracking-wider text-[#8B0021] dark:text-rose-400 block mb-1">
+                                    <span class="text-[10px] font-sans font-bold uppercase tracking-wider text-[#8B0021] dark:text-rose-400 block mb-1">
                                         Sesuai / Disyorkan Untuk:
                                     </span>
                                     <p class="text-gray-700 dark:text-gray-300 leading-relaxed font-sans">
@@ -752,7 +752,7 @@
                             <!-- RIGHT COLUMN: Termasuk Dalam Pakej -->
                             <div class="lg:col-span-7 space-y-4">
                                 <div class="border border-gray-200 dark:border-gray-800 rounded-2xl p-5 sm:p-6 bg-white dark:bg-gray-900/30">
-                                    <div class="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-gray-900 dark:text-white mb-4 pb-3 border-b border-gray-100 dark:border-gray-800">
+                                    <div class="flex items-center gap-2 text-xs font-sans font-bold uppercase tracking-wider text-gray-900 dark:text-white mb-4 pb-3 border-b border-gray-100 dark:border-gray-800">
                                         <i data-lucide="sparkles" class="w-4 h-4 text-[#8B0021] dark:text-rose-400"></i>
                                         <span>Termasuk Dalam Pakej (Ciri Utama):</span>
                                     </div>
@@ -864,7 +864,7 @@
             <div class="absolute -right-12 -top-12 w-48 h-48 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
             <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-8">
                 <div class="space-y-4 max-w-2xl">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8B0021]/10 dark:bg-rose-900/40 border border-[#8B0021]/20 dark:border-rose-700/40 text-[10px] font-mono font-bold uppercase tracking-widest text-[#8B0021] dark:text-rose-400">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8B0021]/10 dark:bg-rose-900/40 border border-[#8B0021]/20 dark:border-rose-700/40 text-[10px] font-sans font-bold uppercase tracking-widest text-[#8B0021] dark:text-rose-400">
                         <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
                         <span><?= esc($copy['custom_package_title'] ?? 'PERKHIDMATAN KHAS & ENTERPRISE') ?></span>
                     </div>

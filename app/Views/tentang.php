@@ -20,7 +20,7 @@
         <!-- Eyebrow Pill Badge -->
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs font-semibold shadow-xs">
             <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-            <span class="font-bold tracking-wider uppercase font-mono">TENTANG KAMI • SOLVETA AGENCY</span>
+            <span class="font-bold tracking-wider uppercase font-sans">TENTANG KAMI • SOLVETA AGENCY</span>
         </div>
 
         <!-- Headline -->
@@ -70,10 +70,10 @@
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 px-2 text-xs text-neutral-500">
             <div class="flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-[#C4264A]"></span>
-                <span class="font-bold text-[#111215] dark:text-white uppercase font-mono">SOLVETA Headquarters &amp; Engineering Center</span>
+                <span class="font-bold text-[#111215] dark:text-white uppercase font-sans">SOLVETA Headquarters &amp; Engineering Center</span>
                 <span>— Gedung Pusat Rekayasa Solusi Teknologi</span>
             </div>
-            <div class="font-mono text-[11px] text-neutral-400">
+            <div class="font-sans text-[11px] text-neutral-400">
                 Jakarta &amp; Surakarta Tech Hub, Indonesia
             </div>
         </div>
@@ -89,7 +89,7 @@
         
         <!-- Header Profil -->
         <div class="space-y-3">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-mono">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-sans">
                 PROFIL PERUSAHAAN
             </div>
             
@@ -157,7 +157,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         <div class="space-y-2">
-            <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-mono">ARAH &amp; KOMITMEN</span>
+            <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-sans">ARAH &amp; KOMITMEN</span>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[#111215] dark:text-white tracking-tight">
                 Visi &amp; Misi Perusahaan
             </h2>
@@ -219,7 +219,7 @@
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         <div class="space-y-2">
-            <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-mono">CAKUPAN OPERASIONAL</span>
+            <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-sans">CAKUPAN OPERASIONAL</span>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-[#111215] dark:text-white tracking-tight">
                 Jangkauan Kemitraan: Indonesia &amp; Global
             </h2>
@@ -237,7 +237,7 @@
                 <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
                     Dari Sabang sampai Merauke, kami mendampingi ratusan UMKM, yayasan, korporasi PT/CV, distributor, instansi swasta, dan brand lokal di Pulau Jawa, Sumatera, Kalimantan, Sulawesi, hingga Bali-Nusa Tenggara.
                 </p>
-                <div class="text-[11px] font-mono text-[#C4264A] dark:text-[#F05A72] font-semibold pt-1">
+                <div class="text-[11px] font-sans text-[#C4264A] dark:text-[#F05A72] font-semibold pt-1">
                     ✓ Integrasi Payment Gateway QRIS, Virtual Account, &amp; Ekspedisi Nasional
                 </div>
             </div>
@@ -251,7 +251,7 @@
                 <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
                     SOLVETA juga dipercaya oleh mitra internasional di Malaysia, Singapura, dan regional Asia Tenggara untuk pengembangan sistem web multilingual, arsitektur cloud global, dan integrasi API skala luas.
                 </p>
-                <div class="text-[11px] font-mono text-[#C4264A] dark:text-[#F05A72] font-semibold pt-1">
+                <div class="text-[11px] font-sans text-[#C4264A] dark:text-[#F05A72] font-semibold pt-1">
                     ✓ Multi-Currency, CDN Global Cloudflare, &amp; SLA Uptime 99.98%
                 </div>
             </div>

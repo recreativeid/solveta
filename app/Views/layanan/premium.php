@@ -20,7 +20,7 @@
         <!-- Eyebrow Pill Badge -->
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-[#1A1C22] border border-red-200 dark:border-red-900/40 text-[#C4264A] dark:text-[#F05A72] text-xs font-semibold shadow-xs">
             <span class="w-2 h-2 rounded-full bg-[#C4264A] animate-pulse"></span>
-            <span class="font-bold tracking-wider uppercase font-mono">PAKET LAYANAN 03 • PREMIUM</span>
+            <span class="font-bold tracking-wider uppercase font-sans">PAKET LAYANAN 03 • PREMIUM</span>
             <span class="text-neutral-400">•</span>
             <span>Rp 964K</span>
         </div>
@@ -73,7 +73,7 @@
             
             <!-- STEP 1: JUDUL -->
             <div class="space-y-2 border-b border-[#E8E9ED] dark:border-neutral-800 pb-5">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-800 text-[11px] font-bold text-[#C4264A] uppercase font-mono tracking-wider">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-800 text-[11px] font-bold text-[#C4264A] uppercase font-sans tracking-wider">
                     <span>SPESIFIKASI VISUAL &amp; ARSITEKTUR</span>
                 </div>
                 <h2 class="text-2xl sm:text-4xl font-extrabold text-[#111215] dark:text-white tracking-tight leading-tight">
@@ -150,7 +150,7 @@
                 <div class="pt-6 border-t border-[#E8E9ED] dark:border-neutral-800 grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
                     
                     <div class="md:col-span-7 space-y-2.5">
-                        <div class="text-xs font-bold text-[#111215] dark:text-white uppercase font-mono tracking-wider">FITUR TEKNOLOGI PAKET PREMIUM:</div>
+                        <div class="text-xs font-bold text-[#111215] dark:text-white uppercase font-sans tracking-wider">FITUR TEKNOLOGI PAKET PREMIUM:</div>
                         <ul class="text-xs text-neutral-600 dark:text-neutral-400 space-y-1.5">
                             <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Maksimal 7 Halaman (6 halaman utama + 1 Halaman dashboard)</li>
                             <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Revisi ringan 2x (Tidak berubah dari brief awal)</li>
@@ -164,12 +164,12 @@
                     </div>
 
                     <div class="md:col-span-5 p-6 rounded-3xl bg-red-50/70 dark:bg-neutral-800/80 border border-red-200 dark:border-neutral-700 text-center space-y-3">
-                        <div class="text-[10px] font-bold text-[#C4264A] uppercase font-mono">BIAYA INVESTASI RESMI</div>
+                        <div class="text-[10px] font-bold text-[#C4264A] uppercase font-sans">BIAYA INVESTASI RESMI</div>
                         <div class="space-y-0.5">
                             <div class="text-3xl font-black text-[#C4264A] dark:text-[#F05A72]">
                                 Rp 964K
                             </div>
-                            <span class="text-[10px] text-neutral-500 block font-mono">Perpanjangan: 399k/tahun*</span>
+                            <span class="text-[10px] text-neutral-500 block font-sans">Perpanjangan: 399k/tahun*</span>
                             <span class="text-[10px] text-neutral-400">Masa Aktif 1 Tahun | Estimasi Jadi 3-5 Hari</span>
                         </div>
                         <a href="<?= $waOrderPremium ?>" target="_blank"

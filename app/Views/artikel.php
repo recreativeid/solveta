@@ -20,7 +20,7 @@
         <!-- Eyebrow Pill Badge -->
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs font-semibold shadow-xs">
             <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-            <span class="font-bold tracking-wider uppercase font-mono">WAWASAN &amp; ARTIKEL RESMI • SOLVETA</span>
+            <span class="font-bold tracking-wider uppercase font-sans">WAWASAN &amp; ARTIKEL RESMI • SOLVETA</span>
         </div>
 
         <!-- Headline -->

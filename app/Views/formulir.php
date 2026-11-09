@@ -41,7 +41,7 @@
 
             <!-- Title Card with Top Accent -->
             <div class="bg-white dark:bg-[#11121B] border border-gray-200/80 dark:border-gray-800 rounded-2xl p-6 sm:p-8 shadow-xs border-t-4 border-t-gray-900 dark:border-t-rose-500 space-y-2">
-                <div class="inline-flex items-center gap-1.5 text-[11px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-100 dark:bg-gray-800 px-2.5 py-0.5 rounded-md mb-1 font-mono">
+                <div class="inline-flex items-center gap-1.5 text-[11px] font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider bg-gray-100 dark:bg-gray-800 px-2.5 py-0.5 rounded-md mb-1 font-sans">
                     <i data-lucide="file-text" class="w-3 h-3 text-[#8B0021] dark:text-rose-400"></i>
                     <span>Client Onboarding Form</span>
                 </div>

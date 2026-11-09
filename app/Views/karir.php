@@ -20,7 +20,7 @@
         <!-- Eyebrow Pill Badge -->
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs font-semibold shadow-xs">
             <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-            <span class="font-bold tracking-wider uppercase font-mono">KARIR &amp; TALENT POOL • SOLVETA</span>
+            <span class="font-bold tracking-wider uppercase font-sans">KARIR &amp; TALENT POOL • SOLVETA</span>
         </div>
 
         <!-- Headline -->
@@ -64,7 +64,7 @@
             </div>
 
             <div class="space-y-3">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-[11px] font-bold text-neutral-600 dark:text-neutral-400 uppercase font-mono">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-[11px] font-bold text-neutral-600 dark:text-neutral-400 uppercase font-sans">
                     STATUS REKRUTMEN SAAT INI
                 </div>
                 <h2 class="text-2xl sm:text-3xl font-extrabold text-[#111215] dark:text-white tracking-tight">
@@ -88,7 +88,7 @@
                 </a>
             </div>
 
-            <div class="pt-4 text-[11px] text-neutral-400 font-mono">
+            <div class="pt-4 text-[11px] text-neutral-400 font-sans">
                 Email Tim Rekrutmen: <a href="mailto:karir@solveta.asia" class="text-[#C4264A] hover:underline font-bold">karir@solveta.asia</a>
             </div>
 

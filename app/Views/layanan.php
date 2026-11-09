@@ -25,7 +25,7 @@
         <!-- Eyebrow Pill Badge -->
         <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-md border border-white/20 text-white text-xs font-semibold shadow-xs">
             <span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-            <span class="font-bold tracking-wider uppercase font-mono">PILIHAN PAKET &amp; RINCIAN LENGKAP</span>
+            <span class="font-bold tracking-wider uppercase font-sans">PILIHAN PAKET &amp; RINCIAN LENGKAP</span>
         </div>
 
         <!-- Headline -->
@@ -73,7 +73,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         <div class="text-center max-w-2xl mx-auto space-y-2">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-mono">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-sans">
                 Semua 4 Paket (Berurutan)
             </div>
             <h2 class="text-2xl sm:text-4xl font-extrabold text-[#111215] dark:text-white tracking-tight">
@@ -95,7 +95,7 @@
                     <!-- Header -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-bold text-neutral-500 uppercase tracking-wider font-mono">PAKET WEBSITE</span>
+                            <span class="text-[11px] font-bold text-neutral-500 uppercase tracking-wider font-sans">PAKET WEBSITE</span>
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200/70 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">1 Halaman</span>
                         </div>
                         <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket STARTER</h3>
@@ -103,25 +103,25 @@
                             <div class="flex items-baseline gap-1">
                                 <span class="text-3xl sm:text-4xl font-black text-[#111215] dark:text-white">Rp 349K</span>
                             </div>
-                            <div class="text-[11px] text-neutral-500 mt-1 font-mono">Biaya Perpanjangan: 249k/tahun*</div>
+                            <div class="text-[11px] text-neutral-500 mt-1 font-sans">Biaya Perpanjangan: 249k/tahun*</div>
                         </div>
                     </div>
 
                     <!-- Meta Badges -->
                     <div class="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 text-xs">
                         <div>
-                            <span class="text-[10px] text-neutral-400 uppercase block font-mono">Masa Aktif</span>
+                            <span class="text-[10px] text-neutral-400 uppercase block font-sans">Masa Aktif</span>
                             <span class="font-bold text-[#111215] dark:text-white">1 Tahun</span>
                         </div>
                         <div>
-                            <span class="text-[10px] text-neutral-400 uppercase block font-mono">Estimasi Jadi</span>
+                            <span class="text-[10px] text-neutral-400 uppercase block font-sans">Estimasi Jadi</span>
                             <span class="font-bold text-[#C4264A] dark:text-[#F05A72]">1-2 Hari</span>
                         </div>
                     </div>
 
                     <!-- Recommendation -->
                     <div class="space-y-1">
-                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-mono">Cocok / Direkomendasikan Untuk:</span>
+                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-sans">Cocok / Direkomendasikan Untuk:</span>
                         <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
                             kebutuhan pribadi: landing page, portofolio online, blog pribadi, CV digital, dan halaman profil.
                         </p>
@@ -129,7 +129,7 @@
 
                     <!-- Divider -->
                     <div class="border-t border-[#E8E9ED] dark:border-neutral-800 pt-4 space-y-3">
-                        <span class="text-[10px] font-bold text-[#111215] dark:text-white uppercase tracking-wider block font-mono">Termasuk Dalam Paket (Fitur Utama):</span>
+                        <span class="text-[10px] font-bold text-[#111215] dark:text-white uppercase tracking-wider block font-sans">Termasuk Dalam Paket (Fitur Utama):</span>
                         <ul class="space-y-2 text-xs text-neutral-600 dark:text-neutral-400">
                             <li class="flex items-start gap-2">
                                 <i data-lucide="check" class="w-4 h-4 text-[#C4264A] shrink-0 mt-0.5"></i>
@@ -180,7 +180,7 @@
 
                     <!-- Domain & Hosting Note -->
                     <div class="p-3 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 text-[11px] space-y-1">
-                        <span class="font-bold text-[#111215] dark:text-white block font-mono">Domain &amp; Server Hosting:</span>
+                        <span class="font-bold text-[#111215] dark:text-white block font-sans">Domain &amp; Server Hosting:</span>
                         <p class="text-neutral-500 leading-snug">Sudah termasuk sewa domain standar &amp; hosting server kecepatan tinggi 1 tahun pertama. Siap online langsung tanpa biaya setup tambahan.</p>
                         <div class="pt-1 text-neutral-500">
                             <b>Email Bisnis:</b> Dapat ditambahkan kapan saja (+Rp 50.000/akun email bisnis).
@@ -205,7 +205,7 @@
                     <!-- Header -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-bold text-neutral-500 uppercase tracking-wider font-mono">PAKET WEBSITE</span>
+                            <span class="text-[11px] font-bold text-neutral-500 uppercase tracking-wider font-sans">PAKET WEBSITE</span>
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200/70 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">4 Halaman</span>
                         </div>
                         <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket STANDARD</h3>
@@ -213,25 +213,25 @@
                             <div class="flex items-baseline gap-1">
                                 <span class="text-3xl sm:text-4xl font-black text-[#111215] dark:text-white">Rp 699K</span>
                             </div>
-                            <div class="text-[11px] text-neutral-500 mt-1 font-mono">Biaya Perpanjangan: 399k/tahun*</div>
+                            <div class="text-[11px] text-neutral-500 mt-1 font-sans">Biaya Perpanjangan: 399k/tahun*</div>
                         </div>
                     </div>
 
                     <!-- Meta Badges -->
                     <div class="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 text-xs">
                         <div>
-                            <span class="text-[10px] text-neutral-400 uppercase block font-mono">Masa Aktif</span>
+                            <span class="text-[10px] text-neutral-400 uppercase block font-sans">Masa Aktif</span>
                             <span class="font-bold text-[#111215] dark:text-white">1 Tahun</span>
                         </div>
                         <div>
-                            <span class="text-[10px] text-neutral-400 uppercase block font-mono">Estimasi Jadi</span>
+                            <span class="text-[10px] text-neutral-400 uppercase block font-sans">Estimasi Jadi</span>
                             <span class="font-bold text-[#C4264A] dark:text-[#F05A72]">3-5 Hari</span>
                         </div>
                     </div>
 
                     <!-- Recommendation -->
                     <div class="space-y-1">
-                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-mono">Cocok / Direkomendasikan Untuk:</span>
+                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-sans">Cocok / Direkomendasikan Untuk:</span>
                         <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
                             kebutuhan bisnis kecil, umkm, home industry.
                         </p>
@@ -239,7 +239,7 @@
 
                     <!-- Divider -->
                     <div class="border-t border-[#E8E9ED] dark:border-neutral-800 pt-4 space-y-3">
-                        <span class="text-[10px] font-bold text-[#111215] dark:text-white uppercase tracking-wider block font-mono">Termasuk Dalam Paket (Fitur Utama):</span>
+                        <span class="text-[10px] font-bold text-[#111215] dark:text-white uppercase tracking-wider block font-sans">Termasuk Dalam Paket (Fitur Utama):</span>
                         <ul class="space-y-2 text-xs text-neutral-600 dark:text-neutral-400">
                             <li class="flex items-start gap-2">
                                 <i data-lucide="check" class="w-4 h-4 text-[#C4264A] shrink-0 mt-0.5"></i>
@@ -294,7 +294,7 @@
 
                     <!-- Domain & Hosting Note -->
                     <div class="p-3 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 text-[11px] space-y-1">
-                        <span class="font-bold text-[#111215] dark:text-white block font-mono">Domain &amp; Server Hosting:</span>
+                        <span class="font-bold text-[#111215] dark:text-white block font-sans">Domain &amp; Server Hosting:</span>
                         <p class="text-neutral-500 leading-snug">Sudah termasuk sewa domain standar (.com, .net, .org) &amp; hosting server berkecepatan tinggi selama 1 tahun pertama. Siap online langsung tanpa biaya setup tambahan.</p>
                         <div class="pt-1 text-neutral-500">
                             <b>Email Bisnis:</b> Termasuk 1 akun email bisnis (nama@domain.com) dengan webmail &amp; setup SMTP. *Email tambahan dapat ditambahkan kapan saja.
@@ -319,7 +319,7 @@
                     <!-- Header -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-bold text-neutral-500 uppercase tracking-wider font-mono">PAKET WEBSITE</span>
+                            <span class="text-[11px] font-bold text-neutral-500 uppercase tracking-wider font-sans">PAKET WEBSITE</span>
                             <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-neutral-200/70 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300">7 Halaman</span>
                         </div>
                         <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket PREMIUM</h3>
@@ -327,25 +327,25 @@
                             <div class="flex items-baseline gap-1">
                                 <span class="text-3xl sm:text-4xl font-black text-[#111215] dark:text-white">Rp 964K</span>
                             </div>
-                            <div class="text-[11px] text-neutral-500 mt-1 font-mono">Biaya Perpanjangan: 399k/tahun*</div>
+                            <div class="text-[11px] text-neutral-500 mt-1 font-sans">Biaya Perpanjangan: 399k/tahun*</div>
                         </div>
                     </div>
 
                     <!-- Meta Badges -->
                     <div class="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 text-xs">
                         <div>
-                            <span class="text-[10px] text-neutral-400 uppercase block font-mono">Masa Aktif</span>
+                            <span class="text-[10px] text-neutral-400 uppercase block font-sans">Masa Aktif</span>
                             <span class="font-bold text-[#111215] dark:text-white">1 Tahun</span>
                         </div>
                         <div>
-                            <span class="text-[10px] text-neutral-400 uppercase block font-mono">Estimasi Jadi</span>
+                            <span class="text-[10px] text-neutral-400 uppercase block font-sans">Estimasi Jadi</span>
                             <span class="font-bold text-[#C4264A] dark:text-[#F05A72]">3-5 Hari</span>
                         </div>
                     </div>
 
                     <!-- Recommendation -->
                     <div class="space-y-1">
-                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-mono">Cocok / Direkomendasikan Untuk:</span>
+                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-sans">Cocok / Direkomendasikan Untuk:</span>
                         <p class="text-xs text-neutral-600 dark:text-neutral-400 leading-relaxed">
                             company profile &amp; bisnis produk.
                         </p>
@@ -353,7 +353,7 @@
 
                     <!-- Divider -->
                     <div class="border-t border-[#E8E9ED] dark:border-neutral-800 pt-4 space-y-3">
-                        <span class="text-[10px] font-bold text-[#111215] dark:text-white uppercase tracking-wider block font-mono">Termasuk Dalam Paket (Fitur Utama):</span>
+                        <span class="text-[10px] font-bold text-[#111215] dark:text-white uppercase tracking-wider block font-sans">Termasuk Dalam Paket (Fitur Utama):</span>
                         <ul class="space-y-2 text-xs text-neutral-600 dark:text-neutral-400">
                             <li class="flex items-start gap-2">
                                 <i data-lucide="check" class="w-4 h-4 text-[#C4264A] shrink-0 mt-0.5"></i>
@@ -404,7 +404,7 @@
 
                     <!-- Domain & Hosting Note -->
                     <div class="p-3 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 text-[11px] space-y-1">
-                        <span class="font-bold text-[#111215] dark:text-white block font-mono">Domain &amp; Server Hosting:</span>
+                        <span class="font-bold text-[#111215] dark:text-white block font-sans">Domain &amp; Server Hosting:</span>
                         <p class="text-neutral-500 leading-snug">Sudah termasuk sewa domain standar (.com, .net, .org) &amp; hosting server berkecepatan tinggi selama 1 tahun pertama. Siap online langsung tanpa biaya setup tambahan.</p>
                         <div class="pt-1 text-neutral-500">
                             <b>Email Bisnis:</b> Termasuk 2 akun email bisnis (nama@domain.com) terkonfigurasi penuh. *Email tambahan dapat ditambahkan kapan saja.
@@ -434,32 +434,32 @@
                     <!-- Header -->
                     <div class="space-y-2">
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-mono">PAKET PALING DIREKOMENDASIKAN</span>
+                            <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-sans">PAKET PALING DIREKOMENDASIKAN</span>
                         </div>
                         <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket PLATINUM</h3>
                         <div class="pt-2">
                             <div class="flex items-baseline gap-1">
                                 <span class="text-3xl sm:text-4xl font-black text-[#C4264A] dark:text-[#F05A72]">Rp 1.5 jt</span>
                             </div>
-                            <div class="text-[11px] text-neutral-500 mt-1 font-mono">Biaya Perpanjangan: Harga mengikuti biaya dibutuhkan</div>
+                            <div class="text-[11px] text-neutral-500 mt-1 font-sans">Biaya Perpanjangan: Harga mengikuti biaya dibutuhkan</div>
                         </div>
                     </div>
 
                     <!-- Meta Badges -->
                     <div class="grid grid-cols-2 gap-2 p-3 rounded-2xl bg-red-50/50 dark:bg-neutral-900 border border-red-100 dark:border-neutral-800 text-xs">
                         <div>
-                            <span class="text-[10px] text-neutral-400 uppercase block font-mono">Masa Aktif</span>
+                            <span class="text-[10px] text-neutral-400 uppercase block font-sans">Masa Aktif</span>
                             <span class="font-bold text-[#111215] dark:text-white">1 Tahun</span>
                         </div>
                         <div>
-                            <span class="text-[10px] text-neutral-400 uppercase block font-mono">Estimasi Jadi</span>
+                            <span class="text-[10px] text-neutral-400 uppercase block font-sans">Estimasi Jadi</span>
                             <span class="font-bold text-[#C4264A] dark:text-[#F05A72]">Wajib Meet (Fleksibel)</span>
                         </div>
                     </div>
 
                     <!-- Recommendation -->
                     <div class="space-y-1">
-                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-mono">Cocok / Direkomendasikan Untuk:</span>
+                        <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block font-sans">Cocok / Direkomendasikan Untuk:</span>
                         <p class="text-xs text-neutral-600 dark:text-neutral-300 leading-relaxed">
                             Start up, UMKM, CV, PT, Organisasi/Yayasan, Professional (siapa pun yang mempunyai kebutuhan layanan khusus yang tidak sesuai dengan 3 paket sebelumnya).
                         </p>
@@ -467,7 +467,7 @@
 
                     <!-- Divider -->
                     <div class="border-t border-[#E8E9ED] dark:border-neutral-800 pt-4 space-y-3">
-                        <span class="text-[10px] font-bold text-[#111215] dark:text-white uppercase tracking-wider block font-mono">Termasuk Dalam Paket (Fitur Utama):</span>
+                        <span class="text-[10px] font-bold text-[#111215] dark:text-white uppercase tracking-wider block font-sans">Termasuk Dalam Paket (Fitur Utama):</span>
                         <ul class="space-y-2 text-xs text-neutral-600 dark:text-neutral-300">
                             <li class="flex items-start gap-2">
                                 <i data-lucide="check-circle-2" class="w-4 h-4 text-[#C4264A] shrink-0 mt-0.5"></i>
@@ -522,7 +522,7 @@
 
                     <!-- Domain & Hosting Note -->
                     <div class="p-3 rounded-2xl bg-red-50/50 dark:bg-neutral-900 border border-red-100 dark:border-neutral-800 text-[11px] space-y-1">
-                        <span class="font-bold text-[#111215] dark:text-white block font-mono">Domain &amp; Server Hosting:</span>
+                        <span class="font-bold text-[#111215] dark:text-white block font-sans">Domain &amp; Server Hosting:</span>
                         <p class="text-neutral-500 leading-snug">Sudah termasuk sewa domain standar (.com, .net, .org) &amp; hosting server berkecepatan tinggi selama 1 tahun pertama. Siap online langsung tanpa biaya setup tambahan.</p>
                         <div class="pt-1 text-[#C4264A] dark:text-[#F05A72] font-semibold">
                             <b>Email Bisnis:</b> Unlimited akun email bisnis dengan hak akses cPanel penuh.
@@ -545,23 +545,23 @@
         <div class="rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] p-6 sm:p-8">
             <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
                 <div>
-                    <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-mono block">STANDAR TRANSPARANSI</span>
+                    <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-sans block">STANDAR TRANSPARANSI</span>
                     <h3 class="text-lg sm:text-xl font-bold text-[#111215] dark:text-white">Tarif &amp; Ketentuan Revisi</h3>
                     <p class="text-xs sm:text-sm text-neutral-500 mt-1">Berlaku adil dan transparan untuk seluruh paket website SOLVETA:</p>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 w-full md:w-auto">
                     <div class="p-3.5 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800">
-                        <span class="text-[10px] text-neutral-400 uppercase font-mono block">Revisi Ringan</span>
+                        <span class="text-[10px] text-neutral-400 uppercase font-sans block">Revisi Ringan</span>
                         <div class="text-sm font-black text-[#111215] dark:text-white">Rp 30.000</div>
                         <span class="text-[10px] text-neutral-500">Ganti logo, icon, warna, teks kecil</span>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800">
-                        <span class="text-[10px] text-neutral-400 uppercase font-mono block">Revisi Berat</span>
+                        <span class="text-[10px] text-neutral-400 uppercase font-sans block">Revisi Berat</span>
                         <div class="text-sm font-black text-[#111215] dark:text-white">Rp 50.000</div>
                         <span class="text-[10px] text-neutral-500">Ubah halaman, tambah halaman / struktur</span>
                     </div>
                     <div class="p-3.5 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800">
-                        <span class="text-[10px] text-neutral-400 uppercase font-mono block">Tambah Halaman</span>
+                        <span class="text-[10px] text-neutral-400 uppercase font-sans block">Tambah Halaman</span>
                         <div class="text-sm font-black text-[#C4264A] dark:text-[#F05A72]">+ Rp 50.000</div>
                         <span class="text-[10px] text-neutral-500">Per halaman tambahan</span>
                     </div>
@@ -579,7 +579,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         <div class="text-center max-w-3xl mx-auto space-y-3">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-mono">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] uppercase font-sans">
                 LAYANAN KHUSUS &amp; ENTERPRISE
             </div>
             <h2 class="text-2xl sm:text-4xl font-extrabold text-[#111215] dark:text-white tracking-tight">
@@ -647,7 +647,7 @@
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         
         <div class="text-center max-w-2xl mx-auto space-y-2">
-            <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-mono">OPSIONAL &amp; FLEKSIBEL</span>
+            <span class="text-[11px] font-bold text-[#C4264A] uppercase tracking-wider font-sans">OPSIONAL &amp; FLEKSIBEL</span>
             <h2 class="text-2xl sm:text-4xl font-extrabold text-[#111215] dark:text-white tracking-tight">
                 Layanan Biaya Tambahan
             </h2>
@@ -658,42 +658,42 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             
             <div class="p-6 rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] space-y-3">
-                <span class="text-xs font-mono font-bold text-[#C4264A]">01.</span>
+                <span class="text-xs font-sans font-bold text-[#C4264A]">01.</span>
                 <h3 class="text-base font-bold text-[#111215] dark:text-white">Biaya Tambah 1 Halaman</h3>
                 <div class="text-xl font-black text-[#111215] dark:text-white">+ Rp 50.000 <span class="text-xs font-normal text-neutral-500">/ halaman</span></div>
                 <p class="text-xs text-neutral-500">Penambahan halaman konten baru lengkap dengan integrasi navigasi.</p>
             </div>
 
             <div class="p-6 rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] space-y-3">
-                <span class="text-xs font-mono font-bold text-[#C4264A]">02.</span>
+                <span class="text-xs font-sans font-bold text-[#C4264A]">02.</span>
                 <h3 class="text-base font-bold text-[#111215] dark:text-white">Biaya Revisi Ringan</h3>
                 <div class="text-xl font-black text-[#111215] dark:text-white">Rp 30.000 <span class="text-xs font-normal text-neutral-500">/ revisi</span></div>
                 <p class="text-xs text-neutral-500">Di luar brief awal: ganti logo, icon, penyesuaian teks minor, dan palet warna.</p>
             </div>
 
             <div class="p-6 rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] space-y-3">
-                <span class="text-xs font-mono font-bold text-[#C4264A]">03.</span>
+                <span class="text-xs font-sans font-bold text-[#C4264A]">03.</span>
                 <h3 class="text-base font-bold text-[#111215] dark:text-white">Biaya Revisi Berat</h3>
                 <div class="text-xl font-black text-[#111215] dark:text-white">Rp 50.000 <span class="text-xs font-normal text-neutral-500">/ revisi</span></div>
                 <p class="text-xs text-neutral-500">Di luar brief awal: perombakan struktur tata letak halaman atau perubahan alur.</p>
             </div>
 
             <div class="p-6 rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] space-y-3">
-                <span class="text-xs font-mono font-bold text-[#C4264A]">04.</span>
+                <span class="text-xs font-sans font-bold text-[#C4264A]">04.</span>
                 <h3 class="text-base font-bold text-[#111215] dark:text-white">Biaya Custom Domain</h3>
                 <div class="text-xl font-black text-[#111215] dark:text-white">Sesuai domain <span class="text-xs font-normal text-neutral-500">yang dibutuhkan</span></div>
                 <p class="text-xs text-neutral-500">Ekstensi khusus seperti .id, .co.id, .edu, .io, atau domain unik lainnya.</p>
             </div>
 
             <div class="p-6 rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] space-y-3">
-                <span class="text-xs font-mono font-bold text-[#C4264A]">05.</span>
+                <span class="text-xs font-sans font-bold text-[#C4264A]">05.</span>
                 <h3 class="text-base font-bold text-[#111215] dark:text-white">Akun Email Bisnis (1 Akun)</h3>
                 <div class="text-xl font-black text-[#111215] dark:text-white">Rp 50.000 <span class="text-xs font-normal text-neutral-500">/ akun</span></div>
                 <p class="text-xs text-neutral-500">nama@domain.com profesional lengkap dengan akses webmail &amp; SMTP.</p>
             </div>
 
             <div class="p-6 rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] space-y-3">
-                <span class="text-xs font-mono font-bold text-[#C4264A]">06.</span>
+                <span class="text-xs font-sans font-bold text-[#C4264A]">06.</span>
                 <h3 class="text-base font-bold text-[#111215] dark:text-white">Optimasi Kecepatan Ekstra</h3>
                 <div class="text-xl font-black text-[#C4264A] dark:text-[#F05A72]">Rp 100.000 <span class="text-xs font-normal text-neutral-500">(One-time)</span></div>
                 <p class="text-xs text-neutral-500">High performance caching, image lossless compression, &amp; CDN Cloudflare setup.</p>
