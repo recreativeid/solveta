@@ -42,20 +42,20 @@
                 <i data-lucide="zap" class="w-3.5 h-3.5"></i>
                 <span>1. Starter (Rp 349K)</span>
             </a>
-            <a href="<?= base_url('layanan/standard') ?>" 
+            <a href="<?= base_url('layanan/bisnis') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
                 <i data-lucide="building-2" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>2. Standard (Rp 699K)</span>
+                <span>2. Bisnis (Rp 699K)</span>
             </a>
-            <a href="<?= base_url('layanan/premium') ?>" 
+            <a href="<?= base_url('layanan/custom') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
-                <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>3. Premium (Rp 964K)</span>
+                <i data-lucide="sliders" class="w-3.5 h-3.5 text-neutral-400"></i>
+                <span>3. Custom (Mulai Rp 1.5 jt)</span>
             </a>
-            <a href="<?= base_url('layanan/platinum') ?>" 
-               class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
-                <i data-lucide="cpu" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>4. Platinum (Rp 1.5 jt)</span>
+            <a href="<?= base_url('layanan#aplikasi-lokal') ?>" 
+               class="px-4 py-2 rounded-full text-xs font-semibold bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-[#C4264A] transition-all flex items-center gap-1.5">
+                <i data-lucide="hard-drive" class="w-3.5 h-3.5 text-[#C4264A]"></i>
+                <span>4. Aplikasi Mobile &amp; Desktop Lokal</span>
             </a>
         </div>
 

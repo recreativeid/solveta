@@ -500,18 +500,6 @@
                             <p class="text-xs text-[#737780] dark:text-neutral-400 leading-relaxed line-clamp-2">
                                 <?= esc($project['desc']) ?>
                             </p>
-
-                            <!-- Dual Metric Highlight Box -->
-                            <div class="grid grid-cols-2 gap-2 p-2.5 rounded-xl bg-neutral-50 dark:bg-neutral-900/80 border border-[#E8E9ED] dark:border-neutral-800">
-                                <div>
-                                    <div class="text-[9px] font-bold uppercase tracking-wider text-[#737780] dark:text-neutral-500"><?= esc($project['metric_1_label']) ?></div>
-                                    <div class="text-xs sm:text-sm font-black text-[#171717] dark:text-white"><?= esc($project['metric_1_value']) ?></div>
-                                </div>
-                                <div>
-                                    <div class="text-[9px] font-bold uppercase tracking-wider text-[#737780] dark:text-neutral-500"><?= esc($project['metric_2_label']) ?></div>
-                                    <div class="text-xs sm:text-sm font-black text-[#C4264A]"><?= esc($project['metric_2_value']) ?></div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 

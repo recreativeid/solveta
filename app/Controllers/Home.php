@@ -84,29 +84,37 @@ class Home extends BaseController
     }
 
     /**
-     * 2b. Layanan Standard (Company Profile Korporasi & Portal Berita)
+     * 2b. Layanan Bisnis (Company Profile Korporasi & Portal Berita)
+     */
+    public function layananBisnis()
+    {
+        $copyModel = new SiteCopyModel();
+        $contactModel = new ContactModel();
+
+        $data = [
+            'copy' => $copyModel->getCopy('id'),
+            'contact' => $contactModel->getContact(),
+            'title' => 'Layanan Bisnis — Company Profile Korporasi & Web Berita | SOLVETA',
+            'meta_description' => 'Paket website Bisnis SOLVETA: company profile perusahaan (PT/CV), portal media siber & berita, web jasa profesional, katalog B2B, email domain, CMS admin mandiri & SEO Google.',
+            'current_page' => 'layanan',
+            'tier_active' => 'bisnis',
+        ];
+
+        return view('layanan/bisnis', $data);
+    }
+
+    /**
+     * Alias for backwards compatibility: layananStandard -> layananBisnis
      */
     public function layananStandard()
     {
-        $copyModel = new SiteCopyModel();
-        $contactModel = new ContactModel();
-
-        $data = [
-            'copy' => $copyModel->getCopy('id'),
-            'contact' => $contactModel->getContact(),
-            'title' => 'Layanan Standard — Company Profile Korporasi & Web Berita | SOLVETA',
-            'meta_description' => 'Paket website Standard SOLVETA: company profile perusahaan (PT/CV), portal media siber & berita, web jasa profesional, katalog B2B, CMS admin mandiri & SEO Google.',
-            'current_page' => 'layanan',
-            'tier_active' => 'standard',
-        ];
-
-        return view('layanan/standard', $data);
+        return $this->layananBisnis();
     }
 
     /**
-     * 2c. Layanan Premium (E-Commerce Toko Online & Custom Booking)
+     * 2c. Layanan Custom (Enterprise Cloud SaaS, ERP, Web App & AI Automation)
      */
-    public function layananPremium()
+    public function layananCustom()
     {
         $copyModel = new SiteCopyModel();
         $contactModel = new ContactModel();
@@ -114,33 +122,29 @@ class Home extends BaseController
         $data = [
             'copy' => $copyModel->getCopy('id'),
             'contact' => $contactModel->getContact(),
-            'title' => 'Layanan Premium — E-Commerce, Booking Platform & Custom CRM | SOLVETA',
-            'meta_description' => 'Paket website Premium SOLVETA: toko online terintegrasi RajaOngkir otomatis, payment gateway QRIS/Virtual Account, booking reservasi jadwal, dan otomasi order WhatsApp.',
+            'title' => 'Layanan Custom — Enterprise SaaS, Custom Platform & API System | SOLVETA',
+            'meta_description' => 'Paket teknologi Custom SOLVETA: arsitektur web application skala besar, sistem ERP multi-cabang, POS hybrid offline-first, database relasional, dan integrasi API.',
             'current_page' => 'layanan',
-            'tier_active' => 'premium',
+            'tier_active' => 'custom',
         ];
 
-        return view('layanan/premium', $data);
+        return view('layanan/custom', $data);
     }
 
     /**
-     * 2d. Layanan Platinum (Enterprise Cloud SaaS, ERP & AI Automation)
+     * Alias for backwards compatibility: layananPlatinum -> layananCustom
      */
     public function layananPlatinum()
     {
-        $copyModel = new SiteCopyModel();
-        $contactModel = new ContactModel();
+        return $this->layananCustom();
+    }
 
-        $data = [
-            'copy' => $copyModel->getCopy('id'),
-            'contact' => $contactModel->getContact(),
-            'title' => 'Layanan Platinum — Enterprise SaaS, Custom ERP & AI Automation | SOLVETA',
-            'meta_description' => 'Paket teknologi Platinum SOLVETA: arsitektur web application skala besar, sistem ERP multi-cabang, POS hybrid offline-first, dan kecerdasan buatan (AI workflow automation).',
-            'current_page' => 'layanan',
-            'tier_active' => 'platinum',
-        ];
-
-        return view('layanan/platinum', $data);
+    /**
+     * Alias for backwards compatibility: layananPremium -> redirect to layanan
+     */
+    public function layananPremium()
+    {
+        return redirect()->to(base_url('layanan'));
     }
 
     /**

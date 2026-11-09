@@ -8,9 +8,9 @@
     
     $waHeroUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai solusi teknologi dan pengembangan sistem digital untuk bisnis kami.");
     $waStarterUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website STARTER (Rp 349K).");
-    $waStandardUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website STANDARD (Rp 699K).");
-    $waPremiumUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website PREMIUM (Rp 964K).");
-    $waPlatinumUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai Paket Layanan Website PLATINUM (Rp 1.5 jt - Popular).");
+    $waBisnisUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website BISNIS (Rp 699K).");
+    $waCustomUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai Paket Layanan CUSTOM / Kebutuhan Khusus.");
+    $waAppLokalUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai Layanan Pembuatan Aplikasi Mobile/Desktop Instalasi Lokal (On-Premise).");
 ?>
 
 <!-- ========================================================================= -->
@@ -112,77 +112,68 @@
     </div>
   </div>
 
-  <!-- Infinite Running Marquee Track -->
+  <!-- Infinite Running Marquee Track (Uniform Standardized Logos) -->
   <div class="relative w-full overflow-hidden flex items-center py-2 mask-radial-fade">
-    <div class="marquee-track flex gap-8 items-center whitespace-nowrap animate-marquee">
+    <div class="marquee-track flex gap-6 sm:gap-8 items-center whitespace-nowrap animate-marquee">
       
-      <!-- Set 1 of Logos -->
-      <div class="flex items-center gap-6 sm:gap-8 shrink-0 text-neutral-600 dark:text-neutral-400 font-semibold text-xs sm:text-sm">
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="layers" class="w-4 h-4 text-[#C4264A]"></i> TEKAPE.ID
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="shield-check" class="w-4 h-4 text-[#C4264A]"></i> SQUABUMIN
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="compass" class="w-4 h-4 text-[#C4264A]"></i> KONSERVASI AKUATIK
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="newspaper" class="w-4 h-4 text-[#C4264A]"></i> JAPAKEH POST
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="box" class="w-4 h-4 text-[#C4264A]"></i> MANAJEMEN MBG
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="moon" class="w-4 h-4 text-[#C4264A]"></i> TIDURNYENYAK
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="shopping-cart" class="w-4 h-4 text-[#C4264A]"></i> HALTEA POS
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="heart-handshake" class="w-4 h-4 text-[#C4264A]"></i> EMHA DONASI
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="database" class="w-4 h-4 text-[#C4264A]"></i> PostgreSQL
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="cloud" class="w-4 h-4 text-[#C4264A]"></i> Google Cloud
-        </span>
+      <!-- Set 1 of Logos (Uniform & Synchronized) -->
+      <div class="flex items-center gap-4 sm:gap-6 shrink-0">
+        <?php if (!empty($brands)): ?>
+          <?php foreach ($brands as $brand): ?>
+            <div class="h-12 sm:h-14 px-5 py-2 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/80 dark:border-white/10 shadow-xs flex items-center justify-center shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
+              <?php if (!empty($brand['logo_image'])): ?>
+                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name'] ?: 'Klien SOLVETA') ?>" class="h-7 sm:h-8 w-auto max-w-[130px] object-contain filter grayscale opacity-75 dark:opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+              <?php else: ?>
+                <span class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= esc($brand['name'] ?: 'Klien SOLVETA') ?></span>
+              <?php endif; ?>
+            </div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <?php
+            $defaultClients = [
+              ['name' => 'TEKAPE.ID', 'icon' => 'layers'],
+              ['name' => 'SQUABUMIN', 'icon' => 'shield-check'],
+              ['name' => 'KONSERVASI AKUATIK', 'icon' => 'compass'],
+              ['name' => 'JAPAKEH POST', 'icon' => 'newspaper'],
+              ['name' => 'MANAJEMEN MBG', 'icon' => 'box'],
+              ['name' => 'TIDURNYENYAK', 'icon' => 'moon'],
+              ['name' => 'HALTEA POS', 'icon' => 'shopping-cart'],
+              ['name' => 'EMHA DONASI', 'icon' => 'heart-handshake'],
+            ];
+            foreach ($defaultClients as $cl):
+          ?>
+            <div class="h-12 sm:h-14 px-5 py-2 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/80 dark:border-white/10 shadow-xs flex items-center justify-center gap-2.5 shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
+              <i data-lucide="<?= $cl['icon'] ?>" class="w-4 h-4 text-[#C4264A]"></i>
+              <span class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= $cl['name'] ?></span>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </div>
 
       <!-- Set 2 (Exact Duplicate for Seamless Loop) -->
-      <div class="flex items-center gap-6 sm:gap-8 shrink-0 text-neutral-600 dark:text-neutral-400 font-semibold text-xs sm:text-sm" aria-hidden="true">
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="layers" class="w-4 h-4 text-[#C4264A]"></i> TEKAPE.ID
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="shield-check" class="w-4 h-4 text-[#C4264A]"></i> SQUABUMIN
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="compass" class="w-4 h-4 text-[#C4264A]"></i> KONSERVASI AKUATIK
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="newspaper" class="w-4 h-4 text-[#C4264A]"></i> JAPAKEH POST
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="box" class="w-4 h-4 text-[#C4264A]"></i> MANAJEMEN MBG
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="moon" class="w-4 h-4 text-[#C4264A]"></i> TIDURNYENYAK
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="shopping-cart" class="w-4 h-4 text-[#C4264A]"></i> HALTEA POS
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="heart-handshake" class="w-4 h-4 text-[#C4264A]"></i> EMHA DONASI
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="database" class="w-4 h-4 text-[#C4264A]"></i> PostgreSQL
-        </span>
-        <span class="flex items-center gap-2 px-4 py-2 rounded-xl bg-neutral-50 dark:bg-[#14151B] border border-black/[0.05] dark:border-white/5 hover:border-[#C4264A] transition">
-          <i data-lucide="cloud" class="w-4 h-4 text-[#C4264A]"></i> Google Cloud
-        </span>
+      <div class="flex items-center gap-4 sm:gap-6 shrink-0" aria-hidden="true">
+        <?php if (!empty($brands)): ?>
+          <?php foreach ($brands as $brand): ?>
+            <div class="h-12 sm:h-14 px-5 py-2 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/80 dark:border-white/10 shadow-xs flex items-center justify-center shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
+              <?php if (!empty($brand['logo_image'])): ?>
+                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name'] ?: 'Klien SOLVETA') ?>" class="h-7 sm:h-8 w-auto max-w-[130px] object-contain filter grayscale opacity-75 dark:opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+              <?php else: ?>
+                <span class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= esc($brand['name'] ?: 'Klien SOLVETA') ?></span>
+              <?php endif; ?>
+            </div>
+          <?php endforeach; ?>
+        <?php else: ?>
+          <?php foreach ($defaultClients as $cl): ?>
+            <div class="h-12 sm:h-14 px-5 py-2 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/80 dark:border-white/10 shadow-xs flex items-center justify-center gap-2.5 shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
+              <i data-lucide="<?= $cl['icon'] ?>" class="w-4 h-4 text-[#C4264A]"></i>
+              <span class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= $cl['name'] ?></span>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </div>
+
+    </div>
+  </div>
 
     </div>
   </div>
@@ -896,8 +887,8 @@
             <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A] shrink-0 mt-0.5"></i><span>Manajemen banner sponsor &amp; iklan Google AdSense</span></li>
           </ul>
         </div>
-        <a href="<?= base_url('layanan/standard') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-white dark:bg-[#1A1C22] hover:bg-[#C4264A] hover:text-white text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 text-xs font-semibold transition flex items-center justify-center gap-1.5">
-          <span>Pilih Paket Standard (Rp 699K)</span>
+        <a href="<?= base_url('layanan/bisnis') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-white dark:bg-[#1A1C22] hover:bg-[#C4264A] hover:text-white text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 text-xs font-semibold transition flex items-center justify-center gap-1.5">
+          <span>Pilih Paket Bisnis (Rp 699K)</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
@@ -923,8 +914,8 @@
             <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A] shrink-0 mt-0.5"></i><span>Enkripsi SSL tingkat tinggi &amp; form kontak penawaran</span></li>
           </ul>
         </div>
-        <a href="<?= base_url('layanan/standard') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-white dark:bg-[#1A1C22] hover:bg-[#C4264A] hover:text-white text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 text-xs font-semibold transition flex items-center justify-center gap-1.5">
-          <span>Pilih Paket Standard (Rp 699K)</span>
+        <a href="<?= base_url('layanan/bisnis') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-white dark:bg-[#1A1C22] hover:bg-[#C4264A] hover:text-white text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 text-xs font-semibold transition flex items-center justify-center gap-1.5">
+          <span>Pilih Paket Bisnis (Rp 699K)</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
@@ -977,8 +968,8 @@
             <li class="flex items-start gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A] shrink-0 mt-0.5"></i><span>Integrasi API bebas ke sistem perbankan &amp; kurir</span></li>
           </ul>
         </div>
-        <a href="<?= base_url('layanan/platinum') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-[#C4264A] hover:bg-[#8E1738] text-white text-xs font-semibold transition flex items-center justify-center gap-1.5">
-          <span>Pilih Paket Platinum (Rp 1.5 jt)</span>
+        <a href="<?= base_url('layanan/custom') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-[#C4264A] hover:bg-[#8E1738] text-white text-xs font-semibold transition flex items-center justify-center gap-1.5">
+          <span>Pilih Paket Custom (Mulai Rp 1.5 jt)</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
@@ -1020,106 +1011,120 @@
     </div>
 
     <!-- 21st.dev Interactive Timeline Component (Horizontal on Desktop, Vertical on Mobile) -->
-    <div class="relative bg-white dark:bg-[#14151B] p-6 sm:p-10 rounded-3xl border border-neutral-200/90 dark:border-white/10 shadow-sm">
-      <div data-slot="timeline" data-orientation="horizontal" class="group/timeline flex flex-col lg:flex-row w-full gap-8 lg:gap-0">
+    <div class="relative bg-white dark:bg-[#14151B] p-6 sm:p-10 rounded-3xl border border-neutral-200/90 dark:border-white/10 shadow-sm overflow-hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-6 relative">
         
         <!-- Step 1: Pemetaan & Analisis (Completed) -->
-        <div data-slot="timeline-item" data-completed="true" class="group/timeline-item relative flex flex-1 flex-col gap-2 ms-8 lg:ms-0 not-last:pb-8 lg:not-last:pb-0 lg:mt-8 lg:not-last:pe-8">
-          <!-- Separator Line -->
-          <div data-slot="timeline-separator" data-state="completed" class="absolute bg-[#C4264A] transition-all duration-200 group-last/timeline-item:hidden w-0.5 h-[calc(100%-1.5rem)] -left-6 top-7 -translate-x-1/2 lg:h-0.5 lg:w-[calc(100%-2rem)] lg:-top-6 lg:left-7 lg:-translate-y-1/2" aria-hidden="true"></div>
+        <div class="relative flex flex-col group">
+          <!-- Mobile vertical connecting line -->
+          <div class="lg:hidden absolute left-4 top-8 bottom-0 w-0.5 bg-[#C4264A] -translate-x-1/2"></div>
           
-          <!-- Indicator Dot (Completed State) -->
-          <div data-slot="timeline-indicator" data-state="completed" class="absolute flex items-center justify-center rounded-full border-2 transition-all duration-200 size-7 top-0 -left-6 -translate-x-1/2 lg:-top-6 lg:left-0 lg:-translate-y-1/2 border-[#C4264A] bg-[#C4264A] text-white shadow-sm shadow-[#C4264A]/30" aria-hidden="true">
-            <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
+          <!-- Top Row: Indicator & Desktop Connector Line -->
+          <div class="flex items-center mb-5 relative">
+            <div class="z-10 flex items-center justify-center size-8 rounded-full border-2 border-[#C4264A] bg-[#C4264A] text-white shadow-sm shadow-[#C4264A]/30 shrink-0">
+              <i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>
+            </div>
+            <!-- Line connecting Step 1 to Step 2 (Desktop only) -->
+            <div class="hidden lg:block absolute left-8 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-[#C4264A] -mr-6"></div>
           </div>
           
-          <!-- Header: Date + Title -->
-          <div data-slot="timeline-header" class="space-y-1">
-            <time data-slot="timeline-date" class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-sans font-semibold uppercase tracking-wider tabular-nums">FASE 01 &bull; MINGGU 1</time>
-            <h3 data-slot="timeline-title" class="text-base font-bold text-[#111215] dark:text-white leading-tight">Pemetaan &amp; Analisis Kebutuhan</h3>
-          </div>
-          
-          <!-- Content Body -->
-          <div data-slot="timeline-content" class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
-            Audit mendalam terhadap alur proses bisnis Anda, identifikasi hambatan sistem lama, dan penyusunan KPI sistem.
-            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-sans text-neutral-700 dark:text-neutral-300 font-medium">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A]"></span>
-              Output: System Blueprint &amp; Scope
+          <!-- Text Body -->
+          <div class="space-y-1.5 pl-10 lg:pl-0">
+            <time class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-sans font-semibold uppercase tracking-wider tabular-nums">FASE 01 &bull; MINGGU 1</time>
+            <h3 class="text-base font-bold text-[#111215] dark:text-white leading-tight">Pemetaan &amp; Analisis Kebutuhan</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
+              Audit mendalam terhadap alur proses bisnis Anda, identifikasi hambatan sistem lama, dan penyusunan KPI sistem.
+            </p>
+            <div class="pt-2">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-sans text-neutral-700 dark:text-neutral-300 font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A]"></span>
+                Output: System Blueprint &amp; Scope
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Step 2: Perancangan Arsitektur & UI/UX (Completed) -->
-        <div data-slot="timeline-item" data-completed="true" class="group/timeline-item relative flex flex-1 flex-col gap-2 ms-8 lg:ms-0 not-last:pb-8 lg:not-last:pb-0 lg:mt-8 lg:not-last:pe-8">
-          <!-- Separator Line -->
-          <div data-slot="timeline-separator" data-state="completed" class="absolute bg-[#C4264A] transition-all duration-200 group-last/timeline-item:hidden w-0.5 h-[calc(100%-1.5rem)] -left-6 top-7 -translate-x-1/2 lg:h-0.5 lg:w-[calc(100%-2rem)] lg:-top-6 lg:left-7 lg:-translate-y-1/2" aria-hidden="true"></div>
+        <div class="relative flex flex-col group">
+          <!-- Mobile vertical connecting line -->
+          <div class="lg:hidden absolute left-4 top-8 bottom-0 w-0.5 bg-[#C4264A] -translate-x-1/2"></div>
           
-          <!-- Indicator Dot (Completed State) -->
-          <div data-slot="timeline-indicator" data-state="completed" class="absolute flex items-center justify-center rounded-full border-2 transition-all duration-200 size-7 top-0 -left-6 -translate-x-1/2 lg:-top-6 lg:left-0 lg:-translate-y-1/2 border-[#C4264A] bg-[#C4264A] text-white shadow-sm shadow-[#C4264A]/30" aria-hidden="true">
-            <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
+          <!-- Top Row: Indicator & Desktop Connector Line -->
+          <div class="flex items-center mb-5 relative">
+            <div class="z-10 flex items-center justify-center size-8 rounded-full border-2 border-[#C4264A] bg-[#C4264A] text-white shadow-sm shadow-[#C4264A]/30 shrink-0">
+              <i data-lucide="check" class="w-4 h-4 stroke-[3]"></i>
+            </div>
+            <!-- Line connecting Step 2 to Step 3 (Desktop only) -->
+            <div class="hidden lg:block absolute left-8 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-neutral-200 dark:bg-neutral-800 -mr-6"></div>
           </div>
           
-          <!-- Header: Date + Title -->
-          <div data-slot="timeline-header" class="space-y-1">
-            <time data-slot="timeline-date" class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-sans font-semibold uppercase tracking-wider tabular-nums">FASE 02 &bull; MINGGU 2&ndash;3</time>
-            <h3 data-slot="timeline-title" class="text-base font-bold text-[#111215] dark:text-white leading-tight">Perancangan Arsitektur &amp; UI/UX</h3>
-          </div>
-          
-          <!-- Content Body -->
-          <div data-slot="timeline-content" class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
-            Perancangan skema relasi database PostgreSQL, blueprint API, dan wireframe antarmuka interaktif yang divalidasi langsung.
-            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-sans text-neutral-700 dark:text-neutral-300 font-medium">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A]"></span>
-              Output: UI Prototype &amp; Database Schema
+          <!-- Text Body -->
+          <div class="space-y-1.5 pl-10 lg:pl-0">
+            <time class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-sans font-semibold uppercase tracking-wider tabular-nums">FASE 02 &bull; MINGGU 2&ndash;3</time>
+            <h3 class="text-base font-bold text-[#111215] dark:text-white leading-tight">Perancangan Arsitektur &amp; UI/UX</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
+              Perancangan skema relasi database PostgreSQL, blueprint API, dan wireframe antarmuka interaktif yang divalidasi langsung.
+            </p>
+            <div class="pt-2">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-sans text-neutral-700 dark:text-neutral-300 font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A]"></span>
+                Output: UI Prototype &amp; Database Schema
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Step 3: Rekayasa Kode & Integrasi API (Current / Active) -->
-        <div data-slot="timeline-item" data-current="true" class="group/timeline-item relative flex flex-1 flex-col gap-2 ms-8 lg:ms-0 not-last:pb-8 lg:not-last:pb-0 lg:mt-8 lg:not-last:pe-8">
-          <!-- Separator Line -->
-          <div data-slot="timeline-separator" data-state="pending" class="absolute bg-neutral-200 dark:bg-neutral-800 transition-all duration-200 group-last/timeline-item:hidden w-0.5 h-[calc(100%-1.5rem)] -left-6 top-7 -translate-x-1/2 lg:h-0.5 lg:w-[calc(100%-2rem)] lg:-top-6 lg:left-7 lg:-translate-y-1/2" aria-hidden="true"></div>
+        <div class="relative flex flex-col group">
+          <!-- Mobile vertical connecting line -->
+          <div class="lg:hidden absolute left-4 top-8 bottom-0 w-0.5 bg-neutral-200 dark:bg-neutral-800 -translate-x-1/2"></div>
           
-          <!-- Indicator Dot (Current State with Pulsing Ring) -->
-          <div data-slot="timeline-indicator" data-state="current" class="absolute flex items-center justify-center rounded-full border-2 transition-all duration-200 size-7 top-0 -left-6 -translate-x-1/2 lg:-top-6 lg:left-0 lg:-translate-y-1/2 border-[#C4264A] bg-[#C4264A]/10 ring-4 ring-[#C4264A]/25 shadow-sm" aria-hidden="true">
-            <span class="w-2.5 h-2.5 rounded-full bg-[#C4264A] animate-pulse"></span>
+          <!-- Top Row: Indicator & Desktop Connector Line -->
+          <div class="flex items-center mb-5 relative">
+            <div class="z-10 flex items-center justify-center size-8 rounded-full border-2 border-[#C4264A] bg-[#C4264A]/10 ring-4 ring-[#C4264A]/25 text-[#C4264A] shadow-sm shrink-0">
+              <span class="w-2.5 h-2.5 rounded-full bg-[#C4264A] animate-pulse"></span>
+            </div>
+            <!-- Line connecting Step 3 to Step 4 (Desktop only) -->
+            <div class="hidden lg:block absolute left-8 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-neutral-200 dark:bg-neutral-800 -mr-6"></div>
           </div>
           
-          <!-- Header: Date + Title -->
-          <div data-slot="timeline-header" class="space-y-1">
-            <time data-slot="timeline-date" class="text-[#C4264A] dark:text-[#F05A72] mb-1 block text-xs font-sans font-bold uppercase tracking-wider tabular-nums">FASE 03 &bull; MINGGU 4&ndash;6 (PROSES)</time>
-            <h3 data-slot="timeline-title" class="text-base font-bold text-[#111215] dark:text-white leading-tight">Rekayasa Kode &amp; Integrasi API</h3>
-          </div>
-          
-          <!-- Content Body -->
-          <div data-slot="timeline-content" class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
-            Eksekusi pengkodean clean architecture, integrasi payment gateway / WhatsApp bot, kecerdasan buatan, dan demo sprint berkala.
-            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-50 dark:bg-red-950/40 text-[11px] font-sans text-[#C4264A] dark:text-red-300 font-semibold border border-red-200 dark:border-red-900/50">
-              <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A] animate-ping"></span>
-              Output: Production Source Code
+          <!-- Text Body -->
+          <div class="space-y-1.5 pl-10 lg:pl-0">
+            <time class="text-[#C4264A] dark:text-[#F05A72] mb-1 block text-xs font-sans font-bold uppercase tracking-wider tabular-nums">FASE 03 &bull; MINGGU 4&ndash;6 (PROSES)</time>
+            <h3 class="text-base font-bold text-[#111215] dark:text-white leading-tight">Rekayasa Kode &amp; Integrasi API</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
+              Eksekusi pengkodean clean architecture, integrasi payment gateway / WhatsApp bot, kecerdasan buatan, dan demo sprint berkala.
+            </p>
+            <div class="pt-2">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-50 dark:bg-red-950/40 text-[11px] font-sans text-[#C4264A] dark:text-red-300 font-semibold border border-red-200 dark:border-red-900/50">
+                <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A] animate-ping"></span>
+                Output: Production Source Code
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Step 4: Pengujian Ketat & Garansi SLA (Pending) -->
-        <div data-slot="timeline-item" class="group/timeline-item relative flex flex-1 flex-col gap-2 ms-8 lg:ms-0 lg:mt-8">
-          <!-- Indicator Dot (Pending State) -->
-          <div data-slot="timeline-indicator" data-state="pending" class="absolute flex items-center justify-center rounded-full border-2 transition-all duration-200 size-7 top-0 -left-6 -translate-x-1/2 lg:-top-6 lg:left-0 lg:-translate-y-1/2 border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 text-neutral-400" aria-hidden="true">
-            <span class="text-xs font-sans font-bold">04</span>
+        <div class="relative flex flex-col group">
+          <!-- Top Row: Indicator (Last step, no outgoing line) -->
+          <div class="flex items-center mb-5 relative">
+            <div class="z-10 flex items-center justify-center size-8 rounded-full border-2 border-neutral-300 dark:border-neutral-700 bg-neutral-100 dark:bg-neutral-800 text-neutral-400 shrink-0 font-sans font-bold text-xs">
+              04
+            </div>
           </div>
           
-          <!-- Header: Date + Title -->
-          <div data-slot="timeline-header" class="space-y-1">
-            <time data-slot="timeline-date" class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-sans font-semibold uppercase tracking-wider tabular-nums">FASE 04 &bull; MINGGU 7+</time>
-            <h3 data-slot="timeline-title" class="text-base font-bold text-[#111215] dark:text-white leading-tight">Pengujian Ketat &amp; Garansi SLA</h3>
-          </div>
-          
-          <!-- Content Body -->
-          <div data-slot="timeline-content" class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
-            Stress-test performa sistem, audit celah keamanan OWASP, migrasi server zero-downtime, serta garansi pemeliharaan 12 bulan penuh.
-            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-sans text-neutral-700 dark:text-neutral-300 font-medium">
-              <span class="w-1.5 h-1.5 rounded-full bg-neutral-400"></span>
-              Output: 0-Downtime Go-Live &amp; Garansi
+          <!-- Text Body -->
+          <div class="space-y-1.5 pl-10 lg:pl-0">
+            <time class="text-neutral-400 dark:text-neutral-500 mb-1 block text-xs font-sans font-semibold uppercase tracking-wider tabular-nums">FASE 04 &bull; MINGGU 7+</time>
+            <h3 class="text-base font-bold text-[#111215] dark:text-white leading-tight">Pengujian Ketat &amp; Garansi SLA</h3>
+            <p class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm leading-relaxed mt-1">
+              Stress-test performa sistem, audit celah keamanan OWASP, migrasi server zero-downtime, serta garansi pemeliharaan 12 bulan penuh.
+            </p>
+            <div class="pt-2">
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-neutral-100 dark:bg-white/5 text-[11px] font-sans text-neutral-700 dark:text-neutral-300 font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-neutral-400"></span>
+                Output: 0-Downtime Go-Live &amp; Garansi
+              </div>
             </div>
           </div>
         </div>
@@ -1571,112 +1576,144 @@
       </p>
     </div>
 
-    <!-- 4 Tiers Grid Summary -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+    <!-- 3 Tiers Grid Summary (Starter, Bisnis, Custom) -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
       
-      <!-- Starter -->
-      <div class="p-6 rounded-3xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-red-200 transition-all">
+      <!-- 1. Starter -->
+      <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between hover:shadow-editorial hover:border-red-200 transition-all">
         <div class="space-y-4">
           <div>
-            <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">1 Halaman</span>
-            <h3 class="text-lg font-bold text-[#111215] dark:text-white">Paket STARTER</h3>
-            <div class="text-2xl font-black text-[#111215] dark:text-white mt-1">Rp 349K</div>
-            <span class="text-[10px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 249k/tahun*</span>
+            <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">Landing Page &amp; Portofolio</span>
+            <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket STARTER</h3>
+            <div class="text-3xl font-black text-[#111215] dark:text-white mt-1">Rp 349K</div>
+            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 249k/tahun*</span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
-            Cocok untuk kebutuhan pribadi: landing page, portofolio online, blog pribadi, CV digital, &amp; halaman profil.
+            Cocok untuk kebutuhan pribadi, promosi UMKM, landing page produk tunggal, CV digital, &amp; portofolio profil.
           </p>
-          <ul class="text-xs text-neutral-600 dark:text-neutral-400 space-y-1.5 pt-2 border-t border-[#E8E9ED] dark:border-neutral-800">
-            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Free Domain &amp; Hosting 1 Thn</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Responsive Mobile Friendly</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Jadi Cepat 1-2 Hari</li>
+          <ul class="text-xs text-neutral-600 dark:text-neutral-400 space-y-2 pt-3 border-t border-[#E8E9ED] dark:border-neutral-800">
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Free Domain &amp; Cloud Hosting 1 Tahun</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Tampilan Responsif Smartphone &amp; PC</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Integrasi Tombol Pesan WhatsApp Langsung</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Estimasi Pengerjaan Cepat 1-2 Hari</li>
           </ul>
         </div>
         <div class="pt-6">
-          <a href="<?= base_url('layanan/starter') ?>" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-center block bg-neutral-100 hover:bg-[#C4264A] hover:text-white dark:bg-neutral-800 dark:hover:bg-[#C4264A] transition">
-            Lihat Detail &rarr;
+          <a href="<?= base_url('layanan/starter') ?>" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-center block bg-neutral-100 hover:bg-[#C4264A] hover:text-white dark:bg-neutral-800 dark:hover:bg-[#C4264A] transition shadow-xs">
+            Lihat Rincian Starter &rarr;
           </a>
         </div>
       </div>
 
-      <!-- Standard -->
-      <div class="p-6 rounded-3xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-red-200 transition-all">
+      <!-- 2. Bisnis (Sebelumnya Standard) - POPULAR -->
+      <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#1A1C22] border-2 border-[#C4264A] shadow-editorial flex flex-col justify-between relative overflow-hidden">
+        <div class="absolute top-0 right-0 bg-[#C4264A] text-white text-[9px] font-black uppercase tracking-wider px-3.5 py-1 rounded-bl-xl font-sans">
+          POPULAR &bull; PALING DIPILIH ★
+        </div>
         <div class="space-y-4">
           <div>
-            <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">4 Halaman</span>
-            <h3 class="text-lg font-bold text-[#111215] dark:text-white">Paket STANDARD</h3>
-            <div class="text-2xl font-black text-[#111215] dark:text-white mt-1">Rp 699K</div>
-            <span class="text-[10px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 399k/tahun*</span>
+            <span class="text-[10px] font-sans uppercase text-[#C4264A] font-bold block">Company Profile &amp; Bisnis</span>
+            <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket BISNIS</h3>
+            <div class="text-3xl font-black text-[#C4264A] dark:text-[#F05A72] mt-1">Rp 699K</div>
+            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 399k/tahun*</span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
-            Cocok untuk kebutuhan bisnis kecil, UMKM, home industry, dan web profil perusahaan.
+            Solusi terlengkap untuk profil perusahaan, CV, PT, instansi, home industry, portal berita, dan katalog produk modern.
           </p>
-          <ul class="text-xs text-neutral-600 dark:text-neutral-400 space-y-1.5 pt-2 border-t border-[#E8E9ED] dark:border-neutral-800">
-            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> 4 Halaman (3 Utama + 1 Dash)</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> 1 Akun Email Bisnis</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Estimasi Jadi 3-5 Hari</li>
+          <ul class="text-xs text-neutral-600 dark:text-neutral-400 space-y-2 pt-3 border-t border-[#E8E9ED] dark:border-neutral-800">
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-[#C4264A]"></i> 4 Halaman Lengkap (Beranda, Layanan, Portofolio, Kontak)</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-[#C4264A]"></i> Free Domain (.com / .id) &amp; Cloud Hosting Cepat</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-[#C4264A]"></i> 1 Akun Email Bisnis Resmi (nama@domain.com)</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-[#C4264A]"></i> Optimasi SEO On-Page &amp; Integrasi Google Maps</li>
+            <li class="flex items-center gap-2"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-[#C4264A]"></i> Full Garansi Pemeliharaan Sistem</li>
           </ul>
         </div>
         <div class="pt-6">
-          <a href="<?= base_url('layanan/standard') ?>" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-center block bg-neutral-100 hover:bg-[#C4264A] hover:text-white dark:bg-neutral-800 dark:hover:bg-[#C4264A] transition">
-            Lihat Detail &rarr;
+          <a href="<?= base_url('layanan/bisnis') ?>" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-center block bg-[#C4264A] hover:bg-[#8E1738] text-white shadow-md transition">
+            Lihat Rincian Bisnis &rarr;
           </a>
         </div>
       </div>
 
-      <!-- Premium -->
-      <div class="p-6 rounded-3xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-red-200 transition-all">
+      <!-- 3. Custom (Sebelumnya Platinum) -->
+      <div class="p-6 sm:p-7 rounded-3xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 shadow-sm flex flex-col justify-between hover:shadow-editorial hover:border-red-200 transition-all">
         <div class="space-y-4">
           <div>
-            <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">7 Halaman</span>
-            <h3 class="text-lg font-bold text-[#111215] dark:text-white">Paket PREMIUM</h3>
-            <div class="text-2xl font-black text-[#111215] dark:text-white mt-1">Rp 964K</div>
-            <span class="text-[10px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 399k/tahun*</span>
+            <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">Sistem Web &amp; Database Khusus</span>
+            <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket CUSTOM</h3>
+            <div class="text-3xl font-black text-[#111215] dark:text-white mt-1">Rp 1.5 jt <span class="text-xs font-normal text-neutral-400">/ Sesuai Kebutuhan</span></div>
+            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Biaya Fleksibel Sesuai Kompleksitas</span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
-            Cocok untuk company profile korporasi, bisnis produk, dan portal layanan lengkap.
+            Untuk start-up, korporasi, toko online (e-commerce), booking jadwal, platform SaaS, dan otomasi alur kerja AI.
           </p>
-          <ul class="text-xs text-neutral-600 dark:text-neutral-400 space-y-1.5 pt-2 border-t border-[#E8E9ED] dark:border-neutral-800">
-            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> 7 Halaman Terstruktur</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> 2 Akun Email Bisnis</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> SEO Friendly &amp; Full Garansi</li>
+          <ul class="text-xs text-neutral-600 dark:text-neutral-400 space-y-2 pt-3 border-t border-[#E8E9ED] dark:border-neutral-800">
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Arsitektur Database &amp; API Kustom (Bebas Request)</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Integrasi Payment Gateway (QRIS, VA) &amp; Kurir</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Unlimited Akun Email Bisnis &amp; cPanel Penuh</li>
+            <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-[#C4264A]"></i> Hak Milik Source Code 100% Permanen Tanpa Sewa</li>
           </ul>
         </div>
         <div class="pt-6">
-          <a href="<?= base_url('layanan/premium') ?>" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-center block bg-neutral-100 hover:bg-[#C4264A] hover:text-white dark:bg-neutral-800 dark:hover:bg-[#C4264A] transition">
-            Lihat Detail &rarr;
+          <a href="<?= base_url('layanan/custom') ?>" class="w-full py-3 px-4 rounded-xl text-xs font-bold text-center block bg-neutral-100 hover:bg-[#C4264A] hover:text-white dark:bg-neutral-800 dark:hover:bg-[#C4264A] transition shadow-xs">
+            Lihat Rincian Custom &rarr;
           </a>
         </div>
       </div>
 
-      <!-- Platinum (Popular) -->
-      <div class="p-6 rounded-3xl bg-white dark:bg-[#1A1C22] border-2 border-[#C4264A] shadow-md flex flex-col justify-between relative overflow-hidden">
-        <div class="absolute top-0 right-0 bg-[#C4264A] text-white text-[9px] font-black uppercase px-3 py-0.5 rounded-bl-xl font-sans">
-          POPULAR ★
-        </div>
-        <div class="space-y-4">
-          <div>
-            <span class="text-[10px] font-sans uppercase text-[#C4264A] font-bold block">Paling Direkomendasikan</span>
-            <h3 class="text-lg font-bold text-[#111215] dark:text-white">Paket PLATINUM</h3>
-            <div class="text-2xl font-black text-[#C4264A] dark:text-[#F05A72] mt-1">Rp 1.5 jt</div>
-            <span class="text-[10px] text-neutral-400 font-sans block mt-0.5">Sesuai kebutuhan sistem</span>
+    </div>
+
+    <!-- Tambahan Layanan: Aplikasi Mobile & Desktop Instalasi Lokal (Harga Mengikuti Kebutuhan) -->
+    <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-neutral-50 via-white to-red-50/40 dark:from-[#14151B] dark:via-[#161720] dark:to-[#1A151C] border border-[#E8E9ED] dark:border-neutral-800 shadow-sm relative overflow-hidden">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 relative z-10">
+        <div class="space-y-3 max-w-2xl">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-100 dark:bg-red-950/60 border border-red-200 dark:border-red-900/40 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72] font-sans">
+            <i data-lucide="hard-drive" class="w-3.5 h-3.5"></i>
+            <span>LAYANAN INSTALASI LOKAL &bull; ON-PREMISE &amp; OFFLINE-FIRST</span>
           </div>
-          <p class="text-xs text-neutral-500 leading-relaxed">
-            Start up, UMKM, CV, PT, Yayasan, Professional dengan kebutuhan sistem khusus &amp; integrasi API.
+          <h3 class="text-xl sm:text-2xl font-extrabold text-[#111215] dark:text-white tracking-tight">
+            Pembuatan Aplikasi Mobile &amp; Desktop (Instalasi Lokal)
+          </h3>
+          <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
+            Pengembangan software khusus untuk komputer desktop (Windows, macOS, Linux) dan perangkat mobile (Android &amp; iOS) yang dapat dipasang di server/jaringan lokal (LAN) kantor atau toko Anda. Tetap beroperasi optimal secara offline tanpa ketergantungan internet, dengan opsi sinkronisasi otomatis ke cloud.
           </p>
-          <ul class="text-xs text-neutral-600 dark:text-neutral-400 space-y-1.5 pt-2 border-t border-[#E8E9ED] dark:border-neutral-800">
-            <li class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-[#C4264A]"></i> Akses API &amp; Integrasi Sistem</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-[#C4264A]"></i> Unlimited Email Bisnis</li>
-            <li class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-[#C4264A]"></i> Domain Premium (.id, .com, dll)</li>
-          </ul>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs text-neutral-700 dark:text-neutral-300">
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-circle" class="w-4 h-4 text-[#C4264A] shrink-0"></i>
+              <span>Software Kasir (POS), Gudang &amp; Manajemen Internal</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-circle" class="w-4 h-4 text-[#C4264A] shrink-0"></i>
+              <span>Database Server Lokal (PostgreSQL / SQLite / MySQL)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-circle" class="w-4 h-4 text-[#C4264A] shrink-0"></i>
+              <span>Hak Milik 100% Permanen Tanpa Sewa Bulanan</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <i data-lucide="check-circle" class="w-4 h-4 text-[#C4264A] shrink-0"></i>
+              <span>Instalasi &amp; Pendampingan Training Sampai Siap Pakai</span>
+            </div>
+          </div>
         </div>
-        <div class="pt-6">
-          <a href="<?= base_url('layanan/platinum') ?>" class="w-full py-2.5 px-3 rounded-xl text-xs font-bold text-center block bg-[#C4264A] hover:bg-[#8E1738] text-white shadow-sm transition">
-            Lihat Detail &rarr;
-          </a>
+
+        <div class="w-full lg:w-auto shrink-0 flex flex-col items-start lg:items-end justify-center gap-3 pt-4 lg:pt-0 border-t lg:border-t-0 lg:border-l border-[#E8E9ED] dark:border-neutral-800 lg:pl-8">
+          <div>
+            <span class="text-[10px] uppercase font-bold text-neutral-400 font-sans block text-left lg:text-right">Estimasi Biaya</span>
+            <div class="text-2xl sm:text-3xl font-black text-[#111215] dark:text-white">Harga Mengikuti Kebutuhan</div>
+            <span class="text-[11px] text-neutral-500 block text-left lg:text-right font-sans">Sesuai skala sistem &amp; jumlah perangkat</span>
+          </div>
+          <div class="flex flex-col sm:flex-row gap-2.5 w-full sm:w-auto">
+            <a href="<?= $waAppLokalUrl ?>" target="_blank" class="px-6 py-3 rounded-xl bg-[#C4264A] hover:bg-[#8E1738] text-white text-xs font-bold transition flex items-center justify-center gap-2 shadow-md">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>Konsultasi Aplikasi Lokal</span>
+            </a>
+            <button onclick="openConsultModal('Konsultasi Aplikasi Mobile/Desktop Instalasi Lokal')" class="px-5 py-3 rounded-xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-700 hover:border-[#C4264A] text-[#111215] dark:text-white text-xs font-semibold transition flex items-center justify-center gap-2">
+              <span>Rinci Kebutuhan</span>
+            </button>
+          </div>
         </div>
       </div>
-
     </div>
 
     <div class="text-center pt-2">

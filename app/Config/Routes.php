@@ -32,6 +32,9 @@ $routes->get('/', 'Home::index');
 $routes->get('layanan', 'Home::layanan');
 $routes->get('/layanan', 'Home::layanan');
 $routes->get('layanan/starter', 'Home::layananStarter');
+$routes->get('layanan/bisnis', 'Home::layananBisnis');
+$routes->get('layanan/custom', 'Home::layananCustom');
+// Aliases for backwards compatibility
 $routes->get('layanan/standard', 'Home::layananStandard');
 $routes->get('layanan/premium', 'Home::layananPremium');
 $routes->get('layanan/platinum', 'Home::layananPlatinum');
