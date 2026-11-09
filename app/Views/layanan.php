@@ -6,8 +6,8 @@
     $waClean = preg_replace('/[^0-9]/', '', $contact['whatsapp_number'] ?? '6285876603826');
     if (substr($waClean, 0, 1) === '0') $waClean = '62' . substr($waClean, 1);
     
-    $waStarterUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website STARTER (Rp 349K).");
-    $waBisnisUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website BISNIS (Rp 699K).");
+    $waStarterUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website STARTER (Rp 249K).");
+    $waBisnisUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website BISNIS (Rp 599K).");
     $waCustomUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo Lead Engineer & CS Zahra SOLVETA, saya ingin berkonsultasi mengenai Paket Layanan CUSTOM / Kebutuhan Khusus & Enterprise.");
     $waAppLokalUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai Layanan Pembuatan Aplikasi Mobile/Desktop Instalasi Lokal (On-Premise).");
     $waStandardUrl = $waBisnisUrl;
@@ -43,11 +43,11 @@
         <div class="flex flex-wrap items-center justify-center gap-2 pt-4">
             <a href="#starter" class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
                 <i data-lucide="zap" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>1. Starter (Rp 349K)</span>
+                <span>1. Starter (Rp 249K)</span>
             </a>
             <a href="#bisnis" class="px-4 py-2 rounded-full text-xs font-bold bg-[#C4264A] text-white shadow-md hover:bg-[#8E1738] transition-all flex items-center gap-1.5">
                 <i data-lucide="building-2" class="w-3.5 h-3.5"></i>
-                <span>2. Bisnis (Rp 699K)</span>
+                <span>2. Bisnis (Rp 599K)</span>
                 <span class="px-1.5 py-0.2 rounded text-[8.5px] font-black bg-white text-[#C4264A] uppercase">Popular</span>
             </a>
             <a href="#custom" class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
@@ -85,7 +85,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
             
             <!-- ============================================================= -->
-            <!-- 1. PAKET STARTER (Rp 349K)                                    -->
+            <!-- 1. PAKET STARTER (Rp 249K)                                    -->
             <!-- ============================================================= -->
             <div id="starter" class="rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] p-6 sm:p-7 flex flex-col justify-between hover:shadow-editorial hover:border-red-200 transition-all">
                 <div class="space-y-6">
@@ -98,9 +98,9 @@
                         <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket STARTER</h3>
                         <div class="pt-2">
                             <div class="flex items-baseline gap-1">
-                                <span class="text-3xl sm:text-4xl font-black text-[#111215] dark:text-white">Rp 349K</span>
+                                <span class="text-3xl sm:text-4xl font-black text-[#111215] dark:text-white">Rp 249K</span>
                             </div>
-                            <div class="text-[11px] text-neutral-500 mt-1 font-sans">Biaya Perpanjangan: 249k/tahun*</div>
+                            <div class="text-[11px] text-neutral-500 mt-1 font-sans">Biaya Perpanjangan: 199k/tahun*</div>
                         </div>
                     </div>
 
@@ -189,13 +189,13 @@
                 <div class="pt-6">
                     <a href="<?= $waStarterUrl ?>" target="_blank"
                        class="w-full py-3 px-4 rounded-2xl text-xs font-bold text-center block bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-700 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs hover:shadow-md transition-all">
-                        PESAN PAKET STARTER (RP 349K)
+                        PESAN PAKET STARTER (RP 249K)
                     </a>
                 </div>
             </div>
 
             <!-- ============================================================= -->
-            <!-- 2. PAKET BISNIS (Rp 699K) — POPULAR & DIREKOMENDASIKAN         -->
+            <!-- 2. PAKET BISNIS (Rp 599K) — POPULAR & DIREKOMENDASIKAN         -->
             <!-- ============================================================= -->
             <div id="bisnis" class="rounded-3xl border-2 border-[#C4264A] bg-white dark:bg-[#171821] p-6 sm:p-7 flex flex-col justify-between shadow-editorial relative overflow-hidden">
                 <!-- Popular Badge Pill -->
@@ -213,9 +213,9 @@
                         <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket BISNIS</h3>
                         <div class="pt-2">
                             <div class="flex items-baseline gap-1">
-                                <span class="text-3xl sm:text-4xl font-black text-[#C4264A] dark:text-[#F05A72]">Rp 699K</span>
+                                <span class="text-3xl sm:text-4xl font-black text-[#C4264A] dark:text-[#F05A72]">Rp 599K</span>
                             </div>
-                            <div class="text-[11px] text-neutral-500 mt-1 font-sans">Biaya Perpanjangan: 399k/tahun*</div>
+                            <div class="text-[11px] text-neutral-500 mt-1 font-sans">Biaya Perpanjangan: 349k/tahun*</div>
                         </div>
                     </div>
 
@@ -300,7 +300,7 @@
                 <div class="pt-6">
                     <a href="<?= $waBisnisUrl ?>" target="_blank"
                        class="w-full py-3.5 px-4 rounded-2xl text-xs font-bold text-center block bg-[#C4264A] hover:bg-[#8E1738] text-white shadow-md hover:shadow-lg transition-all">
-                        PESAN PAKET BISNIS (RP 699K)
+                        PESAN PAKET BISNIS (RP 599K)
                     </a>
                 </div>
             </div>

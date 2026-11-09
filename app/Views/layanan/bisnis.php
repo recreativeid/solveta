@@ -6,7 +6,7 @@
     $waClean = preg_replace('/[^0-9]/', '', $contact['whatsapp_number'] ?? '6285876603826');
     if (substr($waClean, 0, 1) === '0') $waClean = '62' . substr($waClean, 1);
     
-    $waOrderBisnis = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi dan memesan Paket Website BISNIS (Rp 699K).");
+    $waOrderBisnis = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi dan memesan Paket Website BISNIS (Rp 599K).");
 ?>
 
 <!-- ========================================================================= -->
@@ -22,7 +22,7 @@
             <span class="w-2 h-2 rounded-full bg-[#C4264A] animate-pulse"></span>
             <span class="font-bold tracking-wider uppercase font-sans">PAKET LAYANAN 02 • BISNIS</span>
             <span class="text-neutral-400">•</span>
-            <span>Rp 699K</span>
+            <span>Rp 599K</span>
         </div>
 
         <!-- Headline -->
@@ -41,12 +41,12 @@
             <a href="<?= base_url('layanan/starter') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
                 <i data-lucide="zap" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>1. Starter (Rp 349K)</span>
+                <span>1. Starter (Rp 249K)</span>
             </a>
             <a href="<?= base_url('layanan/bisnis') ?>" 
                class="px-4 py-2 rounded-full text-xs font-bold transition-all bg-[#C4264A] text-white shadow-md flex items-center gap-1.5">
                 <i data-lucide="building-2" class="w-3.5 h-3.5"></i>
-                <span>2. Bisnis (Rp 699K)</span>
+                <span>2. Bisnis (Rp 599K)</span>
             </a>
             <a href="<?= base_url('layanan/custom') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
@@ -142,9 +142,9 @@
                         </div>
 
                         <div class="p-4 rounded-2xl border border-[#E8E9ED] dark:border-neutral-800 bg-white dark:bg-[#1A1C22] space-y-1">
-                            <div class="text-xs sm:text-sm font-bold text-[#C4264A]">Investasi Rp 699K</div>
+                            <div class="text-xs sm:text-sm font-bold text-[#C4264A]">Investasi Rp 599K</div>
                             <p class="text-xs text-neutral-500 leading-relaxed">
-                                Perpanjangan 399k/tahun* untuk domain &amp; hosting aktif tahun berikutnya.
+                                Perpanjangan 349k/tahun* untuk domain &amp; hosting aktif tahun berikutnya.
                             </p>
                         </div>
                     </div>
@@ -171,15 +171,15 @@
                         <div class="text-[10px] font-bold text-[#C4264A] uppercase font-sans">BIAYA INVESTASI RESMI</div>
                         <div class="space-y-0.5">
                             <div class="text-3xl font-black text-[#C4264A] dark:text-[#F05A72]">
-                                Rp 699K
+                                Rp 599K
                             </div>
-                            <span class="text-[10px] text-neutral-500 block font-sans">Perpanjangan: 399k/tahun*</span>
+                            <span class="text-[10px] text-neutral-500 block font-sans">Perpanjangan: 349k/tahun*</span>
                             <span class="text-[10px] text-neutral-400">Masa Aktif 1 Tahun | Estimasi Jadi 3-5 Hari</span>
                         </div>
                         <a href="<?= $waOrderBisnis ?>" target="_blank"
                            class="w-full py-3.5 px-4 rounded-2xl text-white bg-[#C4264A] hover:bg-[#8E1738] text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all">
                             <i data-lucide="message-circle" class="w-4 h-4"></i>
-                            <span>Pesan Paket Bisnis (Rp 699K)</span>
+                            <span>Pesan Paket Bisnis (Rp 599K)</span>
                         </a>
                     </div>
 

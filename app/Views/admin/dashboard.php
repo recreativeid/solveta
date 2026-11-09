@@ -642,8 +642,8 @@
                                 </div>
                             </div>
 
-                            <!-- 4 Real Interactive Cards with Reordering Controls -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <!-- 3 Real Interactive Cards with Reordering Controls -->
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                                 <?php foreach ($tiers as $idx => $tier): ?>
                                     <?php 
                                         $cleanDelivery = str_replace(['â€“', '–'], '-', $tier['delivery_time'] ?? '1-2 Hari');
@@ -974,12 +974,12 @@
             <div id="tab-pricing" class="tab-pane space-y-6">
                 <div class="flex items-center justify-between">
                     <div>
-                        <h2 class="text-xs font-semibold text-gray-900 uppercase tracking-wider">Manajemen 4 Paket Harga</h2>
-                        <p class="text-[11px] text-gray-400">Kelola spesifikasi, harga baru, checklist fitur, addon layanan & pesan template WhatsApp.</p>
+                        <h2 class="text-xs font-semibold text-gray-900 uppercase tracking-wider">Manajemen 3 Paket Layanan Website &amp; Aplikasi Solveta (Versi Sekarang)</h2>
+                        <p class="text-[11px] text-gray-400">Kelola spesifikasi, harga resmi (Starter Rp 249K, Bisnis Rp 599K, Custom Mulai Rp 1.5 Jt), checklist fitur, addon layanan &amp; template WhatsApp.</p>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                     <?php foreach ($tiers as $idx => $tier): ?>
                         <div class="bg-white border border-gray-200/80 rounded-xl p-5 flex flex-col justify-between space-y-4 hover:border-gray-300 transition-colors">
                             <div class="space-y-3">
@@ -1053,6 +1053,32 @@
                             </div>
                         </div>
                     <?php endforeach; ?>
+                </div>
+
+                <!-- DEDICATED CARD: LAYANAN APLIKASI MOBILE & DESKTOP (INSTALASI LOKAL) -->
+                <div class="rounded-xl border border-gray-200/80 bg-gradient-to-r from-gray-50 via-white to-rose-50/20 p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="space-y-1.5 max-w-2xl">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-rose-100 text-[#8B0021] uppercase">ON-PREMISE / OFFLINE-FIRST</span>
+                            <span class="text-xs font-bold text-gray-900">Layanan Pembuatan Aplikasi Mobile &amp; Desktop (Instalasi Lokal)</span>
+                        </div>
+                        <p class="text-[11px] text-gray-500 leading-relaxed">
+                            Aplikasi offline-first kasir POS, sistem stok pergudangan internal, desktop Windows/macOS, dan mobile Android/iOS private LAN.
+                        </p>
+                        <div class="text-[11px] font-sans font-bold text-[#8B0021]">
+                            Investasi: Harga Mengikuti Kebutuhan
+                        </div>
+                    </div>
+                    <?php
+                        $waCleanAdmin = preg_replace('/[^0-9]/', '', $contact['whatsapp_number'] ?? '6285876603826');
+                        if (substr($waCleanAdmin, 0, 1) === '0') $waCleanAdmin = '62' . substr($waCleanAdmin, 1);
+                        $waAppLokalAdmin = "https://wa.me/{$waCleanAdmin}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai Layanan Pembuatan Aplikasi Mobile/Desktop Instalasi Lokal (On-Premise).");
+                    ?>
+                    <a href="<?= $waAppLokalAdmin ?>" target="_blank"
+                       class="px-4 py-2 bg-gray-900 hover:bg-[#8B0021] text-white text-xs font-medium rounded-lg shadow-xs flex items-center justify-center gap-1.5 transition-colors shrink-0">
+                        <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                        <span>Uji Link Konsultasi WA</span>
+                    </a>
                 </div>
 
                 <!-- ADD-ON SERVICES MANAGER SECTION IN TAB-PRICING -->
@@ -1747,14 +1773,12 @@
                         
                         // Parse package price
                         $pkg = strtolower($o['selected_package'] ?? '');
-                        if (strpos($pkg, 'platinum') !== false || strpos($pkg, '1.5') !== false) {
+                        if (strpos($pkg, 'custom') !== false || strpos($pkg, 'platinum') !== false || strpos($pkg, '1.5') !== false) {
                             $potensiNilai += 1500000;
-                        } elseif (strpos($pkg, 'premium') !== false || strpos($pkg, '849') !== false || strpos($pkg, '964') !== false) {
-                            $potensiNilai += 849000;
-                        } elseif (strpos($pkg, 'standard') !== false || strpos($pkg, '549') !== false || strpos($pkg, '699') !== false) {
-                            $potensiNilai += 549000;
-                        } elseif (strpos($pkg, 'basic') !== false || strpos($pkg, '299') !== false || strpos($pkg, '349') !== false) {
-                            $potensiNilai += 299000;
+                        } elseif (strpos($pkg, 'bisnis') !== false || strpos($pkg, 'standard') !== false || strpos($pkg, '599') !== false || strpos($pkg, '699') !== false) {
+                            $potensiNilai += 599000;
+                        } elseif (strpos($pkg, 'basic') !== false || strpos($pkg, 'starter') !== false || strpos($pkg, '249') !== false || strpos($pkg, '349') !== false) {
+                            $potensiNilai += 249000;
                         }
                     }
                 ?>
@@ -2501,7 +2525,7 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">Teks Tombol CTA Paket</label>
-                        <input type="text" name="button_label" id="price-input-button" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-bold text-[#8B0021]" placeholder="PESAN PAKET STARTER (RP 349K)">
+                        <input type="text" name="button_label" id="price-input-button" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-bold text-[#8B0021]" placeholder="PESAN PAKET STARTER (RP 249K)">
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">Estimasi Jadi</label>

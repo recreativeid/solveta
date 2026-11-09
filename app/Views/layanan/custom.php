@@ -41,12 +41,12 @@
             <a href="<?= base_url('layanan/starter') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
                 <i data-lucide="zap" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>1. Starter (Rp 349K)</span>
+                <span>1. Starter (Rp 249K)</span>
             </a>
             <a href="<?= base_url('layanan/bisnis') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
                 <i data-lucide="building-2" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>2. Bisnis (Rp 699K)</span>
+                <span>2. Bisnis (Rp 599K)</span>
             </a>
             <a href="<?= base_url('layanan/custom') ?>" 
                class="px-4 py-2 rounded-full text-xs font-bold transition-all bg-[#C4264A] text-white shadow-md flex items-center gap-1.5">

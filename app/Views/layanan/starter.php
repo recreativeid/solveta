@@ -5,7 +5,7 @@
 <?php
     $waClean = preg_replace('/[^0-9]/', '', $contact['whatsapp_number'] ?? '6285876603826');
     if (substr($waClean, 0, 1) === '0') $waClean = '62' . substr($waClean, 1);
-    $waOrderStarter = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi dan memesan Layanan Paket Starter (Rp 349K). Mohon info alur pengerjaannya.");
+    $waOrderStarter = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi dan memesan Layanan Paket Starter (Rp 249K). Mohon info alur pengerjaannya.");
 ?>
 
 <!-- ========================================================================= -->
@@ -21,7 +21,7 @@
             <span class="w-2 h-2 rounded-full bg-[#C4264A] animate-pulse"></span>
             <span class="font-bold tracking-wider uppercase font-sans">LAYANAN 01 • PAKET STARTER</span>
             <span class="text-neutral-400">•</span>
-            <span>Rp 349K</span>
+            <span>Rp 249K</span>
         </div>
 
         <!-- Headline -->
@@ -40,12 +40,12 @@
             <a href="<?= base_url('layanan/starter') ?>" 
                class="px-4 py-2 rounded-full text-xs font-bold transition-all bg-[#C4264A] text-white shadow-md flex items-center gap-1.5">
                 <i data-lucide="zap" class="w-3.5 h-3.5"></i>
-                <span>1. Starter (Rp 349K)</span>
+                <span>1. Starter (Rp 249K)</span>
             </a>
             <a href="<?= base_url('layanan/bisnis') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
                 <i data-lucide="building-2" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>2. Bisnis (Rp 699K)</span>
+                <span>2. Bisnis (Rp 599K)</span>
             </a>
             <a href="<?= base_url('layanan/custom') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
@@ -175,7 +175,7 @@
                         </div>
 
                         <div class="p-4 rounded-2xl border border-[#E8E9ED] dark:border-neutral-800 bg-white dark:bg-[#1A1C22] space-y-1">
-                            <div class="text-xs sm:text-sm font-bold text-[#C4264A]">Investasi Rp 349K Transparan</div>
+                            <div class="text-xs sm:text-sm font-bold text-[#C4264A]">Investasi Rp 249K Transparan</div>
                             <p class="text-xs text-neutral-500 leading-relaxed">
                                 Sudah mencakup domain, hosting, copywriting, dan SSL selama 1 tahun penuh tanpa biaya tersembunyi.
                             </p>
@@ -204,15 +204,15 @@
                         <div class="text-[10px] font-bold text-[#C4264A] uppercase font-sans">BIAYA INVESTASI RESMI</div>
                         <div class="space-y-0.5">
                             <div class="text-3xl font-black text-[#C4264A] dark:text-[#F05A72]">
-                                Rp 349K
+                                Rp 249K
                             </div>
-                            <span class="text-[10px] text-neutral-500 block font-sans">Perpanjangan: 249k/tahun*</span>
+                            <span class="text-[10px] text-neutral-500 block font-sans">Perpanjangan: 199k/tahun*</span>
                             <span class="text-[10px] text-neutral-400">Masa Aktif 1 Tahun | Estimasi Jadi 1-2 Hari</span>
                         </div>
                         <a href="<?= $waOrderStarter ?>" target="_blank"
                            class="w-full py-3.5 px-4 rounded-2xl text-white bg-[#C4264A] hover:bg-[#8E1738] text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all">
                             <i data-lucide="message-circle" class="w-4 h-4"></i>
-                            <span>Pesan Paket Starter (Rp 349K)</span>
+                            <span>Pesan Paket Starter (Rp 249K)</span>
                         </a>
                     </div>
 
@@ -234,7 +234,7 @@
             Butuh Halaman Tambahan atau Fitur Lain?
         </h3>
         <p class="text-xs sm:text-sm text-neutral-500 max-w-xl mx-auto font-normal">
-            Jika bisnis Anda membutuhkan profil legal perusahaan multi-halaman atau portal berita, silakan cek <a href="<?= base_url('layanan/standard') ?>" class="text-[#C4264A] font-bold underline">Paket Standard (Rp 699K)</a> atau konsultasikan langsung dengan Customer Service kami.
+            Jika bisnis Anda membutuhkan profil legal perusahaan multi-halaman atau portal berita, silakan cek <a href="<?= base_url('layanan/bisnis') ?>" class="text-[#C4264A] font-bold underline">Paket Bisnis (Rp 599K)</a> atau konsultasikan langsung dengan Customer Service kami.
         </p>
         <div class="pt-2">
             <a href="<?= $waOrderStarter ?>" target="_blank" 

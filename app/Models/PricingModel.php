@@ -48,12 +48,18 @@ class PricingModel extends Model
             } catch (\Throwable $e) {}
 
             if ($hasCountryCol) {
-                $rows = $this->where('country', $country)->orderBy('sort_order', 'ASC')->findAll();
+                $rows = $this->where('country', $country)
+                             ->whereNotIn('id', ['premium'])
+                             ->orderBy('sort_order', 'ASC')
+                             ->findAll();
             } else {
                 if ($country === 'my') {
                     $rows = $this->like('id', '_my')->orderBy('sort_order', 'ASC')->findAll();
                 } else {
-                    $rows = $this->notLike('id', '_my')->orderBy('sort_order', 'ASC')->findAll();
+                    $rows = $this->notLike('id', '_my')
+                                 ->whereNotIn('id', ['premium'])
+                                 ->orderBy('sort_order', 'ASC')
+                                 ->findAll();
                 }
             }
 
@@ -338,16 +344,16 @@ class PricingModel extends Model
             ];
         }
 
-        // Indonesian Default Tiers
+        // Indonesian Default Tiers (Versi Sekarang: 3 Paket Resmi)
         return [
             [
                 'id' => 'basic',
                 'country' => 'id',
                 'name' => 'STARTER',
-                'price_prefix' => 'mulai dari',
-                'price' => 'Rp 349K',
-                'price_badge' => '349K',
-                'renewal_price' => '249k/tahun*',
+                'price_prefix' => null,
+                'price' => 'Rp 249K',
+                'price_badge' => '249K',
+                'renewal_price' => '199k/tahun*',
                 'active_period' => '1 Tahun',
                 'delivery_time' => '1-2 Hari',
                 'popular' => false,
@@ -357,7 +363,7 @@ class PricingModel extends Model
                     ['text' => 'Maksimal 1 Halaman (tambah Rp 50k/Halaman)', 'included' => true],
                     ['text' => 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'included' => true],
                     ['text' => 'Optimasi Speed (High Perform)', 'included' => true],
-                    ['text' => 'Free Domain (my.id .site .cloud .online ..shop .blog)', 'included' => true],
+                    ['text' => 'Free Domain (my.id .site .cloud .online .shop .blog)', 'included' => true],
                     ['text' => 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', 'included' => true],
                     ['text' => 'Email Bisnis (nama@domain.com)', 'included' => false],
                     ['text' => 'Responsive Web (mobile friendly)', 'included' => true],
@@ -371,31 +377,32 @@ class PricingModel extends Model
                 'email_addons' => [['name' => '1 Akun Email Bisnis', 'price' => 'Rp 50.000'], ['name' => '5 Akun Email Bisnis', 'price' => 'Rp 150.000']],
                 'revision_rules' => ['light' => 'Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)', 'heavy' => 'Rp 50.000 (merubah halaman, menambah halaman, atau struktur)', 'extraPage' => 'Rp 50.000 / halaman'],
                 'custom_note' => null,
-                'suitability' => 'kebutuhan pribadi: landing page, portofolio online, blog pribadi, CV digital, dan halaman profil.',
-                'button_label' => 'PESAN PAKET STARTER (RP 349K)',
+                'suitability' => 'kebutuhan pribadi: landing page, portofolio online, blog pribadi, CV digital, dan halaman profil rintisan.',
+                'button_label' => 'PESAN PAKET STARTER (RP 249K)',
                 'button_variant' => 'outline',
-                'wa_message' => 'Halo SOLVETA, saya tertarik untuk memesan Paket STARTER Rp 349K.',
+                'wa_message' => 'Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website STARTER (Rp 249K).',
                 'sort_order' => 1
             ],
             [
                 'id' => 'standard',
                 'country' => 'id',
-                'name' => 'STANDARD',
+                'name' => 'BISNIS',
                 'price_prefix' => null,
-                'price' => 'Rp 699K',
-                'price_badge' => '699K',
-                'renewal_price' => '399k/tahun*',
+                'price' => 'Rp 599K',
+                'price_badge' => '599K',
+                'renewal_price' => '349k/tahun*',
                 'active_period' => '1 Tahun',
                 'delivery_time' => '3-5 Hari',
                 'popular' => false,
-                'popular_label' => '',
-                'features' => ['Maksimal 4 Halaman, 3 Halaman Utama 1 Dashboard (tambah Rp 50k/Halaman)', 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'Optimasi Speed (2x lebih cepat)', 'Free Domain (my.id .site .cloud .online .shop .blog .store .org .digital)', 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', 'Responsive Web (mobile friendly)', 'SSL Security', 'SEO Basic', 'Full Garansi'],
+                'popular_label' => 'Populer',
+                'features' => ['Maksimal 4 Halaman, 3 Halaman Utama 1 Dashboard (tambah Rp 50k/Halaman)', 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'Optimasi Speed (2x lebih cepat)', 'Free Domain (my.id .site .cloud .online .shop .blog .store .org .digital)', 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', '1 Akun Email Bisnis (nama@domain.com) Webmail & SMTP', 'Responsive Web (mobile friendly)', 'SSL Security', 'SEO Basic', 'Full Garansi'],
                 'checklist' => [
                     ['text' => 'Maksimal 4 Halaman, 3 Halaman Utama 1 Dashboard (tambah Rp 50k/Halaman)', 'included' => true],
                     ['text' => 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'included' => true],
                     ['text' => 'Optimasi Speed (2x lebih cepat)', 'included' => true],
                     ['text' => 'Free Domain (my.id .site .cloud .online .shop .blog .store .org .digital)', 'included' => true],
                     ['text' => 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', 'included' => true],
+                    ['text' => '1 Akun Email Bisnis (nama@domain.com)', 'included' => true],
                     ['text' => 'Responsive Web (mobile friendly)', 'included' => true],
                     ['text' => 'SSL Security', 'included' => true],
                     ['text' => 'SEO Basic', 'included' => true],
@@ -406,84 +413,48 @@ class PricingModel extends Model
                 'email_addons' => [],
                 'revision_rules' => ['light' => 'Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)', 'heavy' => 'Rp 50.000 (merubah halaman, menambah halaman, atau struktur)', 'extraPage' => 'Rp 50.000 / halaman'],
                 'custom_note' => null,
-                'suitability' => 'kebutuhan bisnis kecil, umkm, home industry',
-                'button_label' => 'PESAN PAKET STANDARD (RP 699K)',
+                'suitability' => 'kebutuhan bisnis berkembang, UKM, CV, PT, kantor profesional, dan profil usaha resmi.',
+                'button_label' => 'PESAN PAKET BISNIS (RP 599K)',
                 'button_variant' => 'outline',
-                'wa_message' => 'Halo SOLVETA, saya tertarik dengan paket Standard Rp 699K. Mohon bantu konsultasi konsep websitenya.',
+                'wa_message' => 'Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website BISNIS (Rp 599K).',
                 'sort_order' => 2
-            ],
-            [
-                'id' => 'premium',
-                'country' => 'id',
-                'name' => 'PREMIUM',
-                'price_prefix' => null,
-                'price' => 'Rp 964K',
-                'price_badge' => '964K',
-                'renewal_price' => '399k/tahun*',
-                'active_period' => '1 Tahun',
-                'delivery_time' => '3-5 Hari',
-                'popular' => false,
-                'popular_label' => '',
-                'features' => ['Maksimal 7 Halaman (tambah Rp 50k/Halaman)', 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'Optimasi Speed (3x lebih cepat)', 'Free Desain Mockup', 'Free Domain (.store .org .net .digital .it.com .media .agency .company)', 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', '2 Email Bisnis (nama@domain.com)', 'Responsive Web (mobile friendly)', 'SSL Security', 'SEO Friendly', 'Full Garansi*'],
-                'checklist' => [
-                    ['text' => 'Maksimal 7 Halaman (tambah Rp 50k/Halaman)', 'included' => true],
-                    ['text' => 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'included' => true],
-                    ['text' => 'Optimasi Speed (3x lebih cepat)', 'included' => true],
-                    ['text' => 'Free Desain Mockup', 'included' => true],
-                    ['text' => 'Free Domain (.store .org .net .digital .it.com .media .agency .company)', 'included' => true],
-                    ['text' => 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', 'included' => true],
-                    ['text' => '2 Email Bisnis (nama@domain.com)', 'included' => true],
-                    ['text' => 'Responsive Web (mobile friendly)', 'included' => true],
-                    ['text' => 'SSL Security', 'included' => true],
-                    ['text' => 'SEO Friendly', 'included' => true],
-                    ['text' => 'Full Garansi*', 'included' => true],
-                ],
-                'domain_addons' => [],
-                'email_addons' => [],
-                'revision_rules' => ['light' => 'Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)', 'heavy' => 'Rp 50.000 (merubah halaman, menambah halaman, atau struktur)', 'extraPage' => 'Rp 50.000 / halaman'],
-                'custom_note' => null,
-                'suitability' => 'company profile & bisnis produk',
-                'button_label' => 'PESAN PAKET PREMIUM (RP 964K)',
-                'button_variant' => 'outline',
-                'wa_message' => 'Halo SOLVETA, saya tertarik dengan paket Premium Rp 964K. Bagaimana proses pengerjaannya?',
-                'sort_order' => 3
             ],
             [
                 'id' => 'custom',
                 'country' => 'id',
-                'name' => 'PLATINUM',
+                'name' => 'CUSTOM',
                 'price_prefix' => 'Mulai',
-                'price' => 'Rp 1.5 jt',
+                'price' => 'Mulai Rp 1.5 jt',
                 'price_badge' => '1.5 jt',
-                'renewal_price' => 'Harga mengikuti biaya dibutuhkan',
+                'renewal_price' => 'Biaya Mengikuti Kompleksitas & Scope',
                 'active_period' => '1 Tahun',
-                'delivery_time' => 'Wajib Meet (Fleksibel)',
+                'delivery_time' => '7-14 Hari (Fleksibel)',
                 'popular' => true,
                 'popular_label' => 'Paling Populer',
-                'features' => ['Free Iklan Google Ads', 'Optimasi Speed (Super Cepat)', 'Free Desain Mockup', 'Free Domain (.id .co.id .tech .dev .com)', 'Free Hosting (Akses Dashboard, Akses login cPanel)', 'Unlimited Email Bisnis (nama@domain.com)', 'Responsive Web (mobile friendly)', 'SSL Security', 'SEO Friendly', 'Google Analytics', 'Full Garansi*', 'Akses API (Integrasi aplikasi)'],
+                'features' => ['Arsitektur Database & Modul Kustom (Bebas Request)', 'Optimasi Speed (Super Cepat)', 'Free Desain Mockup', 'Free Domain (.id .co.id .tech .dev .com)', 'Free Hosting Cloud Performa Tinggi', 'Unlimited Email Bisnis (nama@domain.com)', 'Responsive Web (mobile friendly)', 'SSL Security', 'SEO Friendly', 'Google Analytics', 'Full Garansi SLA', 'Akses API & Payment Gateway'],
                 'checklist' => [
-                    ['text' => 'Free Iklan Google Ads', 'included' => true],
+                    ['text' => 'Arsitektur Database & Modul Kustom', 'included' => true],
                     ['text' => 'Optimasi Speed (Super Cepat)', 'included' => true],
                     ['text' => 'Free Desain Mockup', 'included' => true],
                     ['text' => 'Free Domain (.id .co.id .tech .dev .com)', 'included' => true],
-                    ['text' => 'Free Hosting (Akses Dashboard, Akses login cPanel)', 'included' => true],
+                    ['text' => 'Free Hosting Cloud Performa Tinggi', 'included' => true],
                     ['text' => 'Unlimited Email Bisnis (nama@domain.com)', 'included' => true],
                     ['text' => 'Responsive Web (mobile friendly)', 'included' => true],
                     ['text' => 'SSL Security', 'included' => true],
                     ['text' => 'SEO Friendly', 'included' => true],
                     ['text' => 'Google Analytics', 'included' => true],
-                    ['text' => 'Full Garansi*', 'included' => true],
+                    ['text' => 'Full Garansi SLA', 'included' => true],
                     ['text' => 'Akses API (Integrasi aplikasi)', 'included' => true],
                 ],
                 'domain_addons' => [],
                 'email_addons' => [],
-                'revision_rules' => ['light' => 'Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)', 'heavy' => 'Rp 50.000 (merubah halaman, menambah halaman, atau struktur)', 'extraPage' => 'Rp 50.000 / halaman'],
+                'revision_rules' => ['light' => 'Revisi fleksibel selama development', 'heavy' => 'Fitur baru modul tambahan dihitung add-on', 'extraPage' => 'Fleksibel'],
                 'custom_note' => null,
-                'suitability' => 'Start up, UMKM, CV, PT, Organisasi/Yayasan, Professional (siapa pun yang mempunyai kebutuhan layanan khusus yang tidak sesuai dengan 3 paket sebelumnya)',
-                'button_label' => 'KONSULTASI PLATINUM',
+                'suitability' => 'Startup, Bisnis Skala Menengah, CV, PT, Organisasi & Profesional yang membutuhkan modul kompleks, arsitektur database relasional, akses API, serta integrasi sistem tingkat lanjut.',
+                'button_label' => 'KONSULTASI PAKET CUSTOM',
                 'button_variant' => 'red',
-                'wa_message' => 'Halo SOLVETA, saya ingin mendiskusikan kebutuhan Custom Website & Sistem Khusus untuk bisnis kami.',
-                'sort_order' => 4
+                'wa_message' => 'Halo Lead Engineer & CS Zahra SOLVETA, saya ingin berkonsultasi mengenai Paket Layanan CUSTOM / Kebutuhan Khusus & Enterprise.',
+                'sort_order' => 3
             ]
         ];
     }

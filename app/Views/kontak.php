@@ -200,10 +200,10 @@
                             </label>
                             <select id="paket" name="paket" required
                                     class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 text-xs sm:text-sm text-[#111215] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#C4264A]/30 transition">
-                                <option value="Paket Starter — Landing Page UMKM (Rp 349K)">Paket Starter — Landing Page UMKM (Rp 349K)</option>
-                                <option value="Paket Standard — Company Profile Korporasi & Portal Berita (Rp 699K)" selected>Paket Standard — Company Profile Korporasi &amp; Portal Berita (Rp 699K)</option>
-                                <option value="Paket Premium — E-Commerce & Sistem Booking (Rp 964K)">Paket Premium — E-Commerce &amp; Sistem Booking (Rp 964K)</option>
-                                <option value="Paket Platinum — Custom ERP, SaaS Platform & AI Automation (Rp 1.5 jt)">Paket Platinum — Custom ERP, SaaS Platform &amp; AI Automation (Rp 1.5 jt)</option>
+                                <option value="Paket Starter — Landing Page UMKM (Rp 249K)">Paket Starter — Landing Page UMKM (Rp 249K)</option>
+                                <option value="Paket Bisnis — Company Profile & Portal Berita (Rp 599K)" selected>Paket Bisnis — Company Profile &amp; Portal Berita (Rp 599K)</option>
+                                <option value="Paket Custom — Enterprise Cloud Platform & API (Mulai Rp 1.5 jt)">Paket Custom — Enterprise Cloud Platform &amp; API (Mulai Rp 1.5 jt)</option>
+                                <option value="Aplikasi Mobile & Desktop Instalasi Lokal (Harga Mengikuti Kebutuhan)">Aplikasi Mobile &amp; Desktop Instalasi Lokal (Harga Mengikuti Kebutuhan)</option>
                                 <option value="Kebutuhan Custom / Redesign Website Lama">Kebutuhan Custom / Redesign Website Lama</option>
                             </select>
                         </div>

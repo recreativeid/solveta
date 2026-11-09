@@ -7,8 +7,8 @@
     if (substr($waClean, 0, 1) === '0') $waClean = '62' . substr($waClean, 1);
     
     $waHeroUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai solusi teknologi dan pengembangan sistem digital untuk bisnis kami.");
-    $waStarterUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website STARTER (Rp 349K).");
-    $waBisnisUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website BISNIS (Rp 699K).");
+    $waStarterUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website STARTER (Rp 249K).");
+    $waBisnisUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website BISNIS (Rp 599K).");
     $waCustomUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai Paket Layanan CUSTOM / Kebutuhan Khusus.");
     $waAppLokalUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai Layanan Pembuatan Aplikasi Mobile/Desktop Instalasi Lokal (On-Premise).");
 ?>
@@ -861,7 +861,7 @@
           </ul>
         </div>
         <a href="<?= base_url('layanan/starter') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-white dark:bg-[#1A1C22] hover:bg-[#C4264A] hover:text-white text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 text-xs font-semibold transition flex items-center justify-center gap-1.5">
-          <span>Pilih Paket Starter (Rp 349K)</span>
+          <span>Pilih Paket Starter (Rp 249K)</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
@@ -888,7 +888,7 @@
           </ul>
         </div>
         <a href="<?= base_url('layanan/bisnis') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-white dark:bg-[#1A1C22] hover:bg-[#C4264A] hover:text-white text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 text-xs font-semibold transition flex items-center justify-center gap-1.5">
-          <span>Pilih Paket Bisnis (Rp 699K)</span>
+          <span>Pilih Paket Bisnis (Rp 599K)</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
@@ -915,7 +915,7 @@
           </ul>
         </div>
         <a href="<?= base_url('layanan/bisnis') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-white dark:bg-[#1A1C22] hover:bg-[#C4264A] hover:text-white text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 text-xs font-semibold transition flex items-center justify-center gap-1.5">
-          <span>Pilih Paket Bisnis (Rp 699K)</span>
+          <span>Pilih Paket Bisnis (Rp 599K)</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
@@ -1585,8 +1585,8 @@
           <div>
             <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">Landing Page &amp; Portofolio</span>
             <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket STARTER</h3>
-            <div class="text-3xl font-black text-[#111215] dark:text-white mt-1">Rp 349K</div>
-            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 249k/tahun*</span>
+            <div class="text-3xl font-black text-[#111215] dark:text-white mt-1">Rp 249K</div>
+            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 199k/tahun*</span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
             Cocok untuk kebutuhan pribadi, promosi UMKM, landing page produk tunggal, CV digital, &amp; portofolio profil.
@@ -1614,8 +1614,8 @@
           <div>
             <span class="text-[10px] font-sans uppercase text-[#C4264A] font-bold block">Company Profile &amp; Bisnis</span>
             <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket BISNIS</h3>
-            <div class="text-3xl font-black text-[#C4264A] dark:text-[#F05A72] mt-1">Rp 699K</div>
-            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 399k/tahun*</span>
+            <div class="text-3xl font-black text-[#C4264A] dark:text-[#F05A72] mt-1">Rp 599K</div>
+            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 349k/tahun*</span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
             Solusi terlengkap untuk profil perusahaan, CV, PT, instansi, home industry, portal berita, dan katalog produk modern.
