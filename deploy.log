@@ -6,6 +6,7 @@ Items in initial remote directory: [
   'logs',
   '.bash_logout',
   '.gemrc',
+  'wordpress-backups',
   'check_server_users.php',
   '.trash',
   'public_html',
@@ -13,43 +14,31 @@ Items in initial remote directory: [
   '.bashrc',
   '.cagefs',
   'www',
-  '.wp-toolkit-identifier',
-  'etc',
-  '.koality'
+  '.wp-toolkit',
+  '.wp-toolkit-identifier'
 ]
 Entering public_html/...
-Current remote directory: /public_html
-=== CONTENTS OF REMOTE DIRECTORY (/public_html) ===
- - php.ini (FILE, 374 bytes)
- - css (DIR, 0 bytes)
+Entering solveta.asia/ directory (Addon Domain Document Root)...
+Current remote directory: /public_html/solveta.asia
+=== CONTENTS OF REMOTE DIRECTORY (/public_html/solveta.asia) ===
+ - php.ini (FILE, 180 bytes)
  - .well-known (DIR, 0 bytes)
- - KonservasiAkuatik.com (DIR, 0 bytes)
- - travelbukittkinggipekanbaru.site (DIR, 0 bytes)
- - PANDUAN_CPANEL.md (FILE, 4629 bytes)
- - solveta.asia (DIR, 0 bytes)
- - .env.example (FILE, 1386 bytes)
+ - probe.php (FILE, 50 bytes)
  - system (DIR, 0 bytes)
- - robots.txt (FILE, 24 bytes)
+ - .env (FILE, 1175 bytes)
  - index.php (FILE, 128 bytes)
- - KonservasiAkuatik.com.zip (FILE, 70506598 bytes)
  - assets (DIR, 0 bytes)
  - public (DIR, 0 bytes)
- - .htaccess (FILE, 567 bytes)
- - favicon.ico (FILE, 0 bytes)
- - database.sql (FILE, 20666 bytes)
+ - .htaccess (FILE, 1080 bytes)
+ - database.sql (FILE, 45945 bytes)
  - app (DIR, 0 bytes)
- - kopsi_travel_company_profile.zip (FILE, 6632730 bytes)
  - cgi-bin (DIR, 0 bytes)
- - .user.ini (FILE, 374 bytes)
- - videos (DIR, 0 bytes)
- - spark (FILE, 3201 bytes)
+ - .user.ini (FILE, 380 bytes)
+ - wordpress (DIR, 0 bytes)
  - writable (DIR, 0 bytes)
- - js (DIR, 0 bytes)
- - .jarvisignore (FILE, 474 bytes)
- - tekape.my.id (DIR, 0 bytes)
- - error_log (FILE, 14584 bytes)
- - japakehpost.com (DIR, 0 bytes)
- - images (DIR, 0 bytes)
+ - PROJECT_MAP.md (FILE, 16389 bytes)
+ - do_unzip.php (FILE, 1717 bytes)
+ - run_import.php (FILE, 1721 bytes)
 --> Uploading app/ directory...
 --> Uploading public/ directory...
 --> Syncing assets directly to assets/...
