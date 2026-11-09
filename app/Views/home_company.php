@@ -112,17 +112,17 @@
     </div>
   </div>
 
-  <!-- Infinite Running Marquee Track (Uniform Standardized Logos) -->
-  <div class="relative w-full overflow-hidden flex items-center py-2 mask-radial-fade">
+  <!-- Infinite Running Marquee Track (Uniform Standardized Large Logos) -->
+  <div class="relative w-full overflow-hidden flex items-center py-4 mask-radial-fade">
     <div class="marquee-track flex gap-6 sm:gap-8 items-center whitespace-nowrap animate-marquee">
       
       <!-- Set 1 of Logos (Uniform & Synchronized) -->
       <div class="flex items-center gap-4 sm:gap-6 shrink-0">
         <?php if (!empty($brands)): ?>
           <?php foreach ($brands as $brand): ?>
-            <div class="h-12 sm:h-14 px-5 py-2 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/80 dark:border-white/10 shadow-xs flex items-center justify-center shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
+            <div class="h-16 sm:h-20 min-w-[170px] sm:min-w-[210px] px-6 sm:px-8 py-3 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/90 dark:border-white/10 shadow-xs flex items-center justify-center shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
               <?php if (!empty($brand['logo_image'])): ?>
-                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name'] ?: 'Klien SOLVETA') ?>" class="h-7 sm:h-8 w-auto max-w-[130px] object-contain filter grayscale opacity-75 dark:opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name'] ?: 'Klien SOLVETA') ?>" class="h-10 sm:h-12 w-auto max-w-[170px] max-h-12 sm:max-h-14 object-contain filter grayscale opacity-80 dark:opacity-85 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
               <?php else: ?>
                 <span class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= esc($brand['name'] ?: 'Klien SOLVETA') ?></span>
               <?php endif; ?>
@@ -142,9 +142,9 @@
             ];
             foreach ($defaultClients as $cl):
           ?>
-            <div class="h-12 sm:h-14 px-5 py-2 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/80 dark:border-white/10 shadow-xs flex items-center justify-center gap-2.5 shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
-              <i data-lucide="<?= $cl['icon'] ?>" class="w-4 h-4 text-[#C4264A]"></i>
-              <span class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= $cl['name'] ?></span>
+            <div class="h-16 sm:h-20 min-w-[170px] sm:min-w-[210px] px-6 sm:px-8 py-3 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/90 dark:border-white/10 shadow-xs flex items-center justify-center gap-3 shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
+              <i data-lucide="<?= $cl['icon'] ?>" class="w-6 h-6 text-[#C4264A]"></i>
+              <span class="text-sm sm:text-base font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= $cl['name'] ?></span>
             </div>
           <?php endforeach; ?>
         <?php endif; ?>
@@ -154,9 +154,9 @@
       <div class="flex items-center gap-4 sm:gap-6 shrink-0" aria-hidden="true">
         <?php if (!empty($brands)): ?>
           <?php foreach ($brands as $brand): ?>
-            <div class="h-12 sm:h-14 px-5 py-2 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/80 dark:border-white/10 shadow-xs flex items-center justify-center shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
+            <div class="h-16 sm:h-20 min-w-[170px] sm:min-w-[210px] px-6 sm:px-8 py-3 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/90 dark:border-white/10 shadow-xs flex items-center justify-center shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
               <?php if (!empty($brand['logo_image'])): ?>
-                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name'] ?: 'Klien SOLVETA') ?>" class="h-7 sm:h-8 w-auto max-w-[130px] object-contain filter grayscale opacity-75 dark:opacity-85 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                <img src="<?= esc($brand['logo_image']) ?>" alt="<?= esc($brand['name'] ?: 'Klien SOLVETA') ?>" class="h-10 sm:h-12 w-auto max-w-[170px] max-h-12 sm:max-h-14 object-contain filter grayscale opacity-80 dark:opacity-85 group-hover:grayscale-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300">
               <?php else: ?>
                 <span class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= esc($brand['name'] ?: 'Klien SOLVETA') ?></span>
               <?php endif; ?>
@@ -164,16 +164,13 @@
           <?php endforeach; ?>
         <?php else: ?>
           <?php foreach ($defaultClients as $cl): ?>
-            <div class="h-12 sm:h-14 px-5 py-2 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/80 dark:border-white/10 shadow-xs flex items-center justify-center gap-2.5 shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
-              <i data-lucide="<?= $cl['icon'] ?>" class="w-4 h-4 text-[#C4264A]"></i>
-              <span class="text-xs sm:text-sm font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= $cl['name'] ?></span>
+            <div class="h-16 sm:h-20 min-w-[170px] sm:min-w-[210px] px-6 sm:px-8 py-3 rounded-2xl bg-white dark:bg-[#14151B] border border-neutral-200/90 dark:border-white/10 shadow-xs flex items-center justify-center gap-3 shrink-0 group hover:border-[#C4264A] hover:shadow-md transition-all duration-300">
+              <i data-lucide="<?= $cl['icon'] ?>" class="w-6 h-6 text-[#C4264A]"></i>
+              <span class="text-sm sm:text-base font-bold text-neutral-800 dark:text-neutral-200 uppercase tracking-wider font-sans"><?= $cl['name'] ?></span>
             </div>
           <?php endforeach; ?>
         <?php endif; ?>
       </div>
-
-    </div>
-  </div>
 
     </div>
   </div>
@@ -969,7 +966,7 @@
           </ul>
         </div>
         <a href="<?= base_url('layanan/custom') ?>" class="mt-4 w-full py-2.5 rounded-xl bg-[#C4264A] hover:bg-[#8E1738] text-white text-xs font-semibold transition flex items-center justify-center gap-1.5">
-          <span>Pilih Paket Custom (Mulai Rp 1.5 jt)</span>
+          <span>Pilih Paket Custom (Menyesuaikan Kebutuhan)</span>
           <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
         </a>
       </div>
@@ -1576,6 +1573,34 @@
       </p>
     </div>
 
+    <?php
+      $tierMap = [];
+      if (!empty($tiers)) {
+          foreach ($tiers as $t) {
+              $tierMap[$t['id']] = $t;
+          }
+      }
+      $starterPrice = !empty($tierMap['basic']['price']) ? $tierMap['basic']['price'] : 'Rp 249K';
+      $starterRenewal = !empty($tierMap['basic']['renewal_price']) ? $tierMap['basic']['renewal_price'] : '199k/tahun*';
+
+      $bisnisPrice = !empty($tierMap['standard']['price']) ? $tierMap['standard']['price'] : (!empty($tierMap['bisnis']['price']) ? $tierMap['bisnis']['price'] : 'Rp 599K');
+      $bisnisRenewal = !empty($tierMap['standard']['renewal_price']) ? $tierMap['standard']['renewal_price'] : (!empty($tierMap['bisnis']['renewal_price']) ? $tierMap['bisnis']['renewal_price'] : '349k/tahun*');
+
+      $rawCustomPrice = !empty($tierMap['custom']['price']) ? $tierMap['custom']['price'] : 'Menyesuaikan Kebutuhan';
+      if (strpos($rawCustomPrice, '1.5') !== false) {
+          $customPrice = 'Menyesuaikan Kebutuhan';
+      } else {
+          $customPrice = $rawCustomPrice;
+      }
+
+      $rawCustomRenewal = !empty($tierMap['custom']['renewal_price']) ? $tierMap['custom']['renewal_price'] : 'Mengikuti kompleksitas konsep & permintaan website yang dibutuhkan';
+      if (strpos($rawCustomRenewal, '1.5') !== false) {
+          $customRenewal = 'Mengikuti kompleksitas konsep & permintaan website yang dibutuhkan';
+      } else {
+          $customRenewal = $rawCustomRenewal;
+      }
+    ?>
+
     <!-- 3 Tiers Grid Summary (Starter, Bisnis, Custom) -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 items-stretch">
       
@@ -1585,8 +1610,8 @@
           <div>
             <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">Landing Page &amp; Portofolio</span>
             <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket STARTER</h3>
-            <div class="text-3xl font-black text-[#111215] dark:text-white mt-1">Rp 249K</div>
-            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 199k/tahun*</span>
+            <div class="text-3xl font-black text-[#111215] dark:text-white mt-1"><?= esc($starterPrice) ?></div>
+            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: <?= esc($starterRenewal) ?></span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
             Cocok untuk kebutuhan pribadi, promosi UMKM, landing page produk tunggal, CV digital, &amp; portofolio profil.
@@ -1614,8 +1639,8 @@
           <div>
             <span class="text-[10px] font-sans uppercase text-[#C4264A] font-bold block">Company Profile &amp; Bisnis</span>
             <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket BISNIS</h3>
-            <div class="text-3xl font-black text-[#C4264A] dark:text-[#F05A72] mt-1">Rp 599K</div>
-            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: 349k/tahun*</span>
+            <div class="text-3xl font-black text-[#C4264A] dark:text-[#F05A72] mt-1"><?= esc($bisnisPrice) ?></div>
+            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Perpanjangan: <?= esc($bisnisRenewal) ?></span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
             Solusi terlengkap untuk profil perusahaan, CV, PT, instansi, home industry, portal berita, dan katalog produk modern.
@@ -1641,8 +1666,8 @@
           <div>
             <span class="text-[10px] font-sans uppercase text-neutral-400 font-bold block">Sistem Web &amp; Database Khusus</span>
             <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket CUSTOM</h3>
-            <div class="text-3xl font-black text-[#111215] dark:text-white mt-1">Rp 1.5 jt <span class="text-xs font-normal text-neutral-400">/ Sesuai Kebutuhan</span></div>
-            <span class="text-[11px] text-neutral-400 font-sans block mt-0.5">Biaya Fleksibel Sesuai Kompleksitas</span>
+            <div class="text-2xl sm:text-3xl font-black text-[#111215] dark:text-white mt-1"><?= esc($customPrice) ?></div>
+            <span class="text-[11px] text-neutral-500 dark:text-neutral-400 font-sans block mt-1 leading-snug"><?= esc($customRenewal) ?></span>
           </div>
           <p class="text-xs text-neutral-500 leading-relaxed">
             Untuk start-up, korporasi, toko online (e-commerce), booking jadwal, platform SaaS, dan otomasi alur kerja AI.

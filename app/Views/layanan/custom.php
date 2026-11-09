@@ -6,7 +6,19 @@
     $waClean = preg_replace('/[^0-9]/', '', $contact['whatsapp_number'] ?? '6285876603826');
     if (substr($waClean, 0, 1) === '0') $waClean = '62' . substr($waClean, 1);
     
-    $waOrderCustom = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Lead Engineer SOLVETA, saya ingin berkonsultasi mengenai Paket Sistem & Website CUSTOM (Mulai Rp 1.5 jt / Sesuai Kebutuhan).");
+    $tierMap = [];
+    if (!empty($tiers)) {
+        foreach ($tiers as $t) {
+            $tierMap[$t['id']] = $t;
+        }
+    }
+    $rawCustomPrice = !empty($tierMap['custom']['price']) ? $tierMap['custom']['price'] : 'Menyesuaikan Kebutuhan';
+    $customPrice = (strpos($rawCustomPrice, '1.5') !== false) ? 'Menyesuaikan Kebutuhan' : $rawCustomPrice;
+
+    $rawCustomRenewal = !empty($tierMap['custom']['renewal_price']) ? $tierMap['custom']['renewal_price'] : 'Mengikuti kompleksitas konsep & permintaan website yang dibutuhkan';
+    $customRenewal = (strpos($rawCustomRenewal, '1.5') !== false) ? 'Mengikuti kompleksitas konsep & permintaan website yang dibutuhkan' : $rawCustomRenewal;
+
+    $waOrderCustom = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Lead Engineer SOLVETA, saya ingin berkonsultasi mengenai Paket Sistem & Website CUSTOM (Menyesuaikan Kebutuhan & Kompleksitas Konsep).");
 ?>
 
 <!-- ========================================================================= -->
@@ -22,7 +34,7 @@
             <span class="w-2 h-2 rounded-full bg-[#C4264A] animate-pulse"></span>
             <span class="font-bold tracking-wider uppercase font-sans">PAKET LAYANAN 03 • CUSTOM (HIGH RECOMMENDATION)</span>
             <span class="text-neutral-400">•</span>
-            <span>Mulai Rp 1.5 jt / Sesuai Kebutuhan</span>
+            <span>Menyesuaikan Kebutuhan</span>
         </div>
 
         <!-- Headline -->
@@ -51,7 +63,7 @@
             <a href="<?= base_url('layanan/custom') ?>" 
                class="px-4 py-2 rounded-full text-xs font-bold transition-all bg-[#C4264A] text-white shadow-md flex items-center gap-1.5">
                 <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
-                <span>3. Custom (Mulai Rp 1.5 jt)</span>
+                <span>3. Custom (Sesuai Kebutuhan)</span>
                 <span class="px-1.5 py-0.2 rounded text-[8.5px] font-black bg-white text-[#C4264A] uppercase">Rekomendasi</span>
             </a>
             <a href="<?= base_url('layanan#aplikasi-lokal') ?>" 
@@ -174,10 +186,10 @@
                         <div class="text-[10px] font-bold text-[#C4264A] uppercase font-sans">BIAYA INVESTASI RESMI</div>
                         <div class="space-y-0.5">
                             <div class="text-2xl sm:text-3xl font-black text-[#C4264A] dark:text-[#F05A72]">
-                                Mulai Rp 1.5 Jt
+                                <?= esc($customPrice) ?>
                             </div>
-                            <span class="text-[10px] text-neutral-500 block font-sans">Biaya Mengikuti Kompleksitas &amp; Scope</span>
-                            <span class="text-[10px] text-neutral-400">Masa Aktif 1 Tahun | Estimasi Jadi 7-14 Hari</span>
+                            <span class="text-[10px] text-neutral-500 block font-sans leading-snug"><?= esc($customRenewal) ?></span>
+                            <span class="text-[10px] text-neutral-400">Masa Aktif 1 Tahun | Estimasi Jadi 7-14 Hari (Fleksibel)</span>
                         </div>
                         <a href="<?= $waOrderCustom ?>" target="_blank"
                            class="w-full py-3.5 px-4 rounded-2xl text-white bg-[#C4264A] hover:bg-[#8E1738] text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-all">

@@ -202,7 +202,7 @@
                                     class="w-full px-4 py-3 rounded-2xl bg-white dark:bg-[#1A1C22] border border-[#E8E9ED] dark:border-neutral-800 text-xs sm:text-sm text-[#111215] dark:text-white focus:outline-none focus:ring-2 focus:ring-[#C4264A]/30 transition">
                                 <option value="Paket Starter — Landing Page UMKM (Rp 249K)">Paket Starter — Landing Page UMKM (Rp 249K)</option>
                                 <option value="Paket Bisnis — Company Profile & Portal Berita (Rp 599K)" selected>Paket Bisnis — Company Profile &amp; Portal Berita (Rp 599K)</option>
-                                <option value="Paket Custom — Enterprise Cloud Platform & API (Mulai Rp 1.5 jt)">Paket Custom — Enterprise Cloud Platform &amp; API (Mulai Rp 1.5 jt)</option>
+                                <option value="Paket Custom — Enterprise Cloud Platform & API (Menyesuaikan Kebutuhan)">Paket Custom — Enterprise Cloud Platform &amp; API (Menyesuaikan Kebutuhan)</option>
                                 <option value="Aplikasi Mobile & Desktop Instalasi Lokal (Harga Mengikuti Kebutuhan)">Aplikasi Mobile &amp; Desktop Instalasi Lokal (Harga Mengikuti Kebutuhan)</option>
                                 <option value="Kebutuhan Custom / Redesign Website Lama">Kebutuhan Custom / Redesign Website Lama</option>
                             </select>

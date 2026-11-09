@@ -754,7 +754,7 @@
                     <ul class="space-y-2.5 text-xs text-neutral-600 dark:text-neutral-400">
                         <li><a href="<?= base_url('layanan/starter') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Paket Starter (Rp 249K)</a></li>
                         <li><a href="<?= base_url('layanan/bisnis') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Paket Bisnis (Rp 599K)</a></li>
-                        <li><a href="<?= base_url('layanan/custom') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors font-semibold text-[#C4264A] dark:text-[#F05A72]">Paket Custom (Mulai Rp 1.5 jt) ★</a></li>
+                        <li><a href="<?= base_url('layanan/custom') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors font-semibold text-[#C4264A] dark:text-[#F05A72]">Paket Custom (Sesuai Kebutuhan) ★</a></li>
                         <li><a href="<?= base_url('layanan#aplikasi-lokal') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Aplikasi Mobile &amp; Desktop Lokal</a></li>
                         <li><a href="<?= base_url('layanan#addons') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Layanan Biaya Tambahan (Add-ons)</a></li>
                     </ul>

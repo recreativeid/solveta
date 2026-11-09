@@ -12,6 +12,24 @@
     $waAppLokalUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai Layanan Pembuatan Aplikasi Mobile/Desktop Instalasi Lokal (On-Premise).");
     $waStandardUrl = $waBisnisUrl;
     $waPlatinumUrl = $waCustomUrl;
+
+    $tierMap = [];
+    if (!empty($tiers)) {
+        foreach ($tiers as $t) {
+            $tierMap[$t['id']] = $t;
+        }
+    }
+    $starterPrice = !empty($tierMap['basic']['price']) ? $tierMap['basic']['price'] : 'Rp 249K';
+    $starterRenewal = !empty($tierMap['basic']['renewal_price']) ? $tierMap['basic']['renewal_price'] : '199k/tahun*';
+
+    $bisnisPrice = !empty($tierMap['standard']['price']) ? $tierMap['standard']['price'] : (!empty($tierMap['bisnis']['price']) ? $tierMap['bisnis']['price'] : 'Rp 599K');
+    $bisnisRenewal = !empty($tierMap['standard']['renewal_price']) ? $tierMap['standard']['renewal_price'] : (!empty($tierMap['bisnis']['renewal_price']) ? $tierMap['bisnis']['renewal_price'] : '349k/tahun*');
+
+    $rawCustomPrice = !empty($tierMap['custom']['price']) ? $tierMap['custom']['price'] : 'Menyesuaikan Kebutuhan';
+    $customPrice = (strpos($rawCustomPrice, '1.5') !== false) ? 'Menyesuaikan Kebutuhan' : $rawCustomPrice;
+
+    $rawCustomRenewal = !empty($tierMap['custom']['renewal_price']) ? $tierMap['custom']['renewal_price'] : 'Mengikuti kompleksitas konsep & permintaan website yang dibutuhkan';
+    $customRenewal = (strpos($rawCustomRenewal, '1.5') !== false) ? 'Mengikuti kompleksitas konsep & permintaan website yang dibutuhkan' : $rawCustomRenewal;
 ?>
 
 <!-- ========================================================================= -->
@@ -52,7 +70,7 @@
             </a>
             <a href="#custom" class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
                 <i data-lucide="sliders" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>3. Custom (Mulai Rp 1.5 jt)</span>
+                <span>3. Custom (Sesuai Kebutuhan)</span>
             </a>
             <a href="#aplikasi-lokal" class="px-4 py-2 rounded-full text-xs font-semibold bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-[#C4264A] transition-all flex items-center gap-1.5">
                 <i data-lucide="hard-drive" class="w-3.5 h-3.5 text-[#C4264A]"></i>
@@ -306,7 +324,7 @@
             </div>
 
             <!-- ============================================================= -->
-            <!-- 3. PAKET CUSTOM (Mulai Rp 1.5 jt / Sesuai Kebutuhan)          -->
+            <!-- 3. PAKET CUSTOM (Menyesuaikan Kebutuhan & Kompleksitas Konsep)-->
             <!-- ============================================================= -->
             <div id="custom" class="rounded-3xl border border-[#E8E9ED] dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] p-6 sm:p-7 flex flex-col justify-between hover:shadow-editorial hover:border-red-200 transition-all">
                 <div class="space-y-6">
@@ -318,10 +336,9 @@
                         <h3 class="text-xl font-bold text-[#111215] dark:text-white">Paket CUSTOM</h3>
                         <div class="pt-2">
                             <div class="flex items-baseline gap-1">
-                                <span class="text-3xl sm:text-4xl font-black text-[#111215] dark:text-white">Rp 1.5 jt</span>
-                                <span class="text-xs font-normal text-neutral-400">/ Sesuai Kebutuhan</span>
+                                <span class="text-2xl sm:text-3xl font-black text-[#111215] dark:text-white"><?= esc($customPrice) ?></span>
                             </div>
-                            <div class="text-[11px] text-neutral-500 mt-1 font-sans">Biaya Fleksibel Mengikuti Kompleksitas Sistem</div>
+                            <div class="text-[11px] text-neutral-500 mt-1 font-sans leading-snug"><?= esc($customRenewal) ?></div>
                         </div>
                     </div>
 

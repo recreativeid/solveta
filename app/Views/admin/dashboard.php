@@ -975,7 +975,7 @@
                 <div class="flex items-center justify-between">
                     <div>
                         <h2 class="text-xs font-semibold text-gray-900 uppercase tracking-wider">Manajemen 3 Paket Layanan Website &amp; Aplikasi Solveta (Versi Sekarang)</h2>
-                        <p class="text-[11px] text-gray-400">Kelola spesifikasi, harga resmi (Starter Rp 249K, Bisnis Rp 599K, Custom Mulai Rp 1.5 Jt), checklist fitur, addon layanan &amp; template WhatsApp.</p>
+                        <p class="text-[11px] text-gray-400">Kelola spesifikasi, harga resmi (Starter Rp 249K, Bisnis Rp 599K, Custom Menyesuaikan Kebutuhan), checklist fitur, addon layanan &amp; template WhatsApp.</p>
                     </div>
                 </div>
 
@@ -2519,6 +2519,7 @@
                     <div>
                         <label class="block text-[11px] font-medium text-gray-600 mb-1">Harga Tampilan (Display)</label>
                         <input type="text" name="price" id="price-input-price" required class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 outline-none font-sans font-bold text-[#8B0021]">
+                        <p class="text-[9.5px] text-gray-400 mt-1">💡 Khusus Paket Custom: Isi <b>Menyesuaikan Kebutuhan</b></p>
                     </div>
                 </div>
 

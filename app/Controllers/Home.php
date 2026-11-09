@@ -70,10 +70,12 @@ class Home extends BaseController
     {
         $copyModel = new SiteCopyModel();
         $contactModel = new ContactModel();
+        $pricingModel = new PricingModel();
 
         $data = [
             'copy' => $copyModel->getCopy('id'),
             'contact' => $contactModel->getContact(),
+            'tiers' => $pricingModel->getTiers('id'),
             'title' => 'Layanan Starter — Landing Page & Web Promosi UMKM | SOLVETA',
             'meta_description' => 'Paket website Starter SOLVETA: landing page 1 halaman berkonversi tinggi, loading cepat, integrasi WhatsApp direct, domain & hosting gratis untuk UMKM rintisan.',
             'current_page' => 'layanan',
@@ -90,10 +92,12 @@ class Home extends BaseController
     {
         $copyModel = new SiteCopyModel();
         $contactModel = new ContactModel();
+        $pricingModel = new PricingModel();
 
         $data = [
             'copy' => $copyModel->getCopy('id'),
             'contact' => $contactModel->getContact(),
+            'tiers' => $pricingModel->getTiers('id'),
             'title' => 'Layanan Bisnis — Company Profile Korporasi & Web Berita | SOLVETA',
             'meta_description' => 'Paket website Bisnis SOLVETA: company profile perusahaan (PT/CV), portal media siber & berita, web jasa profesional, katalog B2B, email domain, CMS admin mandiri & SEO Google.',
             'current_page' => 'layanan',
@@ -118,10 +122,12 @@ class Home extends BaseController
     {
         $copyModel = new SiteCopyModel();
         $contactModel = new ContactModel();
+        $pricingModel = new PricingModel();
 
         $data = [
             'copy' => $copyModel->getCopy('id'),
             'contact' => $contactModel->getContact(),
+            'tiers' => $pricingModel->getTiers('id'),
             'title' => 'Layanan Custom — Enterprise SaaS, Custom Platform & API System | SOLVETA',
             'meta_description' => 'Paket teknologi Custom SOLVETA: arsitektur web application skala besar, sistem ERP multi-cabang, POS hybrid offline-first, database relasional, dan integrasi API.',
             'current_page' => 'layanan',

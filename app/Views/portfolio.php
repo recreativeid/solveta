@@ -621,46 +621,39 @@
 </section>
 
 <!-- ========================================================================= -->
-<!-- 4. BOTTOM RED-MAROON CTA BANNER (Exact Match to Mockup)                   -->
+<!-- 4. CTA KONSULTASI ADMIN ZAHRA (VERSI PORTOFOLIO)                         -->
 <!-- ========================================================================= -->
-<section class="py-16 sm:py-24 bg-[#FFFFFF] dark:bg-[#171717] font-sans">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="relative overflow-hidden rounded-3xl gradient-hero text-white p-8 sm:p-14 shadow-editorial">
-            <!-- Glow effect background -->
-            <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-white/10 blur-3xl pointer-events-none"></div>
-
-            <div class="relative z-10 space-y-5 max-w-3xl">
-                <!-- Eyebrow Pill -->
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-white text-[11px] font-bold tracking-wider uppercase">
-                    <span class="w-2 h-2 rounded-full bg-white"></span>
-                    <span>KONSULTASI &amp; ESTIMASI GRATIS</span>
+<section id="kontak-zahra" class="py-16 sm:py-20 bg-white dark:bg-[#0E0F12] font-sans border-t border-[#E8E9ED] dark:border-neutral-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+        <div class="rounded-3xl border border-red-200 dark:border-neutral-800 bg-[#FAFAFC] dark:bg-[#14151B] p-8 sm:p-12 flex flex-col md:flex-row items-center justify-between gap-8 shadow-sm hover:shadow-editorial hover:border-red-300 transition-all">
+            
+            <div class="flex items-center gap-5">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border-2 border-[#C4264A] shadow-md">
+                    <img src="<?= base_url('images/cs-zahra.jpg') ?>" alt="Admin Zahra" class="w-full h-full object-cover object-top">
                 </div>
-
-                <!-- Main Heading -->
-                <h2 class="text-2xl sm:text-4xl font-black tracking-tight leading-tight text-white text-balance">
-                    Ingin Memiliki Website &amp; Platform Profesional Seperti di Atas?
-                </h2>
-
-                <!-- Description -->
-                <p class="text-xs sm:text-sm text-white/90 leading-relaxed max-w-2xl">
-                    Diskusikan rancangan arsitektur sistem, timeline pengerjaan, dan estimasi investasi terbaik langsung bersama lead tech architect SOLVETA.
-                </p>
-
-                <!-- Dual Buttons -->
-                <div class="pt-4 flex flex-col sm:flex-row items-center gap-3">
-                    <a href="https://wa.me/<?= $waClean ?>?text=<?= rawurlencode('Halo SOLVETA, saya ingin berkonsultasi mengenai pembuatan website & platform profesional untuk bisnis kami.') ?>" target="_blank" rel="noopener noreferrer"
-                       class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-neutral-50 text-[#171717] font-bold text-xs sm:text-sm shadow-md transition-all active:scale-95">
-                        <i data-lucide="message-circle" class="w-4 h-4 text-[#C4264A]"></i>
-                        <span>Hubungi WhatsApp (+<?= substr($waClean, 0, 2) ?> <?= substr($waClean, 2, 3) ?>-<?= substr($waClean, 5, 4) ?>-<?= substr($waClean, 9) ?>)</span>
-                    </a>
-                    
-                    <a href="<?= base_url('kontak') ?>"
-                       class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#76152F]/70 hover:bg-[#76152F] border border-white/25 text-white font-bold text-xs sm:text-sm transition-all active:scale-95">
-                        <span>Isi Form Brief Proyek</span>
-                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                    </a>
+                <div class="space-y-1">
+                    <div class="inline-flex items-center gap-1.5 text-[10px] font-sans uppercase tracking-wider text-emerald-600 dark:text-emerald-400 font-bold">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                        <span>Live Verified Support (&lt; 5 Menit)</span>
+                    </div>
+                    <h3 class="text-xl sm:text-2xl font-extrabold text-[#111215] dark:text-white">
+                        Konsultasi Langsung Bersama Admin Zahra
+                    </h3>
+                    <p class="text-xs text-neutral-500">
+                        Lead Customer Service &amp; Project Coordinator Resmi SOLVETA • Jam Kerja: 08:00 – 21:00 WIB
+                    </p>
                 </div>
             </div>
+
+            <div class="shrink-0 w-full md:w-auto">
+                <a href="https://wa.me/<?= $waClean ?>?text=<?= rawurlencode('Halo CS Zahra & Lead Engineer SOLVETA, saya melihat portofolio proyek SOLVETA dan tertarik ingin berkonsultasi mengenai pembuatan sistem / website serupa untuk bisnis saya.') ?>" target="_blank" rel="noopener noreferrer"
+                   class="w-full md:w-auto px-8 py-4 rounded-full text-xs sm:text-sm font-bold text-white bg-[#C4264A] hover:bg-[#8E1738] shadow-lg shadow-red-500/20 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <i data-lucide="message-circle" class="w-4 h-4"></i>
+                    <span>Konsultasi via WhatsApp</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </a>
+            </div>
+
         </div>
     </div>
 </section>

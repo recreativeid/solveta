@@ -50,7 +50,7 @@
             <a href="<?= base_url('layanan/custom') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-white dark:bg-[#1A1C22] text-[#111215] dark:text-white border border-[#E8E9ED] dark:border-neutral-800 hover:border-[#C4264A] hover:text-[#C4264A] shadow-xs transition-all flex items-center gap-1.5">
                 <i data-lucide="sliders" class="w-3.5 h-3.5 text-neutral-400"></i>
-                <span>3. Custom (Mulai Rp 1.5 jt)</span>
+                <span>3. Custom (Sesuai Kebutuhan)</span>
             </a>
             <a href="<?= base_url('layanan#aplikasi-lokal') ?>" 
                class="px-4 py-2 rounded-full text-xs font-semibold bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:text-[#C4264A] transition-all flex items-center gap-1.5">
