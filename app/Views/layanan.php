@@ -10,6 +10,8 @@
     $waBisnisUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin memesan Paket Layanan Website BISNIS (Rp 699K).");
     $waCustomUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo Lead Engineer & CS Zahra SOLVETA, saya ingin berkonsultasi mengenai Paket Layanan CUSTOM / Kebutuhan Khusus & Enterprise.");
     $waAppLokalUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai Layanan Pembuatan Aplikasi Mobile/Desktop Instalasi Lokal (On-Premise).");
+    $waStandardUrl = $waBisnisUrl;
+    $waPlatinumUrl = $waCustomUrl;
 ?>
 
 <!-- ========================================================================= -->
@@ -639,7 +641,7 @@
             </div>
 
             <div class="pt-2">
-                <a href="<?= $waStandardUrl ?>" target="_blank"
+                <a href="<?= $waBisnisUrl ?>" target="_blank"
                    class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full text-xs sm:text-sm font-bold text-white bg-[#C4264A] hover:bg-[#8E1738] shadow-lg shadow-red-500/20 transition-all cursor-pointer">
                     <i data-lucide="message-circle" class="w-4 h-4"></i>
                     <span>Konsultasi WhatsApp Sekarang</span>
