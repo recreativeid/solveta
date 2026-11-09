@@ -1,5 +1,5 @@
 # ==============================================================================
-# SOLVETA — ROOT CPANEL APACHE / LITESPEED CONFIGURATION
+# SOLVETA — ROOT APACHE / LITESPEED / XAMPP CONFIGURATION
 # ==============================================================================
 
 DirectoryIndex index.php
@@ -13,10 +13,10 @@ DirectoryIndex index.php
     RewriteRule ^ - [L]
 
     # If the requested file exists in public/, rewrite directly to public/
-    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f [OR]
-    RewriteCond %{DOCUMENT_ROOT}/public/$1 -d
+    RewriteCond %{DOCUMENT_ROOT}/solveta/public/$1 -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
     RewriteRule ^(.*)$ public/$1 [L]
 
     # Otherwise send request to root front controller
-    RewriteRule ^(.*)$ index.php [L,QSA]
+    RewriteRule ^(.*)$ index.php/$1 [L,QSA]
 </IfModule>

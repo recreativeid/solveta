@@ -69,6 +69,15 @@ PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'addon_services' AND COLUMN_NAME = 'description');
 SET @sql = IF(@col = 0, "ALTER TABLE `addon_services` ADD COLUMN `description` TEXT DEFAULT NULL AFTER `price_description`", 'SELECT 1');
 PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+-- Migration: Add country column to site_copy & pricing_tiers if not exists
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'site_copy' AND COLUMN_NAME = 'country');
+SET @sql = IF(@col = 0, "ALTER TABLE `site_copy` ADD COLUMN `country` VARCHAR(10) DEFAULT 'id' AFTER `id`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+
+SET @col = (SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'pricing_tiers' AND COLUMN_NAME = 'country');
+SET @sql = IF(@col = 0, "ALTER TABLE `pricing_tiers` ADD COLUMN `country` VARCHAR(10) DEFAULT 'id' AFTER `name`", 'SELECT 1');
+PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
 -- =========================================================
 
 -- ---------------------------------------------------------
@@ -92,6 +101,7 @@ ON DUPLICATE KEY UPDATE `username`='developer', `password_hash`='$2y$10$6n.mJZAy
 -- ---------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `site_copy` (
   `id` INT PRIMARY KEY AUTO_INCREMENT,
+  `country` VARCHAR(10) DEFAULT 'id',
   `hero_eyebrow` VARCHAR(255) DEFAULT 'SOLVE TECHNOLOGY AGENCY',
   `hero_headline` TEXT NOT NULL,
   `hero_subtitle` TEXT NOT NULL,
@@ -117,9 +127,11 @@ CREATE TABLE IF NOT EXISTS `site_copy` (
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
-INSERT INTO `site_copy` (`id`, `hero_eyebrow`, `hero_headline`, `hero_subtitle`, `hero_cta_primary`, `hero_cta_secondary`, `portfolio_title`, `portfolio_subtitle`, `pricing_title`, `pricing_subtitle`, `consultation_title`, `consultation_desc`, `consultation_button`, `philosophy_quote_1`, `philosophy_quote_2`, `marquee_title`, `site_logo`, `profile_video`)
+-- 1. Indonesia Copy
+INSERT INTO `site_copy` (`id`, `country`, `hero_eyebrow`, `hero_headline`, `hero_subtitle`, `hero_cta_primary`, `hero_cta_secondary`, `portfolio_title`, `portfolio_subtitle`, `pricing_title`, `pricing_subtitle`, `consultation_title`, `consultation_desc`, `consultation_button`, `philosophy_quote_1`, `philosophy_quote_2`, `marquee_title`, `site_logo`, `profile_video`)
 VALUES (
   1,
+  'id',
   'SOLVE TECHNOLOGY AGENCY',
   'Mengubah Tantangan Bisnis Menjadi Solusi Digital.',
   'Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.',
@@ -138,6 +150,46 @@ VALUES (
   '/solveta-logo.png',
   '/videos/profile.mp4'
 ) ON DUPLICATE KEY UPDATE 
+  `country`='id',
+  `hero_eyebrow`=VALUES(`hero_eyebrow`), 
+  `hero_headline`=VALUES(`hero_headline`), 
+  `hero_subtitle`=VALUES(`hero_subtitle`), 
+  `hero_cta_primary`=VALUES(`hero_cta_primary`),
+  `hero_cta_secondary`=VALUES(`hero_cta_secondary`),
+  `portfolio_title`=VALUES(`portfolio_title`), 
+  `portfolio_subtitle`=VALUES(`portfolio_subtitle`),
+  `pricing_title`=VALUES(`pricing_title`),
+  `pricing_subtitle`=VALUES(`pricing_subtitle`),
+  `consultation_title`=VALUES(`consultation_title`),
+  `consultation_desc`=VALUES(`consultation_desc`),
+  `consultation_button`=VALUES(`consultation_button`),
+  `philosophy_quote_1`=VALUES(`philosophy_quote_1`),
+  `philosophy_quote_2`=VALUES(`philosophy_quote_2`);
+
+-- 2. Malaysia Copy
+INSERT INTO `site_copy` (`id`, `country`, `hero_eyebrow`, `hero_headline`, `hero_subtitle`, `hero_cta_primary`, `hero_cta_secondary`, `portfolio_title`, `portfolio_subtitle`, `pricing_title`, `pricing_subtitle`, `consultation_title`, `consultation_desc`, `consultation_button`, `philosophy_quote_1`, `philosophy_quote_2`, `marquee_title`, `site_logo`, `profile_video`)
+VALUES (
+  2,
+  'my',
+  'SOLVE TECHNOLOGY AGENCY',
+  'Mengubah Cabaran Bisnes Menjadi Solusi Digital.',
+  'Banyak perniagaan terbeban dengan proses manual, maklumat tidak tersusun, dan ketiadaan integrasi. SOLVETA hadir memudahkan masalah kompleks menerusi solusi digital dan automasi yang efisien.',
+  'Tempah Sekarang',
+  'Ketahui Lebih Lanjut',
+  'Portofolio Projek Website Yang Telah Kami Bina',
+  'Koleksi hasil kerja digital terbaik yang menggabungkan reka bentuk visual premium dengan prestasi teknologi mantap.',
+  'PAKEJ WEBSITE SOLVETA',
+  'Pilihan pakej website lengkap untuk perniagaan & organisasi di Malaysia dengan harga telus tanpa kos tersembunyi.',
+  'TIDAK PASTI BAGAIMANA INGIN BERMULA?',
+  'Dapatkan konsultasi percuma bagi keperluan perniagaan anda. Kami akan syorkan solusi paling efisien.',
+  'Konsultasikan Keperluan Anda',
+  'Bukan sekadar membina teknologi.',
+  'Kami membina solusi.',
+  'DIPERCAYAI OLEH PELBAGAI PERNIAGAAN & INSTITUSI BERKEMBANG',
+  '/solveta-logo.png',
+  '/videos/profile.mp4'
+) ON DUPLICATE KEY UPDATE 
+  `country`='my',
   `hero_eyebrow`=VALUES(`hero_eyebrow`), 
   `hero_headline`=VALUES(`hero_headline`), 
   `hero_subtitle`=VALUES(`hero_subtitle`), 
@@ -182,6 +234,7 @@ VALUES (
 CREATE TABLE IF NOT EXISTS `pricing_tiers` (
   `id` VARCHAR(50) PRIMARY KEY,
   `name` VARCHAR(100) NOT NULL,
+  `country` VARCHAR(10) DEFAULT 'id',
   `price_prefix` VARCHAR(50) DEFAULT NULL,
   `price` VARCHAR(100) NOT NULL,
   `price_badge` VARCHAR(100) DEFAULT NULL,
@@ -203,14 +256,16 @@ CREATE TABLE IF NOT EXISTS `pricing_tiers` (
   `sort_order` INT DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Delete old pricing data first for clean sync
+-- Delete old pricing data first for clean sync delete 
 DELETE FROM `pricing_tiers`;
 
-INSERT INTO `pricing_tiers` (`id`, `name`, `price_prefix`, `price`, `price_badge`, `renewal_price`, `active_period`, `delivery_time`, `popular`, `popular_label`, `features_json`, `checklist_json`, `domain_addons_json`, `email_addons_json`, `revision_rules_json`, `custom_note`, `suitability`, `button_label`, `button_variant`, `wa_message`, `sort_order`)
+INSERT INTO `pricing_tiers` (`id`, `name`, `country`, `price_prefix`, `price`, `price_badge`, `renewal_price`, `active_period`, `delivery_time`, `popular`, `popular_label`, `features_json`, `checklist_json`, `domain_addons_json`, `email_addons_json`, `revision_rules_json`, `custom_note`, `suitability`, `button_label`, `button_variant`, `wa_message`, `sort_order`)
 VALUES
+-- ================= INDONESIA TIERS =================
 (
   'basic', 
   'STARTER', 
+  'id',
   'mulai dari', 
   'Rp 349K', 
   '349K',
@@ -234,6 +289,7 @@ VALUES
 (
   'standard', 
   'STANDARD', 
+  'id',
   NULL, 
   'Rp 699K', 
   '699K',
@@ -257,6 +313,7 @@ VALUES
 (
   'premium', 
   'PREMIUM', 
+  'id',
   NULL, 
   'Rp 964K', 
   '964K',
@@ -280,6 +337,7 @@ VALUES
 (
   'custom', 
   'PLATINUM', 
+  'id',
   'Mulai', 
   'Rp 1.5 jt', 
   '1.5 jt',
@@ -298,6 +356,103 @@ VALUES
   'KONSULTASI PLATINUM', 
   'red', 
   'Halo SOLVETA, saya ingin mendiskusikan kebutuhan Custom Website & Sistem Khusus untuk bisnis kami.', 
+  4
+),
+-- ================= MALAYSIA TIERS =================
+(
+  'basic_my', 
+  'STARTER', 
+  'my',
+  NULL, 
+  'RM199', 
+  'RM199',
+  'RM149/tahun*',
+  '1 Tahun',
+  '1–2 hari bekerja',
+  FALSE, 
+  '',
+  '["Maksimum 1 halaman", "Tambahan halaman RM50/halaman", "2× semakan ringan (tidak mengubah brief asal)", "Domain percuma — pilihan .my, .site, .store, .xyz, .space, .fund, .shop dan lain-lain", "Hosting percuma", "Akses dashboard", "Website mesra telefon bimbit", "SSL Security", "SEO Friendly", "Penulisan kandungan website percuma", "Konsultasi percuma", "Akses & harga khas untuk ahli", "Kemudahan khas untuk rakan reseller"]', 
+  '[{"text": "Maksimum 1 halaman", "included": true}, {"text": "Tambahan halaman RM50/halaman", "included": true}, {"text": "2× semakan ringan (tidak mengubah brief asal)", "included": true}, {"text": "Domain percuma — pilihan .my, .site, .store, .xyz, .space, .fund, .shop dan lain-lain", "included": true}, {"text": "Hosting percuma", "included": true}, {"text": "Akses dashboard", "included": true}, {"text": "Website mesra telefon bimbit", "included": true}, {"text": "SSL Security", "included": true}, {"text": "SEO Friendly", "included": true}, {"text": "Penulisan kandungan website percuma", "included": true}, {"text": "Konsultasi percuma", "included": true}, {"text": "Akses & harga khas untuk ahli", "included": true}, {"text": "Kemudahan khas untuk rakan reseller", "included": true}]',
+  '[]',
+  '[]',
+  '{"light": "RM30 / semakan", "heavy": "RM50 / semakan", "extraPage": "RM50 / halaman"}',
+  NULL,
+  'Sesuai untuk perniagaan kecil, personal brand & individu', 
+  'Tempah Pakej STARTER (RM199)', 
+  'outline', 
+  'Salam SOLVETA, saya berminat untuk menempah Pakej STARTER RM199.', 
+  1
+),
+(
+  'business_my', 
+  'BUSINESS', 
+  'my',
+  NULL, 
+  'RM399', 
+  'RM399',
+  'RM199/tahun*',
+  '1 Tahun',
+  '3–5 hari bekerja',
+  FALSE, 
+  'Pilihan Terbaik',
+  '["Maksimum 4 halaman (3 halaman utama, 1 halaman dashboard)", "Tambahan halaman RM50/halaman", "2× semakan ringan (tidak mengubah brief asal)", "Domain percuma — .com, .my, .id, .site, .cloud, .online, .shop, .blog, .store, .org, .digital dan lain-lain", "Hosting percuma", "Akses dashboard", "Website mesra telefon bimbit", "SSL Security", "SEO Basic", "Jaminan penuh", "Penulisan kandungan website percuma", "Konsultasi percuma", "Akses & harga khas untuk ahli", "Kemudahan khas untuk rakan reseller"]', 
+  '[{"text": "Maksimum 4 halaman (3 halaman utama, 1 halaman dashboard)", "included": true}, {"text": "Tambahan halaman RM50/halaman", "included": true}, {"text": "2× semakan ringan (tidak mengubah brief asal)", "included": true}, {"text": "Domain percuma — .com, .my, .id, .site, .cloud, .online, .shop, .blog, .store, .org, .digital dan lain-lain", "included": true}, {"text": "Hosting percuma", "included": true}, {"text": "Akses dashboard", "included": true}, {"text": "Website mesra telefon bimbit", "included": true}, {"text": "SSL Security", "included": true}, {"text": "SEO Basic", "included": true}, {"text": "Jaminan penuh", "included": true}, {"text": "Penulisan kandungan website percuma", "included": true}, {"text": "Konsultasi percuma", "included": true}, {"text": "Akses & harga khas untuk ahli", "included": true}, {"text": "Kemudahan khas untuk rakan reseller", "included": true}]',
+  '[]',
+  '[]',
+  '{"light": "RM30 / semakan", "heavy": "RM50 / semakan", "extraPage": "RM50 / halaman"}',
+  NULL,
+  'Pilihan terbaik untuk perniagaan yang mahu tampil lebih profesional', 
+  'Tempah Pakej BUSINESS (RM399)', 
+  'outline', 
+  'Salam SOLVETA, saya berminat untuk menempah Pakej BUSINESS RM399.', 
+  2
+),
+(
+  'premium_my', 
+  'PREMIUM', 
+  'my',
+  NULL, 
+  'RM699', 
+  'RM699',
+  'RM249/tahun*',
+  '1 Tahun',
+  '5–7 hari bekerja',
+  FALSE, 
+  'Paling Popular',
+  '["Maksimum 7 halaman (6 halaman utama, 1 halaman dashboard)", "Tambahan halaman RM50/halaman", "2× semakan ringan (tidak mengubah brief asal)", "Domain premium percuma — .store, .org, .net, .digital, .it, .com, .media, .agency, .company dan lain-lain", "Hosting percuma", "Akses dashboard", "Website mesra telefon bimbit", "SEO Friendly", "Jaminan penuh", "Penulisan kandungan website percuma", "Konsultasi percuma", "Akses & harga khas untuk ahli", "Kemudahan khas untuk rakan reseller"]', 
+  '[{"text": "Maksimum 7 halaman (6 halaman utama, 1 halaman dashboard)", "included": true}, {"text": "Tambahan halaman RM50/halaman", "included": true}, {"text": "2× semakan ringan (tidak mengubah brief asal)", "included": true}, {"text": "Domain premium percuma — .store, .org, .net, .digital, .it, .com, .media, .agency, .company dan lain-lain", "included": true}, {"text": "Hosting percuma", "included": true}, {"text": "Akses dashboard", "included": true}, {"text": "Website mesra telefon bimbit", "included": true}, {"text": "SEO Friendly", "included": true}, {"text": "Jaminan penuh", "included": true}, {"text": "Penulisan kandungan website percuma", "included": true}, {"text": "Konsultasi percuma", "included": true}, {"text": "Akses & harga khas untuk ahli", "included": true}, {"text": "Kemudahan khas untuk rakan reseller", "included": true}]',
+  '[]',
+  '[]',
+  '{"light": "RM30 / semakan", "heavy": "RM50 / semakan", "extraPage": "RM50 / halaman"}',
+  NULL,
+  'Untuk perniagaan yang memerlukan website lebih lengkap & profesional', 
+  'Tempah Pakej PREMIUM (RM699)', 
+  'outline', 
+  'Salam SOLVETA, saya berminat untuk menempah Pakej PREMIUM RM699.', 
+  3
+),
+(
+  'platinum_my', 
+  'PLATINUM', 
+  'my',
+  'Mulai', 
+  'RM1,499', 
+  'RM1,499',
+  'Mengikut keperluan sistem',
+  '1 Tahun',
+  '7–9 hari bekerja',
+  TRUE, 
+  'Pakej Paling Lengkap',
+  '["Pakej lengkap untuk perniagaan, organisasi & projek profesional", "Domain percuma (.my, .com, .co, .dev dan lain-lain)", "Hosting percuma", "Akses dashboard", "Website mesra telefon bimbit", "SEO Friendly", "Jaminan penuh", "Integrasi API / aplikasi", "Penulisan kandungan website percuma", "Perkhidmatan hosting percuma", "SSL Security percuma", "Konsultasi percuma", "Akses & harga khas untuk ahli", "Kemudahan khas untuk rakan reseller"]', 
+  '[{"text": "Pakej lengkap untuk perniagaan, organisasi & projek profesional", "included": true}, {"text": "Domain percuma (.my, .com, .co, .dev dan lain-lain)", "included": true}, {"text": "Hosting percuma", "included": true}, {"text": "Akses dashboard", "included": true}, {"text": "Website mesra telefon bimbit", "included": true}, {"text": "SEO Friendly", "included": true}, {"text": "Jaminan penuh", "included": true}, {"text": "Integrasi API / aplikasi", "included": true}, {"text": "Penulisan kandungan website percuma", "included": true}, {"text": "Perkhidmatan hosting percuma", "included": true}, {"text": "SSL Security percuma", "included": true}, {"text": "Konsultasi percuma", "included": true}, {"text": "Akses & harga khas untuk ahli", "included": true}, {"text": "Kemudahan khas untuk rakan reseller", "included": true}]',
+  '[]',
+  '[]',
+  '{"light": "RM30 / semakan", "heavy": "RM50 / semakan", "extraPage": "RM50 / halaman"}',
+  NULL,
+  'Pakej lengkap untuk perniagaan, organisasi & projek profesional', 
+  'Tempah Pakej PLATINUM (RM1,499)', 
+  'red', 
+  'Salam SOLVETA, saya ingin berbincang mengenai Pakej PLATINUM RM1,499 & sistem khas.', 
   4
 );
 

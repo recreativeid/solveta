@@ -9,6 +9,7 @@ class SiteCopyModel extends Model
     protected $table = 'site_copy';
     protected $primaryKey = 'id';
     protected $allowedFields = [
+        'country',
         'hero_eyebrow',
         'hero_headline',
         'hero_subtitle',
@@ -39,28 +40,86 @@ class SiteCopyModel extends Model
     protected $useTimestamps = true;
     protected $updatedField  = 'updated_at';
 
-    public function getCopy(): array
+    public function getCopy(string $country = 'id'): array
     {
         if (! is_mysql_alive()) {
-            return $this->getDefaultCopy();
+            return $this->getDefaultCopy($country);
         }
 
         try {
-            $row = $this->first();
-            if ($row) {
-                return (array) $row;
+            $hasCountryCol = false;
+            try {
+                $cols = $this->db->getFieldNames($this->table);
+                $hasCountryCol = in_array('country', $cols);
+            } catch (\Throwable $e) {}
+
+            if ($hasCountryCol) {
+                $row = $this->where('country', $country)->first();
+                if ($row) {
+                    $res = (array) $row;
+                    if (!empty($res['pricing_title'])) {
+                        $res['pricing_title'] = trim(preg_replace('/(\x{1F1F2}\x{1F1FE}|ðŸ‡²ðŸ‡¾|🇲🇾|MY\b)/u', '', $res['pricing_title']));
+                        if (empty($res['pricing_title'])) $res['pricing_title'] = 'PAKEJ WEBSITE SOLVETA';
+                    }
+                    if (!empty($res['hero_eyebrow'])) {
+                        $res['hero_eyebrow'] = trim(preg_replace('/(\x{1F1F2}\x{1F1FE}|ðŸ‡²ðŸ‡¾|🇲🇾)/u', '', $res['hero_eyebrow']));
+                        if (empty($res['hero_eyebrow'])) $res['hero_eyebrow'] = 'SOLVE TECHNOLOGY AGENCY';
+                    }
+                    return $res;
+                }
+            } else {
+                if ($country === 'id') {
+                    $row = $this->first();
+                    if ($row) {
+                        return (array) $row;
+                    }
+                }
             }
         } catch (\Throwable $e) {
             log_message('error', 'SiteCopyModel error: ' . $e->getMessage());
         }
 
-        return $this->getDefaultCopy();
+        return $this->getDefaultCopy($country);
     }
 
-    public function getDefaultCopy(): array
+    public function getDefaultCopy(string $country = 'id'): array
     {
+        if ($country === 'my') {
+            return [
+                'id' => 2,
+                'country' => 'my',
+                'hero_eyebrow' => 'SOLVE TECHNOLOGY AGENCY',
+                'hero_headline' => 'Mengubah Cabaran Perniagaan Menjadi Solusi Digital.',
+                'hero_subtitle' => 'Banyak perniagaan terhalang oleh proses manual, maklumat yang tidak tersusun, dan ketiadaan integrasi sistem. SOLVETA hadir untuk memudahkan masalah kompleks melalui solusi digital dan automasi yang efisien.',
+                'hero_cta_primary' => 'Tempah Sekarang',
+                'hero_cta_secondary' => 'Ketahui Lebih Lanjut',
+                'portfolio_title' => 'Portofolio Projek Laman Web Yang Telah Kami Bina',
+                'portfolio_subtitle' => 'Koleksi karya digital terbaik yang menggabungkan reka bentuk visual bertaraf dunia dengan prestasi teknologi tanpa kompromi.',
+                'pricing_title' => 'PAKEJ WEBSITE SOLVETA',
+                'pricing_subtitle' => 'Pilihan pakej laman web profesional dengan spesifikasi telus, pantas, dan bersesuaian untuk perniagaan anda di Malaysia.',
+                'consultation_title' => 'TIDAK PASTI DARI MANA NAK MULA?',
+                'consultation_desc' => 'Konsultasi percuma untuk keperluan perniagaan anda. Kami akan syorkan langkah paling efisien untuk memulakannya.',
+                'consultation_button' => 'Konsultasi Percuma Sekarang',
+                'custom_package_title' => 'PERKHIDMATAN KHAS & ENTERPRISE',
+                'custom_package_headline' => 'Menerima Tempahan Pakej Custom Website',
+                'custom_package_desc' => 'Solusi laman web tanpa had halaman dengan kustomisasi ciri penuh, integrasi sistem, dan penyesuaian khas. Kos pelaburan fleksibel dan telus mengikut konsep dan spesifikasi laman web yang ingin anda bina.',
+                'custom_package_button' => 'Konsultasi Pakej Custom',
+                'philosophy_quote_1' => 'Bukan sekadar membina teknologi.',
+                'philosophy_quote_2' => 'Kami membina solusi.',
+                'marquee_title' => 'DIPERCAYAI OLEH PELBAGAI PERNIAGAAN & INSTITUSI BERKEMBANG',
+                'marquee_speed' => 35,
+                'marquee_logo_height' => 46,
+                'marquee_logo_spacing' => 36,
+                'marquee_logo_scale' => 100,
+                'marquee_logo_max_width' => 240,
+                'site_logo' => '/solveta-logo.png',
+                'profile_video' => '/videos/profile.mp4',
+            ];
+        }
+
         return [
             'id' => 1,
+            'country' => 'id',
             'hero_eyebrow' => 'SOLVE TECHNOLOGY AGENCY',
             'hero_headline' => 'Mengubah Tantangan Bisnis Menjadi Solusi Digital.',
             'hero_subtitle' => 'Banyak bisnis terhambat oleh proses manual, informasi yang tidak terstruktur, dan kurangnya integrasi. SOLVETA hadir untuk menyederhanakan masalah kompleks melalui solusi digital dan otomasi yang efisien.',

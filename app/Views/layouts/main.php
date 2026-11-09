@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= esc($title ?? 'SOLVETA — Solve Technology Agency | Mengubah Tantangan Bisnis Menjadi Solusi Digital') ?></title>
-    <meta name="description" content="SOLVETA — Solve Technology Agency. Mengubah Tantangan Bisnis Menjadi Solusi Digital melalui website, otomasi, sistem digital, dan integrasi data.">
-    <meta name="keywords" content="technology agency, digital solution, website development, otomasi bisnis, solveta">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
+    <title><?= esc($title ?? 'SOLVETA — Solve Technology Agency | We Solve. You Grow.') ?></title>
+    <meta name="description" content="<?= esc($meta_description ?? 'SOLVETA (Solve Technology Agency) adalah mitra solusi teknologi digital yang membantu bisnis bertransformasi dari proses manual menjadi lebih modern, efisien, dan terintegrasi melalui website profesional, aplikasi bisnis, dan sistem digital.') ?>">
+    <meta name="keywords" content="Jasa pembuatan website, Jasa website profesional, Jasa pembuatan website bisnis, Digital agency Indonesia, Digital technology agency, Jasa pembuatan aplikasi bisnis, Jasa pembuatan sistem informasi, Jasa web developer, Jasa UI UX design, Jasa AI automation, Pengembangan website dan aplikasi, SOLVETA">
+    <meta name="author" content="SOLVETA — Solve Technology Agency">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://solveta.asia<?= current_url(true)->getPath() ?>">
 
-    <link rel="icon" type="image/png" href="/solveta-logo.png">
-    <link rel="apple-touch-icon" href="/solveta-logo.png">
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://solveta.asia<?= current_url(true)->getPath() ?>">
+    <meta property="og:title" content="<?= esc($title ?? 'SOLVETA — Solve Technology Agency | We Solve. You Grow.') ?>">
+    <meta property="og:description" content="<?= esc($meta_description ?? 'Membantu bisnis berkembang melalui website, aplikasi, sistem digital, dan solusi teknologi yang dirancang sesuai kebutuhan.') ?>">
+    <meta property="og:image" content="<?= base_url('solveta-logo.png') ?>">
 
-    <!-- Google Fonts: Poppins & JetBrains Mono (Identical to Next.js) -->
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= esc($title ?? 'SOLVETA — Solve Technology Agency') ?>">
+    <meta name="twitter:description" content="We Solve. You Grow. Mitra solusi teknologi digital untuk pertumbuhan bisnis Anda.">
+    <meta name="twitter:image" content="<?= base_url('solveta-logo.png') ?>">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?= base_url('solveta-logo.png') ?>">
+    <link rel="apple-touch-icon" href="<?= base_url('solveta-logo.png') ?>">
+
+    <!-- Typography: Inter (Mandatory Font for Whole Website per Master Prompt) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Early Theme Detection (Prevents FOUC) -->
+    <!-- Early Theme Detection -->
     <script>
         (function() {
             try {
@@ -32,7 +46,7 @@
         })();
     </script>
 
-    <!-- Tailwind CSS (CDN) -->
+    <!-- Tailwind CSS (CDN) with Dominant White & Red Design Tokens -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -40,39 +54,52 @@
             theme: {
                 extend: {
                     colors: {
-                        brand: {
-                            50: "#FEF2F2",
-                            100: "#FEE2E2",
-                            200: "#FECACA",
-                            300: "#FCA5A5",
-                            400: "#F87171",
-                            500: "#EF4444",
-                            600: "#DC2626",
-                            700: "#B91C1C",
-                            800: "#991B1B",
-                            900: "#7F1D1D",
-                            950: "#450A0A",
+                        solveta: {
+                            maroon: "#8E1738",       // Deep Corporate Maroon
+                            red: "#C4264A",          // Primary Crimson Red
+                            vibrant: "#FF4D2D",      // Active Accent Red
+                            accent: "#F05A72",       // Soft Coral Accent
+                            dark: "#111215",         // Pure Deep Text
+                            charcoal: "#171717",     // Secondary Dark Text
+                            muted: "#6B7280",        // Balanced Gray Text
+                            bg: "#FFFFFF",           // Main Background Pure White
+                            surface: "#FAFAFC",      // Clean Card Surface
+                            border: "#E8E9ED",       // Light Gray Border
                         },
+                        brand: {
+                            50: "#FFF5F7",
+                            100: "#FEE9ED",
+                            200: "#FCD6DC",
+                            300: "#F8AAB7",
+                            400: "#F05A72",
+                            500: "#C4264A",
+                            600: "#8E1738",
+                            700: "#76152F",
+                            800: "#5B0F24",
+                            900: "#3E0A18",
+                        }
                     },
                     fontFamily: {
-                        sans: ["Poppins", "sans-serif"],
-                        mono: ["JetBrains Mono", "monospace"],
+                        sans: ["'Inter'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
+                        inter: ["'Inter'", "sans-serif"],
                     },
                     boxShadow: {
-                        "glass": "0 8px 32px 0 rgba(0, 0, 0, 0.04)",
-                        "glass-hover": "0 16px 40px 0 rgba(220, 38, 38, 0.08)",
-                        "red-glow": "0 0 20px rgba(220, 38, 38, 0.35)",
-                        "2xs": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                        "clean": "0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.03)",
+                        "subtle": "0 4px 20px -2px rgba(17, 18, 21, 0.05)",
+                        "editorial": "0 10px 30px -4px rgba(196, 38, 74, 0.08)",
+                        "card-hover": "0 20px 40px -10px rgba(196, 38, 74, 0.12)",
+                        "pill": "0 10px 30px -8px rgba(17, 18, 21, 0.08), 0 1px 3px rgba(17, 18, 21, 0.04)",
+                        "glass": "0 8px 32px 0 rgba(196, 38, 74, 0.08)",
                     },
                     animation: {
+                        "marquee": "marquee 32s linear infinite",
+                        "marquee-reverse": "marquee 32s linear infinite reverse",
                         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-                        "float": "float 6s ease-in-out infinite",
-                        "spin-slow": "spin 8s linear infinite",
                     },
                     keyframes: {
-                        float: {
-                            "0%, 100%": { transform: "translateY(0px)" },
-                            "50%": { transform: "translateY(-8px)" },
+                        marquee: {
+                            "0%": { transform: "translateX(0%)" },
+                            "100%": { transform: "translateX(-50%)" },
                         },
                     },
                 }
@@ -83,246 +110,941 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/assets/css/style.css?v=<?= file_exists(FCPATH . 'assets/css/style.css') ? filemtime(FCPATH . 'assets/css/style.css') : '2.0' ?>">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #FFFFFF;
+            color: #111215;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .dark body, body.dark {
+            background-color: #0E0F12;
+            color: #F7F8FA;
+        }
+        .text-balance { text-wrap: balance; }
+        
+        /* Master Hero Background — Sesuai Arahan Presisi:
+           Dari atas maroon agak gelap -> lalu merah -> lalu kebawah putih smooth (Zero Black) */
+        .clean-hero-header {
+            position: relative;
+            background: linear-gradient(
+                180deg,
+                #4A0815 0%,              /* Top: Maroon agak gelap (warm deep burgundy/maroon) */
+                #5C0A1B 10%,             /* Maroon transition halus */
+                #780F25 22%,             /* Rich maroon velvet */
+                #9B1331 34%,             /* Crimson maroon */
+                #BE183D 46%,             /* Merah pekat menyala */
+                #D81E46 56%,             /* Merah cerah (vibrant red core) */
+                #E83359 66%,             /* Merah mulai membuka lembut */
+                #F45B7A 74%,             /* Rose red lembut */
+                #F994A7 82%,             /* Soft pink rose mist */
+                #FDCFD8 90%,             /* Pinkish blush */
+                #FEEFF2 96%,             /* Sangat halus menuju putih */
+                #FFFFFF 100%             /* Bawah: Putih bersih murni 100% menyatu sempurna */
+            );
+        }
+        .dark .clean-hero-header {
+            position: relative;
+            background: linear-gradient(
+                180deg,
+                #2D050D 0%,
+                #3B0711 12%,
+                #4D0A18 24%,
+                #680D21 38%,
+                #85122B 52%,
+                #680D21 68%,
+                #3B0711 82%,
+                #14151B 95%,
+                #14151B 100%
+            );
+        }
+
+        /* Ambient Center Glow (Memperkaya Pendar Merah di Tengah Secara Halus) */
+        .hero-linear-enricher {
+            background: radial-gradient(
+                85% 50% at 50% 52%,
+                rgba(232, 51, 89, 0.28) 0%,
+                rgba(196, 38, 74, 0.16) 42%,
+                rgba(244, 91, 122, 0.06) 65%,
+                transparent 80%
+            );
+        }
+        .dark .hero-linear-enricher {
+            background: radial-gradient(
+                85% 50% at 50% 52%,
+                rgba(232, 51, 89, 0.22) 0%,
+                rgba(142, 23, 56, 0.14) 42%,
+                transparent 80%
+            );
+        }
+
+        /* Dotted Grid Overlay */
+        .bg-grid-dots {
+            background-image: radial-gradient(rgba(17, 18, 21, 0.08) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .dark .bg-grid-dots {
+            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+        }
+
+        /* Marquee pause on hover */
+        .marquee-track:hover {
+            animation-play-state: paused;
+        }
+
+        /* 3D Vertical Testimonial Marquee Keyframes & Smooth Pause */
+        @keyframes marquee-vertical {
+            0% { transform: translateY(0%); }
+            100% { transform: translateY(-50%); }
+        }
+        @keyframes marquee-vertical-reverse {
+            0% { transform: translateY(-50%); }
+            100% { transform: translateY(0%); }
+        }
+
+        .animate-marquee-v {
+            animation: marquee-vertical var(--duration, 38s) linear infinite;
+        }
+        .animate-marquee-v-reverse {
+            animation: marquee-vertical-reverse var(--duration, 38s) linear infinite;
+        }
+
+        .marquee-3d-wrap:hover .animate-marquee-v,
+        .marquee-3d-wrap:hover .animate-marquee-v-reverse,
+        .marquee-column:hover .animate-marquee-v,
+        .marquee-column:hover .animate-marquee-v-reverse {
+            animation-play-state: paused;
+        }
+
+        /* 3D Perspective Tunnel Component Styles (Adapted from 21st.dev Perspective Tunnel Hero) */
+        .perspective-tunnel-stage {
+            perspective: 1200px;
+            perspective-origin: 50% 45%;
+            transform-style: preserve-3d;
+        }
+        .tunnel-world {
+            transform-style: preserve-3d;
+            transition: transform 0.25s ease-out;
+        }
+        .tunnel-card {
+            transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, filter 0.5s ease;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+        .tunnel-ring-1 {
+            width: 320px; height: 320px;
+            border: 1px dashed rgba(196, 38, 74, 0.35);
+            border-radius: 9999px;
+            transform: translate(-50%, -50%) translateZ(-400px);
+        }
+        .tunnel-ring-2 {
+            width: 580px; height: 580px;
+            border: 1px dashed rgba(196, 38, 74, 0.2);
+            border-radius: 9999px;
+            transform: translate(-50%, -50%) translateZ(-200px);
+        }
+        .tunnel-ring-3 {
+            width: 860px; height: 860px;
+            border: 1px solid rgba(196, 38, 74, 0.12);
+            border-radius: 9999px;
+            transform: translate(-50%, -50%) translateZ(0px);
+        }
+
+        /* ========================================================================= */
+        /* LIQUID GLASS LOGO REVEAL COMPONENT (Background Putih Polos + Smooth Blur)   */
+        /* ========================================================================= */
+        #liquid-glass-intro {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: #FFFFFF;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0px);
+            transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1.1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        filter 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, transform, filter;
+        }
+        #liquid-glass-intro.dismissed {
+            opacity: 0;
+            transform: scale(1.06);
+            filter: blur(28px);
+            pointer-events: none;
+        }
+
+        .glass-tile-wrapper {
+            position: relative;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes dropletSwellLight {
+            0% {
+                width: 36px;
+                height: 36px;
+                border-radius: 9999px;
+                opacity: 0;
+                transform: scale(0.6);
+                filter: blur(4px);
+                box-shadow: 0 0 25px rgba(196, 38, 74, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.9);
+            }
+            15% {
+                width: 64px;
+                height: 64px;
+                border-radius: 9999px;
+                opacity: 1;
+                transform: scale(1);
+                filter: blur(0px);
+                box-shadow: 0 10px 30px rgba(196, 38, 74, 0.25), inset 0 0 25px rgba(255, 255, 255, 0.95);
+            }
+            45% {
+                width: 260px;
+                height: 260px;
+                border-radius: 64px;
+                box-shadow: 
+                    0 25px 60px -15px rgba(196, 38, 74, 0.18),
+                    0 10px 25px -5px rgba(0, 0, 0, 0.06),
+                    inset 0 0 0 1.5px rgba(255, 255, 255, 0.95),
+                    inset 0 20px 35px rgba(255, 255, 255, 0.95),
+                    inset 0 -15px 30px rgba(196, 38, 74, 0.1);
+            }
+            100% {
+                width: 250px;
+                height: 250px;
+                border-radius: 56px;
+                box-shadow: 
+                    0 22px 55px -15px rgba(196, 38, 74, 0.16),
+                    0 8px 20px -4px rgba(0, 0, 0, 0.05),
+                    inset 0 0 0 1.5px rgba(255, 255, 255, 0.95),
+                    inset 0 18px 30px rgba(255, 255, 255, 0.95),
+                    inset 0 -12px 25px rgba(196, 38, 74, 0.08);
+            }
+        }
+
+        .liquid-glass-tile {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            border-radius: 56px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(28px) saturate(180%);
+            -webkit-backdrop-filter: blur(28px) saturate(180%);
+            border: 1.5px solid rgba(255, 255, 255, 0.95);
+            animation: dropletSwellLight 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .chromatic-bevel {
+            position: absolute;
+            inset: -2px;
+            border-radius: 58px;
+            background: linear-gradient(135deg, 
+                rgba(255, 255, 255, 0.95) 0%, 
+                rgba(0, 200, 255, 0.3) 25%, 
+                rgba(196, 38, 74, 0.4) 50%, 
+                rgba(255, 120, 80, 0.35) 75%, 
+                rgba(255, 255, 255, 0.95) 100%
+            );
+            opacity: 0.8;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+        }
+
+        @keyframes lightSweep {
+            0% { transform: translateX(-150%) rotate(35deg); opacity: 0; }
+            30% { opacity: 0.85; }
+            70% { opacity: 0.85; }
+            100% { transform: translateX(180%) rotate(35deg); opacity: 0; }
+        }
+
+        .specular-shine {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                90deg, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.3) 45%, 
+                rgba(255, 255, 255, 0.95) 50%, 
+                rgba(0, 200, 255, 0.25) 53%, 
+                transparent 60%
+            );
+            pointer-events: none;
+            animation: lightSweep 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+        }
+
+        @keyframes logoEmerge {
+            0% { opacity: 0; transform: scale(0.7); filter: blur(6px); }
+            40% { opacity: 0.4; transform: scale(0.88); }
+            100% { opacity: 1; transform: scale(1); filter: blur(0px); }
+        }
+
+        .logo-inner-reveal {
+            animation: logoEmerge 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+            opacity: 0;
+        }
+
+        @keyframes textReveal {
+            0% { opacity: 0; transform: translateY(12px); filter: blur(4px); }
+            100% { opacity: 1; transform: translateY(0); filter: blur(0px); }
+        }
+
+        .reveal-caption {
+            animation: textReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1s forwards;
+            opacity: 0;
+        }
+
+        /* Minimalist Glassmorphism Footer Effect */
+        .glass-footer {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(17, 18, 21, 0.06);
+            position: relative;
+        }
+        .dark .glass-footer {
+            background: rgba(14, 15, 18, 0.92);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-footer-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 70%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(196, 38, 74, 0.5) 50%, transparent 100%);
+            filter: blur(0.5px);
+        }
+
+        /* ========================================================================= */
+        /* DYNAMIC SCROLL MOTION BLUR & FROSTED LENS ENGINE                          */
+        /* Aktif otomatis saat user melakukan scroll ke atas maupun ke bawah         */
+        /* ========================================================================= */
+        #scroll-content-wrapper {
+            transition: filter 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: filter;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+        }
+
+        .scroll-edge-blur-top,
+        .scroll-edge-blur-bottom {
+            position: fixed;
+            left: 0;
+            right: 0;
+            height: 56px;
+            pointer-events: none;
+            z-index: 45;
+            opacity: 0;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .scroll-edge-blur-top {
+            top: 0;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.6) 0%, transparent 100%);
+            mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 30%, transparent 100%);
+        }
+
+        .scroll-edge-blur-bottom {
+            bottom: 0;
+            background: linear-gradient(0deg, rgba(255, 255, 255, 0.7) 0%, transparent 100%);
+            mask-image: linear-gradient(to top, black 30%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to top, black 30%, transparent 100%);
+        }
+
+        .dark .scroll-edge-blur-top {
+            background: linear-gradient(180deg, rgba(14, 15, 18, 0.7) 0%, transparent 100%);
+        }
+
+        .dark .scroll-edge-blur-bottom {
+            background: linear-gradient(0deg, rgba(14, 15, 18, 0.8) 0%, transparent 100%);
+        }
+
+        body.is-scrolling-active .scroll-edge-blur-top,
+        body.is-scrolling-active .scroll-edge-blur-bottom {
+            opacity: 1;
+        }
+
+        #main-header.scrolling-motion-blur {
+            backdrop-filter: blur(28px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+            background-color: rgba(255, 255, 255, 0.88) !important;
+            box-shadow: 0 14px 35px -5px rgba(0, 0, 0, 0.08) !important;
+        }
+
+        .dark #main-header.scrolling-motion-blur {
+            background-color: rgba(20, 21, 27, 0.88) !important;
+            box-shadow: 0 14px 35px -5px rgba(0, 0, 0, 0.45) !important;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #scroll-content-wrapper {
+                filter: none !important;
+                transition: none !important;
+            }
+            .scroll-edge-blur-top,
+            .scroll-edge-blur-bottom {
+                display: none !important;
+            }
+            .marquee-track {
+                animation: none !important;
+            }
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+    </style>
+
+    <!-- Structured Data JSON-LD (Organization) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "SOLVETA",
+      "alternateName": "Solve Technology Agency",
+      "url": "https://solveta.asia",
+      "logo": "https://solveta.asia/solveta-logo.png",
+      "description": "Digital technology agency yang membantu bisnis, organisasi, UMKM, startup, dan perusahaan melalui solusi teknologi digital: website profesional, aplikasi bisnis, sistem manajemen, UI/UX design, dan AI automation.",
+      "slogan": "We Solve. You Grow.",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+6285876603826",
+        "contactType": "customer service",
+        "availableLanguage": ["Indonesian", "English"]
+      },
+      "sameAs": [
+        "https://www.instagram.com/solveta.asia"
+      ]
+    }
+    </script>
 </head>
-<body class="font-sans antialiased bg-[#FDFBF9] dark:bg-[#07080E] text-gray-700 dark:text-gray-200 min-h-screen relative overflow-x-hidden selection:bg-rose-100 dark:selection:bg-rose-950 selection:text-rose-900 dark:selection:text-rose-200 transition-colors duration-200">
+<body class="font-sans antialiased bg-white dark:bg-[#0E0F12] text-[#111215] dark:text-[#F7F8FA] min-h-screen relative overflow-x-hidden selection:bg-[#C4264A] selection:text-white transition-colors duration-200">
+
+    <!-- Dynamic Frosted Edge Vignettes (Aktif saat user scroll ke atas & bawah) -->
+    <div class="scroll-edge-blur-top" aria-hidden="true"></div>
+    <div class="scroll-edge-blur-bottom" aria-hidden="true"></div>
 
     <?php 
         $siteLogo = !empty($copy['site_logo']) ? $copy['site_logo'] : '/solveta-logo.png';
-        $waClean = preg_replace('/[^0-9]/', '', $contact['whatsapp_number'] ?? '6285719663154');
+        $currentPage = $current_page ?? 'home';
+
+        $waClean = preg_replace('/[^0-9]/', '', $contact['whatsapp_number'] ?? '6285876603826');
         if (substr($waClean, 0, 1) === '0') $waClean = '62' . substr($waClean, 1);
-        $waHomeUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo SOLVETA, saya ingin berkonsultasi mengenai solusi digital dan pembuatan website.");
+        $waNavUrl = "https://wa.me/{$waClean}?text=" . rawurlencode("Halo CS Zahra & Tim SOLVETA, saya ingin berkonsultasi mengenai solusi teknologi dan pengembangan website/aplikasi untuk bisnis kami.");
     ?>
 
+    <?php if ($currentPage === 'home'): ?>
     <!-- ========================================================================= -->
-    <!-- 1. OPENING SCREEN (Identical to Next.js OpeningScreen.tsx)               -->
+    <!-- OPENING: LOGO REVEAL (Hapus Latar Belakang / Clean Transparent Logo)       -->
+    <!-- Menampilkan logo resmi SOLVETA tanpa latar belakang & transisi blur halus -->
     <!-- ========================================================================= -->
-    <div id="opening-screen" class="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center p-6 select-none overflow-hidden font-sans transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]">
-        <div id="opening-content" class="flex flex-col items-center max-w-lg w-full text-center relative z-10 transition-all duration-700">
-            <!-- Logo Image - 100% Pure White Seamless Blend without Box -->
-            <div class="mb-4 flex items-center justify-center bg-transparent">
-                <img src="<?= esc($siteLogo) ?>" alt="SOLVETA" class="w-64 sm:w-80 md:w-96 h-auto object-contain bg-transparent">
+    <div id="liquid-glass-intro" class="fixed inset-0 z-[99999] flex flex-col items-center justify-center select-none bg-white">
+        
+        <!-- Skip Intro Button (Clean Light Styling) -->
+        <button id="skip-intro-btn" onclick="dismissIntro()" class="absolute top-5 right-5 sm:top-7 sm:right-7 text-[11px] font-mono text-neutral-500 hover:text-neutral-900 bg-neutral-100/90 hover:bg-neutral-200 border border-neutral-200/90 shadow-xs px-3.5 py-1.5 rounded-full transition flex items-center gap-1.5 cursor-pointer z-50">
+            <span>Lewati Intro</span>
+            <span class="text-neutral-400 font-sans">&rarr;</span>
+        </button>
+
+        <!-- Subtle Ambient Rose Glow behind logo on pure white background -->
+        <div class="absolute w-[440px] h-[440px] rounded-full bg-[#C4264A]/8 blur-[90px] pointer-events-none"></div>
+
+        <!-- Center Stage: Liquid Glass Logo Reveal (Denis Shepovalov Style - Transparent Mark) -->
+        <div class="relative z-10 flex flex-col items-center justify-center px-4">
+            <div class="glass-tile-wrapper">
+                <div class="liquid-glass-tile">
+                    <div class="chromatic-bevel"></div>
+                    <div class="specular-shine"></div>
+                    <div class="logo-inner-reveal flex items-center justify-center p-6 relative z-10">
+                        <img src="<?= base_url('solveta-mark-transparent.png') ?>" alt="SOLVETA Concentric Mark" class="w-24 sm:w-28 h-24 sm:h-28 object-contain select-none drop-shadow-md">
+                    </div>
+                </div>
             </div>
-
-            <!-- Loading Progress Bar -->
-            <div class="w-full max-w-[280px] sm:max-w-[340px] space-y-2.5 font-sans mt-2">
-                <div class="h-1.5 sm:h-2 w-full bg-gray-100 rounded-full overflow-hidden p-0.5 border border-gray-200 shadow-inner">
-                    <div id="opening-progress-bar" class="h-full bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] rounded-full shadow-sm transition-all duration-75" style="width: 0%;"></div>
-                </div>
-
-                <!-- Status and Percentage -->
-                <div class="flex items-center justify-between text-xs font-semibold text-gray-500 px-1">
-                    <span class="tracking-wider uppercase text-[10px] sm:text-[11px] text-gray-400 font-medium flex items-center gap-1.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-[#8B0021] animate-ping"></span>
-                        <span>MEMUAT SISTEM</span>
-                    </span>
-                    <span id="opening-percentage" class="font-bold text-[#8B0021] text-xs font-mono">0%</span>
-                </div>
+            
+            <!-- Sleek Typography below Glass Tile -->
+            <div class="reveal-caption mt-6 flex flex-col items-center text-center">
+                <span class="text-2xl sm:text-3xl font-black tracking-tight text-neutral-900 font-sans">SOLVETA</span>
+                <span class="text-[10px] sm:text-[11px] tracking-[0.25em] text-[#C4264A] uppercase font-bold mt-1 font-mono">Solve Technology Agency</span>
             </div>
         </div>
     </div>
+    <?php endif; ?>
 
     <!-- ========================================================================= -->
-    <!-- 2. STICKY GLASS NAVBAR (Identical to Next.js Navbar.tsx)                 -->
+    <!-- FLOATING NAVBAR (Shape Putih Murni Persis Sesuai Gambar Referensi)         -->
+    <!-- 1. Beranda | 2. Layanan | 3. Portofolio | 4. Artikel | 5. Tentang Kami |  -->
+    <!-- 6. Karir | 7. Kontak                                                      -->
     <!-- ========================================================================= -->
-    <header id="main-navbar" class="sticky top-0 left-0 right-0 z-50 transition-all duration-300 py-4 bg-white/80 dark:bg-[#07080E]/80 backdrop-blur-sm border-b border-gray-200/40 dark:border-gray-800/60 font-sans">
-        <div class="max-w-[1160px] mx-auto px-6 flex items-center justify-between gap-4">
+    <header id="floating-nav-container" class="fixed top-3 md:top-5 inset-x-3 md:inset-x-0 z-50 flex flex-col items-center pointer-events-none">
+        <nav id="main-header" class="pointer-events-auto w-full max-w-5xl bg-white border border-neutral-200/80 shadow-lg shadow-black/5 rounded-full px-4 py-2 md:px-6 md:py-2.5 flex items-center justify-between transition-all duration-300">
             
-            <!-- Brand Logo in Top-Left Navbar -->
-            <a href="/#hero" class="flex items-center gap-2.5 group">
-                <div class="h-9 w-9 rounded-xl overflow-hidden flex items-center justify-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-2xs group-hover:border-rose-300 dark:group-hover:border-rose-500 transition-all">
-                    <img src="<?= esc($siteLogo) ?>" alt="SOLVETA Logo" class="h-full w-full object-cover">
+            <!-- Left: Official SOLVETA Logo (Pakai Logo Resmi yang Diberikan) -->
+            <a href="<?= base_url() ?>" class="flex items-center gap-2.5 group shrink-0">
+                <div class="w-8 h-8 rounded-full overflow-hidden flex items-center justify-center group-hover:scale-105 transition-transform shrink-0 p-0.5">
+                    <img src="<?= base_url('solveta-mark-transparent.png') ?>" alt="SOLVETA Logo" class="w-full h-full object-contain">
                 </div>
                 <div class="flex flex-col">
-                    <span class="font-extrabold text-base tracking-tight text-gray-950 dark:text-white group-hover:text-[#7B0B1E] dark:group-hover:text-rose-400 transition-colors leading-none">
-                        SOLVETA
-                    </span>
-                    <span class="text-[9px] font-mono text-gray-400 dark:text-gray-500 font-semibold tracking-wider uppercase mt-0.5">
-                        SOLUTIONS
+                    <div class="flex items-baseline gap-1">
+                        <span class="font-extrabold text-base md:text-lg tracking-tight leading-none text-[#111215]">
+                            SOLVETA
+                        </span>
+                    </div>
+                    <span class="text-[8.5px] font-bold tracking-wider uppercase text-[#C4264A] leading-none mt-0.5 font-mono">
+                        SOLVE TECHNOLOGY AGENCY
                     </span>
                 </div>
             </a>
 
-            <!-- Center Search Bar with keyboard shortcut -->
-            <div id="nav-search-trigger" class="hidden md:flex items-center gap-2.5 bg-gray-50/80 dark:bg-gray-900/80 hover:bg-gray-100 dark:hover:bg-gray-850 border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 rounded-full px-3.5 py-1.5 w-full max-w-[300px] cursor-pointer transition-all duration-200">
-                <i data-lucide="search" class="w-3.5 h-3.5 text-gray-400"></i>
-                <span class="text-xs text-gray-400 dark:text-gray-500 font-normal flex-grow">
-                    Search solutions...
-                </span>
-                <span class="font-mono text-[10px] font-semibold text-gray-400 dark:text-gray-500 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 px-1.5 py-0.5 rounded">
-                    ⌘ K
-                </span>
+            <!-- Center: Desktop Navigation Links (Disamakan Persis Sesuai Gambar Referensi) -->
+            <div class="hidden md:flex items-center gap-5 lg:gap-6 text-[13px] font-semibold text-neutral-600">
+                
+                <!-- 1. Beranda -->
+                <a href="<?= base_url() ?>" 
+                   class="hover:text-[#C4264A] transition <?= $currentPage === 'home' ? 'text-[#C4264A] font-bold' : 'text-neutral-600' ?>">
+                    Beranda
+                </a>
+
+                <!-- 2. Layanan -->
+                <a href="<?= base_url('layanan') ?>" 
+                   class="hover:text-[#C4264A] transition <?= $currentPage === 'layanan' ? 'text-[#C4264A] font-bold' : 'text-neutral-600' ?>">
+                    Layanan
+                </a>
+
+                <!-- 3. Portofolio -->
+                <a href="<?= base_url('portofolio') ?>" 
+                   class="hover:text-[#C4264A] transition <?= $currentPage === 'portfolio' ? 'text-[#C4264A] font-bold' : 'text-neutral-600' ?>">
+                    Portofolio
+                </a>
+
+                <!-- 4. Artikel -->
+                <a href="<?= base_url('artikel') ?>" 
+                   class="hover:text-[#C4264A] transition <?= $currentPage === 'artikel' ? 'text-[#C4264A] font-bold' : 'text-neutral-600' ?>">
+                    Artikel
+                </a>
+
+                <!-- 5. Tentang Kami -->
+                <a href="<?= base_url('tentang') ?>" 
+                   class="hover:text-[#C4264A] transition <?= $currentPage === 'tentang' ? 'text-[#C4264A] font-bold' : 'text-neutral-600' ?>">
+                    Tentang Kami
+                </a>
+
+                <!-- 6. Karir -->
+                <a href="<?= base_url('karir') ?>" 
+                   class="hover:text-[#C4264A] transition <?= $currentPage === 'karir' ? 'text-[#C4264A] font-bold' : 'text-neutral-600' ?>">
+                    Karir
+                </a>
+
+                <!-- 7. Kontak -->
+                <a href="<?= base_url('kontak') ?>" 
+                   class="hover:text-[#C4264A] transition <?= $currentPage === 'kontak' ? 'text-[#C4264A] font-bold' : 'text-neutral-600' ?>">
+                    Kontak
+                </a>
             </div>
 
-            <!-- Right Links & Actions -->
-            <div class="flex items-center gap-3 sm:gap-4">
-                <nav class="hidden lg:flex items-center gap-5 text-xs font-semibold text-gray-600 dark:text-gray-300">
-                    <a href="/#services" class="hover:text-[#7B0B1E] dark:hover:text-rose-400 transition-colors">Services</a>
-                    <a href="/#pricing" class="hover:text-[#7B0B1E] dark:hover:text-rose-400 transition-colors">Pricing</a>
-                    <a href="/#portfolio" class="hover:text-[#7B0B1E] dark:hover:text-rose-400 transition-colors">Portofolio</a>
-                </nav>
-
-                <!-- Theme Toggle Button (Light / Dark Mode Switcher) -->
-                <button id="theme-toggle-btn" type="button" aria-label="Ganti Tema" title="Ganti Mode Terang / Gelap"
-                        class="p-2 rounded-xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 text-gray-700 dark:text-amber-300 hover:bg-rose-50/50 dark:hover:bg-gray-800 shadow-2xs transition-all flex items-center justify-center cursor-pointer">
-                    <i data-lucide="sun" id="theme-sun-icon" class="w-4 h-4 text-amber-400 hidden animate-spin-slow"></i>
-                    <i data-lucide="moon" id="theme-moon-icon" class="w-4 h-4 text-gray-700 dark:text-gray-300 hover:text-[#7B0B1E]"></i>
+            <!-- Right: Action Buttons (Sesuai Gambar Referensi) -->
+            <div class="flex items-center gap-2">
+                <!-- Dark / Light Mode Switcher -->
+                <button id="theme-toggle-btn" type="button" aria-label="Ganti Mode Tema" title="Mode Terang / Gelap"
+                        class="w-8 h-8 rounded-full border border-neutral-200/80 bg-neutral-100 text-neutral-800 flex items-center justify-center transition-all cursor-pointer hover:bg-neutral-200 shadow-xs">
+                    <i data-lucide="sun" id="theme-sun-icon" class="w-3.5 h-3.5 text-amber-500 hidden"></i>
+                    <i data-lucide="moon" id="theme-moon-icon" class="w-3.5 h-3.5 text-neutral-800"></i>
                 </button>
 
-                <!-- Direct CTA WhatsApp Button -->
-                <a href="<?= $waHomeUrl ?>" target="_blank" rel="noopener noreferrer" 
-                   class="px-3.5 sm:px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#8B0021] via-[#750019] to-[#50000F] hover:from-[#9E0026] hover:to-[#5E0013] rounded-lg transition-all shadow-xs flex items-center justify-center">
-                    Hubungi Kami
+                <!-- Primary Navbar CTA: WhatsApp (Konsultasi Merah Persis Gambar Referensi) -->
+                <a href="<?= $waNavUrl ?>" target="_blank" rel="noopener noreferrer" 
+                   class="bg-[#C4264A] hover:bg-[#8E1738] text-white text-xs md:text-[13px] font-semibold px-4 py-2 md:px-5 md:py-2 rounded-full transition-all shadow-sm flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                    <span>Konsultasi</span>
+                    <i data-lucide="arrow-up-right" class="w-3 h-3 hidden sm:inline-block"></i>
                 </a>
 
-                <!-- Developer Portal Icon -->
-                <a href="/admin" title="Portal Developer"
-                   class="w-8 h-8 rounded-lg border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:bg-rose-50/50 dark:hover:bg-gray-800 flex items-center justify-center text-gray-700 dark:text-gray-300 hover:text-[#7B0B1E] dark:hover:text-rose-400 transition-colors">
-                    <i data-lucide="user" class="w-4 h-4"></i>
+                <!-- Mobile Hamburger Button -->
+                <button id="mobile-menu-toggle" type="button" aria-label="Buka Menu Navigasi" 
+                        class="md:hidden w-8 h-8 rounded-full border border-neutral-200/80 bg-neutral-100 text-neutral-800 flex items-center justify-center transition-all cursor-pointer">
+                    <i data-lucide="menu" id="mobile-menu-open-icon" class="w-4 h-4 text-neutral-800"></i>
+                    <i data-lucide="x" id="mobile-menu-close-icon" class="w-4 h-4 text-neutral-800 hidden"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Drawer Sheet (Clean 7 Items: Beranda, Tentang, Layanan, Karya, Artikel, Karir, Kontak) -->
+        <div id="mobile-drawer" class="pointer-events-auto hidden w-full max-w-md mt-2 bg-white/98 dark:bg-[#111215]/98 backdrop-blur-xl border border-black/10 dark:border-white/10 rounded-[24px] p-4 shadow-2xl transition-all">
+            <div class="flex flex-col gap-1.5 text-sm font-semibold text-neutral-700 dark:text-neutral-200">
+                <!-- 1. Beranda -->
+                <a href="<?= base_url() ?>" class="flex items-center justify-between py-2.5 px-3 rounded-xl <?= $currentPage === 'home' ? 'bg-red-50 dark:bg-neutral-800 text-[#C4264A] font-bold' : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/60' ?>">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="home" class="w-4 h-4 text-neutral-400"></i>
+                        <span>Beranda</span>
+                    </div>
+                    <span class="text-xs font-mono text-neutral-400">(01)</span>
                 </a>
+
+                <!-- 2. Layanan -->
+                <a href="<?= base_url('layanan') ?>" class="flex items-center justify-between py-2.5 px-3 rounded-xl <?= $currentPage === 'layanan' ? 'bg-red-50 dark:bg-neutral-800 text-[#C4264A] font-bold' : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/60' ?>">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="layers" class="w-4 h-4 text-neutral-400"></i>
+                        <span>Layanan</span>
+                    </div>
+                    <span class="text-xs font-mono text-neutral-400">(02)</span>
+                </a>
+
+                <!-- 3. Portofolio -->
+                <a href="<?= base_url('portofolio') ?>" class="flex items-center justify-between py-2.5 px-3 rounded-xl <?= $currentPage === 'portfolio' ? 'bg-red-50 dark:bg-neutral-800 text-[#C4264A] font-bold' : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/60' ?>">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="briefcase" class="w-4 h-4 text-neutral-400"></i>
+                        <span>Portofolio</span>
+                    </div>
+                    <span class="text-xs font-mono text-neutral-400">(03)</span>
+                </a>
+
+                <!-- 4. Artikel -->
+                <a href="<?= base_url('artikel') ?>" class="flex items-center justify-between py-2.5 px-3 rounded-xl <?= $currentPage === 'artikel' ? 'bg-red-50 dark:bg-neutral-800 text-[#C4264A] font-bold' : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/60' ?>">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="file-text" class="w-4 h-4 text-neutral-400"></i>
+                        <span>Artikel</span>
+                    </div>
+                    <span class="text-xs font-mono text-neutral-400">(04)</span>
+                </a>
+
+                <!-- 5. Tentang Kami -->
+                <a href="<?= base_url('tentang') ?>" class="flex items-center justify-between py-2.5 px-3 rounded-xl <?= $currentPage === 'tentang' ? 'bg-red-50 dark:bg-neutral-800 text-[#C4264A] font-bold' : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/60' ?>">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="building-2" class="w-4 h-4 text-neutral-400"></i>
+                        <span>Tentang Kami</span>
+                    </div>
+                    <span class="text-xs font-mono text-neutral-400">(05)</span>
+                </a>
+
+                <!-- 6. Karir -->
+                <a href="<?= base_url('karir') ?>" class="flex items-center justify-between py-2.5 px-3 rounded-xl <?= $currentPage === 'karir' ? 'bg-red-50 dark:bg-neutral-800 text-[#C4264A] font-bold' : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/60' ?>">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="users" class="w-4 h-4 text-neutral-400"></i>
+                        <span>Karir</span>
+                    </div>
+                    <span class="text-xs font-mono text-neutral-400">(06)</span>
+                </a>
+
+                <!-- 7. Kontak -->
+                <a href="<?= base_url('kontak') ?>" class="flex items-center justify-between py-2.5 px-3 rounded-xl <?= $currentPage === 'kontak' ? 'bg-red-50 dark:bg-neutral-800 text-[#C4264A] font-bold' : 'hover:bg-neutral-50 dark:hover:bg-neutral-800/60' ?>">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="phone-call" class="w-4 h-4 text-neutral-400"></i>
+                        <span>Kontak</span>
+                    </div>
+                    <span class="text-xs font-mono text-neutral-400">(07)</span>
+                </a>
+
+                <!-- WhatsApp CTA inside Mobile Menu -->
+                <div class="pt-3 border-t border-black/[0.08] dark:border-white/10 mt-1">
+                    <a href="<?= $waNavUrl ?>" target="_blank" rel="noopener noreferrer"
+                       class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-xs font-bold text-white bg-[#C4264A] hover:bg-[#8E1738] transition-colors shadow-sm">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i>
+                        <span>Konsultasi WhatsApp (CS Zahra)</span>
+                    </a>
+                </div>
             </div>
         </div>
     </header>
 
     <!-- ========================================================================= -->
-    <!-- 3. SEARCH MODAL (Identical to Next.js SearchModal.tsx)                   -->
+    <!-- SCROLL CONTENT TARGET WRAPPER                                             -->
+    <!-- Mengaplikasikan efek blur halus dinamis saat scroll ke atas & bawah       -->
     <!-- ========================================================================= -->
-    <div id="search-modal" class="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 hidden font-sans">
-        <!-- Backdrop -->
-        <div id="search-modal-backdrop" class="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity"></div>
-
-        <!-- Dialog Box -->
-        <div class="bg-white dark:bg-[#11121B] border border-gray-200 dark:border-gray-800 rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden relative z-10">
-            <!-- Input Header -->
-            <div class="flex items-center gap-3 px-4 py-3.5 border-b border-gray-100 dark:border-gray-800">
-                <i data-lucide="search" class="w-4 h-4 text-gray-400"></i>
-                <input id="search-modal-input" type="text" placeholder="Cari solusi, paket, atau layanan..." 
-                       class="w-full text-sm text-gray-900 dark:text-white placeholder-gray-400 outline-none bg-transparent">
-                <button id="search-modal-close" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 rounded-md" aria-label="Tutup pencarian">
-                    <i data-lucide="x" class="w-4 h-4"></i>
-                </button>
-            </div>
-
-            <!-- Results List -->
-            <div id="search-results-list" class="max-h-72 overflow-y-auto p-2">
-                <!-- Dynamically filtered via JS -->
-            </div>
-
-            <!-- Footer -->
-            <div class="px-4 py-2 bg-gray-50 dark:bg-gray-900/60 border-t border-gray-100 dark:border-gray-800 text-[10px] text-gray-400 flex items-center justify-between">
-                <span>Navigasi instan SOLVETA</span>
-                <span class="font-mono">ESC untuk tutup</span>
-            </div>
-        </div>
-    </div>
+    <div id="scroll-content-wrapper" class="w-full relative">
+        
+        <!-- MAIN CONTENT VIEW -->
+        <main class="min-h-[calc(100vh-140px)]">
+            <?= $this->renderSection('content') ?>
+        </main>
 
     <!-- ========================================================================= -->
-    <!-- 4. MAIN CONTENT AREA                                                     -->
+    <!-- MINIMALIST GLASSMORPHISM FOOTER WITH SUBTLE LIGHTING GLOW EFFECT          -->
     <!-- ========================================================================= -->
-    <main>
-        <?= $this->renderSection('content') ?>
-    </main>
+    <footer class="glass-footer font-sans mt-16 pt-16 pb-12 transition-colors duration-200">
+        <!-- Subtle Top Glow Bar -->
+        <div class="glass-footer-glow"></div>
 
-    <!-- ========================================================================= -->
-    <!-- 5. FOOTER (Identical to Next.js Footer.tsx)                              -->
-    <!-- ========================================================================= -->
-    <footer class="border-t border-gray-200 dark:border-gray-800 pt-16 pb-10 bg-white dark:bg-[#07080E] text-gray-700 dark:text-gray-300 relative transition-colors duration-200 font-sans">
-        <div class="max-w-[1160px] mx-auto px-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-14">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 mb-14">
                 
-                <!-- Col 1: Brand & Contact -->
-                <div class="flex flex-col gap-2.5">
-                    <div class="flex items-center gap-2.5">
-                        <div class="h-9 w-9 rounded-xl overflow-hidden flex items-center justify-center bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-2xs flex-shrink-0">
-                            <img src="<?= esc($siteLogo) ?>" alt="SOLVETA Logo" class="w-full h-full object-cover">
+                <!-- Col 1: Brand Logo & Mission (5 Cols) -->
+                <div class="lg:col-span-5 space-y-4">
+                    <a href="<?= base_url() ?>" class="inline-flex items-center gap-3 group">
+                        <div class="w-10 h-10 rounded-xl p-1 bg-white dark:bg-[#1A1C22] shadow-sm border border-[#E8E9ED] dark:border-white/10 flex items-center justify-center">
+                            <img src="<?= base_url('solveta-logo.png') ?>" alt="SOLVETA Logo" class="h-full w-full object-contain">
                         </div>
-                        <div>
-                            <span class="font-extrabold text-base tracking-tight text-gray-900 dark:text-white block">
+                        <div class="flex flex-col">
+                            <span class="font-extrabold text-lg tracking-tight text-[#111215] dark:text-white leading-tight">
                                 SOLVETA
                             </span>
-                            <span class="text-[10px] text-gray-400 font-mono block">
+                            <span class="text-[10px] font-semibold text-[#C4264A] dark:text-[#F05A72] uppercase tracking-wider">
                                 Solve Technology Agency
                             </span>
                         </div>
+                    </a>
+                    
+                    <p class="text-xs sm:text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed max-w-md">
+                        Membantu bisnis, organisasi, dan perusahaan berkembang melalui website profesional, aplikasi bisnis, arsitektur cloud teruji, dan sistem teknologi yang dirancang sesuai kebutuhan nyata.
+                    </p>
+
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 dark:bg-neutral-900 border border-red-200 dark:border-neutral-800 text-[11px] font-bold text-[#C4264A] dark:text-[#F05A72]">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#C4264A] animate-pulse"></span>
+                        <span class="tracking-wider uppercase">We Solve. You Grow.</span>
                     </div>
-                    <div class="flex flex-col gap-1.5 text-xs text-gray-600 dark:text-gray-400 mt-2">
-                        <a href="<?= $waHomeUrl ?>" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-[#8B0021] dark:hover:text-rose-400 transition-colors">
-                            <i data-lucide="phone" class="w-3.5 h-3.5 text-rose-600"></i>
-                            <span><?= esc($contact['whatsapp_display'] ?? $contact['whatsapp_number'] ?? '+62 857-1966-3154') ?></span>
-                        </a>
-                        <a href="https://<?= esc($contact['website_url'] ?? 'solveta.asia') ?>" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:text-[#8B0021] dark:hover:text-rose-400 transition-colors">
-                            <i data-lucide="globe" class="w-3.5 h-3.5 text-gray-400"></i>
-                            <span><?= esc($contact['website_url'] ?? 'solveta.asia') ?></span>
-                        </a>
-                    </div>
                 </div>
 
-                <!-- Col 2: Services -->
-                <div>
-                    <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3.5">
-                        Services
+                <!-- Col 2: 7 Dedicated Pages (2 Cols) -->
+                <div class="lg:col-span-2">
+                    <h4 class="text-xs font-bold text-[#111215] dark:text-white uppercase tracking-wider mb-4">
+                        Halaman Utama
                     </h4>
-                    <ul class="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
-                        <li>
-                            <a href="/#services" class="hover:text-gray-900 dark:hover:text-white transition-colors">Process Development</a>
+                    <ul class="space-y-2.5 text-xs text-neutral-600 dark:text-neutral-400">
+                        <li><a href="<?= base_url() ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Beranda</a></li>
+                        <li><a href="<?= base_url('tentang') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Tentang</a></li>
+                        <li><a href="<?= base_url('layanan') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Layanan</a></li>
+                        <li><a href="<?= base_url('portofolio') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Karya</a></li>
+                        <li><a href="<?= base_url('artikel') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Artikel</a></li>
+                        <li><a href="<?= base_url('karir') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Karir</a></li>
+                        <li><a href="<?= base_url('kontak') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Kontak</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: 4 Pilihan Paket Layanan (3 Cols) -->
+                <div class="lg:col-span-3">
+                    <h4 class="text-xs font-bold text-[#111215] dark:text-white uppercase tracking-wider mb-4">
+                        Paket Layanan
+                    </h4>
+                    <ul class="space-y-2.5 text-xs text-neutral-600 dark:text-neutral-400">
+                        <li><a href="<?= base_url('layanan/starter') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Paket Starter (Rp 349K)</a></li>
+                        <li><a href="<?= base_url('layanan/standard') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Paket Standard (Rp 699K)</a></li>
+                        <li><a href="<?= base_url('layanan/premium') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Paket Premium (Rp 964K)</a></li>
+                        <li><a href="<?= base_url('layanan/platinum') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors font-semibold text-[#C4264A] dark:text-[#F05A72]">Paket Platinum (Rp 1.5 jt) ★</a></li>
+                        <li><a href="<?= base_url('layanan#custom') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Paket Custom &amp; Enterprise</a></li>
+                        <li><a href="<?= base_url('layanan#addons') ?>" class="hover:text-[#C4264A] dark:hover:text-white transition-colors">Layanan Biaya Tambahan (Add-ons)</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Informasi & Kontak Resmi (2 Cols) -->
+                <div class="lg:col-span-2">
+                    <h4 class="text-xs font-bold text-[#111215] dark:text-white uppercase tracking-wider mb-4">
+                        Kontak Resmi
+                    </h4>
+                    <ul class="space-y-3 text-xs text-neutral-600 dark:text-neutral-400">
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="globe" class="w-4 h-4 text-[#C4264A] shrink-0"></i>
+                            <a href="https://solveta.asia" target="_blank" class="hover:text-[#111215] dark:hover:text-white transition-colors font-medium">solveta.asia</a>
                         </li>
-                        <li>
-                            <a href="/#services" class="hover:text-gray-900 dark:hover:text-white transition-colors">Business Digitalization</a>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="message-circle" class="w-4 h-4 text-[#C4264A] shrink-0"></i>
+                            <a href="<?= $waNavUrl ?>" target="_blank" class="hover:text-[#111215] dark:hover:text-white transition-colors">+62 858-7660-3826</a>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="mail" class="w-4 h-4 text-[#C4264A] shrink-0"></i>
+                            <a href="mailto:kontak@solveta.asia" class="hover:text-[#111215] dark:hover:text-white transition-colors">kontak@solveta.asia</a>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i data-lucide="instagram" class="w-4 h-4 text-[#C4264A] shrink-0"></i>
+                            <a href="https://www.instagram.com/solveta.asia" target="_blank" class="hover:text-[#111215] dark:hover:text-white transition-colors">@solveta.asia</a>
                         </li>
                     </ul>
                 </div>
 
-                <!-- Col 3: Company -->
-                <div>
-                    <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3.5">
-                        Company
-                    </h4>
-                    <ul class="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
-                        <li>
-                            <a href="/#hero" class="hover:text-gray-900 dark:hover:text-white transition-colors">About</a>
-                        </li>
-                        <li>
-                            <a href="/#hero" class="hover:text-gray-900 dark:hover:text-white transition-colors">Careers</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Col 4: Legal -->
-                <div>
-                    <h4 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider mb-3.5">
-                        Legal
-                    </h4>
-                    <ul class="flex flex-col gap-2 text-xs text-gray-500 dark:text-gray-400">
-                        <li>
-                            <a href="#" class="hover:text-gray-900 dark:hover:text-white transition-colors">Privacy Policy</a>
-                        </li>
-                        <li>
-                            <a href="#" class="hover:text-gray-900 dark:hover:text-white transition-colors">Terms of Service</a>
-                        </li>
-                    </ul>
-                </div>
             </div>
 
-            <!-- Bottom Bar with Hidden Developer Portal Trigger -->
-            <div class="border-t border-gray-100 dark:border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-400 dark:text-gray-500">
-                <span id="footer-secret-click" class="cursor-pointer hover:text-gray-600 dark:hover:text-gray-300 transition-colors select-none" title="Klik 3x untuk Developer Portal">
-                    &copy; <?= date('Y') ?> SOLVETA. All rights reserved.
-                </span>
-
-                <a href="/admin" class="opacity-40 hover:opacity-100 transition-opacity flex items-center gap-1 text-[10px] text-gray-400 hover:text-[#8B0021] dark:hover:text-rose-400" title="Developer Portal Access">
-                    <i data-lucide="lock" class="w-2.5 h-2.5"></i>
-                    <span>Dev Access</span>
-                </a>
+            <!-- Bottom Copyright & Legal -->
+            <div class="pt-8 border-t border-black/[0.06] dark:border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500 dark:text-neutral-400">
+                <p>© 2026 <b>SOLVETA</b> — Solve Technology Agency. All Rights Reserved.</p>
+                <div class="flex items-center gap-6">
+                    <a href="<?= base_url('tentang') ?>" class="hover:text-[#111215] dark:hover:text-white transition-colors">Tentang Kami</a>
+                    <a href="<?= base_url('layanan') ?>" class="hover:text-[#111215] dark:hover:text-white transition-colors">Layanan</a>
+                    <a href="<?= base_url('kontak') ?>" class="hover:text-[#111215] dark:hover:text-white transition-colors">Pusat Bantuan</a>
+                </div>
             </div>
         </div>
     </footer>
+    </div> <!-- End #scroll-content-wrapper -->
 
-    <!-- Scripts -->
+    <!-- Scripts: Mobile Drawer Toggle, Sticky Navbar Scroll, & Dark Mode Engine -->
     <script>
+        // Initialize Lucide Icons
         lucide.createIcons();
+
+        // =========================================================================
+        // DYNAMIC SCROLL BLUR ENGINE (Efek blur aktif saat scroll naik maupun turun)
+        // =========================================================================
+        (function() {
+            const wrapper = document.getElementById('scroll-content-wrapper');
+            const nav = document.getElementById('main-header');
+            const body = document.body;
+            let lastY = window.scrollY;
+            let scrollTimer = null;
+            let ticking = false;
+
+            function handleDynamicScrollBlur() {
+                if (ticking) return;
+                ticking = true;
+
+                window.requestAnimationFrame(() => {
+                    const currentY = window.scrollY;
+                    const delta = Math.abs(currentY - lastY);
+                    lastY = currentY;
+
+                    // Hitung intensitas blur berdasarkan pergerakan scroll (naik maupun turun)
+                    // Nilai blur berkisar antara 1.8px hingga 3.5px saat sedang bergerak
+                    const blurValue = Math.min(Math.max(delta * 0.08, 1.8), 3.5);
+
+                    if (wrapper) {
+                        wrapper.style.filter = `blur(${blurValue.toFixed(1)}px)`;
+                    }
+                    if (nav) {
+                        nav.classList.add('scrolling-motion-blur');
+                    }
+                    body.classList.add('is-scrolling-active');
+
+                    // Kembalikan ke tajam normal blur(0px) segera setelah scroll berhenti (110ms)
+                    clearTimeout(scrollTimer);
+                    scrollTimer = setTimeout(() => {
+                        if (wrapper) {
+                            wrapper.style.filter = 'blur(0px)';
+                        }
+                        if (nav) {
+                            nav.classList.remove('scrolling-motion-blur');
+                        }
+                        body.classList.remove('is-scrolling-active');
+                    }, 110);
+
+                    ticking = false;
+                });
+            }
+
+            window.addEventListener('scroll', handleDynamicScrollBlur, { passive: true });
+        })();
+
+        // Sticky Navbar Transition on Scroll
+        const header = document.getElementById('main-header');
+        function handleNavbarScroll() {
+            if (!header) return;
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md', 'bg-white/98', 'dark:bg-[#111215]/98');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        }
+        window.addEventListener('scroll', handleNavbarScroll, { passive: true });
+        handleNavbarScroll();
+
+        // Theme Switcher Engine
+        const themeBtn = document.getElementById('theme-toggle-btn');
+        const sunIcon = document.getElementById('theme-sun-icon');
+        const moonIcon = document.getElementById('theme-moon-icon');
+
+        function updateThemeIcons() {
+            if (document.documentElement.classList.contains('dark')) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+        updateThemeIcons();
+
+        if (themeBtn) {
+            themeBtn.addEventListener('click', () => {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('solveta_theme', 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('solveta_theme', 'dark');
+                }
+                updateThemeIcons();
+            });
+        }
+
+        // Mobile Menu Drawer Engine
+        const mobileToggle = document.getElementById('mobile-menu-toggle');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const openIcon = document.getElementById('mobile-menu-open-icon');
+        const closeIcon = document.getElementById('mobile-menu-close-icon');
+
+        if (mobileToggle && mobileDrawer) {
+            mobileToggle.addEventListener('click', () => {
+                const isOpen = !mobileDrawer.classList.contains('hidden');
+                if (isOpen) {
+                    mobileDrawer.classList.add('hidden');
+                    openIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                } else {
+                    mobileDrawer.classList.remove('hidden');
+                    openIcon.classList.add('hidden');
+                    closeIcon.classList.remove('hidden');
+                }
+            });
+        }
+
+        // Liquid Glass Logo Reveal Engine (Background Putih Polos + Smooth Blur Reveal)
+        let introTimer;
+        function dismissIntro() {
+            clearTimeout(introTimer);
+            const intro = document.getElementById('liquid-glass-intro');
+            if (intro && !intro.classList.contains('dismissed')) {
+                // Pastikan posisi scroll tepat di puncak beranda paling atas
+                window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+                intro.classList.add('dismissed');
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    document.body.style.overflow = '';
+                    if (window.lucide) {
+                        lucide.createIcons();
+                    }
+                }, 1150);
+            }
+        }
+
+        const introEl = document.getElementById('liquid-glass-intro');
+        if (introEl) {
+            // Kunci scroll di puncak halaman selama animasi intro
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+            document.body.style.overflow = 'hidden';
+
+            // Auto dismiss setelah 3.2 detik dengan transisi blur mulus
+            introTimer = setTimeout(dismissIntro, 3200);
+
+            // Dismiss on Esc or Space
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' || e.key === ' ') {
+                    dismissIntro();
+                }
+            });
+
+            // Also dismiss on clicking anywhere on the overlay
+            introEl.addEventListener('click', (e) => {
+                if (e.target !== document.getElementById('skip-intro-btn')) {
+                    dismissIntro();
+                }
+            });
+        }
     </script>
-    <script src="/assets/js/main.js?v=<?= file_exists(FCPATH . 'assets/js/main.js') ? filemtime(FCPATH . 'assets/js/main.js') : '2.0' ?>"></script>
-    <?= $this->renderSection('scripts') ?>
 </body>
 </html>

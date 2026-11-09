@@ -429,7 +429,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 7. AUTHENTIC 3D COVERFLOW CAROUSEL ENGINE (Interactive & Swipe Gesture)
     // -------------------------------------------------------------------------
     const coverflowSection = document.getElementById("coverflow-section");
-    const coverflowFrame = document.getElementById("coverflow-frame");
+    const coverflowFrame = document.getElementById("coverflow-frame") || document.getElementById("coverflow-viewport");
     const prevBtn = document.getElementById("coverflow-prev-btn");
     const nextBtn = document.getElementById("coverflow-next-btn");
     const dotsContainer = document.getElementById("coverflow-dots");
@@ -469,7 +469,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // Direct 60fps/120fps DOM renderer
         function paint() {
             if (!width || count === 0) return;
-            const pitch = width * (1 + gap);
+            const isMobile = window.innerWidth < 640;
+            const currentGap = isMobile ? -0.15 : gap;
+            const currentRotate = isMobile ? 22 : rotate;
+            const currentDepth = isMobile ? 0.38 : depth;
+            const pitch = width * (1 + currentGap);
             const isDark = isDarkTheme();
 
             activeCards.forEach((card, index) => {
@@ -485,14 +489,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 // 3D physics ramp calculations
                 const ramp = Math.pow(distance, falloff);
-                const tilt = Math.min(rotate * ramp, 65) * Math.sign(offset);
+                const tilt = Math.min(currentRotate * ramp, 60) * Math.sign(offset);
 
                 // Apply transform & 3D perspective
-                card.style.transform = `translateX(calc(-50% + ${offset * pitch}px)) translateZ(${-depth * width * ramp}px) rotateY(${-tilt}deg)`;
+                card.style.transform = `translateX(calc(-50% + ${offset * pitch}px)) translateZ(${-currentDepth * width * ramp}px) rotateY(${-tilt}deg)`;
 
                 // Dynamic opacity & z-index
                 const edge = Math.min(1, Math.max(0, count / 2 - distance));
-                const baseOpacity = Math.max(0, 1 - 0.15 * distance) * edge;
+                const baseOpacity = Math.max(0, 1 - 0.18 * distance) * edge;
                 card.style.opacity = String(baseOpacity);
                 card.style.zIndex = String(100 - Math.round(distance * 10));
 
@@ -503,9 +507,9 @@ document.addEventListener("DOMContentLoaded", () => {
                         ? "0 25px 60px rgba(0,0,0,0.9), 0 0 30px rgba(244,63,94,0.3)"
                         : "0 25px 50px -12px rgba(139,0,33,0.3), 0 0 20px rgba(139,0,33,0.15)";
                     card.style.filter = "brightness(1)";
-                    card.style.cursor = "default";
+                    card.style.cursor = "pointer";
                 } else {
-                    card.style.borderColor = isDark ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.15)";
+                    card.style.borderColor = isDark ? "rgba(255, 255, 255, 0.15)" : "rgba(0, 0, 0, 0.12)";
                     card.style.boxShadow = isDark ? "0 15px 35px rgba(0,0,0,0.6)" : "0 12px 25px rgba(0,0,0,0.08)";
                     card.style.filter = isDark
                         ? `brightness(${Math.max(0.45, 0.9 - distance * 0.2)})`
@@ -513,7 +517,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     card.style.cursor = "pointer";
                 }
 
-                // Frosted glass bottom banner opacity
+                // If banner exists (legacy/fallback), handle gently
                 const banner = card.querySelector(".coverflow-card-banner");
                 if (banner) {
                     const bannerOpacity = Math.max(0, 1 - distance * 2.2);
@@ -532,8 +536,37 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             }
 
-            // Update pagination dots
+            // Update pagination dots and active project info block
             updateDots();
+            updateActiveInfo();
+        }
+
+        // Clean & Minimalist Active Project Info Updater (underneath thumbnail)
+        function updateActiveInfo() {
+            const currentCard = activeCards[selectedIndex];
+            if (!currentCard) return;
+
+            const catEl = document.getElementById("active-port-cat");
+            const titleEl = document.getElementById("active-port-title");
+            const descEl = document.getElementById("active-port-desc");
+            const linkEl = document.getElementById("active-port-link");
+            const btnTextEl = document.getElementById("active-port-btn-text");
+
+            const cat = currentCard.getAttribute("data-category") || "";
+            const title = currentCard.getAttribute("data-title") || "";
+            const subtitle = currentCard.getAttribute("data-subtitle") || "";
+            const desc = currentCard.getAttribute("data-desc") || "";
+            const url = currentCard.getAttribute("data-url") || "#";
+            const btnText = currentCard.getAttribute("data-btn-text") || "Lawati Laman Web";
+
+            if (catEl && catEl.textContent !== cat) catEl.textContent = cat;
+            if (titleEl) {
+                const fullTitle = title + (subtitle ? ` <span class="text-rose-400 font-semibold">${subtitle}</span>` : "");
+                if (titleEl.innerHTML !== fullTitle) titleEl.innerHTML = fullTitle;
+            }
+            if (descEl && descEl.textContent !== desc) descEl.textContent = desc;
+            if (linkEl && linkEl.getAttribute("href") !== url) linkEl.href = url;
+            if (btnTextEl && btnTextEl.textContent !== btnText) btnTextEl.textContent = btnText;
         }
 
         // Settle animation using exponential ease-out
@@ -598,12 +631,14 @@ document.addEventListener("DOMContentLoaded", () => {
         // Measure width for responsive calculations
         function measure() {
             if (activeCards[0]) {
-                width = activeCards[0].offsetWidth;
+                const isMobile = window.innerWidth < 640;
+                width = activeCards[0].offsetWidth || (isMobile ? Math.round(window.innerWidth * 0.82) : 520);
                 paint();
             }
         }
 
-        // Pointer Drag & Swipe Gestures (Kinetic physics)
+        let hasMoved = false;
+
         coverflowFrame.addEventListener("pointerdown", (e) => {
             if (e.target.closest("a, button, [data-interactive]")) return;
 
@@ -613,8 +648,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             coverflowFrame.setPointerCapture(e.pointerId);
             target = pos;
+            hasMoved = false;
             drag = {
                 id: e.pointerId,
+                startX: e.clientX,
                 x: e.clientX,
                 pos: pos,
                 v: 0,
@@ -624,7 +661,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         coverflowFrame.addEventListener("pointermove", (e) => {
             if (!drag || drag.id !== e.pointerId) return;
-            const pitch = width * (1 + gap);
+            if (Math.abs(e.clientX - drag.startX) > 4) {
+                hasMoved = true;
+            }
+            const isMobile = window.innerWidth < 640;
+            const currentGap = isMobile ? -0.15 : gap;
+            const pitch = width * (1 + currentGap);
             if (!pitch) return;
 
             const now = performance.now();
@@ -642,22 +684,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function endDrag(e) {
             if (!drag || drag.id !== e.pointerId) return;
+            const velocity = drag.v || 0;
             drag = null;
             // Kinetic flick throw (carry max 2 cards)
-            const carried = Math.max(-2, Math.min(2, drag.v * 0.18));
+            const carried = Math.max(-2, Math.min(2, velocity * 0.18));
             settle(Math.round(pos + carried));
         }
 
         coverflowFrame.addEventListener("pointerup", endDrag);
         coverflowFrame.addEventListener("pointercancel", endDrag);
 
-        // Click on side card moves to it
+        // Click on side card moves to it; click on center card opens live project
         allCardElements.forEach(card => {
             card.addEventListener("click", (e) => {
+                if (hasMoved) return;
                 if (e.target.closest("a, button, [data-interactive]")) return;
                 const idx = activeCards.indexOf(card);
-                if (idx !== -1 && idx !== selectedIndex) {
-                    goTo(idx);
+                if (idx !== -1) {
+                    if (idx !== selectedIndex) {
+                        goTo(idx);
+                    } else {
+                        const url = card.getAttribute("data-url");
+                        if (url && url !== "#") {
+                            window.open(url, "_blank");
+                        }
+                    }
                 }
             });
         });
@@ -724,10 +775,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }, 5000);
 
-        // Resize Observer
+        // Resize & Load Observers
         window.addEventListener("resize", measure);
+        window.addEventListener("load", measure);
         measure();
         buildDots();
+        setTimeout(measure, 100);
+        setTimeout(measure, 400);
 
         // Expose engine to window
         window.solvetaCoverflow = {

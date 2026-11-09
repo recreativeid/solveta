@@ -193,6 +193,30 @@
                     <span>Pencatatan Proyek &amp; Invoice</span>
                 </button>
 
+                <!-- 10. Kelola Artikel & Wawasan -->
+                <button type="button" onclick="switchTab('articles')" id="nav-btn-articles"
+                        class="sidebar-btn w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center justify-between cursor-pointer text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="newspaper" class="w-3.5 h-3.5 text-gray-400"></i>
+                        <span>Kelola Artikel</span>
+                    </div>
+                    <?php if (!empty($articles)): ?>
+                        <span class="px-1.5 py-0.5 rounded-full bg-[#8E1738] text-white text-[9px] font-bold"><?= count($articles) ?></span>
+                    <?php endif; ?>
+                </button>
+
+                <!-- 11. Kelola Karir & Poster Loker -->
+                <button type="button" onclick="switchTab('careers')" id="nav-btn-careers"
+                        class="sidebar-btn w-full text-left px-3 py-2 rounded-lg text-xs transition-colors flex items-center justify-between cursor-pointer text-gray-500 hover:text-gray-900 hover:bg-gray-50 font-medium">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="briefcase" class="w-3.5 h-3.5 text-gray-400"></i>
+                        <span>Karir &amp; Poster Loker</span>
+                    </div>
+                    <?php if (!empty($careers)): ?>
+                        <span class="px-1.5 py-0.5 rounded-full bg-blue-600 text-white text-[9px] font-bold"><?= count($careers) ?></span>
+                    <?php endif; ?>
+                </button>
+
                 <!-- Link to Customer Form -->
                 <div class="pt-3 mt-2 border-t border-gray-100">
                     <a href="/formulir" target="_blank"
@@ -1944,6 +1968,398 @@
                 </div>
             </div>
 
+            <!-- =========================================================================
+                 MODE 10: KELOLA ARTIKEL & WAWASAN CMS
+                 ========================================================================= -->
+            <div id="tab-articles" class="tab-pane space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h2 class="text-xs font-semibold text-gray-900 uppercase tracking-wider">Kelola Artikel &amp; Wawasan Digital (<?= count($articles ?? []) ?>)</h2>
+                        <p class="text-[11px] text-gray-400">Publikasikan artikel, panduan teknologi, dan studi kasus untuk memperkuat reputasi &amp; SEO Google.</p>
+                    </div>
+                    <button type="button" onclick="resetArticleForm(); document.getElementById('article-form-card').scrollIntoView({behavior: 'smooth'});" class="px-3.5 py-1.5 bg-[#8E1738] hover:bg-[#C4264A] text-white text-xs font-medium rounded-lg transition-colors flex items-center gap-1.5 cursor-pointer shadow-xs">
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                        <span>Tulis Artikel Baru</span>
+                    </button>
+                </div>
+
+                <!-- Form Card: Tulis / Edit Artikel -->
+                <div id="article-form-card" class="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="edit-3" class="w-4 h-4 text-[#8E1738]"></i>
+                            <h3 id="article-form-title" class="text-xs font-bold text-gray-900">Form Publikasi Artikel Baru</h3>
+                        </div>
+                        <button type="button" onclick="resetArticleForm()" class="text-[11px] text-gray-400 hover:text-gray-700 cursor-pointer">
+                            Reset Form
+                        </button>
+                    </div>
+
+                    <form action="<?= base_url('admin/article/save') ?>" method="POST" enctype="multipart/form-data" class="space-y-4">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="id" id="art-id" value="">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                            <!-- Judul Artikel -->
+                            <div class="sm:col-span-8">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Judul Artikel <span class="text-red-500">*</span></label>
+                                <input type="text" name="title" id="art-title" required placeholder="Contoh: Mengapa Bisnis Modern Membutuhkan Sistem Terintegrasi"
+                                       class="w-full text-xs px-3 py-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-medium">
+                            </div>
+
+                            <!-- Kategori -->
+                            <div class="sm:col-span-4">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Kategori</label>
+                                <select name="category" id="art-category" class="w-full text-xs px-3 py-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900">
+                                    <option value="Website &amp; SaaS">Website &amp; SaaS</option>
+                                    <option value="Sistem &amp; Otomasi">Sistem &amp; Otomasi</option>
+                                    <option value="Transformasi Digital">Transformasi Digital</option>
+                                    <option value="UI/UX &amp; Desain">UI/UX &amp; Desain</option>
+                                    <option value="Teknologi &amp; Cloud">Teknologi &amp; Cloud</option>
+                                </select>
+                            </div>
+
+                            <!-- Custom Slug (Optional) -->
+                            <div class="sm:col-span-6">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Custom Slug URL (Opsional, kosongkan untuk otomatis)</label>
+                                <input type="text" name="slug" id="art-slug" placeholder="contoh-judul-artikel-otomatis"
+                                       class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-mono">
+                            </div>
+
+                            <!-- Estimasi Waktu Baca & Penulis -->
+                            <div class="sm:col-span-3">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Estimasi Waktu Baca</label>
+                                <input type="text" name="read_time" id="art-read-time" value="5 min baca" placeholder="5 min baca"
+                                       class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900">
+                            </div>
+
+                            <div class="sm:col-span-3">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Penulis</label>
+                                <input type="text" name="author" id="art-author" value="Tim Riset &amp; Rekayasa SOLVETA"
+                                       class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900">
+                            </div>
+
+                            <!-- Gambar Thumbnail: Upload atau Link URL -->
+                            <div class="sm:col-span-6">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Upload Gambar Thumbnail (File JPG/PNG/WebP)</label>
+                                <input type="file" name="image_file" accept="image/*"
+                                       class="w-full text-xs px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 file:mr-3 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
+                            </div>
+
+                            <div class="sm:col-span-6">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Atau Gunakan URL Gambar Langsung</label>
+                                <input type="url" name="image_url" id="art-image-url" placeholder="https://images.unsplash.com/photo-..."
+                                       class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900">
+                            </div>
+
+                            <!-- Ringkasan Singkat (Excerpt) -->
+                            <div class="sm:col-span-12">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Ringkasan Singkat (Meta Description &amp; Cuplikan Card)</label>
+                                <textarea name="summary" id="art-summary" rows="2" placeholder="Tuliskan 1-2 kalimat ringkasan yang menarik pembaca..."
+                                          class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 leading-relaxed"></textarea>
+                            </div>
+
+                            <!-- Isi Konten Artikel Lengkap -->
+                            <div class="sm:col-span-12">
+                                <div class="flex items-center justify-between mb-1">
+                                    <label class="block text-[11px] font-medium text-gray-700">Konten Artikel Lengkap (Mendukung paragraf, list, atau HTML)</label>
+                                    <span class="text-[10px] text-gray-400">Tips: Gunakan paragraf rapi &amp; heading ## untuk struktur</span>
+                                </div>
+                                <textarea name="content" id="art-content" rows="8" placeholder="Tuliskan isi artikel secara mendalam di sini..."
+                                          class="w-full text-xs font-sans px-3 py-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 leading-relaxed"></textarea>
+                            </div>
+
+                            <!-- Status Publikasi -->
+                            <div class="sm:col-span-12 flex items-center justify-between pt-2 border-t border-gray-100">
+                                <label class="inline-flex items-center gap-2 text-xs text-gray-700 cursor-pointer">
+                                    <input type="checkbox" name="is_published" id="art-published" value="1" checked class="rounded text-[#8E1738] focus:ring-0">
+                                    <span class="font-medium">Terbitkan Langsung ke Website Publik (/artikel)</span>
+                                </label>
+
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="resetArticleForm()" class="px-3.5 py-1.5 text-xs text-gray-500 hover:text-gray-800 cursor-pointer">
+                                        Batal
+                                    </button>
+                                    <button type="submit" class="px-5 py-2 bg-gray-900 hover:bg-black text-white text-xs font-semibold rounded-lg shadow-xs cursor-pointer flex items-center gap-1.5">
+                                        <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                        <span id="art-submit-btn-text">Simpan &amp; Publikasikan</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Table: Daftar Artikel yang Tersimpan -->
+                <div class="bg-white border border-gray-200/80 rounded-xl overflow-hidden shadow-none">
+                    <div class="px-4 py-3 bg-gray-50/80 border-b border-gray-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-gray-700 uppercase tracking-wider">Daftar Artikel Publikasi</span>
+                        <a href="<?= base_url('artikel') ?>" target="_blank" class="text-[11px] font-bold text-[#8E1738] hover:underline flex items-center gap-1">
+                            <span>Lihat Halaman Publik Artikel</span>
+                            <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-[11px] text-left">
+                            <thead class="bg-gray-50 text-gray-400 uppercase text-[9px] border-b border-gray-100">
+                                <tr>
+                                    <th class="px-4 py-2.5 font-medium">Cover</th>
+                                    <th class="px-4 py-2.5 font-medium">Judul &amp; Ringkasan</th>
+                                    <th class="px-4 py-2.5 font-medium">Kategori</th>
+                                    <th class="px-4 py-2.5 font-medium">Status &amp; Tgl</th>
+                                    <th class="px-4 py-2.5 text-right font-medium">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <?php if (empty($articles)): ?>
+                                    <tr>
+                                        <td colspan="5" class="px-4 py-8 text-center text-gray-400">Belum ada artikel publikasi. Gunakan form di atas untuk menulis artikel pertama.</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($articles as $art): ?>
+                                        <tr class="hover:bg-gray-50/60 transition-colors">
+                                            <td class="px-4 py-3 w-16">
+                                                <div class="w-14 h-10 rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
+                                                    <img src="<?= esc($art['image_url']) ?>" alt="Thumbnail" class="w-full h-full object-cover">
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3 max-w-xs">
+                                                <div class="font-bold text-gray-900 leading-snug line-clamp-1"><?= esc($art['title']) ?></div>
+                                                <div class="text-[10px] text-gray-400 line-clamp-1 mt-0.5"><?= esc($art['summary']) ?></div>
+                                                <div class="text-[9px] font-mono text-gray-400 mt-0.5">/artikel/<?= esc($art['slug']) ?></div>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-red-50 text-[#8E1738] border border-red-100">
+                                                    <?= esc($art['category']) ?>
+                                                </span>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <div class="flex items-center gap-1.5">
+                                                    <span class="w-1.5 h-1.5 rounded-full <?= ($art['is_published'] ?? 1) ? 'bg-emerald-500' : 'bg-amber-400' ?>"></span>
+                                                    <span class="text-xs font-semibold text-gray-700"><?= ($art['is_published'] ?? 1) ? 'Published' : 'Draft' ?></span>
+                                                </div>
+                                                <div class="text-[10px] text-gray-400 mt-0.5"><?= esc($art['created_at']) ?></div>
+                                            </td>
+                                            <td class="px-4 py-3 text-right">
+                                                <div class="flex items-center justify-end gap-2">
+                                                    <a href="<?= base_url('artikel/' . $art['slug']) ?>" target="_blank"
+                                                       class="px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-700 text-[10px] font-medium transition-colors"
+                                                       title="Buka Artikel Live">
+                                                        Lihat
+                                                    </a>
+                                                    <button type="button" onclick='populateArticleEdit(<?= json_encode($art, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP) ?>)'
+                                                            class="px-2 py-1 rounded bg-blue-50 hover:bg-blue-100 text-blue-700 text-[10px] font-medium transition-colors cursor-pointer">
+                                                        Edit
+                                                    </button>
+                                                    <a href="<?= base_url('admin/article/delete/' . $art['id']) ?>"
+                                                       onclick="return confirm('Apakah Anda yakin ingin menghapus artikel ini?');"
+                                                       class="px-2 py-1 rounded bg-red-50 hover:bg-red-100 text-red-600 text-[10px] font-medium transition-colors">
+                                                        Hapus
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- =========================================================================
+                 MODE 11: KELOLA KARIR & POSTER LOWONGAN KERJA (LOKER)
+                 ========================================================================= -->
+            <div id="tab-careers" class="tab-pane space-y-6">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <div>
+                        <h2 class="text-xs font-semibold text-gray-900 uppercase tracking-wider">Kelola Lowongan Karir &amp; Upload Poster Loker (<?= count($careers ?? []) ?>)</h2>
+                        <p class="text-[11px] text-gray-400">Atur pesan ketersediaan lowongan kerja publik atau upload poster info rekrutmen terbaru SOLVETA.</p>
+                    </div>
+                </div>
+
+                <!-- 1. Form Status Pengumuman Karir Publik -->
+                <div class="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-4">
+                    <div class="flex items-center gap-2 border-b border-gray-100 pb-3">
+                        <i data-lucide="bell" class="w-4 h-4 text-blue-600"></i>
+                        <h3 class="text-xs font-bold text-gray-900">Pengumuman Status Rekrutmen Publik (/karir)</h3>
+                    </div>
+                    <form action="<?= base_url('admin/career/announcement') ?>" method="POST" class="space-y-3">
+                        <?= csrf_field() ?>
+                        <div>
+                            <label class="block text-[11px] font-medium text-gray-700 mb-1">Judul Pengumuman</label>
+                            <input type="text" name="announcement_title" required
+                                   value="<?= esc($career_data['announcement_title'] ?? 'Belum Ada Lowongan Pekerjaan Aktif') ?>"
+                                   class="w-full text-xs px-3 py-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-semibold">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-gray-700 mb-1">Deskripsi &amp; Pesan untuk Pelamar</label>
+                            <textarea name="announcement_desc" rows="2" required
+                                      class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 leading-relaxed"><?= esc($career_data['announcement_desc'] ?? 'Saat ini belum tersedia lowongan pekerjaan aktif. Silakan cek berkala atau kirimkan CV ke talent pool kami.') ?></textarea>
+                        </div>
+                        <div class="flex justify-end pt-1">
+                            <button type="submit" class="px-4 py-2 bg-gray-900 hover:bg-black text-white text-xs font-medium rounded-lg shadow-xs cursor-pointer flex items-center gap-1.5">
+                                <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                <span>Simpan Pengumuman</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 2. Form Tambah / Upload Poster Posisi Loker Baru -->
+                <div id="career-form-card" class="bg-white border border-gray-200/80 rounded-xl p-5 sm:p-6 shadow-xs space-y-4">
+                    <div class="flex items-center justify-between border-b border-gray-100 pb-3">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="file-plus" class="w-4 h-4 text-[#8E1738]"></i>
+                            <h3 id="career-form-title" class="text-xs font-bold text-gray-900">Upload Poster &amp; Detail Posisi Loker Baru</h3>
+                        </div>
+                        <button type="button" onclick="resetCareerForm()" class="text-[11px] text-gray-400 hover:text-gray-700 cursor-pointer">
+                            Reset Form
+                        </button>
+                    </div>
+
+                    <form action="<?= base_url('admin/career/save') ?>" method="POST" enctype="multipart/form-data" class="space-y-4">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="id" id="career-id" value="">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                            <!-- Judul Posisi -->
+                            <div class="sm:col-span-8">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Nama Posisi / Pekerjaan <span class="text-red-500">*</span></label>
+                                <input type="text" name="title" id="career-title" required placeholder="Contoh: Senior Fullstack Engineer / UI-UX Designer"
+                                       class="w-full text-xs px-3 py-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 font-medium">
+                            </div>
+
+                            <!-- Departemen -->
+                            <div class="sm:col-span-4">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Departemen / Divisi</label>
+                                <select name="department" id="career-dept" class="w-full text-xs px-3 py-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900">
+                                    <option value="Software Engineering">Software Engineering</option>
+                                    <option value="UI/UX &amp; Creative Design">UI/UX &amp; Creative Design</option>
+                                    <option value="Quality Assurance &amp; DevOps">Quality Assurance &amp; DevOps</option>
+                                    <option value="Business &amp; Client Solution">Business &amp; Client Solution</option>
+                                    <option value="Magang &amp; Internship">Magang &amp; Internship</option>
+                                </select>
+                            </div>
+
+                            <!-- Lokasi & Status -->
+                            <div class="sm:col-span-6">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Lokasi Penempatan</label>
+                                <input type="text" name="location" id="career-loc" value="Remote / Hybrid (Indonesia)"
+                                       class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900">
+                            </div>
+
+                            <div class="sm:col-span-6">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Status Lowongan</label>
+                                <select name="status" id="career-status" class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900">
+                                    <option value="Buka">🟢 Dibuka (Menerima Lamaran)</option>
+                                    <option value="Tutup">🔴 Ditutup / Belum Tersedia</option>
+                                    <option value="Segera">🟡 Segera Dibuka</option>
+                                </select>
+                            </div>
+
+                            <!-- Upload Poster Gambar -->
+                            <div class="sm:col-span-6">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Upload File Poster Loker (JPG/PNG/WebP)</label>
+                                <input type="file" name="poster_file" accept="image/*"
+                                       class="w-full text-xs px-2.5 py-1.5 rounded-lg border border-gray-200 text-gray-600 file:mr-3 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200">
+                            </div>
+
+                            <div class="sm:col-span-6">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Atau Masukkan URL Poster Gambar</label>
+                                <input type="url" name="poster_url" id="career-poster-url" placeholder="https://..."
+                                       class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900">
+                            </div>
+
+                            <!-- Deskripsi & Kualifikasi -->
+                            <div class="sm:col-span-12">
+                                <label class="block text-[11px] font-medium text-gray-700 mb-1">Deskripsi Singkat &amp; Kualifikasi Kunci</label>
+                                <textarea name="description" id="career-desc" rows="3" placeholder="Tuliskan gambaran pekerjaan, tech stack yang dipakai, dan kualifikasi yang dicari..."
+                                          class="w-full text-xs px-3 py-2 rounded-lg border border-gray-200 focus:border-gray-900 outline-none text-gray-900 leading-relaxed"></textarea>
+                            </div>
+
+                            <div class="sm:col-span-12 flex justify-end gap-2 pt-2 border-t border-gray-100">
+                                <button type="button" onclick="resetCareerForm()" class="px-3.5 py-1.5 text-xs text-gray-500 hover:text-gray-800 cursor-pointer">
+                                    Batal
+                                </button>
+                                <button type="submit" class="px-5 py-2 bg-[#8E1738] hover:bg-[#C4264A] text-white text-xs font-semibold rounded-lg shadow-xs cursor-pointer flex items-center gap-1.5">
+                                    <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+                                    <span id="career-submit-btn-text">Simpan &amp; Publikasikan Loker</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- 3. Tabel Daftar Posisi Loker yang Tersimpan -->
+                <div class="bg-white border border-gray-200/80 rounded-xl overflow-hidden shadow-none">
+                    <div class="px-4 py-3 bg-gray-50/80 border-b border-gray-100 flex items-center justify-between">
+                        <span class="text-xs font-bold text-gray-700 uppercase tracking-wider">Daftar Lowongan Karir Aktif</span>
+                        <a href="<?= base_url('karir') ?>" target="_blank" class="text-[11px] font-bold text-blue-600 hover:underline flex items-center gap-1">
+                            <span>Buka Halaman Karir Publik</span>
+                            <i data-lucide="external-link" class="w-3 h-3"></i>
+                        </a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-[11px] text-left">
+                            <thead class="bg-gray-50 text-gray-400 uppercase text-[9px] border-b border-gray-100">
+                                <tr>
+                                    <th class="px-4 py-2.5 font-medium">Poster</th>
+                                    <th class="px-4 py-2.5 font-medium">Posisi &amp; Lokasi</th>
+                                    <th class="px-4 py-2.5 font-medium">Departemen</th>
+                                    <th class="px-4 py-2.5 font-medium">Status</th>
+                                    <th class="px-4 py-2.5 text-right font-medium">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <?php if (empty($careers)): ?>
+                                    <tr>
+                                        <td colspan="5" class="px-4 py-8 text-center text-gray-400">Belum ada posisi loker khusus yang diunggah. Halaman publik saat ini menampilkan status "Belum Ada Lowongan Aktif".</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($careers as $j): ?>
+                                        <tr class="hover:bg-gray-50/60 transition-colors">
+                                            <td class="px-4 py-3 w-16">
+                                                <div class="w-12 h-14 rounded-lg overflow-hidden border border-gray-200 bg-gray-100">
+                                                    <?php if (!empty($j['poster_url'])): ?>
+                                                        <img src="<?= esc($j['poster_url']) ?>" alt="Poster" class="w-full h-full object-cover">
+                                                    <?php else: ?>
+                                                        <div class="w-full h-full flex items-center justify-center text-gray-400"><i data-lucide="image" class="w-4 h-4"></i></div>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <div class="font-bold text-gray-900"><?= esc($j['title']) ?></div>
+                                                <div class="text-[10px] text-gray-400"><?= esc($j['location'] ?? 'Remote') ?></div>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <span class="px-2 py-0.5 rounded text-[10px] font-medium bg-gray-100 text-gray-700">
+                                                    <?= esc($j['department']) ?>
+                                                </span>
+                                            </td>
+                                            <td class="px-4 py-3">
+                                                <span class="px-2 py-0.5 rounded text-[10px] font-bold <?= ($j['status'] ?? '') === 'Buka' ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700' ?>">
+                                                    <?= esc($j['status'] ?? 'Buka') ?>
+                                                </span>
+                                            </td>
+                                            <td class="px-4 py-3 text-right">
+                                                <div class="flex items-center justify-end gap-2">
+                                                    <a href="<?= base_url('admin/career/delete/' . $j['id']) ?>"
+                                                       onclick="return confirm('Apakah Anda yakin ingin menghapus lowongan ini?');"
+                                                       class="px-2 py-1 rounded bg-red-50 hover:bg-red-100 text-red-600 text-[10px] font-medium transition-colors">
+                                                        Hapus
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </main>
 
@@ -2380,7 +2796,7 @@
     <script>
         lucide.createIcons();
 
-        // 1. Tab Switcher (Matching 9 Next.js Modes)
+        // 1. Tab Switcher (Matching 9 Next.js Modes + Articles & Careers)
         const tabTitles = {
             'visual': 'Edit Visual',
             'pricing': 'Paket & Harga',
@@ -2390,7 +2806,9 @@
             'contact': 'Kontak WhatsApp',
             'video': 'Video Profil',
             'orders': 'Rekap Formulir Order',
-            'projects': 'Pencatatan Proyek & Invoice'
+            'projects': 'Pencatatan Proyek & Invoice',
+            'articles': 'Kelola Artikel & Wawasan Publikasi',
+            'careers': 'Kelola Karir & Poster Loker'
         };
 
         let activeTab = 'visual';
@@ -2760,6 +3178,51 @@
             a.href = url;
             a.download = `hpp-margin-solveta-${new Date().toISOString().slice(0,10)}.csv`;
             a.click();
+        }
+
+        // Article CMS Helpers
+        function resetArticleForm() {
+            document.getElementById('art-id').value = '';
+            document.getElementById('art-title').value = '';
+            document.getElementById('art-slug').value = '';
+            document.getElementById('art-category').value = 'Website & SaaS';
+            document.getElementById('art-read-time').value = '5 min baca';
+            document.getElementById('art-author').value = 'Tim Riset & Rekayasa SOLVETA';
+            document.getElementById('art-image-url').value = '';
+            document.getElementById('art-summary').value = '';
+            document.getElementById('art-content').value = '';
+            document.getElementById('art-published').checked = true;
+            document.getElementById('article-form-title').innerText = 'Form Publikasi Artikel Baru';
+            document.getElementById('art-submit-btn-text').innerText = 'Simpan & Publikasikan';
+        }
+
+        function populateArticleEdit(art) {
+            document.getElementById('art-id').value = art.id || '';
+            document.getElementById('art-title').value = art.title || '';
+            document.getElementById('art-slug').value = art.slug || '';
+            document.getElementById('art-category').value = art.category || 'Website & SaaS';
+            document.getElementById('art-read-time').value = art.read_time || '5 min baca';
+            document.getElementById('art-author').value = art.author || 'Tim Riset & Rekayasa SOLVETA';
+            document.getElementById('art-image-url').value = art.image_url || '';
+            document.getElementById('art-summary').value = art.summary || '';
+            document.getElementById('art-content').value = art.content || '';
+            document.getElementById('art-published').checked = (art.is_published === 1 || art.is_published === '1' || art.is_published === true);
+            document.getElementById('article-form-title').innerText = 'Edit Artikel: ' + (art.title || '');
+            document.getElementById('art-submit-btn-text').innerText = 'Perbarui Artikel';
+            document.getElementById('article-form-card').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Career / Loker CMS Helpers
+        function resetCareerForm() {
+            document.getElementById('career-id').value = '';
+            document.getElementById('career-title').value = '';
+            document.getElementById('career-dept').value = 'Software Engineering';
+            document.getElementById('career-loc').value = 'Remote / Hybrid (Indonesia)';
+            document.getElementById('career-status').value = 'Buka';
+            document.getElementById('career-poster-url').value = '';
+            document.getElementById('career-desc').value = '';
+            document.getElementById('career-form-title').innerText = 'Upload Poster & Detail Posisi Loker Baru';
+            document.getElementById('career-submit-btn-text').innerText = 'Simpan & Publikasikan Loker';
         }
     </script>
 </body>

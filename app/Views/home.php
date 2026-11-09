@@ -280,77 +280,77 @@
 <!-- ==============================================================================
      3. PROBLEM SECTION (Identical to Next.js ProblemSection.tsx)
      ============================================================================== -->
-<section id="problems" class="py-20 bg-white dark:bg-[#07080E] border-b border-gray-100 dark:border-gray-800 transition-colors duration-200 font-sans">
-    <div class="max-w-[1080px] mx-auto px-6 text-center">
+<section id="problems" class="py-14 sm:py-20 bg-white dark:bg-[#07080E] border-b border-gray-100 dark:border-gray-800 transition-colors duration-200 font-sans overflow-hidden">
+    <div class="max-w-[1080px] mx-auto px-4 sm:px-6 text-center">
         <!-- Section Header -->
-        <div class="space-y-3 mb-10">
-            <span class="font-mono text-[11px] font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 px-4 py-1.5 rounded-full inline-block">
+        <div class="space-y-3 mb-8 sm:mb-10 max-w-2xl mx-auto">
+            <span class="font-mono text-[10px] sm:text-[11px] font-bold tracking-widest text-[#8B0021] dark:text-rose-400 uppercase bg-rose-50 dark:bg-rose-950/60 border border-rose-100 dark:border-rose-800/60 px-3.5 py-1 sm:py-1.5 rounded-full inline-block">
                 TANTANGAN BISNIS &bull; SOLUSI TEPAT
             </span>
-            <h2 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight leading-tight">
+            <h2 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold text-gray-950 dark:text-white tracking-tight leading-snug break-words px-1">
                 Setiap bisnis memiliki tantangan yang berbeda.
             </h2>
-            <p class="max-w-2xl mx-auto text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed font-normal">
+            <p class="max-w-xl mx-auto text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-300 leading-relaxed font-normal px-1">
                 Tidak semua masalah membutuhkan solusi yang kompleks. Yang dibutuhkan adalah <strong class="text-gray-900 dark:text-white font-bold">teknologi yang tepat untuk menyelesaikan masalah yang tepat</strong>.
             </p>
         </div>
 
         <!-- 5 Challenge Point Cards in Responsive Grid -->
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5 mb-12">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5 mb-10 sm:mb-12">
             <!-- Card 1 -->
-            <div class="p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
-                <div class="w-10 h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-3 shadow-2xs">
-                    <i data-lucide="file-spreadsheet" class="w-5 h-5 stroke-[1.8]"></i>
+            <div class="p-3.5 sm:p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-2.5 shadow-2xs">
+                    <i data-lucide="file-spreadsheet" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]"></i>
                 </div>
-                <span class="text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
+                <span class="text-[11px] sm:text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
                     Proses yang Masih Manual
                 </span>
             </div>
 
             <!-- Card 2 -->
-            <div class="p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
-                <div class="w-10 h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-3 shadow-2xs">
-                    <i data-lucide="file-code-2" class="w-5 h-5 stroke-[1.8]"></i>
+            <div class="p-3.5 sm:p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-2.5 shadow-2xs">
+                    <i data-lucide="file-code-2" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]"></i>
                 </div>
-                <span class="text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
+                <span class="text-[11px] sm:text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
                     Informasi yang Belum Terstruktur
                 </span>
             </div>
 
             <!-- Card 3 -->
-            <div class="p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
-                <div class="w-10 h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-3 shadow-2xs">
-                    <i data-lucide="repeat" class="w-5 h-5 stroke-[1.8]"></i>
+            <div class="p-3.5 sm:p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-2.5 shadow-2xs">
+                    <i data-lucide="repeat" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]"></i>
                 </div>
-                <span class="text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
+                <span class="text-[11px] sm:text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
                     Pekerjaan yang Berulang
                 </span>
             </div>
 
             <!-- Card 4 -->
-            <div class="p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
-                <div class="w-10 h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-3 shadow-2xs">
-                    <i data-lucide="database" class="w-5 h-5 stroke-[1.8]"></i>
+            <div class="p-3.5 sm:p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-2.5 shadow-2xs">
+                    <i data-lucide="database" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]"></i>
                 </div>
-                <span class="text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
+                <span class="text-[11px] sm:text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
                     Data yang Sulit Dikelola
                 </span>
             </div>
 
-            <!-- Card 5 -->
-            <div class="p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
-                <div class="w-10 h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-3 shadow-2xs">
-                    <i data-lucide="globe" class="w-5 h-5 stroke-[1.8]"></i>
+            <!-- Card 5 (Centered & Spanning 2 cols on mobile) -->
+            <div class="col-span-2 sm:col-span-1 max-w-[240px] sm:max-w-none mx-auto w-full p-3.5 sm:p-4 rounded-xl bg-gray-50/70 dark:bg-[#11121C] border border-gray-200/80 dark:border-gray-800 hover:border-rose-300 dark:hover:border-rose-600 hover:bg-white dark:hover:bg-[#151724] shadow-2xs hover:shadow-xs transition-all duration-300 flex flex-col items-center justify-center text-center group">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 group-hover:border-rose-300 dark:group-hover:border-rose-500 flex items-center justify-center text-gray-700 dark:text-gray-300 group-hover:text-[#8B0021] dark:group-hover:text-rose-400 transition-all mb-2.5 shadow-2xs">
+                    <i data-lucide="globe" class="w-4 h-4 sm:w-5 sm:h-5 stroke-[1.8]"></i>
                 </div>
-                <span class="text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
-                    Kebutuhan Kehadiran Digital Profesional
+                <span class="text-[11px] sm:text-xs font-semibold text-gray-800 dark:text-gray-200 leading-snug">
+                    Kehadiran Digital Profesional
                 </span>
             </div>
         </div>
 
         <!-- Highlight Banner -->
-        <div class="max-w-2xl mx-auto p-5 sm:p-6 rounded-2xl bg-gradient-to-r from-rose-50/80 dark:from-rose-950/40 via-red-50/50 dark:via-red-950/20 to-orange-50/80 dark:to-orange-950/30 border border-rose-200/80 dark:border-rose-800/60 shadow-2xs flex items-center justify-center gap-3 text-center">
-            <i data-lucide="check-circle-2" class="w-5 h-5 text-[#8B0021] dark:text-rose-400 flex-shrink-0"></i>
+        <div class="max-w-2xl mx-auto p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-rose-50/80 dark:from-rose-950/40 via-red-50/50 dark:via-red-950/20 to-orange-50/80 dark:to-orange-950/30 border border-rose-200/80 dark:border-rose-800/60 shadow-2xs flex items-center justify-center gap-3 text-center">
+            <i data-lucide="check-circle-2" class="w-4 h-4 sm:w-5 sm:h-5 text-[#8B0021] dark:text-rose-400 flex-shrink-0"></i>
             <p class="text-xs sm:text-sm font-semibold text-gray-900 dark:text-gray-100 leading-snug">
                 SOLVETA hadir untuk membantu Anda mengidentifikasi akar masalah dan membangun solusi yang benar-benar Anda butuhkan.
             </p>
@@ -438,7 +438,7 @@
         }
     }
 ?>
-<section id="portfolio" class="py-20 bg-gradient-to-b from-white dark:from-[#07080E] via-[#FDFBF9] dark:via-[#090A12] to-white dark:to-[#07080E] relative overflow-hidden transition-colors duration-200 font-sans">
+<section id="portfolio" class="py-16 sm:py-20 bg-gradient-to-b from-white dark:from-[#07080E] via-[#FDFBF9] dark:via-[#090A12] to-white dark:to-[#07080E] relative overflow-hidden transition-colors duration-200 font-sans">
     
     <!-- Centered Header & Category Filters -->
     <div class="max-w-[1240px] mx-auto px-4 sm:px-6 mb-6">
@@ -450,17 +450,17 @@
                 <?= esc($copy['portfolio_title'] ?? 'Portofolio Proyek Website Yang Telah Kami Bangun') ?>
             </h2>
             <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-2.5 max-w-xl mx-auto leading-relaxed font-sans">
-                Jelajahi karya solusi digital dan website yang telah kami bangun dalam format tampilan layar laptop 3D interaktif. Klik tombol untuk melihat rincian.
+                <?= esc($copy['portfolio_subtitle'] ?? 'Koleksi karya digital terbaik yang memadukan desain visual berkelas dunia dengan performa teknologi tanpa kompromi.') ?>
             </p>
 
-            <!-- Category Filter Pills -->
+            <!-- Category Filter Pills (Smooth scroll on mobile, wrap on desktop) -->
             <?php if (!empty($categories)): ?>
-                <div class="flex flex-wrap items-center justify-center gap-2 mt-6">
-                    <button type="button" class="coverflow-filter-btn text-xs font-semibold font-sans px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer border bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white border-[#8B0021] shadow-xs" data-category="Semua">
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 px-4 sm:flex-wrap sm:justify-center sm:px-0 mt-5">
+                    <button type="button" class="coverflow-filter-btn flex-shrink-0 text-xs font-semibold font-sans px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer border bg-gradient-to-r from-[#8B0021] to-[#50000F] text-white border-[#8B0021] shadow-xs" data-category="Semua">
                         Semua
                     </button>
                     <?php foreach ($categories as $cat): ?>
-                        <button type="button" class="coverflow-filter-btn text-xs font-semibold font-sans px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer border bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-rose-50 dark:hover:bg-gray-800 hover:text-[#7B0B1E] dark:hover:text-rose-300 border-gray-200 dark:border-gray-800 hover:border-rose-200 dark:hover:border-rose-700" data-category="<?= esc($cat) ?>">
+                        <button type="button" class="coverflow-filter-btn flex-shrink-0 text-xs font-semibold font-sans px-4 py-1.5 rounded-full transition-all duration-200 cursor-pointer border bg-white dark:bg-gray-900 text-gray-700 dark:text-gray-300 hover:bg-rose-50 dark:hover:bg-gray-800 hover:text-[#7B0B1E] dark:hover:text-rose-300 border-gray-200 dark:border-gray-800 hover:border-rose-200 dark:hover:border-rose-700 whitespace-nowrap" data-category="<?= esc($cat) ?>">
                             <?= esc($cat) ?>
                         </button>
                     <?php endforeach; ?>
@@ -470,7 +470,7 @@
     </div>
 
     <!-- 3D Coverflow Interactive Carousel Stage -->
-    <div id="coverflow-section" class="relative w-full min-h-[480px] sm:min-h-[540px] flex items-center justify-center overflow-hidden py-4 select-none font-sans">
+    <div id="coverflow-section" class="relative w-full flex items-center justify-center overflow-hidden py-2 sm:py-4 select-none font-sans">
         
         <!-- Background Subtle Ambient Glow -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -481,23 +481,23 @@
         </div>
 
         <!-- 4-Way Smooth Edge Fade Masks (Top, Bottom, Left, Right) -->
-        <div class="absolute top-0 left-0 right-0 h-20 sm:h-32 bg-gradient-to-b from-white dark:from-[#07080E] via-white/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35"></div>
-        <div class="absolute bottom-0 left-0 right-0 h-20 sm:h-32 bg-gradient-to-t from-white dark:from-[#07080E] via-white/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35"></div>
-        <div class="absolute top-0 bottom-0 left-0 w-12 sm:w-24 md:w-32 bg-gradient-to-r from-white dark:from-[#07080E] to-transparent pointer-events-none z-35"></div>
-        <div class="absolute top-0 bottom-0 right-0 w-12 sm:w-24 md:w-32 bg-gradient-to-l from-white dark:from-[#07080E] to-transparent pointer-events-none z-35"></div>
+        <div class="absolute top-0 left-0 right-0 h-14 sm:h-24 bg-gradient-to-b from-white dark:from-[#07080E] via-white/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35"></div>
+        <div class="absolute bottom-0 left-0 right-0 h-14 sm:h-24 bg-gradient-to-t from-white dark:from-[#07080E] via-white/80 dark:via-[#07080E]/80 to-transparent pointer-events-none z-35"></div>
+        <div class="absolute top-0 bottom-0 left-0 w-6 sm:w-16 md:w-24 bg-gradient-to-r from-white dark:from-[#07080E] to-transparent pointer-events-none z-35"></div>
+        <div class="absolute top-0 bottom-0 right-0 w-6 sm:w-16 md:w-24 bg-gradient-to-l from-white dark:from-[#07080E] to-transparent pointer-events-none z-35"></div>
 
         <div class="relative w-full z-10 flex flex-col items-center">
             
             <!-- Eyebrow Label Pill -->
-            <div class="flex items-center justify-center mb-6">
+            <div class="flex items-center justify-center mb-3 sm:mb-5">
                 <span class="px-3.5 py-1 rounded-full bg-rose-50 dark:bg-rose-950/60 border border-rose-200/50 dark:border-rose-800/40 text-[10px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-300 uppercase shadow-2xs">
                     SOLVETA SHOWCASE
                 </span>
             </div>
 
-            <!-- 3D Coverflow Container with Preserved 3D & Gesture Touch Drag -->
+            <!-- 3D Coverflow Container -->
             <div id="coverflow-frame" tabindex="0" 
-                 class="coverflow-container relative w-full h-[360px] sm:h-[420px] md:h-[460px] flex justify-center items-center mb-4 overflow-visible cursor-grab active:cursor-grabbing outline-none">
+                 class="coverflow-container relative w-full h-[220px] sm:h-[300px] md:h-[350px] flex justify-center items-center mb-1 overflow-visible cursor-grab active:cursor-grabbing outline-none">
                 <div id="coverflow-ring" class="coverflow-ring relative w-full h-full flex items-center justify-center select-none">
                     
                     <?php foreach ($portfolios as $idx => $p): ?>
@@ -525,109 +525,87 @@
                         ?>
                         <div class="coverflow-card group font-sans" 
                              data-index="<?= $idx ?>"
-                             data-category="<?= esc($p['category'] ?? '') ?>"
-                             data-img="<?= esc($p['image_url']) ?>">
+                             data-category="<?= $tagStr ?>"
+                             data-img="<?= esc($p['image_url']) ?>"
+                             data-title="<?= esc($title1) ?>"
+                             data-subtitle="<?= esc($title2) ?>"
+                             data-desc="<?= esc($p['description'] ?? '') ?>"
+                             data-url="<?= esc($ctaUrl) ?>"
+                             data-btn-text="<?= esc($ctaText) ?>">
                             
-                            <!-- 1. LAPTOP SCREEN TOP BROWSER BAR -->
-                            <div class="absolute top-0 left-0 right-0 h-7 sm:h-8 bg-[#181924]/90 backdrop-blur-md px-3 sm:px-4 flex items-center justify-between z-30 pointer-events-none">
-                                <!-- macOS Window Controls -->
-                                <div class="flex items-center gap-1.5">
-                                    <span class="w-2.5 h-2.5 rounded-full bg-red-500/80"></span>
-                                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500/80"></span>
-                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500/80"></span>
+                            <!-- Browser Bar Top -->
+                            <div class="absolute top-0 left-0 right-0 h-6 sm:h-7 bg-[#181924]/95 backdrop-blur-md px-2.5 sm:px-3 flex items-center justify-between z-30 pointer-events-none">
+                                <div class="flex items-center gap-1 sm:gap-1.5">
+                                    <span class="w-2 h-2 rounded-full bg-red-500/80"></span>
+                                    <span class="w-2 h-2 rounded-full bg-amber-500/80"></span>
+                                    <span class="w-2 h-2 rounded-full bg-emerald-500/80"></span>
                                 </div>
 
-                                <!-- Browser URL Tab Pill -->
-                                <div class="flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-black/40 border border-white/10 text-[9px] sm:text-[10px] text-gray-300 font-mono">
+                                <div class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-black/40 border border-white/10 text-[8.5px] sm:text-[9.5px] text-gray-300 font-mono">
                                     <i data-lucide="globe" class="w-2.5 h-2.5 text-rose-400"></i>
-                                    <span class="truncate max-w-[130px] sm:max-w-[200px]">solveta.asia/showcase/<?= esc($slug) ?></span>
+                                    <span class="truncate max-w-[120px] sm:max-w-[180px]">solveta.asia/showcase/<?= esc($slug) ?></span>
                                 </div>
 
-                                <!-- Category Pill on Right -->
-                                <span class="text-[9px] sm:text-[10px] font-bold font-mono text-rose-300 uppercase tracking-wider hidden sm:inline-block">
+                                <span class="text-[8.5px] sm:text-[9.5px] font-bold font-mono text-rose-300 uppercase tracking-wider hidden sm:inline-block">
                                     <?= $tagStr ?>
                                 </span>
                             </div>
 
-                            <!-- 2. FULL WIDESCREEN PREVIEW IMAGE -->
+                            <!-- Full Clean Thumbnail Image (Unobstructed by text) -->
                             <img src="<?= esc($p['image_url']) ?>" alt="<?= esc($title1) ?>" draggable="false"
-                                 class="absolute inset-0 pt-7 sm:pt-8 w-full h-full object-cover object-top select-none pointer-events-none">
-
-                            <!-- Top & Bottom Gradient Overlay -->
-                            <div class="absolute inset-0 pt-7 sm:pt-8 bg-gradient-to-t from-black/90 via-black/35 to-transparent pointer-events-none z-10"></div>
-
-                            <!-- 3. WIDESCREEN FROSTED GLASS BOTTOM BANNER OVERLAY -->
-                            <div class="coverflow-card-banner absolute bottom-0 left-0 right-0 p-3.5 sm:p-4.5 bg-gradient-to-t from-black/95 via-black/75 to-transparent z-20 flex flex-col sm:flex-row items-start sm:items-end justify-between gap-2 sm:gap-4 text-left pointer-events-auto"
-                                 style="transition: opacity 350ms ease, transform 350ms ease;">
-                                
-                                <div class="space-y-1 max-w-md">
-                                    <!-- Mobile Tag -->
-                                    <div class="sm:hidden">
-                                        <span class="text-[9px] font-bold font-mono px-2 py-0.5 rounded-full bg-rose-950/80 border border-rose-500/40 text-rose-300 uppercase">
-                                            <?= $tagStr ?>
-                                        </span>
-                                    </div>
-
-                                    <!-- Main Title -->
-                                    <h4 class="text-sm sm:text-base md:text-lg font-extrabold text-white tracking-tight uppercase leading-tight font-sans drop-shadow-md">
-                                        <?= esc($title1) ?>
-                                        <?php if (!empty($title2)): ?>
-                                            <span class="text-rose-300 font-semibold"><?= esc($title2) ?></span>
-                                        <?php endif; ?>
-                                    </h4>
-
-                                    <!-- Description -->
-                                    <?php if (!empty($p['description'])): ?>
-                                        <p class="text-[10px] sm:text-xs text-gray-300 line-clamp-2 leading-relaxed font-sans max-w-sm">
-                                            <?= esc($p['description']) ?>
-                                        </p>
-                                    <?php endif; ?>
-
-                                    <!-- Tags / Tagar Pills -->
-                                    <?php if (!empty($p['tags'])): ?>
-                                        <div class="flex flex-wrap gap-1 pt-1">
-                                            <?php foreach ($p['tags'] as $tg): ?>
-                                                <span class="text-[9px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-rose-200 border border-white/10 backdrop-blur-xs">
-                                                    #<?= esc($tg) ?>
-                                                </span>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    <?php endif; ?>
-                                </div>
-
-                                <!-- CTA Button -->
-                                <a href="<?= esc($ctaUrl) ?>" target="_blank" rel="noopener noreferrer"
-                                   data-interactive="true"
-                                   class="flex-shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-[10px] sm:text-xs font-bold font-sans tracking-wide uppercase shadow-lg shadow-rose-950/50 hover:scale-105 transition-all cursor-pointer border border-rose-500/30 relative z-30 pointer-events-auto">
-                                    <span><?= $ctaText ?></span>
-                                    <?php if ($hasLive): ?>
-                                        <i data-lucide="external-link" class="w-3.5 h-3.5 text-rose-200"></i>
-                                    <?php else: ?>
-                                        <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-rose-200"></i>
-                                    <?php endif; ?>
-                                </a>
-                            </div>
-
+                                 class="absolute inset-0 pt-6 sm:pt-7 w-full h-full object-cover object-top select-none pointer-events-none">
                         </div>
                     <?php endforeach; ?>
 
                 </div>
             </div>
 
-            <!-- Navigation Arrows -->
-            <button id="coverflow-prev-btn" type="button" aria-label="Portofolio sebelumnya"
-                    class="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all">
-                <i data-lucide="chevron-left" class="w-5 h-5"></i>
-            </button>
+            <!-- Minimalist Navigation Controls & Pagination Dots -->
+            <div class="flex items-center justify-center gap-3 z-30 mt-3 mb-3">
+                <button id="coverflow-prev-btn" type="button" aria-label="Portofolio sebelumnya"
+                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:text-[#8B0021] dark:hover:text-rose-400 hover:border-rose-300 flex items-center justify-center shadow-2xs hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                    <i data-lucide="chevron-left" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                </button>
 
-            <button id="coverflow-next-btn" type="button" aria-label="Portofolio berikutnya"
-                    class="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/90 dark:bg-gray-900/90 border border-gray-200 dark:border-gray-800 text-[#8B0021] dark:text-rose-400 hover:scale-110 flex items-center justify-center backdrop-blur-md shadow-md hover:shadow-xl cursor-pointer z-40 transition-all">
-                <i data-lucide="chevron-right" class="w-5 h-5"></i>
-            </button>
+                <!-- Dots Container -->
+                <div id="coverflow-dots" class="flex items-center justify-center gap-1.5">
+                    <!-- Populated dynamically via JS -->
+                </div>
 
-            <!-- Pagination Dots -->
-            <div id="coverflow-dots" class="flex items-center justify-center gap-2 z-30 mt-2">
-                <!-- Populated dynamically via JS -->
+                <button id="coverflow-next-btn" type="button" aria-label="Portofolio berikutnya"
+                        class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-700 dark:text-gray-300 hover:text-[#8B0021] dark:hover:text-rose-400 hover:border-rose-300 flex items-center justify-center shadow-2xs hover:scale-105 active:scale-95 transition-all cursor-pointer">
+                    <i data-lucide="chevron-right" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
+                </button>
+            </div>
+
+            <!-- Clean & Minimalist Active Project Info UNDERNEATH Thumbnail -->
+            <?php
+                $firstItem = $portfolios[0] ?? null;
+                $firstTitle = $firstItem['title'] ?? 'Proyek Website';
+                $firstCat = $firstItem['category'] ?? 'Portofolio';
+                $firstDesc = $firstItem['description'] ?? '';
+                $firstUrl = (!empty($firstItem['live_url']) && $firstItem['live_url'] !== '#') ? $firstItem['live_url'] : $waOrderGeneral;
+                $firstBtn = (!empty($firstItem['live_url']) && $firstItem['live_url'] !== '#') ? 'Kunjungi Website' : 'Konsultasi Proyek';
+            ?>
+            <div id="coverflow-active-info" class="w-full max-w-xl mx-auto text-center px-4 mt-2 space-y-2 transition-all duration-300 font-sans">
+                <div>
+                    <span id="active-port-cat" class="inline-block text-[10px] font-mono font-bold uppercase tracking-wider px-3 py-0.5 rounded-full bg-rose-50 dark:bg-rose-950/60 border border-rose-200/60 dark:border-rose-800/50 text-[#8B0021] dark:text-rose-400">
+                        <?= esc($firstCat) ?>
+                    </span>
+                </div>
+                <h3 id="active-port-title" class="text-base sm:text-xl font-extrabold text-gray-950 dark:text-white tracking-tight leading-snug font-sans">
+                    <?= esc($firstTitle) ?>
+                </h3>
+                <p id="active-port-desc" class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 max-w-md mx-auto leading-relaxed font-sans line-clamp-2">
+                    <?= esc($firstDesc) ?>
+                </p>
+                <div class="pt-1.5">
+                    <a id="active-port-link" href="<?= esc($firstUrl) ?>" target="_blank" rel="noopener noreferrer"
+                       class="inline-flex items-center gap-1.5 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#8B0021] via-[#a30026] to-[#50000F] hover:from-[#b8002b] hover:to-[#5E0013] text-white text-xs font-bold font-sans tracking-wide uppercase shadow-md shadow-rose-950/20 hover:scale-105 active:scale-95 transition-all cursor-pointer border border-rose-500/20">
+                        <span id="active-port-btn-text"><?= esc($firstBtn) ?></span>
+                        <i data-lucide="external-link" class="w-3.5 h-3.5 text-rose-200"></i>
+                    </a>
+                </div>
             </div>
 
         </div>
@@ -635,7 +613,7 @@
     </div>
 
     <!-- Bottom Consultation Banner -->
-    <div class="mt-12 text-center max-w-[840px] mx-auto px-4 sm:px-6">
+    <div class="mt-10 sm:mt-14 text-center max-w-[840px] mx-auto px-4 sm:px-6">
         <div class="p-6 sm:p-8 rounded-2xl bg-white dark:bg-[#11121B] border border-gray-200 dark:border-gray-800 shadow-sm space-y-3">
             <h3 class="text-sm sm:text-base font-bold text-gray-900 dark:text-white uppercase tracking-wider font-sans">
                 <?= esc($copy['consultation_title'] ?? 'TIDAK TAHU HARUS MULAI DARI MANA?') ?>
@@ -663,7 +641,7 @@
     <div class="max-w-[1140px] mx-auto px-4 sm:px-6">
         
         <!-- Section Header -->
-        <div class="text-center mb-10">
+        <div class="text-center mb-8 sm:mb-10">
             <span class="inline-block text-[11px] font-mono font-bold tracking-widest text-[#8B0021] dark:text-rose-400 bg-rose-50 dark:bg-rose-950/60 border border-rose-200/70 dark:border-rose-800/60 px-3.5 py-1 rounded-full uppercase mb-3">
                 PILIHAN PAKET &amp; RINCIAN LENGKAP
             </span>
@@ -675,14 +653,14 @@
             </p>
         </div>
 
-        <!-- Quick Filter Navigation Buttons -->
-        <div class="flex flex-wrap items-center justify-center gap-2 mb-12">
-            <button type="button" class="pricing-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all border bg-[#8B0021] text-white border-[#8B0021] shadow-xs cursor-pointer" data-target="all">
+        <!-- Quick Filter Navigation Buttons (Smooth swipeable row on mobile) -->
+        <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-1 px-4 sm:flex-wrap sm:justify-center sm:px-0 mb-8 sm:mb-12">
+            <button type="button" class="pricing-filter-btn flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-semibold transition-all border bg-[#8B0021] text-white border-[#8B0021] shadow-xs cursor-pointer whitespace-nowrap" data-target="all">
                 Semua 4 Paket (Berurutan)
             </button>
             <?php foreach ($tiers as $tier): ?>
                 <?php $badge = !empty($tier['price_badge']) ? $tier['price_badge'] : $tier['price']; ?>
-                <button type="button" class="pricing-filter-btn px-4 py-1.5 rounded-full text-xs font-semibold transition-all border bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-850 cursor-pointer" data-target="tier-<?= esc($tier['id']) ?>">
+                <button type="button" class="pricing-filter-btn flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-semibold transition-all border bg-white dark:bg-gray-900 text-gray-600 dark:text-gray-300 border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-850 cursor-pointer whitespace-nowrap" data-target="tier-<?= esc($tier['id']) ?>">
                     Paket <?= esc($tier['name']) ?> (<?= esc($badge) ?>)
                 </button>
             <?php endforeach; ?>

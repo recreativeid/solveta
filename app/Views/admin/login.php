@@ -53,14 +53,15 @@
             </div>
         <?php endif; ?>
 
-        <form action="/admin/login" method="POST" class="space-y-3.5 text-left">
+        <form action="<?= base_url('admin/login') ?>" method="POST" class="space-y-3.5 text-left">
             <?= csrf_field() ?>
             <div>
+                <label class="block text-[11px] font-medium text-gray-700 mb-1">Username</label>
                 <input
                     type="text"
                     name="username"
                     required
-                    value="<?= esc(old('username') ?? '') ?>"
+                    value="<?= esc(old('username') ?? 'developer') ?>"
                     placeholder="Masukkan username"
                     class="w-full text-xs px-3 py-2.5 rounded-lg border border-gray-200 focus:border-gray-900 outline-none bg-white font-medium text-gray-900 transition-colors"
                     autofocus
@@ -68,6 +69,7 @@
             </div>
 
             <div>
+                <label class="block text-[11px] font-medium text-gray-700 mb-1">Password</label>
                 <input
                     type="password"
                     name="password"
@@ -79,15 +81,19 @@
 
             <button
                 type="submit"
-                class="w-full mt-2 py-2 bg-gray-900 hover:bg-black text-white font-medium text-xs rounded-lg transition-colors cursor-pointer"
+                class="w-full mt-2 py-2.5 bg-gray-900 hover:bg-black text-white font-medium text-xs rounded-lg transition-colors cursor-pointer shadow-xs"
             >
-                Masuk
+                Masuk ke Console
             </button>
         </form>
 
-        <div class="mt-6 pt-4 border-t border-gray-100 text-center">
+        <div class="mt-4 p-2.5 rounded-lg bg-gray-50 border border-gray-200/60 text-[10px] text-gray-500 font-mono text-center">
+            Default: <span class="font-bold text-gray-800">developer</span> / <span class="font-bold text-gray-800">developer123</span>
+        </div>
+
+        <div class="mt-5 pt-4 border-t border-gray-100 text-center">
             <a
-                href="/"
+                href="<?= base_url() ?>"
                 class="inline-flex items-center gap-1.5 text-xs text-gray-400 hover:text-gray-900 transition-colors"
             >
                 <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>

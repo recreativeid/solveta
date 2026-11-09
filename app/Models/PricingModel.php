@@ -11,6 +11,7 @@ class PricingModel extends Model
     protected $useAutoIncrement = false;
     protected $allowedFields = [
         'id',
+        'country',
         'name',
         'price_prefix',
         'price',
@@ -33,14 +34,29 @@ class PricingModel extends Model
         'sort_order',
     ];
 
-    public function getTiers(): array
+    public function getTiers(string $country = 'id'): array
     {
         if (! is_mysql_alive()) {
-            return $this->getDefaultTiers();
+            return $this->getDefaultTiers($country);
         }
 
         try {
-            $rows = $this->orderBy('sort_order', 'ASC')->findAll();
+            $hasCountryCol = false;
+            try {
+                $cols = $this->db->getFieldNames($this->table);
+                $hasCountryCol = in_array('country', $cols);
+            } catch (\Throwable $e) {}
+
+            if ($hasCountryCol) {
+                $rows = $this->where('country', $country)->orderBy('sort_order', 'ASC')->findAll();
+            } else {
+                if ($country === 'my') {
+                    $rows = $this->like('id', '_my')->orderBy('sort_order', 'ASC')->findAll();
+                } else {
+                    $rows = $this->notLike('id', '_my')->orderBy('sort_order', 'ASC')->findAll();
+                }
+            }
+
             if (!empty($rows)) {
                 $results = [];
                 foreach ($rows as $row) {
@@ -59,12 +75,18 @@ class PricingModel extends Model
         }
 
         // Default Fallback
-        return $this->getDefaultTiers();
+        return $this->getDefaultTiers($country);
     }
 
     public function moveTier(string $id, string $direction): bool
     {
-        $all = $this->orderBy('sort_order', 'ASC')->findAll();
+        $tier = $this->find($id);
+        $country = 'id';
+        if ($tier) {
+            $country = !empty($tier['country']) ? $tier['country'] : (strpos($id, '_my') !== false ? 'my' : 'id');
+        }
+
+        $all = $this->getTiers($country);
         $targetIndex = null;
 
         foreach ($all as $i => $item) {
@@ -84,7 +106,7 @@ class PricingModel extends Model
             return false;
         }
 
-        // Normalize sequential sort_order to avoid identical order collisions
+        // Normalize sequential sort_order
         foreach ($all as $idx => $t) {
             $this->update($t['id'], ['sort_order' => $idx + 1]);
             $all[$idx]['sort_order'] = $idx + 1;
@@ -99,11 +121,228 @@ class PricingModel extends Model
         return true;
     }
 
-    public function getDefaultTiers(): array
+    public function getDefaultTiers(string $country = 'id'): array
     {
+        if ($country === 'my') {
+            return [
+                [
+                    'id' => 'basic_my',
+                    'country' => 'my',
+                    'name' => 'STARTER',
+                    'price_prefix' => null,
+                    'price' => 'RM199',
+                    'price_badge' => 'RM199',
+                    'renewal_price' => 'RM149/tahun*',
+                    'active_period' => '1 Tahun',
+                    'delivery_time' => '1–2 hari bekerja',
+                    'popular' => false,
+                    'popular_label' => '',
+                    'features' => [
+                        'Maksimum 1 halaman',
+                        'Tambahan halaman RM50/halaman',
+                        '2× semakan ringan (tidak mengubah brief asal)',
+                        'Domain percuma — pilihan .my, .site, .store, .xyz, .space, .fund, .shop dan lain-lain',
+                        'Hosting percuma',
+                        'Akses dashboard',
+                        'Website mesra telefon bimbit',
+                        'SSL Security',
+                        'SEO Friendly',
+                        'Penulisan kandungan website percuma',
+                        'Konsultasi percuma',
+                        'Akses & harga khas untuk ahli',
+                        'Kemudahan khas untuk rakan reseller',
+                        'Siap dalam 1–2 hari bekerja'
+                    ],
+                    'checklist' => [
+                        ['text' => 'Maksimum 1 halaman', 'included' => true],
+                        ['text' => 'Tambahan halaman RM50/halaman', 'included' => true],
+                        ['text' => '2× semakan ringan (tidak mengubah brief asal)', 'included' => true],
+                        ['text' => 'Domain percuma (.my, .site, .store, .xyz, .space, .fund, .shop dll)', 'included' => true],
+                        ['text' => 'Hosting percuma & Akses dashboard', 'included' => true],
+                        ['text' => 'Website mesra telefon bimbit', 'included' => true],
+                        ['text' => 'SSL Security', 'included' => true],
+                        ['text' => 'SEO Friendly', 'included' => true],
+                        ['text' => 'Penulisan kandungan website percuma', 'included' => true],
+                        ['text' => 'Konsultasi percuma', 'included' => true],
+                        ['text' => 'Akses & harga khas untuk ahli', 'included' => true],
+                        ['text' => 'Kemudahan khas untuk rakan reseller', 'included' => true],
+                        ['text' => 'Integrasi API / aplikasi', 'included' => false],
+                    ],
+                    'domain_addons' => [],
+                    'email_addons' => [['name' => '1 Akaun Emel Bisnes', 'price' => 'RM30'], ['name' => '5 Akaun Emel Bisnes', 'price' => 'RM90']],
+                    'revision_rules' => ['light' => '2× semakan ringan (tidak mengubah brief asal)', 'heavy' => 'Perubahan struktur berbayar', 'extraPage' => 'RM50 / halaman'],
+                    'custom_note' => 'Sesuai untuk perniagaan kecil, personal brand & individu.',
+                    'suitability' => 'Sesuai untuk perniagaan kecil, personal brand & individu.',
+                    'button_label' => 'TEMPAH PAKEJ STARTER (RM199)',
+                    'button_variant' => 'outline',
+                    'wa_message' => 'Salam SOLVETA, saya berminat untuk menempah Pakej STARTER RM199.',
+                    'sort_order' => 1
+                ],
+                [
+                    'id' => 'business_my',
+                    'country' => 'my',
+                    'name' => 'BUSINESS',
+                    'price_prefix' => null,
+                    'price' => 'RM399',
+                    'price_badge' => 'RM399',
+                    'renewal_price' => 'RM249/tahun*',
+                    'active_period' => '1 Tahun',
+                    'delivery_time' => '3–5 hari bekerja',
+                    'popular' => false,
+                    'popular_label' => 'Pilihan Terbaik',
+                    'features' => [
+                        'Maksimum 4 halaman (3 halaman utama, 1 halaman dashboard)',
+                        '2× semakan ringan (tidak mengubah brief asal)',
+                        'Domain percuma — .com, .my, .id, .site, .cloud, .online, .shop, .blog, .store, .org, .digital dan lain-lain',
+                        'Hosting percuma',
+                        'Akses dashboard',
+                        'Website mesra telefon bimbit',
+                        'SSL Security',
+                        'SEO Basic',
+                        'Jaminan penuh',
+                        'Penulisan kandungan website percuma',
+                        'Konsultasi percuma',
+                        'Akses & harga khas untuk ahli',
+                        'Kemudahan khas untuk rakan reseller',
+                        'Siap dalam 3–5 hari bekerja'
+                    ],
+                    'checklist' => [
+                        ['text' => 'Maksimum 4 halaman (3 utama + 1 dashboard)', 'included' => true],
+                        ['text' => '2× semakan ringan (tidak mengubah brief asal)', 'included' => true],
+                        ['text' => 'Domain percuma (.com, .my, .id, .site, .cloud, .online dll)', 'included' => true],
+                        ['text' => 'Hosting percuma & Akses dashboard', 'included' => true],
+                        ['text' => 'Website mesra telefon bimbit', 'included' => true],
+                        ['text' => 'SSL Security', 'included' => true],
+                        ['text' => 'SEO Basic', 'included' => true],
+                        ['text' => 'Jaminan penuh', 'included' => true],
+                        ['text' => 'Penulisan kandungan website percuma', 'included' => true],
+                        ['text' => 'Konsultasi percuma', 'included' => true],
+                        ['text' => 'Akses & harga khas untuk ahli', 'included' => true],
+                        ['text' => 'Kemudahan khas untuk rakan reseller', 'included' => true],
+                        ['text' => 'Integrasi API / aplikasi', 'included' => false],
+                    ],
+                    'domain_addons' => [],
+                    'email_addons' => [['name' => '1 Akaun Emel Bisnes Rasmi', 'price' => 'Termasuk'], ['name' => 'Tambahan Emel Bisnes', 'price' => 'RM25/akaun']],
+                    'revision_rules' => ['light' => '2× semakan ringan (tidak mengubah brief asal)', 'heavy' => 'Perubahan struktur berbayar', 'extraPage' => 'RM50 / halaman'],
+                    'custom_note' => 'Pilihan terbaik untuk perniagaan yang mahu tampil lebih profesional.',
+                    'suitability' => 'Pilihan terbaik untuk perniagaan yang mahu tampil lebih profesional.',
+                    'button_label' => 'TEMPAH PAKEJ BUSINESS (RM399)',
+                    'button_variant' => 'outline',
+                    'wa_message' => 'Salam SOLVETA, saya berminat untuk menempah Pakej BUSINESS RM399.',
+                    'sort_order' => 2
+                ],
+                [
+                    'id' => 'premium_my',
+                    'country' => 'my',
+                    'name' => 'PREMIUM',
+                    'price_prefix' => null,
+                    'price' => 'RM699',
+                    'price_badge' => 'RM699',
+                    'renewal_price' => 'RM349/tahun*',
+                    'active_period' => '1 Tahun',
+                    'delivery_time' => '5–7 hari bekerja',
+                    'popular' => false,
+                    'popular_label' => 'Paling Lengkap',
+                    'features' => [
+                        'Maksimum 7 halaman (6 halaman utama, 1 halaman dashboard)',
+                        '2× semakan ringan (tidak mengubah brief asal)',
+                        'Domain premium percuma — .store, .org, .net, .digital, .it, .com, .media, .agency, .company dan lain-lain',
+                        'Hosting percuma',
+                        'Akses dashboard',
+                        'Website mesra telefon bimbit',
+                        'SEO Friendly',
+                        'Jaminan penuh',
+                        'Penulisan kandungan website percuma',
+                        'Konsultasi percuma',
+                        'Akses & harga khas untuk ahli',
+                        'Kemudahan khas untuk rakan reseller',
+                        'Siap dalam 5–7 hari bekerja'
+                    ],
+                    'checklist' => [
+                        ['text' => 'Maksimum 7 halaman (6 utama + 1 dashboard)', 'included' => true],
+                        ['text' => '2× semakan ringan (tidak mengubah brief asal)', 'included' => true],
+                        ['text' => 'Domain premium percuma (.store, .org, .net, .com dll)', 'included' => true],
+                        ['text' => 'Hosting percuma & Akses dashboard', 'included' => true],
+                        ['text' => 'Website mesra telefon bimbit', 'included' => true],
+                        ['text' => 'SEO Friendly', 'included' => true],
+                        ['text' => 'Jaminan penuh', 'included' => true],
+                        ['text' => 'Penulisan kandungan website percuma', 'included' => true],
+                        ['text' => 'Konsultasi percuma', 'included' => true],
+                        ['text' => 'Akses & harga khas untuk ahli', 'included' => true],
+                        ['text' => 'Kemudahan khas untuk rakan reseller', 'included' => true],
+                        ['text' => 'Integrasi API / aplikasi', 'included' => false],
+                    ],
+                    'domain_addons' => [],
+                    'email_addons' => [['name' => '2 Akaun Emel Bisnes Rasmi', 'price' => 'Termasuk'], ['name' => 'Tambahan Emel Bisnes', 'price' => 'RM25/akaun']],
+                    'revision_rules' => ['light' => '2× semakan ringan (tidak mengubah brief asal)', 'heavy' => 'Perubahan struktur berbayar', 'extraPage' => 'RM50 / halaman'],
+                    'custom_note' => 'Untuk perniagaan yang memerlukan website lebih lengkap & profesional.',
+                    'suitability' => 'Untuk perniagaan yang memerlukan website lebih lengkap & profesional.',
+                    'button_label' => 'TEMPAH PAKEJ PREMIUM (RM699)',
+                    'button_variant' => 'outline',
+                    'wa_message' => 'Salam SOLVETA, saya berminat untuk menempah Pakej PREMIUM RM699.',
+                    'sort_order' => 3
+                ],
+                [
+                    'id' => 'platinum_my',
+                    'country' => 'my',
+                    'name' => 'PLATINUM',
+                    'price_prefix' => null,
+                    'price' => 'RM1,499',
+                    'price_badge' => 'RM1,499',
+                    'renewal_price' => 'Mengikut pakej server',
+                    'active_period' => '1 Tahun',
+                    'delivery_time' => '7–9 hari bekerja',
+                    'popular' => true,
+                    'popular_label' => 'Pakej Lengkap',
+                    'features' => [
+                        'Domain percuma — .my, .com, .co, .dev, dan lain-lain',
+                        'Hosting percuma & Perkhidmatan hosting percuma',
+                        'Akses dashboard',
+                        'Website mesra telefon bimbit',
+                        'SEO Friendly',
+                        'Jaminan penuh',
+                        'Integrasi API / aplikasi',
+                        'Penulisan kandungan website percuma',
+                        'Perkhidmatan hosting percuma',
+                        'SSL Security percuma',
+                        'Konsultasi percuma',
+                        'Akses & harga khas untuk ahli',
+                        'Kemudahan khas untuk rakan reseller',
+                        'Siap dalam 7–9 hari bekerja'
+                    ],
+                    'checklist' => [
+                        ['text' => 'Pakej lengkap organisasi & projek profesional', 'included' => true],
+                        ['text' => 'Domain percuma (.my, .com, .co, .dev, dan lain-lain)', 'included' => true],
+                        ['text' => 'Hosting percuma & Perkhidmatan hosting percuma', 'included' => true],
+                        ['text' => 'Akses dashboard', 'included' => true],
+                        ['text' => 'Website mesra telefon bimbit', 'included' => true],
+                        ['text' => 'SEO Friendly', 'included' => true],
+                        ['text' => 'Jaminan penuh', 'included' => true],
+                        ['text' => 'Integrasi API / aplikasi', 'included' => true],
+                        ['text' => 'Penulisan kandungan website percuma', 'included' => true],
+                        ['text' => 'SSL Security percuma', 'included' => true],
+                        ['text' => 'Konsultasi percuma', 'included' => true],
+                        ['text' => 'Akses & harga khas untuk ahli', 'included' => true],
+                        ['text' => 'Kemudahan khas untuk rakan reseller', 'included' => true],
+                    ],
+                    'domain_addons' => [],
+                    'email_addons' => [['name' => 'Emel Bisnes Tanpa Had (Unlimited)', 'price' => 'Termasuk']],
+                    'revision_rules' => ['light' => 'Semakan fleksibel semasa pembangunan', 'heavy' => 'Fitur baru modul tambahan dihitung add-on', 'extraPage' => 'Termasuk'],
+                    'custom_note' => 'Pakej lengkap untuk perniagaan, organisasi & projek profesional.',
+                    'suitability' => 'Pakej lengkap untuk perniagaan, organisasi & projek profesional.',
+                    'button_label' => 'TEMPAH PAKEJ PLATINUM (RM1,499)',
+                    'button_variant' => 'red',
+                    'wa_message' => 'Salam SOLVETA, saya berminat untuk menempah Pakej PLATINUM RM1,499.',
+                    'sort_order' => 4
+                ]
+            ];
+        }
+
+        // Indonesian Default Tiers
         return [
             [
                 'id' => 'basic',
+                'country' => 'id',
                 'name' => 'STARTER',
                 'price_prefix' => 'mulai dari',
                 'price' => 'Rp 349K',
@@ -140,91 +379,109 @@ class PricingModel extends Model
             ],
             [
                 'id' => 'standard',
+                'country' => 'id',
                 'name' => 'STANDARD',
                 'price_prefix' => null,
-                'price' => 'Rp 549K',
-                'price_badge' => 'Best Seller',
-                'renewal_price' => 'Rp 299.000 / tahun',
+                'price' => 'Rp 699K',
+                'price_badge' => '699K',
+                'renewal_price' => '399k/tahun*',
                 'active_period' => '1 Tahun',
-                'delivery_time' => '3-5 Hari Kerja',
-                'popular' => true,
-                'popular_label' => 'Paling Populer',
-                'features' => ['Website Multi-Halaman (Home, About, Services, Contact)', 'Desain Profesional & Responsif', 'Integrasi Google Maps & Media Sosial', 'Free Domain .com (1 Tahun)', 'SSL Security & Cloud Hosting Cepat'],
+                'delivery_time' => '3-5 Hari',
+                'popular' => false,
+                'popular_label' => '',
+                'features' => ['Maksimal 4 Halaman, 3 Halaman Utama 1 Dashboard (tambah Rp 50k/Halaman)', 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'Optimasi Speed (2x lebih cepat)', 'Free Domain (my.id .site .cloud .online .shop .blog .store .org .digital)', 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', 'Responsive Web (mobile friendly)', 'SSL Security', 'SEO Basic', 'Full Garansi'],
                 'checklist' => [
-                    ['text' => 'Hingga 5 Halaman Konten', 'included' => true],
-                    ['text' => 'Free Domain .com (1 Tahun)', 'included' => true],
-                    ['text' => 'Hosting Cepat SSD NVMe', 'included' => true],
-                    ['text' => 'Integrasi Google Maps & Medsos', 'included' => true],
-                    ['text' => 'SEO On-Page Dasar', 'included' => true],
-                    ['text' => 'Fitur Katalog Produk Dinamis', 'included' => false],
+                    ['text' => 'Maksimal 4 Halaman, 3 Halaman Utama 1 Dashboard (tambah Rp 50k/Halaman)', 'included' => true],
+                    ['text' => 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'included' => true],
+                    ['text' => 'Optimasi Speed (2x lebih cepat)', 'included' => true],
+                    ['text' => 'Free Domain (my.id .site .cloud .online .shop .blog .store .org .digital)', 'included' => true],
+                    ['text' => 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', 'included' => true],
+                    ['text' => 'Responsive Web (mobile friendly)', 'included' => true],
+                    ['text' => 'SSL Security', 'included' => true],
+                    ['text' => 'SEO Basic', 'included' => true],
+                    ['text' => 'Full Garansi', 'included' => true],
+                    ['text' => 'Akses API (Integrasi Aplikasi)', 'included' => false],
                 ],
-                'domain_addons' => [['name' => '.id (Indonesia)', 'price' => '+Rp 100.000']],
-                'email_addons' => [['name' => 'Email Bisnis (halo@namabisnis.com)', 'price' => '+Rp 75.000/thn']],
-                'revision_rules' => ['light' => 'Maksimal 3x revisi konten & layout', 'heavy' => 'Perubahan struktur total di luar brief dikenakan biaya'],
-                'custom_note' => 'Paket paling direkomendasikan untuk membangun kredibilitas dan kepercayaan calon klien di era digital.',
-                'suitability' => 'UMKM, Startup, Klinik, atau Agensi yang butuh kredibilitas tinggi.',
-                'button_label' => 'Pilih Standard',
-                'button_variant' => 'red',
-                'wa_message' => 'Halo SOLVETA, saya tertarik dengan paket Standard Rp549K. Mohon bantu konsultasi konsep websitenya.',
+                'domain_addons' => [],
+                'email_addons' => [],
+                'revision_rules' => ['light' => 'Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)', 'heavy' => 'Rp 50.000 (merubah halaman, menambah halaman, atau struktur)', 'extraPage' => 'Rp 50.000 / halaman'],
+                'custom_note' => null,
+                'suitability' => 'kebutuhan bisnis kecil, umkm, home industry',
+                'button_label' => 'PESAN PAKET STANDARD (RP 699K)',
+                'button_variant' => 'outline',
+                'wa_message' => 'Halo SOLVETA, saya tertarik dengan paket Standard Rp 699K. Mohon bantu konsultasi konsep websitenya.',
                 'sort_order' => 2
             ],
             [
                 'id' => 'premium',
+                'country' => 'id',
                 'name' => 'PREMIUM',
                 'price_prefix' => null,
-                'price' => 'Rp 749K',
-                'price_badge' => 'Lengkap & Power',
-                'renewal_price' => 'Rp 399.000 / tahun',
+                'price' => 'Rp 964K',
+                'price_badge' => '964K',
+                'renewal_price' => '399k/tahun*',
                 'active_period' => '1 Tahun',
-                'delivery_time' => '5-7 Hari Kerja',
+                'delivery_time' => '3-5 Hari',
                 'popular' => false,
                 'popular_label' => '',
-                'features' => ['Katalog Produk / Portofolio Lengkap', 'Fitur Pencarian & Filter Kategori', 'Form Order terhubung ke WhatsApp Otomatis', 'Free Domain .com (1 Tahun)', 'Gratis 1 Akun Email Bisnis Profesional'],
+                'features' => ['Maksimal 7 Halaman (tambah Rp 50k/Halaman)', 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'Optimasi Speed (3x lebih cepat)', 'Free Desain Mockup', 'Free Domain (.store .org .net .digital .it.com .media .agency .company)', 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', '2 Email Bisnis (nama@domain.com)', 'Responsive Web (mobile friendly)', 'SSL Security', 'SEO Friendly', 'Full Garansi*'],
                 'checklist' => [
-                    ['text' => 'Hingga 10 Halaman / Katalog Produk', 'included' => true],
-                    ['text' => 'Pencarian & Filter Interaktif', 'included' => true],
-                    ['text' => 'Checkout / Order via WhatsApp Otomatis', 'included' => true],
-                    ['text' => 'Free Domain .com & SSL', 'included' => true],
-                    ['text' => '1 Akun Email Bisnis Resmi', 'included' => true],
-                    ['text' => 'Sistem Database Kompleks', 'included' => false],
+                    ['text' => 'Maksimal 7 Halaman (tambah Rp 50k/Halaman)', 'included' => true],
+                    ['text' => 'Revisi ringan 2x (Tidak berubah dari brief awal)', 'included' => true],
+                    ['text' => 'Optimasi Speed (3x lebih cepat)', 'included' => true],
+                    ['text' => 'Free Desain Mockup', 'included' => true],
+                    ['text' => 'Free Domain (.store .org .net .digital .it.com .media .agency .company)', 'included' => true],
+                    ['text' => 'Free Hosting (Akses Dashboard, Tanpa login cPanel)', 'included' => true],
+                    ['text' => '2 Email Bisnis (nama@domain.com)', 'included' => true],
+                    ['text' => 'Responsive Web (mobile friendly)', 'included' => true],
+                    ['text' => 'SSL Security', 'included' => true],
+                    ['text' => 'SEO Friendly', 'included' => true],
+                    ['text' => 'Full Garansi*', 'included' => true],
                 ],
-                'domain_addons' => [['name' => '.co.id (Butuh Legalitas)', 'price' => '+Rp 150.000']],
-                'email_addons' => [['name' => 'Tambahan Email Bisnis', 'price' => '+Rp 50.000/akun']],
-                'revision_rules' => ['light' => 'Maksimal 4x revisi materi', 'heavy' => 'Revisi fitur sistem tambahan dihitung add-on'],
-                'custom_note' => 'Solusi terbaik bagi penjual produk fisik, katalog arsitektur, dan bisnis retail online.',
-                'suitability' => 'Toko Online (WhatsApp Based), Katalog Properti, Dealer Kendaraan.',
-                'button_label' => 'Pilih Premium',
+                'domain_addons' => [],
+                'email_addons' => [],
+                'revision_rules' => ['light' => 'Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)', 'heavy' => 'Rp 50.000 (merubah halaman, menambah halaman, atau struktur)', 'extraPage' => 'Rp 50.000 / halaman'],
+                'custom_note' => null,
+                'suitability' => 'company profile & bisnis produk',
+                'button_label' => 'PESAN PAKET PREMIUM (RP 964K)',
                 'button_variant' => 'outline',
-                'wa_message' => 'Halo SOLVETA, saya tertarik dengan paket Premium Rp749K. Bagaimana proses pengerjaan katalog produknya?',
+                'wa_message' => 'Halo SOLVETA, saya tertarik dengan paket Premium Rp 964K. Bagaimana proses pengerjaannya?',
                 'sort_order' => 3
             ],
             [
                 'id' => 'custom',
-                'name' => 'CUSTOM',
+                'country' => 'id',
+                'name' => 'PLATINUM',
                 'price_prefix' => 'Mulai',
-                'price' => 'Rp 1,5 Juta',
-                'price_badge' => 'Enterprise Grade',
-                'renewal_price' => 'Sesuai Kapasitas Cloud Server',
-                'active_period' => 'Fleksibel',
-                'delivery_time' => '1-3 Minggu Kerja',
-                'popular' => false,
-                'popular_label' => '',
-                'features' => ['Sistem Database Custom (Gudang, Karyawan, Kasir)', 'Dashboard Admin & Laporan Otomatis', 'Integrasi API Pihak Ketiga & Notifikasi WA Gateway', 'Arsitektur Keamanan Tingkat Lanjut & High Performance'],
+                'price' => 'Rp 1.5 jt',
+                'price_badge' => '1.5 jt',
+                'renewal_price' => 'Harga mengikuti biaya dibutuhkan',
+                'active_period' => '1 Tahun',
+                'delivery_time' => 'Wajib Meet (Fleksibel)',
+                'popular' => true,
+                'popular_label' => 'Paling Populer',
+                'features' => ['Free Iklan Google Ads', 'Optimasi Speed (Super Cepat)', 'Free Desain Mockup', 'Free Domain (.id .co.id .tech .dev .com)', 'Free Hosting (Akses Dashboard, Akses login cPanel)', 'Unlimited Email Bisnis (nama@domain.com)', 'Responsive Web (mobile friendly)', 'SSL Security', 'SEO Friendly', 'Google Analytics', 'Full Garansi*', 'Akses API (Integrasi aplikasi)'],
                 'checklist' => [
-                    ['text' => 'Arsitektur Database Terdedikasi', 'included' => true],
-                    ['text' => 'Dashboard Manajemen & Laporan', 'included' => true],
-                    ['text' => 'Sistem Role & Multi-User Akses', 'included' => true],
-                    ['text' => 'Integrasi WhatsApp API Gateway', 'included' => true],
-                    ['text' => 'Maintenance & Backup Berkala', 'included' => true],
-                    ['text' => 'Support Teknis Prioritas', 'included' => true],
+                    ['text' => 'Free Iklan Google Ads', 'included' => true],
+                    ['text' => 'Optimasi Speed (Super Cepat)', 'included' => true],
+                    ['text' => 'Free Desain Mockup', 'included' => true],
+                    ['text' => 'Free Domain (.id .co.id .tech .dev .com)', 'included' => true],
+                    ['text' => 'Free Hosting (Akses Dashboard, Akses login cPanel)', 'included' => true],
+                    ['text' => 'Unlimited Email Bisnis (nama@domain.com)', 'included' => true],
+                    ['text' => 'Responsive Web (mobile friendly)', 'included' => true],
+                    ['text' => 'SSL Security', 'included' => true],
+                    ['text' => 'SEO Friendly', 'included' => true],
+                    ['text' => 'Google Analytics', 'included' => true],
+                    ['text' => 'Full Garansi*', 'included' => true],
+                    ['text' => 'Akses API (Integrasi aplikasi)', 'included' => true],
                 ],
-                'domain_addons' => [['name' => 'Domain Apapun (.com / .id / .co.id)', 'price' => 'Termasuk']],
-                'email_addons' => [['name' => 'Email Bisnis Unlimited', 'price' => 'Termasuk']],
-                'revision_rules' => ['light' => 'Garansi bug & maintenance selama 3 bulan', 'heavy' => 'Fitur baru modul tambahan dihitung change-request'],
-                'custom_note' => 'Sistem dirancang khusus sesuai alur operasional dan tantangan spesifik bisnis Anda.',
-                'suitability' => 'Perusahaan dengan kebutuhan operasional spesifik, Manajemen Stok, Sistem Absensi, ERP.',
-                'button_label' => 'Hubungi Kami',
-                'button_variant' => 'outline',
+                'domain_addons' => [],
+                'email_addons' => [],
+                'revision_rules' => ['light' => 'Rp 30.000 (ganti logo, icon, warna, teks kecil, dsb)', 'heavy' => 'Rp 50.000 (merubah halaman, menambah halaman, atau struktur)', 'extraPage' => 'Rp 50.000 / halaman'],
+                'custom_note' => null,
+                'suitability' => 'Start up, UMKM, CV, PT, Organisasi/Yayasan, Professional (siapa pun yang mempunyai kebutuhan layanan khusus yang tidak sesuai dengan 3 paket sebelumnya)',
+                'button_label' => 'KONSULTASI PLATINUM',
+                'button_variant' => 'red',
                 'wa_message' => 'Halo SOLVETA, saya ingin mendiskusikan kebutuhan Custom Website & Sistem Khusus untuk bisnis kami.',
                 'sort_order' => 4
             ]

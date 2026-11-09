@@ -26,17 +26,25 @@ class Admin extends BaseController
         $profitModel = new ProfitModel();
         $transactionModel = new TransactionModel();
         $addonModel = new AddonModel();
+        $articleModel = new \App\Models\ArticleModel();
 
         $data = [
-            'copy' => $copyModel->getCopy(),
+            'copy' => $copyModel->getCopy('id'),
+            'copy_id' => $copyModel->getCopy('id'),
+            'copy_my' => $copyModel->getCopy('my'),
             'contact' => $contactModel->getContact(),
-            'tiers' => $pricingModel->getTiers(),
+            'tiers' => $pricingModel->getTiers('id'),
+            'tiers_id' => $pricingModel->getTiers('id'),
+            'tiers_my' => $pricingModel->getTiers('my'),
             'portfolios' => $portfolioModel->getItems(),
             'brands' => $brandModel->getBrands(),
             'orders' => $orderModel->getOrders(),
             'profits' => $profitModel->getAnalyses(),
             'transactions' => $transactionModel->getTransactions(),
             'addons' => $addonModel->getAddons(),
+            'articles' => $articleModel->getAllForAdmin(),
+            'career_data' => (new \App\Models\CareerModel())->getCareerData(),
+            'careers' => (new \App\Models\CareerModel())->getJobs(),
             'title' => 'Admin CMS & Portal Manajemen — SOLVETA',
             'admin_name' => session()->get('admin_name') ?? 'Admin Solveta',
         ];
@@ -47,7 +55,8 @@ class Admin extends BaseController
     public function updateCopy()
     {
         $copyModel = new SiteCopyModel();
-        $current = $copyModel->getCopy();
+        $country = (string) ($this->request->getPost('country') ?: 'id');
+        $current = $copyModel->getCopy($country);
 
         $keys = [
             'hero_eyebrow',
@@ -76,7 +85,9 @@ class Admin extends BaseController
             'marquee_logo_max_width',
         ];
 
-        $data = [];
+        $data = [
+            'country' => $country
+        ];
         foreach ($keys as $k) {
             $val = $this->request->getPost($k);
             if ($val !== null) {
@@ -105,7 +116,20 @@ class Admin extends BaseController
         }
 
         try {
-            $existing = $copyModel->first();
+            $hasCountryCol = false;
+            try {
+                $cols = $copyModel->db->getFieldNames('site_copy');
+                $hasCountryCol = in_array('country', $cols);
+            } catch (\Throwable $e) {}
+
+            $existing = null;
+            if ($hasCountryCol) {
+                $existing = $copyModel->where('country', $country)->first();
+            } else {
+                $existing = ($country === 'my') ? $copyModel->find(2) : ($copyModel->find(1) ?: $copyModel->first());
+                unset($data['country']);
+            }
+
             if ($existing) {
                 $copyModel->update($existing['id'], $data);
             } else {
@@ -116,7 +140,8 @@ class Admin extends BaseController
         }
 
         $redirectTab = $this->request->getPost('redirect_tab') ?: 'visual';
-        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', 'Visual & Site Copy berhasil diperbarui!');
+        $countryLabel = ($country === 'my') ? 'Malaysia' : 'Indonesia';
+        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', "Visual & Site Copy ($countryLabel) berhasil diperbarui!");
     }
 
     public function updateContact()
@@ -260,6 +285,11 @@ class Admin extends BaseController
         $domainAddonsJson = $this->request->getPost('domain_addons_json');
         $emailAddonsJson = $this->request->getPost('email_addons_json');
 
+        $country = (string) ($this->request->getPost('country') ?: 'id');
+        if (empty($country) || !in_array($country, ['id', 'my'])) {
+            $country = (str_ends_with($id, '_my') || str_contains($id, 'my')) ? 'my' : 'id';
+        }
+
         $data = [
             'id' => $id,
             'name' => (string) $this->request->getPost('name'),
@@ -283,6 +313,16 @@ class Admin extends BaseController
         ];
 
         try {
+            $hasCountryCol = false;
+            try {
+                $cols = $pricingModel->db->getFieldNames('pricing_tiers');
+                $hasCountryCol = in_array('country', $cols);
+            } catch (\Throwable $e) {}
+
+            if ($hasCountryCol) {
+                $data['country'] = $country;
+            }
+
             $existing = $pricingModel->find($id);
             if ($existing) {
                 $pricingModel->update($id, $data);
@@ -294,7 +334,8 @@ class Admin extends BaseController
         }
 
         $redirectTab = $this->request->getPost('redirect_tab') ?: 'pricing';
-        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', 'Paket harga berhasil disimpan!');
+        $countryLabel = ($country === 'my') ? 'Malaysia' : 'Indonesia';
+        return redirect()->to('/admin#tab-' . $redirectTab)->with('success', "Paket harga ($countryLabel) berhasil disimpan!");
     }
 
     public function deletePricing($id)
@@ -581,5 +622,121 @@ class Admin extends BaseController
             'contact' => $contactModel->getContact(),
             'title' => 'Invoice ' . esc($tx['invoice_number']) . ' — SOLVETA',
         ]);
+    }
+
+    public function saveArticle()
+    {
+        $articleModel = new \App\Models\ArticleModel();
+
+        $id = $this->request->getPost('id');
+        $title = trim((string) $this->request->getPost('title'));
+        $slug = trim((string) $this->request->getPost('slug'));
+        $category = trim((string) $this->request->getPost('category'));
+        $summary = trim((string) $this->request->getPost('summary'));
+        $content = (string) $this->request->getPost('content');
+        $author = trim((string) $this->request->getPost('author')) ?: 'Tim Riset & Rekayasa SOLVETA';
+        $readTime = trim((string) $this->request->getPost('read_time')) ?: '5 min baca';
+        $imageUrl = trim((string) $this->request->getPost('image_url'));
+
+        // Handle uploaded image file if present
+        $imgFile = $this->request->getFile('image_file');
+        if ($imgFile && $imgFile->isValid() && !$imgFile->hasMoved()) {
+            $newName = $imgFile->getRandomName();
+            $targetDir = FCPATH . 'uploads/articles';
+            if (!is_dir($targetDir)) {
+                @mkdir($targetDir, 0777, true);
+            }
+            $imgFile->move($targetDir, $newName);
+            $imageUrl = '/uploads/articles/' . $newName;
+        }
+
+        if (empty($title)) {
+            return redirect()->to(base_url('admin#tab-articles'))->with('error', 'Judul artikel wajib diisi.');
+        }
+
+        if (empty($imageUrl)) {
+            $imageUrl = 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80';
+        }
+
+        $data = [
+            'id' => $id ?: null,
+            'title' => $title,
+            'slug' => $slug ?: $articleModel->slugify($title),
+            'category' => $category ?: 'Website & SaaS',
+            'summary' => $summary,
+            'content' => $content,
+            'image_url' => $imageUrl,
+            'author' => $author,
+            'read_time' => $readTime,
+            'is_published' => $this->request->getPost('is_published') ? 1 : 0,
+        ];
+
+        $articleModel->saveArticle($data);
+        return redirect()->to(base_url('admin#tab-articles'))->with('success', 'Artikel berhasil disimpan dan siap diakses publik!');
+    }
+
+    public function deleteArticle($id)
+    {
+        $articleModel = new \App\Models\ArticleModel();
+        $articleModel->deleteArticle((string) $id);
+        return redirect()->to(base_url('admin#tab-articles'))->with('success', 'Artikel berhasil dihapus.');
+    }
+
+    public function saveCareerJob()
+    {
+        $careerModel = new \App\Models\CareerModel();
+        $id = $this->request->getPost('id');
+        $title = trim((string) $this->request->getPost('title'));
+        $department = trim((string) $this->request->getPost('department')) ?: 'Engineering';
+        $location = trim((string) $this->request->getPost('location')) ?: 'Remote / Hybrid Indonesia';
+        $status = trim((string) $this->request->getPost('status')) ?: 'Tutup';
+        $desc = trim((string) $this->request->getPost('description'));
+        $posterUrl = trim((string) $this->request->getPost('poster_url'));
+
+        // Handle file upload if provided
+        $posterFile = $this->request->getFile('poster_file');
+        if ($posterFile && $posterFile->isValid() && !$posterFile->hasMoved()) {
+            $newName = $posterFile->getRandomName();
+            $targetDir = FCPATH . 'uploads/careers';
+            if (!is_dir($targetDir)) {
+                @mkdir($targetDir, 0777, true);
+            }
+            $posterFile->move($targetDir, $newName);
+            $posterUrl = '/uploads/careers/' . $newName;
+        }
+
+        if (empty($title)) {
+            return redirect()->to(base_url('admin#tab-careers'))->with('error', 'Posisi loker wajib diisi.');
+        }
+
+        $job = [
+            'id' => $id ?: null,
+            'title' => $title,
+            'department' => $department,
+            'location' => $location,
+            'status' => $status,
+            'description' => $desc,
+            'poster_url' => $posterUrl,
+        ];
+
+        $careerModel->saveJob($job);
+        return redirect()->to(base_url('admin#tab-careers'))->with('success', 'Data posisi loker / karir berhasil disimpan!');
+    }
+
+    public function deleteCareerJob($id)
+    {
+        $careerModel = new \App\Models\CareerModel();
+        $careerModel->deleteJob((string) $id);
+        return redirect()->to(base_url('admin#tab-careers'))->with('success', 'Data lowongan karir berhasil dihapus.');
+    }
+
+    public function updateCareerAnnouncement()
+    {
+        $careerModel = new \App\Models\CareerModel();
+        $title = trim((string) $this->request->getPost('announcement_title'));
+        $desc = trim((string) $this->request->getPost('announcement_desc'));
+
+        $careerModel->updateAnnouncement($title, $desc);
+        return redirect()->to(base_url('admin#tab-careers'))->with('success', 'Pengumuman status karir publik berhasil diperbarui!');
     }
 }

@@ -163,7 +163,9 @@ c:\Users\user\Downloads\solveta/
 
 | Metode | URL | Controller & Method | Deskripsi |
 |---|---|---|---|
-| **GET** | `/` | `Home::index` | Halaman landing page utama |
+| **GET** | `/` (atau `/portfolio`, `/portofolio`) | `Home::index` | Halaman Direktori Portofolio Web SOLVETA |
+| **GET** | `/indonesia` | `Home::indonesia` | Landing Page Resmi SOLVETA Indonesia (Paket IDR) |
+| **GET** | `/malaysia` | `Home::malaysia` | Landing Page Kloning SOLVETA Malaysia (Pakej MYR) |
 | **GET** | `/formulir` | `Formulir::index` | Halaman formulir order 16 field calon klien |
 | **POST** | `/formulir/submit` | `Formulir::submit` | Menyimpan formulir & redirect ke WA |
 | **GET** | `/admin/login` | `Auth::login` | Form login developer portal |

@@ -33,6 +33,8 @@ class PortfolioModel extends Model
                 $results = [];
                 foreach ($rows as $row) {
                     $item = (array) $row;
+                    $item['title'] = $this->cleanMojibake($item['title'] ?? '');
+                    $item['description'] = $this->cleanMojibake($item['description'] ?? '');
                     $item['tags'] = !empty($item['tags_json']) ? json_decode($item['tags_json'], true) : [];
                     $results[] = $item;
                 }
@@ -43,6 +45,15 @@ class PortfolioModel extends Model
         }
 
         return $this->getDefaultItems();
+    }
+
+    private function cleanMojibake(string $str): string
+    {
+        return str_replace(
+            ['â€”', 'â€“', 'â€™', 'â€˜', 'â€œ', 'â€', 'Ã¢â‚¬â€', 'ðŸ‡²ðŸ‡¾', 'ðŸ‡®ðŸ‡©'],
+            ['—', '–', "'", "'", '"', '"', '—', '', ''],
+            $str
+        );
     }
 
     public function getDefaultItems(): array
